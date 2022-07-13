@@ -44,7 +44,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
     //loadClouds();
     //loadWaterSegments();
     //loadBattleship();
-    //loadPlane();
+    loadPlane();
 
 
     
