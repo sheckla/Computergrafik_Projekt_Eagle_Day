@@ -101,6 +101,8 @@
     <ClCompile Include="..\..\src\Matrix.cpp" />
     <ClCompile Include="..\..\src\Model.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
+    <ClCompile Include="..\..\src\Plane.cpp" />
+    <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
     <ClCompile Include="..\..\src\rgbimage.cpp" />
     <ClCompile Include="..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\src\TerrainShader.cpp" />
@@ -110,6 +112,8 @@
     <ClCompile Include="..\..\src\TriangleSphereModel.cpp" />
     <ClCompile Include="..\..\src\vector.cpp" />
     <ClCompile Include="..\..\src\VertexBuffer.cpp" />
+    <ClCompile Include="..\..\src\VolumetricCloudsLoaderImpl.cpp" />
+    <ClCompile Include="..\..\src\WaterLoaderImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Aabb.h" />
@@ -127,6 +131,9 @@
     <ClInclude Include="..\..\src\Matrix.h" />
     <ClInclude Include="..\..\src\Model.h" />
     <ClInclude Include="..\..\src\PhongShader.h" />
+    <ClInclude Include="..\..\src\Plane.h" />
+    <ClInclude Include="..\..\src\PlaneLoader.h" />
+    <ClInclude Include="..\..\src\PlaneLoaderImpl.h" />
     <ClInclude Include="..\..\src\rgbimage.h" />
     <ClInclude Include="..\..\src\Terrain.h" />
     <ClInclude Include="..\..\src\TerrainShader.h" />
@@ -136,6 +143,10 @@
     <ClInclude Include="..\..\src\TriangleSphereModel.h" />
     <ClInclude Include="..\..\src\vector.h" />
     <ClInclude Include="..\..\src\VertexBuffer.h" />
+    <ClInclude Include="..\..\src\VolumetricCloudsLoader.h" />
+    <ClInclude Include="..\..\src\VolumetricCloudsLoaderImpl.h" />
+    <ClInclude Include="..\..\src\WaterLoader.h" />
+    <ClInclude Include="..\..\src\WaterLoaderImpl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

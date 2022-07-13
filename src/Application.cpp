@@ -27,6 +27,12 @@
 #include "HeightMapStorage.h"
 #include <thread>
 #include "CloudShader.h"
+#include "PlaneLoader.h"
+#include "PlaneLoaderImpl.h"
+#include "VolumetricCloudsLoader.h"
+#include "VolumetricCloudsLoaderImpl.h"
+#include "WaterLoader.h"
+#include "WaterLoaderImpl.h"
 
 
 #ifdef WIN32
@@ -42,10 +48,11 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
    
     loadLinePlane();
     loadSkyBox();
-    loadSimpleWater();
-    loadClouds();
+    //loadSimpleWater();
+    //loadClouds();
     //loadWaterSegments();
-    loadBattleship();
+    //loadBattleship();
+    loadPlane();
 
 
     
@@ -84,21 +91,16 @@ void Application::loadWaterSegments() {
     heightMaps = new HeightMapStorage(ASSETS "waves2/");
     pTerrainShader = new TerrainShader(ASSETS);
 
+    //WaterLoader* waterLoader = new WaterLoaderImpl();
+    //waterLoader->createWater(this->Models);
+
     createOceanSegments();
 }
 
 void Application::loadClouds() {
-    CloudShader* cloudShader = new CloudShader(ASSETS);
-    Texture* tex = new Texture;
-    tex->load(ASSETS "worley0.bmp");
-    cloudShader->SetWorleyTexture(tex);
-    TriangleBoxModel* clouds = new TriangleBoxModel(10.0f, 1.0f, 10.0f);
-    clouds->shader(cloudShader, true);
+    VolumetricCloudsLoader* vcs_loader = new VolumetricCloudsLoaderImpl();
+    TriangleBoxModel* clouds = vcs_loader->createClouds(ASSETS "worley0.bmp");
     Models.push_back(clouds);
-
-    Matrix mvClouds;
-    mvClouds.translation(Vector(0, .6f, 0));
-    clouds->transform(mvClouds);
 }
 
 void Application::loadBattleship() {
@@ -108,6 +110,12 @@ void Application::loadBattleship() {
     Matrix up;
     up.translation(Vector(0, .6f, 0));
     mod->transform(up);
+}
+
+void Application::loadPlane() {
+    PlaneLoader* pl = new PlaneLoaderImpl();
+    Plane p = pl->createPlane(ASSETS "spitfire.obj");
+    delete pl;
 }
 
 void Application::start()

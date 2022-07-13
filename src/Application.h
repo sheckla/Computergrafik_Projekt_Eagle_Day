@@ -31,6 +31,7 @@ public:
     void loadWaterSegments();
     void loadClouds();
     void loadBattleship();
+    void loadPlane();
     void start();
     void update(float dtime);
     void draw();
