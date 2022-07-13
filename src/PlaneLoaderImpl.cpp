@@ -9,7 +9,9 @@ PlaneLoaderImpl::~PlaneLoaderImpl()
 
 }
 
-Plane PlaneLoaderImpl::createPlane(const char* path)
+Plane* PlaneLoaderImpl::createPlane(const char* path)
 {
-	return Plane();
+    Plane* plane = new Plane();
+    plane->loadModels(path);
+    return plane;
 }

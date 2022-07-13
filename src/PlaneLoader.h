@@ -5,5 +5,5 @@
 class PlaneLoader {
 public:
 	virtual ~PlaneLoader() = default;
-	virtual Plane createPlane(const char* path) = 0;
+	virtual Plane* createPlane(const char* path) = 0;
 };

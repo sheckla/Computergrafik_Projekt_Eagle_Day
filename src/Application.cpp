@@ -34,14 +34,6 @@
 #include "WaterLoader.h"
 #include "WaterLoaderImpl.h"
 
-
-#ifdef WIN32
-#define ASSETS "../../assets/"
-#else
-#define ASSETS "../assets/"
-#endif
-
-
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
 {
     std::cout << "Loading..." << std::endl;
@@ -52,7 +44,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
     //loadClouds();
     //loadWaterSegments();
     //loadBattleship();
-    loadPlane();
+    //loadPlane();
 
 
     
@@ -114,7 +106,8 @@ void Application::loadBattleship() {
 
 void Application::loadPlane() {
     PlaneLoader* pl = new PlaneLoaderImpl();
-    Plane p = pl->createPlane(ASSETS "spitfire.obj");
+    Plane* p = pl->createPlane(ASSETS "spitfire_new.obj");
+    Models.push_back(p);
     delete pl;
 }
 

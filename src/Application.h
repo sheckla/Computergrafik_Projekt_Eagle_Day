@@ -20,6 +20,12 @@
 #include "terrain.h"
 #include "HeightMapStorage.h"
 
+#ifdef WIN32
+#define ASSETS "../../assets/"
+#else
+#define ASSETS "../assets/"
+#endif
+
 class Application
 {
 public:

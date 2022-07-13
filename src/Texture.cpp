@@ -50,7 +50,7 @@ const Texture* Texture::LoadShared(const char* Filename)
     if(!pTex->load(Filename) )
     {
         delete pTex;
-        std::cout << "WARNING: Texture " << Filename << " not loaded (not found).\n";
+        std::cout << "WARNING: Texture [" << Filename << "] not loaded (not found).\n";
         return NULL;
     }
     

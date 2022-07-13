@@ -124,6 +124,7 @@
     <ClInclude Include="..\..\src\CloudShader.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\ConstantShader.h" />
+    <ClInclude Include="..\..\src\Globals.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
     <ClInclude Include="..\..\src\IndexBuffer.h" />
     <ClInclude Include="..\..\src\LineBoxModel.h" />

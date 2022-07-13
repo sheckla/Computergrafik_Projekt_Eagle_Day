@@ -69,30 +69,18 @@ bool Model::load(const char* ModelFile, bool FitSize)
 
 void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 {
-	/*
-	-	Lädt die Meshes (Polygonale Modelle) aus aiScene::mMeshes in
-		Model::pMeshes (und MeshCount). Hierfür müssen passende Vertex- und
-		Indexbuffer erzeugt werden (Position, Normale & UV-Texturkoordinaten,
-		soweit vorhanden).
-	-	In dieser Funktion soll auch eine achsenausgerichtete Bounding-Box für
-		das Modell berechnet werden. Implementieren Sie hierfür die Methode
-		calcBoundingBox(...) und rufen Sie diese in loadMeshes(..) auf.
-	-	Wenn FitSize auf true gesetzt wurde, soll das Mesh so skaliert werden,
-		dass es eine sinnvolle Größe hat (z. B. 5x5x5 Einheiten o. ähnliches).
-	*/
-
 	calcBoundingBox(pScene, BoundingBox);
 	MeshCount = pScene->mNumMeshes;
 	pMeshes = new Mesh[MeshCount];
 
 	for (size_t i = 0; i < MeshCount; i++) {
 
-		// Fuer jedes aiMesh ein eigenes Mesh erzeugen
+	
 		aiMesh* aiMesh = pScene->mMeshes[i];
 		Mesh& mesh = this->pMeshes[i];
 		mesh.MaterialIdx = aiMesh->mMaterialIndex;
 
-		// Vertexbuffer befuellen
+		
 		mesh.VB.begin();
 		int vertexCount = aiMesh->mNumVertices;
 		for (size_t j = 0; j < vertexCount; j++) {
@@ -103,8 +91,8 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 			}
 
 			if (aiMesh->HasTextureCoords(0)) {
-				aiVector3D tcoor = aiMesh->mTextureCoords[0][j]; // TODO: UDIMS?
-				mesh.VB.addTexcoord0(tcoor.x, -tcoor.y); // TODO: Warum negativ?
+				aiVector3D tcoor = aiMesh->mTextureCoords[0][j];
+				mesh.VB.addTexcoord0(tcoor.x, -tcoor.y); 
 			}
 
 			if (aiMesh->HasPositions()) {
@@ -114,7 +102,7 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 		}
 		mesh.VB.end();
 
-		// Indexbuffer befuellen
+		
 		mesh.IB.begin();
 		int faceCount = aiMesh->mNumFaces;
 		for (size_t j = 0; j < faceCount; j++) {
@@ -122,10 +110,8 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 			int indicesOfFace = face.mNumIndices;
 			if (indicesOfFace < 3) continue;
 
-			// k-Eck mehr als Dreieck --> Aufteilen des n-Ecks in Dreiecke
 			for (size_t k = 0; k < indicesOfFace - 2; k++) {
 
-				// Indexbuffer befuellen mit Dreieck 0, i+1, i+2
 				mesh.IB.addIndex(face.mIndices[0]);
 				mesh.IB.addIndex(face.mIndices[k + 1]);
 				mesh.IB.addIndex(face.mIndices[k + 2]);
@@ -145,10 +131,6 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 
 void Model::loadMaterials(const aiScene* pScene) //ist super
 {
-	/* Lädt die Materialeinstellungen von Assimp in Model::pMaterials (und
-	MaterialCount). Hierfür müssen die passenden Material-Keys von Assimp
-	abgefragt werden (aiGetMaterialColor & aiGetMaterialString für
-	Texturnamen).*/
 
 	if (pScene->HasMaterials()) {
 		MaterialCount = pScene->mNumMaterials;
@@ -158,7 +140,7 @@ void Model::loadMaterials(const aiScene* pScene) //ist super
 			aiMaterial* mtrl = pScene->mMaterials[i];
 			Material material;
 
-			//Komponenten uebernehmen
+			
 			aiColor3D color;
 			mtrl->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 			material.DiffColor = Color(color.r, color.g, color.b);
@@ -169,16 +151,10 @@ void Model::loadMaterials(const aiScene* pScene) //ist super
 			mtrl->Get(AI_MATKEY_COLOR_AMBIENT, color);
 			material.AmbColor = Color(color.r, color.g, color.b);
 
-			/*
-			Zum Laden von Texturen können Sie auf die Member-Variable Path
-			zugreifen, die den Pfad zur Modell-Datei enthält. Texturen können Sie mit
-			Hilfe der Funktion Texture::loadShared(...) laden.
-			*/
 
 			aiString einString;
 			mtrl->GetTexture(aiTextureType_DIFFUSE, 0, &einString);
 			std::string p = Path + einString.data;
-			//std::cout <<"TEXTURE: " << p.c_str() << std::endl;
 			material.DiffTex = Texture().LoadShared(p.c_str());
 
 			pMaterials[i] = material;
@@ -188,19 +164,11 @@ void Model::loadMaterials(const aiScene* pScene) //ist super
 
 void Model::calcBoundingBox(const aiScene* pScene, AABB& Box)
 {
-	/*
-		F: Was ist eine Bounding-Box?
-		A: Die Grenze/Ein unsichtbarer Kasten um das angezeigte Objekt.
-
-		F: Wie gross soll diese Box sein?
-		A: Am besten so klein wie möglich um das Objekt vollständig anzuzeigen.
-
-	*/
 	float minX, minY, minZ, maxX, maxY, maxZ;
 	minX = minY = minZ = FLT_MAX;
 	maxX = maxY = maxZ = FLT_MIN;
 
-	//1. Scene = viele Meshes, also jedes Mesh anschauen (jedes Mesh = viele Vertices) -> alle MIN/MAX-Werte festhalten (MIN fuer Negativ-Werte)	
+	
 	MeshCount = pScene->mNumMeshes;
 	for (size_t i = 0; i < MeshCount; i++)
 	{
@@ -216,7 +184,7 @@ void Model::calcBoundingBox(const aiScene* pScene, AABB& Box)
 		}
 	}
 
-	//2. Boundingbox bauen	
+
 	Box = AABB(minX, minY, minZ, maxX, maxY, maxZ);
 }
 

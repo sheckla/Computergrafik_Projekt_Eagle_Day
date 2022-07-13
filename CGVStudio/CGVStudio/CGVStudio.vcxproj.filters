@@ -279,5 +279,8 @@
     <ClInclude Include="..\..\src\WaterLoader.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\water\interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Globals.h">
+      <Filter>Quelldateien\application</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
