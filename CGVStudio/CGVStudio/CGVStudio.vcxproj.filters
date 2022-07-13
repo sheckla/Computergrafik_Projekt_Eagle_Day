@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Quelldateien\application">
+      <UniqueIdentifier>{8b009ae5-53bb-4aad-8b86-35f419d0d2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics">
+      <UniqueIdentifier>{a2467be9-4a35-4703-99a1-6f62d8d2869a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\buffer">
+      <UniqueIdentifier>{87d0259a-bc61-40be-af40-8a0127ac757d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models">
+      <UniqueIdentifier>{dc5fa6cb-f125-4307-a116-1ce45c5c7f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models\base">
+      <UniqueIdentifier>{73a29668-a201-4278-a6ce-cd48b37aaec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models\base\derived">
+      <UniqueIdentifier>{d5345d21-8e3d-4bfd-a994-7f96de8bf457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\shader">
+      <UniqueIdentifier>{6a54a247-36e2-4ceb-a2f9-a70627911295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\shader\derived">
+      <UniqueIdentifier>{3f4829e1-81d3-423c-b9d7-47f1c52e016e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\shader\derived\terrain">
+      <UniqueIdentifier>{fe70788d-81af-479a-8424-2434ed4069c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\shader\derived\terrain\util">
+      <UniqueIdentifier>{a74680e7-0269-4e76-ac04-582d77d319b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\util">
+      <UniqueIdentifier>{90721f7c-1079-444f-8eb8-eb454fc83e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\util\image_generation">
+      <UniqueIdentifier>{277153c5-35e9-4ab1-afd4-c695d3e23fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\util\algebra">
+      <UniqueIdentifier>{48f43be2-200a-4f92-94b9-f38b498d8355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\camera">
+      <UniqueIdentifier>{30e7757a-a51d-45dd-9eb1-991dc21b139b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\BaseShader.cpp">
+      <Filter>Quelldateien\graphics\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Aabb.cpp">
+      <Filter>Quelldateien\graphics\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Application.cpp">
+      <Filter>Quelldateien\application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Quelldateien\application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ConstantShader.cpp">
+      <Filter>Quelldateien\graphics\shader\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PhongShader.cpp">
+      <Filter>Quelldateien\graphics\shader\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Camera.cpp">
+      <Filter>Quelldateien\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VertexBuffer.cpp">
+      <Filter>Quelldateien\graphics\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\IndexBuffer.cpp">
+      <Filter>Quelldateien\graphics\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\vector.cpp">
+      <Filter>Quelldateien\util\algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Matrix.cpp">
+      <Filter>Quelldateien\util\algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\color.cpp">
+      <Filter>Quelldateien\util\image_generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rgbimage.cpp">
+      <Filter>Quelldateien\util\image_generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Texture.cpp">
+      <Filter>Quelldateien\graphics\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CloudShader.cpp">
+      <Filter>Quelldateien\graphics\shader\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\BaseModel.cpp">
+      <Filter>Quelldateien\graphics\models\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Model.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Terrain.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LineBoxModel.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LinePlaneModel.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TriangleBoxModel.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TrianglePlaneModel.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TriangleSphereModel.cpp">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TerrainShader.cpp">
+      <Filter>Quelldateien\graphics\shader\derived\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HeightMapStorage.cpp">
+      <Filter>Quelldateien\graphics\shader\derived\terrain\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\BaseShader.h">
+      <Filter>Quelldateien\graphics\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Aabb.h">
+      <Filter>Quelldateien\graphics\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Application.h">
+      <Filter>Quelldateien\application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ConstantShader.h">
+      <Filter>Quelldateien\graphics\shader\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\PhongShader.h">
+      <Filter>Quelldateien\graphics\shader\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Camera.h">
+      <Filter>Quelldateien\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\VertexBuffer.h">
+      <Filter>Quelldateien\graphics\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\IndexBuffer.h">
+      <Filter>Quelldateien\graphics\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\vector.h">
+      <Filter>Quelldateien\util\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Matrix.h">
+      <Filter>Quelldateien\util\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\color.h">
+      <Filter>Quelldateien\util\image_generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rgbimage.h">
+      <Filter>Quelldateien\util\image_generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Texture.h">
+      <Filter>Quelldateien\graphics\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CloudShader.h">
+      <Filter>Quelldateien\graphics\shader\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\BaseModel.h">
+      <Filter>Quelldateien\graphics\models\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Model.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Terrain.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\LineBoxModel.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\LinePlaneModel.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TriangleBoxModel.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TrianglePlaneModel.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TriangleSphereModel.h">
+      <Filter>Quelldateien\graphics\models\base\derived</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TerrainShader.h">
+      <Filter>Quelldateien\graphics\shader\derived\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HeightMapStorage.h">
+      <Filter>Quelldateien\graphics\shader\derived\terrain\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
