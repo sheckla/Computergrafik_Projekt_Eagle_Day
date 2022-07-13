@@ -1,0 +1,55 @@
+# Blender MTL File: 'spitfire.blend'
+# Material Count: 5
+
+newmtl Plane_Window
+Ns 900.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Spitfire_Body
+Ns 89.197526
+Ka 1.000000 1.000000 1.000000
+Kd 0.249623 0.266760 0.160389
+Ks 0.768519 0.768519 0.768519
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:\\Users\\Daniel\\Desktop\\spitfireSide.jpg
+
+newmtl Spitfire_Exhaust
+Ns 306.250010
+Ka 0.314815 0.314815 0.314815
+Kd 0.084376 0.043735 0.038204
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Spitfire_Rotor
+Ns 89.197526
+Ka 1.000000 1.000000 1.000000
+Kd 0.249623 0.266760 0.160389
+Ks 0.768519 0.768519 0.768519
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:\\Users\\Daniel\\Desktop\\spitfireFront.jpg
+
+newmtl Spitfire_Wings
+Ns 89.197627
+Ka 1.000000 1.000000 1.000000
+Kd 0.249623 0.266760 0.160389
+Ks 0.768519 0.768519 0.768519
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:\\Users\\Daniel\\Desktop\\SpitfireTop.jpeg

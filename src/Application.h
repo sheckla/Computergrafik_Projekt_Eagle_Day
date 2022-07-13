@@ -20,6 +20,12 @@
 #include "terrain.h"
 #include "HeightMapStorage.h"
 
+#ifdef WIN32
+#define ASSETS "../../assets/"
+#else
+#define ASSETS "../assets/"
+#endif
+
 class Application
 {
 public:
@@ -31,6 +37,7 @@ public:
     void loadWaterSegments();
     void loadClouds();
     void loadBattleship();
+    void loadPlane();
     void start();
     void update(float dtime);
     void draw();

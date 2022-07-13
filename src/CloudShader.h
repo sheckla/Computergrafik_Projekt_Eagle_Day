@@ -1,4 +1,4 @@
-
+#ifndef CloudShader_hpp
 #define CloudShader_hpp
 
 #include <stdio.h>
@@ -24,3 +24,5 @@ private:
 	GLint WorleyLoc;
 	const Texture* WorleyTexture;
 };
+
+#endif
