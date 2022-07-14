@@ -18,6 +18,7 @@
 #include "indexbuffer.h"
 #include "basemodel.h"
 #include "terrain.h"
+#include "Plane.h"
 #include "HeightMapStorage.h"
 
 #ifdef WIN32
@@ -63,6 +64,7 @@ protected:
 
     double x_pos_tmp = 0;
     double y_pos_tmp = 0;
+    Plane* pPlane;
 };
 
 #endif /* Application_hpp */

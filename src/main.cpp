@@ -28,8 +28,8 @@ int main () {
     glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
     
-    const int WindowWidth = 1920;
-    const int WindowHeight = 1080;
+    const int WindowWidth = 720;
+    const int WindowHeight = 480;
     
     GLFWwindow* window = glfwCreateWindow (WindowWidth, WindowHeight, "Water through Heightmap in VertexShader - Hochschule Osnabrück", NULL, NULL);
     if (!window) {

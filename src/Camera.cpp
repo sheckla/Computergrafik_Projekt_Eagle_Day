@@ -73,13 +73,13 @@ void Camera::mouseInput( int x, int y, int Button, int State)
     }
     else
     {
-        m_Position += m_Panning + m_Zoom + m_Rotation;
+        /*m_Position += m_Panning + m_Zoom + m_Rotation;
         m_Target += m_Panning;
         m_Panning = Vector(0,0,0);
         m_Zoom = Vector(0,0,0);
         m_Rotation = Vector(0,0,0);
         m_LastMouseX = -1;
-        m_LastMouseY = -1;
+        m_LastMouseY = -1;*/
 
     }
 }
@@ -101,13 +101,11 @@ void Camera::zoom( float dz)
     Vector aDir = m_Target-m_Position;
     float Dist = aDir.length();
     aDir.normalize();
-  
     if( Dist-dz <= 1.0f)
     {
         m_Zoom = aDir * (Dist-1.0f);
         return;
     }
-    
      m_Zoom = aDir * dz;
 }
 
@@ -171,6 +169,43 @@ const Matrix& Camera::getViewMatrix() const
 const Matrix& Camera::getProjectionMatrix() const
 {
     return m_ProjMatrix;
+}
+
+void Camera::rotate(Vector a, Vector b)
+{
+    Vector po = a;
+    Vector pn = b;
+
+    if ((po - pn).lengthSquared() < 0.0001f)
+        return;
+
+    float cosangle = po.dot(pn);
+    if (cosangle > 1.0f) cosangle = 1.0f;
+    if (cosangle < -1.0f) cosangle = -1.0f;
+
+    const float angle = acos(cosangle);
+    Vector RotAxis = pn.cross(po);
+    std::cout << RotAxis << std::endl;
+    RotAxis.normalize();
+
+
+    //Vector Diff = m_Position-m_Target;
+    Vector Diff(0, 0, (m_Position - m_Target).length());
+
+    Vector RotDiff = rotateAxisAngle(Diff, RotAxis, angle);
+
+    Vector cdir = m_Target - m_Position;
+    cdir.normalize();
+    Vector cup = m_Up;
+    Vector cright = cdir.cross(cup);
+    cright.normalize();
+    cup = cright.cross(cdir);
+
+    Vector RotDiffW;
+    RotDiffW.X = cright.X * RotDiff.X + cup.X * RotDiff.Y + -cdir.X * RotDiff.Z;
+    RotDiffW.Y = cright.Y * RotDiff.X + cup.Y * RotDiff.Y + -cdir.Y * RotDiff.Z;
+    RotDiffW.Z = cright.Z * RotDiff.X + cup.Z * RotDiff.Y + -cdir.Z * RotDiff.Z;
+    m_Rotation = RotDiffW - (m_Position - m_Target);
 }
 
 

@@ -50,12 +50,14 @@ public:
     virtual void update();
     virtual const Matrix& getViewMatrix() const;
     virtual const Matrix& getProjectionMatrix() const;
+    void rotate(Vector a, Vector b);
+    void zoom( float dz);
+    void rotate( float x, float y );
+    Vector m_Rotation;
 protected:
     void updateMouseInput();
     
     void pan( float dx, float dy);
-    void zoom( float dz);
-    void rotate( float x, float y );
     Vector getVSpherePos( float x, float y);
     Vector rotateAxisAngle( Vector v, Vector n, float a);
     
@@ -66,7 +68,6 @@ protected:
     Vector m_Up;
     Vector m_Panning;
     Vector m_Zoom;
-    Vector m_Rotation;
     int m_LastMouseX;
     int m_LastMouseY;
     int WindowWidth;
