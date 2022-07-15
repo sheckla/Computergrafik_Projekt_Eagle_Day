@@ -33,6 +33,7 @@
 #include "VolumetricCloudsLoaderImpl.h"
 #include "WaterLoader.h"
 #include "WaterLoaderImpl.h"
+#include "PlayerPlaneControls.h"
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
 {
@@ -53,9 +54,9 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
 }
 
 void Application::loadLinePlane() {
-    LinePlaneModel* pModel = new LinePlaneModel(10, 10, 10, 10);
+    LinePlaneModel* pModel = new LinePlaneModel(1000, 1000, 1000, 1000);
     ConstantShader* pConstShader = new ConstantShader();
-    pConstShader->color(Color(1, 0, 0));
+    pConstShader->color(Color(0.5, 0.5, 0.5));
     pModel->shader(pConstShader, true);
     Models.push_back(pModel);
 }
@@ -126,64 +127,11 @@ void Application::update(float dtime)
 {
     
     //std::cout << "UPDATE" << std::endl;
-    double deltaTime = glfwGetTime() - last;
+    double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
-
-    if (glfwGetKey(pWindow, GLFW_KEY_LEFT_SHIFT)) pPlane->accelerate(deltaTime);
-
-    if (glfwGetKey(pWindow, GLFW_KEY_LEFT_CONTROL)) pPlane->accelerate(-deltaTime);
-
-    if (glfwGetKey(pWindow, GLFW_KEY_A))
-    {
-        pPlane->leftFlapTilt(deltaTime);
-        pPlane->rightFlapTilt(-deltaTime);
-    }
-   // if (glfwGetKey(pWindow, GLFW_KEY_W)) pPlane->pitch(-deltaTime);
-    //if (glfwGetKey(pWindow, GLFW_KEY_S)) pPlane->pitch(deltaTime);
-
-    if (glfwGetKey(pWindow, GLFW_KEY_D))
-    {
-        pPlane->leftFlapTilt(-deltaTime);
-        pPlane->rightFlapTilt(deltaTime);
-    }
-
-    if (glfwGetKey(pWindow, GLFW_KEY_S))
-    {
-        pPlane->leftFlapTilt(deltaTime);
-        pPlane->rightFlapTilt(deltaTime);
-    }
-
-    if (glfwGetKey(pWindow, GLFW_KEY_W))
-    {
-        pPlane->leftFlapTilt(-deltaTime);
-        pPlane->rightFlapTilt(-deltaTime);
-    }
-
-    if (glfwGetKey(pWindow, GLFW_KEY_Q)) pPlane->rudderTilt(-deltaTime);
-    if (glfwGetKey(pWindow, GLFW_KEY_E)) pPlane->rudderTilt(deltaTime);
-    pPlane->update(deltaTime);
-
-    Vector camPos, camTarget, camUp;
-    camTarget = pPlane->transform().translation();
-    camUp = Vector(0, 3, -10);
-    camPos = camTarget + camUp;
-    Cam.setTarget(camTarget);
-    Cam.setPosition(camPos);
-
-    Matrix m1, yaw, pitch, roll;
-    m1.translation(camTarget);
-    yaw.rotationY(pPlane->yaw);
-    roll.rotationZ(pPlane->roll);
-    Matrix centered, cameraOffset;
-    centered.translation(Vector(0, 0, 0));
-    pitch.rotationX(pPlane->pitch);
-    centered = centered * m1 * yaw * pitch * roll;
-    std::cout << centered.translation() << std::endl;
-
-    cameraOffset.translation(Vector(0, 3, -10));
-    cameraOffset = cameraOffset * yaw * pitch * roll;
-    centered = centered * cameraOffset;
-    Cam.setPosition(centered.translation());
+    std::cout << deltaTime << std::endl;
+    PlayerPlaneControls player(pWindow, pPlane, &Cam);
+    player.update(deltaTime);
 
     //Cam.rotate(camTarget.normalize(), camPos.normalize());
     /*

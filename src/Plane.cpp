@@ -1,30 +1,45 @@
 #include "PlaneLoader.h"
 
-void Plane::stabilizeToZero(float& i, float max_angle)
+float Plane::speedPercentage()
 {
+	return (0 + (this->speed / 450));
+}
+
+void Plane::aprroachZeroWithBoundaries(float& i, float max_angle)
+{
+	// kleine werte werden zu 0
 	if (abs(i) <= EPSILON) {
 		i = 0;
 		return;
 	};
 
+	// obere Grenze ueberschritten
 	if (i >= max_angle) {
 		i = max_angle - 1;
 		return;
 	}
 
+	// untere Grenze uerberschritten
 	if (i <= -max_angle) {
 		i = -max_angle + 1;
 		return;
 	}
 
+	// positiv; innerhalb Grenze
 	if (i >= 0) {
-		i -= 0.1;
+		i = i * 0.99;
 		return;
 	}
+	// negativ: innerhalb Grenze
 	else if (i < 0) {
-		i += 0.1;
+		i = i *0.99;
 		return;
 	}
+}
+
+void Plane::updateModel(int i, Matrix& rotation)
+{
+	models[i]->transform(transform() * Matrix().translation(modelPos[i]) * rotation);
 }
 
 Plane::Plane()
@@ -46,18 +61,11 @@ Plane::~Plane()
 	}
 }
 
-
-/* Plane wird per spitfire.obj geladen
-*  -> oeffnen .mtl per Editor und Pfade für die Texturen ändern 
-* 
-* Optimisierung: Nur die benötigten Teile der Texturen laden
-*/ 
 void Plane::loadModels(const char* path)
 {
 	std::string planePath = path;
 	bool fitToSize = false;
 
-	// plane
 	this->model = new Model(&(planePath + "/spitfire.obj")[0], fitToSize);
 	PhongShader* shader = new PhongShader();
 	this->model->shader(shader, true);
@@ -87,10 +95,6 @@ void Plane::loadModels(const char* path)
 	models[4] = this->backwing_right;
 	models[5] = this->wingflaps_left;
 	models[6] = this->wingflaps_right;
-
-	for (int i = 0; i < PLANE_MODEL_AMOUNT; i++) {
-		models[i]->transform(Matrix().translation(modelPos[i]));
-	}
 }
 
 void Plane::draw(const BaseCamera& cam)
@@ -98,74 +102,97 @@ void Plane::draw(const BaseCamera& cam)
 	for (int i = 0; i < PLANE_MODEL_AMOUNT; i++) {
 		this->models[i]->draw(cam);
 	}
+
 }
 
+/* 
+* rotation Z = roll
+* rotation Y = yaw 
+* rotation X = pitch
+*/ 
 void Plane::update(double delta)
 {
-	// rotation Z = roll
-	// rotation Y = yaw 
-	// rotation X = pitch
+
+	// Konkrete Transformationen bezueglich Flugzeug- & Kameraposition
 	Matrix forward, yaw, roll1, roll2, pitch;
-	forward.translation(Vector(0, 0, 1 * speed * delta));
-	this->yaw += 0.01f * -rudder_tilt * delta;
-	yaw.rotationY(0.01f * -rudder_tilt * delta);
-	pitch.rotationX(0.01f * -(left_flaps + right_flaps) * delta);
-	this->pitch += 0.01f * -(left_flaps + right_flaps) * delta;
+	forward.translation(Vector(0, 0, SPEED_GAIN * speed * delta));
 
-	roll1.rotationZ(0.01f * -(left_flaps) * delta);
-	roll2.rotationZ(0.01f * (right_flaps) * delta);
-	this->roll += 0.01f * -(left_flaps)*delta;
-	this->roll += 0.01f * (right_flaps)*delta;
+	if (this->speedPercentage() <= 0.1) {
+		forward.translation(Vector(0, -0.9768, 0) * delta);
+	}
 
-	this->model->transform(this->model->transform() * forward * yaw * roll1 * roll2 * pitch);
+	yaw.rotationY(ROTATION_SPEED * -rudder_tilt * delta * speedPercentage());
+	pitch.rotationX(ROTATION_SPEED * -(left_flaps_tilt + right_flaps_tilt) * delta * speedPercentage());
+	roll1.rotationZ(ROTATION_SPEED * -(left_flaps_tilt) * delta * speedPercentage());
+	roll2.rotationZ(ROTATION_SPEED * (right_flaps_tilt) * delta * speedPercentage());
+
+	updateModel(0, forward * yaw * roll1 * roll2 * pitch);
 	this->transform(this->model->transform());
+	this->cameraPos = transform() * Matrix().translation(CAMERA_OFFSET);
 
-	// rudder tilt
-	Matrix rudder_rot;
-	rudder_rot.rotationY(1 * rudder_tilt * delta);
-	this->rudder->transform(transform() * Matrix().translation(modelPos[2]) * rudder_rot);
-	stabilizeToZero(this->rudder_tilt, 40);
-
-	Matrix left_tilt_up, left_tilt_down, right_tilt_up, right_tilt_down;
-	left_tilt_up.rotationX(4.11f * left_flaps * delta);
-	left_tilt_down.rotationX(4.11f * abs(left_flaps) * delta);
-	right_tilt_up.rotationX(4.11f * right_flaps * delta);
-	std::cout << "left" << left_flaps << "right" << right_flaps << std::endl;
-
-
-	this->backwing_left->transform(transform() * Matrix().translation(modelPos[3]) * left_tilt_up);
-	this->wingflaps_left->transform(transform() * Matrix().translation(modelPos[5]) * left_tilt_up);
-	this->wingflaps_right->transform(transform() * Matrix().translation(modelPos[6]) * right_tilt_up);
-	this->backwing_right->transform(transform() * Matrix().translation(modelPos[4]) * right_tilt_up);
-	stabilizeToZero(this->left_flaps, 40);
-	stabilizeToZero(this->right_flaps, 40);
-
-
-	// rotor
+	// Visuelle Transformationen
+	// rotor 
 	Matrix rotor_rot;
 	rotor_rot.rotationZ(speed * 25 * (rand() % 5));
-	this->rotor->transform(transform() * Matrix().translation(modelPos[1]) * rotor_rot);
+	updateModel(1, rotor_rot);
 
-	// all flaps
+	// rudder
+	Matrix rudder_rot;
+	rudder_rot.rotationY(RUDDER_ROTATION * rudder_tilt * delta);
+	updateModel(2, rudder_rot);
+
+	// left and right backwings
+	Matrix left_flap_tilt_rot, right_flap_tilt_rot;
+	left_flap_tilt_rot.rotationX(FLAP_ROTATION * left_flaps_tilt * delta);
+	right_flap_tilt_rot.rotationX(FLAP_ROTATION * right_flaps_tilt * delta);
+	updateModel(3, left_flap_tilt_rot);
+	updateModel(4, right_flap_tilt_rot);
+
+	// left and right wingflaps
+	// - wingflaps brauchen spezielle rotation damit sie korrekt aussehen
+	Matrix wingflap_left_rot, wingflap_right_rot;
+	wingflap_left_rot.rotationZ(this->left_flaps_tilt * WINGFLAP_OFFSET_ROTATION);
+	wingflap_right_rot.rotationZ(this->right_flaps_tilt * -WINGFLAP_OFFSET_ROTATION);
+
+	updateModel(5, left_flap_tilt_rot * wingflap_left_rot);
+	updateModel(6, right_flap_tilt_rot * wingflap_right_rot);
+
+
+	printerr("flap left", this->left_flaps_tilt);
+	printerr("flap right", this->right_flaps_tilt);
+	printerr("speed", speedPercentage());
+
+	// Fall-off fuer rudder & flaps gegen 0
+	aprroachZeroWithBoundaries(this->rudder_tilt, MAX_TILT);
+	aprroachZeroWithBoundaries(this->left_flaps_tilt, MAX_TILT);
+	aprroachZeroWithBoundaries(this->right_flaps_tilt, MAX_TILT);
+
+	this->speed = speed * 0.999999;
+
 }
-
+// Spitfire max km/h = 594
 void Plane::accelerate(float i)
 {
 	this->speed += i * DELTA_TIME_MULTIPLICATOR;
 
-	
+	if (this->speed >= 450) {
+		this->speed = 450;
+	}
+	else if (this->speed < 0) {
+		this->speed = 0;
+	}
 }
 
 void Plane::leftFlapTilt(float i) {
-	this->left_flaps += i * DELTA_TIME_MULTIPLICATOR * 30;
+	this->left_flaps_tilt += i * DELTA_TIME_MULTIPLICATOR;
 }
 
 void Plane::rightFlapTilt(float i) {
-	this->right_flaps += i * DELTA_TIME_MULTIPLICATOR * 30;
+	this->right_flaps_tilt += i * DELTA_TIME_MULTIPLICATOR;
 }
 
 void Plane::rudderTilt(float i)
 {
-	this->rudder_tilt += i * DELTA_TIME_MULTIPLICATOR * 60;
+	this->rudder_tilt += i * DELTA_TIME_MULTIPLICATOR;
 }
 

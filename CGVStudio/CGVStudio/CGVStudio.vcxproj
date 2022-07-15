@@ -93,6 +93,7 @@
     <ClCompile Include="..\..\src\CloudShader.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
+    <ClCompile Include="..\..\src\Globals.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\LineBoxModel.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
+    <ClCompile Include="..\..\src\PlayerPlaneControls.cpp" />
     <ClCompile Include="..\..\src\rgbimage.cpp" />
     <ClCompile Include="..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\src\TerrainShader.cpp" />
@@ -135,6 +137,7 @@
     <ClInclude Include="..\..\src\Plane.h" />
     <ClInclude Include="..\..\src\PlaneLoader.h" />
     <ClInclude Include="..\..\src\PlaneLoaderImpl.h" />
+    <ClInclude Include="..\..\src\PlayerPlaneControls.h" />
     <ClInclude Include="..\..\src\rgbimage.h" />
     <ClInclude Include="..\..\src\Terrain.h" />
     <ClInclude Include="..\..\src\TerrainShader.h" />

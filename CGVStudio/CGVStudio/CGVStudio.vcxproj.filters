@@ -95,6 +95,9 @@
     <Filter Include="Quelldateien\graphics\models\baseModel::derived\water\util">
       <UniqueIdentifier>{a24e12cb-2a39-4f56-b672-1a03ac94f6fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\graphics\models\baseModel::derived\plane\impl\controls">
+      <UniqueIdentifier>{206a1ce0-4dd3-4038-83fd-49f13add0666}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Application.cpp">
@@ -183,6 +186,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\WaterLoaderImpl.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\water\interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Globals.cpp">
+      <Filter>Quelldateien\application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PlayerPlaneControls.cpp">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl\controls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Globals.h">
       <Filter>Quelldateien\application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\PlayerPlaneControls.h">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl\controls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
