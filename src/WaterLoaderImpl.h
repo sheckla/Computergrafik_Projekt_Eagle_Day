@@ -2,6 +2,7 @@
 #define WaterLoaderImpl_HPP
 
 #include "WaterLoader.h";
+#include "Globals.h"
 #include "Terrain.h"
 #include "TerrainShader.h"
 #include <stdio.h>
@@ -9,7 +10,6 @@
 #include <thread>
 
 
-#define ASSETS "../../assets/"
 class WaterLoaderImpl : public WaterLoader
 {
 private:

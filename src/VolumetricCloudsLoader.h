@@ -3,11 +3,14 @@
 
 #include "TriangleBoxModel.h"
 #include "BaseModel.h"
+#include "CloudBox.h";
 
 class VolumetricCloudsLoader {
 public:
 	virtual ~VolumetricCloudsLoader() = default;
-	virtual TriangleBoxModel* createClouds(const char* path) = 0;
+	virtual std::vector<CloudBox*> createClouds(float width, float height, float depth) = 0;
+
+
 };
 
 #endif

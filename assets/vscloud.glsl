@@ -21,6 +21,8 @@ uniform sampler2D MixTex;
 
 void main()
 {
+    Position = (ModelMat * VertexPos).xyz; // Apply Scaling to World-Space Position
+    Normal = (ModelMat * vec4(VertexNormal.xyz,0)).xyz ; // 
     Texcoord = VertexTexcoord;
     gl_Position = ModelViewProjMat * VertexPos; // clip-space output position
 }

@@ -3,7 +3,10 @@
 
 #include <stdio.h>
 #include <assert.h>
+#include "Globals.h"
 #include "PhongShader.h"
+#include "Matrix.h"
+#include "Aabb.h"
 
 class CloudShader : public PhongShader
 {
@@ -11,18 +14,29 @@ public:
 	virtual void activate(const BaseCamera& Cam) const;
 	virtual void deactivate() const;
 
-	CloudShader(const std::string& AssetDirectory);
+	CloudShader();
 
-	virtual ~CloudShader() { std::cout << "DELETED!" << std::endl; }
+	virtual ~CloudShader();
 
-	void SetWorleyTexture(const Texture* pTex) { WorleyTexture = pTex; }
-
-	const Texture* worleyTexture() const { return WorleyTexture; }
-
+	void detailTex(unsigned int dtk, const Texture* tex);
+	void activateTex(const Texture* pTex, GLint Loc, int slot) const;
+	void aabb(AABB* bounds);
+	void noise(const Texture* n);
 private:
+	// Views
+	GLint ViewMatrixLoc;
+	GLint ProjectionMatrixLoc;
 
-	GLint WorleyLoc;
-	const Texture* WorleyTexture;
+	// Tex
+	GLint DetailTexLoc[WORLEY_AMOUNT];
+	GLint NoiseLoc;
+
+	GLint boundsMinLoc;
+	GLint boundsMaxLoc;
+
+	AABB* bounds;
+	const Texture* DetailTex[WORLEY_AMOUNT];
+	const Texture* Noise;
 };
 
 #endif
