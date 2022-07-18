@@ -80,9 +80,6 @@
     <Filter Include="Quelldateien\graphics\models\baseModel::derived\volumetricClouds\interface">
       <UniqueIdentifier>{18cb2c98-22db-4ebe-9854-6f73c22cfb73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\graphics\models\baseModel::derived\volumetricClouds\shader">
-      <UniqueIdentifier>{bde8404a-a8ec-4db7-9dec-8dd8784ea8c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\graphics\models\baseModel::derived\water">
       <UniqueIdentifier>{283b2d7a-34ad-4336-b175-455e7d5fd704}</UniqueIdentifier>
     </Filter>
@@ -97,6 +94,15 @@
     </Filter>
     <Filter Include="Quelldateien\graphics\models\baseModel::derived\plane\impl\controls">
       <UniqueIdentifier>{206a1ce0-4dd3-4038-83fd-49f13add0666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\lighting">
+      <UniqueIdentifier>{65f84911-a729-4859-baca-99ca8ae115b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl">
+      <UniqueIdentifier>{1ba48717-8622-4ca9-a371-42ec41195729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl\shader">
+      <UniqueIdentifier>{bde8404a-a8ec-4db7-9dec-8dd8784ea8c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,9 +151,6 @@
     <ClCompile Include="..\..\src\Model.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TriangleBoxModel.cpp">
-      <Filter>Quelldateien\graphics\models\baseModel::derived\triangleBox</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\TrianglePlaneModel.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\trianglePlane</Filter>
     </ClCompile>
@@ -167,7 +170,7 @@
       <Filter>Quelldateien\graphics\baseShader::derived</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\CloudShader.cpp">
-      <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\shader</Filter>
+      <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\interface</Filter>
@@ -187,23 +190,26 @@
     <ClCompile Include="..\..\src\WaterLoaderImpl.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\water\interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Globals.cpp">
-      <Filter>Quelldateien\application</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\PlayerPlaneControls.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl\controls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Framebuffer.cpp">
       <Filter>Quelldateien\graphics\buffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ShaderLightMapper.cpp">
-      <Filter>Quelldateien\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Lights.cpp">
-      <Filter>Quelldateien\graphics</Filter>
+      <Filter>Quelldateien\graphics\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShaderLightMapper.cpp">
+      <Filter>Quelldateien\graphics\lighting</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ShadowMapGenerator.cpp">
-      <Filter>Quelldateien\graphics</Filter>
+      <Filter>Quelldateien\graphics\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TriangleBoxModel.cpp">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\triangleBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CloudBox.cpp">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +258,6 @@
     <ClInclude Include="..\..\src\Model.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TriangleBoxModel.h">
-      <Filter>Quelldateien\graphics\models\baseModel::derived\triangleBox</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\TrianglePlaneModel.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\trianglePlane</Filter>
     </ClInclude>
@@ -274,7 +277,7 @@
       <Filter>Quelldateien\graphics\baseShader::derived</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CloudShader.h">
-      <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\shader</Filter>
+      <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PlaneLoaderImpl.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\interface</Filter>
@@ -309,14 +312,20 @@
     <ClInclude Include="..\..\src\Framebuffer.h">
       <Filter>Quelldateien\graphics\buffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ShaderLightMapper.h">
-      <Filter>Quelldateien\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Lights.h">
-      <Filter>Quelldateien\graphics</Filter>
+      <Filter>Quelldateien\graphics\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ShaderLightMapper.h">
+      <Filter>Quelldateien\graphics\lighting</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\ShadowMapGenerator.h">
-      <Filter>Quelldateien\graphics</Filter>
+      <Filter>Quelldateien\graphics\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TriangleBoxModel.h">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\triangleBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CloudBox.h">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

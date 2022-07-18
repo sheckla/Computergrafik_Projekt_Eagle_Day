@@ -78,7 +78,7 @@ PhongShader::PhongShader(bool LoadStaticShaderCode) :
 {
     if (!LoadStaticShaderCode)
         return;
-    //ShaderProgram = createShaderProgram(VertexShaderCode, FragmentShaderCode);
+    ShaderProgram = createShaderProgram(VertexShaderCode, FragmentShaderCode);
     bool loaded = load(ASSET_DIRECTORY"vsphong.glsl", ASSET_DIRECTORY"fsphong.glsl");
     if (!loaded)
         throw std::exception();
@@ -143,7 +143,7 @@ void PhongShader::activate(const BaseCamera& Cam) const
 
     Vector EyePos = Cam.position();
     glUniform3f(EyePosLoc, EyePos.X, EyePos.Y, EyePos.Z);
-
+    return;
     for (int i = 0; i < MaxLightCount; ++i)
     {
         if (ShadowMapTexture[i] && (ShadowMapMatLoc[i] != -1))

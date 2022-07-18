@@ -31,11 +31,11 @@ ShaderLightMapper::ShaderLightMapper()
 	bool loaded = Shader.load(ASSET_DIRECTORY"vslightdummy.glsl", ASSET_DIRECTORY"fslightdummy.glsl");
 	assert(loaded);
 
-	GLuint BlockIndex = glGetUniformBlockIndex(Shader.openGLProgramID(), "Lights");
+	//GLuint BlockIndex = glGetUniformBlockIndex(Shader.openGLProgramID(), "Lights");
 	assert(BlockIndex != GL_INVALID_INDEX);
 
 	GLint BlockSize = 0;
-	glGetActiveUniformBlockiv(Shader.openGLProgramID(), BlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &BlockSize);
+	//glGetActiveUniformBlockiv(Shader.openGLProgramID(), BlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &BlockSize);
 
     // If the following assertion fails:
     // You have to adjust the shaderLightBlock structure.

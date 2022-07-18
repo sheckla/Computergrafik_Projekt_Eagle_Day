@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <map>
+#include "Globals.h"
 
 #ifdef WIN32
 #include <GL/glew.h>

@@ -4,13 +4,14 @@
 #include <iostream>
 #include <stdio.h>
 #pragma once
-template<typename T>
-void printerr(const char* error, T msg);
 
-void test();
+template<typename T>
+void print(const char* error, T msg);
 
 #ifdef WIN32
 #define ASSETS "../../assets/"
+#define WORLEY_AMOUNT 30
+#define MAX_TEXTURE_ARR_SIZE 50
 #else
 #define ASSETS "../assets/"
 #endif
@@ -18,7 +19,7 @@ void test();
 #endif
 
 template<typename T>
-inline void printerr(const char* error, T msg)
+inline void print(const char* error, T msg)
 {
 	std::cout << "[" << error << "] - " << msg << "\n";
 }

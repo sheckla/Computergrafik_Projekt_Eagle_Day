@@ -357,7 +357,7 @@ RGBImage* Texture::createImage(unsigned char* Data, unsigned int width, unsigned
 
 void Texture::activate(int slot) const
 {
-    if (m_TextureID == 0 || slot < 0 || slot > 7)
+    if (m_TextureID == 0 || slot < 0 || slot > 192)
         return;
 
     CurrentTextureUnit = slot;

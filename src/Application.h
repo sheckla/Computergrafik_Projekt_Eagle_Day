@@ -31,7 +31,6 @@ public:
     void loadLinePlane();
     void loadSkyBox();
     void loadSimpleWater();
-    void loadWaterSegments();
     void loadClouds();
     void loadBattleship();
     void loadPlane();
@@ -44,20 +43,9 @@ protected:
     Camera Cam;
     ModelList Models;
     GLFWwindow* pWindow;
-    //Terrain* pTerrain;
-    //Terrain* pTerrain2;
     HeightMapStorage* heightMaps;
-    void Application::generateSegment(int i, int j, int resolution);
-    void Application::createOceanSegments();
     TerrainShader* pTerrainShader;
     double last=0;
-
-    void Application::TestMethode(int num);
-
-    Terrain* water[80][80];
-    Terrain* OceanCenter;
-
-
     double x_pos_tmp = 0;
     double y_pos_tmp = 0;
     Plane* pPlane;

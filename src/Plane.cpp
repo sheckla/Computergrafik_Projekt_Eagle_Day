@@ -2,7 +2,7 @@
 
 float Plane::speedPercentage()
 {
-	return (0 + (this->speed / 450));
+	return (0 + (this->speed / 700));
 }
 
 void Plane::aprroachZeroWithBoundaries(float& i, float max_angle)
@@ -172,10 +172,10 @@ void Plane::update(double delta)
 	updateModel(6, right_flap_tilt_rot * wingflap_right_rot);
 
 
-	printerr("flap left", this->left_flaps_tilt);
-	printerr("flap right", this->right_flaps_tilt);
-	printerr("speed", speedPercentage());
-	printerr("speedval", this->speed);
+	/*print("flap left", this->left_flaps_tilt);
+	print("flap right", this->right_flaps_tilt);
+	print("speed", speedPercentage());
+	print("speedval", this->speed);*/
 
 	// Fall-off fuer rudder & flaps gegen 0
 	aprroachZeroWithBoundaries(this->rudder_tilt, MAX_TILT);
@@ -190,8 +190,8 @@ void Plane::accelerate(float i)
 {
 	this->speed += i * DELTA_TIME_MULTIPLICATOR;
 
-	if (this->speed >= 450) {
-		this->speed = 450;
+	if (this->speed >= 700) {
+		this->speed = 700;
 	}
 	else if (this->speed < 0) {
 		this->speed = 0;
