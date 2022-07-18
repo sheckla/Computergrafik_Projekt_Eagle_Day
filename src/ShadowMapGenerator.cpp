@@ -1,3 +1,4 @@
+/*
 #include "ShadowMapGenerator.h"
 #include "ShaderLightMapper.h"
 #define _USE_MATH_DEFINES
@@ -234,3 +235,4 @@ void ShadowMapGenerator::generate(std::list<BaseModel*>& Models)
 
 
 }
+*/
