@@ -64,5 +64,5 @@ void PlayerPlaneControls::update(float delta) {
     // camera follows plane
     cam->setTarget(plane->transform().translation());
     cam->setPosition(plane->cameraPos.translation());
-    cam->zoom(-plane->speed/100);
+    cam->zoom(-plane->speed/60);
 }

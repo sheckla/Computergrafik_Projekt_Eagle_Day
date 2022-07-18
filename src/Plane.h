@@ -20,12 +20,12 @@
 #include "PhongShader.h"
 #include <stdlib.h>
 
-const float EPSILON = 1e-5; 
+const float EPSILON = 1e-4; 
 const int PLANE_MODEL_AMOUNT = 7;
 const Vector CAMERA_OFFSET(0, 2.2, -8); // Offset für die statische Kamera hinter dem Flugzeug
 
 // Konkrete Rotationswerte
-const int DELTA_TIME_MULTIPLICATOR = 50; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
+const int DELTA_TIME_MULTIPLICATOR = 60; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
 const float SPEED_GAIN = 0.05;
 const float ROTATION_SPEED = 0.02f;
 const float MAX_TILT = 30; // tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
@@ -33,7 +33,7 @@ const float MAX_TILT = 30; // tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
 // Visuelle Rotationswerte
 const float RUDDER_ROTATION = 2.0f; // visueller Neigungsfaktor
 const float FLAP_ROTATION = 3.0f; // visueller Neigungsfaktor 
-const float WINGFLAP_OFFSET_ROTATION = 0.0033; // fuer korrekte Rotation der Seiten-flaps
+const float WINGFLAP_OFFSET_ROTATION = 0.0043; // fuer korrekte Rotation der Seiten-flaps
 
 class Plane : public BaseModel
 {
@@ -56,6 +56,7 @@ class Plane : public BaseModel
 	* pro Aufruf gegen 0 angenaehert
 	*/
 	void aprroachZeroWithBoundaries(float& i, float max_angle);
+	void clampTilt(float& i);
 	void updateModel(int i, Matrix& rotation);
 public:
 	Matrix cameraPos;

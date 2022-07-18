@@ -193,6 +193,18 @@
     <ClCompile Include="..\..\src\PlayerPlaneControls.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl\controls</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Framebuffer.cpp">
+      <Filter>Quelldateien\graphics\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShaderLightMapper.cpp">
+      <Filter>Quelldateien\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lights.cpp">
+      <Filter>Quelldateien\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShadowMapGenerator.cpp">
+      <Filter>Quelldateien\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -293,6 +305,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\PlayerPlaneControls.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Framebuffer.h">
+      <Filter>Quelldateien\graphics\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ShaderLightMapper.h">
+      <Filter>Quelldateien\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lights.h">
+      <Filter>Quelldateien\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ShadowMapGenerator.h">
+      <Filter>Quelldateien\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

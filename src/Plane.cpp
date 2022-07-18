@@ -14,14 +14,14 @@ void Plane::aprroachZeroWithBoundaries(float& i, float max_angle)
 	};
 
 	// obere Grenze ueberschritten
-	if (i >= max_angle) {
-		i = max_angle - 1;
+	if (i > max_angle) {
+		i = max_angle;
 		return;
 	}
 
 	// untere Grenze uerberschritten
-	if (i <= -max_angle) {
-		i = -max_angle + 1;
+	if (i < -max_angle) {
+		i = -max_angle;
 		return;
 	}
 
@@ -34,6 +34,16 @@ void Plane::aprroachZeroWithBoundaries(float& i, float max_angle)
 	else if (i < 0) {
 		i = i *0.99;
 		return;
+	}
+}
+
+void Plane::clampTilt(float& i)
+{
+	if (i > MAX_TILT) {
+		i = MAX_TILT;
+	}
+	else if (i < -MAX_TILT) {
+		i = -MAX_TILT;
 	}
 }
 
@@ -95,6 +105,8 @@ void Plane::loadModels(const char* path)
 	models[4] = this->backwing_right;
 	models[5] = this->wingflaps_left;
 	models[6] = this->wingflaps_right;
+
+	models[1]->transform(Matrix().translation(modelPos[1]));
 }
 
 void Plane::draw(const BaseCamera& cam)
@@ -118,7 +130,7 @@ void Plane::update(double delta)
 	forward.translation(Vector(0, 0, SPEED_GAIN * speed * delta));
 
 	if (this->speedPercentage() <= 0.1) {
-		forward.translation(Vector(0, -0.9768, 0) * delta);
+		//forward.translation(Vector(0, -0.9768, 0) * delta);
 	}
 
 	yaw.rotationY(ROTATION_SPEED * -rudder_tilt * delta * speedPercentage());
@@ -132,9 +144,11 @@ void Plane::update(double delta)
 
 	// Visuelle Transformationen
 	// rotor 
+	float pi = 3.14;
 	Matrix rotor_rot;
-	rotor_rot.rotationZ(speed * 25 * (rand() % 5));
+	rotor_rot.rotationZ(pi * delta * speed * (rand() % 5));
 	updateModel(1, rotor_rot);
+
 
 	// rudder
 	Matrix rudder_rot;
@@ -161,6 +175,7 @@ void Plane::update(double delta)
 	printerr("flap left", this->left_flaps_tilt);
 	printerr("flap right", this->right_flaps_tilt);
 	printerr("speed", speedPercentage());
+	printerr("speedval", this->speed);
 
 	// Fall-off fuer rudder & flaps gegen 0
 	aprroachZeroWithBoundaries(this->rudder_tilt, MAX_TILT);
@@ -185,14 +200,17 @@ void Plane::accelerate(float i)
 
 void Plane::leftFlapTilt(float i) {
 	this->left_flaps_tilt += i * DELTA_TIME_MULTIPLICATOR;
+	clampTilt(this->left_flaps_tilt);
 }
 
 void Plane::rightFlapTilt(float i) {
 	this->right_flaps_tilt += i * DELTA_TIME_MULTIPLICATOR;
+	clampTilt(this->right_flaps_tilt);
 }
 
 void Plane::rudderTilt(float i)
 {
 	this->rudder_tilt += i * DELTA_TIME_MULTIPLICATOR;
+	clampTilt(this->rudder_tilt);
 }
 

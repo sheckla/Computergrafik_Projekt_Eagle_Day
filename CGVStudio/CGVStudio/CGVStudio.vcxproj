@@ -93,9 +93,11 @@
     <ClCompile Include="..\..\src\CloudShader.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
+    <ClCompile Include="..\..\src\Framebuffer.cpp" />
     <ClCompile Include="..\..\src\Globals.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\Lights.cpp" />
     <ClCompile Include="..\..\src\LineBoxModel.cpp" />
     <ClCompile Include="..\..\src\LinePlaneModel.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
@@ -106,6 +108,8 @@
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
     <ClCompile Include="..\..\src\PlayerPlaneControls.cpp" />
     <ClCompile Include="..\..\src\rgbimage.cpp" />
+    <ClCompile Include="..\..\src\ShaderLightMapper.cpp" />
+    <ClCompile Include="..\..\src\ShadowMapGenerator.cpp" />
     <ClCompile Include="..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\src\TerrainShader.cpp" />
     <ClCompile Include="..\..\src\Texture.cpp" />
@@ -126,9 +130,11 @@
     <ClInclude Include="..\..\src\CloudShader.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\ConstantShader.h" />
+    <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\Globals.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
     <ClInclude Include="..\..\src\IndexBuffer.h" />
+    <ClInclude Include="..\..\src\Lights.h" />
     <ClInclude Include="..\..\src\LineBoxModel.h" />
     <ClInclude Include="..\..\src\LinePlaneModel.h" />
     <ClInclude Include="..\..\src\Matrix.h" />
@@ -139,6 +145,8 @@
     <ClInclude Include="..\..\src\PlaneLoaderImpl.h" />
     <ClInclude Include="..\..\src\PlayerPlaneControls.h" />
     <ClInclude Include="..\..\src\rgbimage.h" />
+    <ClInclude Include="..\..\src\ShaderLightMapper.h" />
+    <ClInclude Include="..\..\src\ShadowMapGenerator.h" />
     <ClInclude Include="..\..\src\Terrain.h" />
     <ClInclude Include="..\..\src\TerrainShader.h" />
     <ClInclude Include="..\..\src\Texture.h" />
