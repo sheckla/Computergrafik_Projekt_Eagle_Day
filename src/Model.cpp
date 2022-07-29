@@ -10,6 +10,8 @@
 #include "phongshader.h"
 #include <list>
 
+#include "TextureShader.h"
+
 Model::Model() : pMeshes(NULL), MeshCount(0), pMaterials(NULL), MaterialCount(0)
 {
 
@@ -17,8 +19,10 @@ Model::Model() : pMeshes(NULL), MeshCount(0), pMaterials(NULL), MaterialCount(0)
 
 Model::Model(const char* ModelFile, bool FitSize) : pMeshes(NULL), MeshCount(0), pMaterials(NULL), MaterialCount(0)
 {
+	print("loading Model", ModelFile);
 	bool ret = load(ModelFile, FitSize);
 	if (!ret) {
+		print("loading Model", "failed", true);
 		throw std::exception();
 	}
 		
@@ -63,7 +67,6 @@ bool Model::load(const char* ModelFile, bool FitSize)
 	loadMeshes(pScene, FitSize);
 	loadMaterials(pScene);
 	loadNodes(pScene);
-
 	return true;
 }
 
@@ -151,13 +154,15 @@ void Model::loadMaterials(const aiScene* pScene) //ist super
 			mtrl->Get(AI_MATKEY_COLOR_AMBIENT, color);
 			material.AmbColor = Color(color.r, color.g, color.b);
 
-
 			aiString einString;
 			mtrl->GetTexture(aiTextureType_DIFFUSE, 0, &einString);
 			std::string p = Path + einString.data;
-			material.DiffTex = Texture().LoadShared(p.c_str());
+			if (p.at(p.length()-1) != '/')
+			{
+				material.DiffTex = Texture().LoadShared(p.c_str());
+				pMaterials[i] = material;
 
-			pMaterials[i] = material;
+			}
 		}
 	}
 }
@@ -224,13 +229,21 @@ void Model::applyMaterial(unsigned int index)
 	if (index >= MaterialCount)
 		return;
 
-	PhongShader* pPhong = dynamic_cast<PhongShader*>(shader());
-	if (!pPhong) {
-		std::cout << "Model::applyMaterial(): WARNING Invalid shader-type. Please apply PhongShader for rendering models.\n";
+	Material* pMat = &pMaterials[index];
+
+	TextureShader* tShader = dynamic_cast<TextureShader*>(shader());
+	if (tShader)
+	{
+		tShader->diffuseTexture(pMat->DiffTex);
 		return;
 	}
 
-	Material* pMat = &pMaterials[index];
+	PhongShader* pPhong = dynamic_cast<PhongShader*>(shader());
+	if (!pPhong) {
+		//std::cout << "Model::applyMaterial(): WARNING Invalid shader-type. Please apply PhongShader for rendering models.\n";
+		return;
+	}
+
 	pPhong->ambientColor(pMat->AmbColor);
 	pPhong->diffuseColor(pMat->DiffColor);
 	pPhong->specularExp(pMat->SpecExp);
@@ -241,7 +254,7 @@ void Model::applyMaterial(unsigned int index)
 void Model::draw(const BaseCamera& Cam)
 {
 	if (!pShader) {
-		std::cout << "BaseModel::draw() no shader found" << std::endl;
+		print("BaseModel::draw()", "no shader found", true);
 		return;
 	}
 	pShader->modelTransform(transform());
@@ -286,6 +299,3 @@ Matrix Model::convert(const aiMatrix4x4& m)
 		m.c1, m.c2, m.c3, m.c4,
 		m.d1, m.d2, m.d3, m.d4);
 }
-
-
-

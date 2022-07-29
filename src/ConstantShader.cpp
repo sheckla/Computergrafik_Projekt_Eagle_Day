@@ -6,48 +6,41 @@
 //  Copyright © 2016 Philipp Lensing. All rights reserved.
 //
 
+// 20.07 Leichte Veraenderung: unterstuetzt nun DiffuseTexture und Texcoord
+
 #include "ConstantShader.h"
+#include "Globals.h"
 
-const char *CVertexShaderCode =
-"#version 400\n"
-"in vec4 VertexPos;"
-"uniform mat4 ModelViewProjMat;"
-"void main()"
-"{"
-"    gl_Position = ModelViewProjMat * VertexPos;"
-"}";
-
-const char *CFragmentShaderCode =
-"#version 400\n"
-"uniform vec3 Color;"
-"out vec4 FragColor;"
-"void main()"
-"{"
-"    FragColor = vec4(Color,1);"
-"}";
-
-ConstantShader::ConstantShader() : Col(1.0f,0.0f,0.0f)
+ConstantShader::ConstantShader() : Col(1.0f, 1.0f, 1.0f)
 {
-    ShaderProgram = createShaderProgram( CVertexShaderCode, CFragmentShaderCode );
-    
+    unsigned int vs_i = 0;
+    unsigned int fs_i = 0;
+	char* vs = loadFile(SHADERS "constant/vsConstant.glsl", vs_i);
+    char* fs = loadFile(SHADERS "constant/fsConstant.glsl", fs_i);
+	ShaderProgram = createShaderProgram(vs, fs);
+
+    if (!vs || !fs)
+    {
+        print("ConstantShader()", "init failed", true);
+        throw std::exception();
+    }
+
     ColorLoc = glGetUniformLocation(ShaderProgram, "Color");
-    assert(ColorLoc>=0);
-    ModelViewProjLoc  = glGetUniformLocation(ShaderProgram, "ModelViewProjMat");
-    assert(ModelViewProjLoc>=0);
-    
+    assert(ColorLoc >= 0);
+    ModelViewProjLoc = glGetUniformLocation(ShaderProgram, "ModelViewProjMat");
+    assert(ModelViewProjLoc >= 0);
+}
+void ConstantShader::color(const Color& c)
+{
+    this->Col = c;
 }
 void ConstantShader::activate(const BaseCamera& Cam) const
 {
     BaseShader::activate(Cam);
-    
+
     glUniform3f(ColorLoc, Col.R, Col.G, Col.B);
     // always update matrices
     Matrix ModelView = Cam.getViewMatrix() * ModelTransform;
     Matrix ModelViewProj = Cam.getProjectionMatrix() * ModelView;
     glUniformMatrix4fv(ModelViewProjLoc, 1, GL_FALSE, ModelViewProj.m);
 }
-void ConstantShader::color( const Color& c)
-{
-    Col = c;
-}
-

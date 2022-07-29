@@ -2,20 +2,23 @@
 #define PlayerPlaneControls_h
 
 #include <GL/glew.h>
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 #include "Plane.h"
+#include "Vector.h"
+
+const Vector CAMERA_OFFSET(0.0f, 2.2f, -8.0f);
 
 class PlayerPlaneControls
 {
 	GLFWwindow* window;
 	Plane* plane;
 	Camera* cam;
-	bool followPlane = true;
+	bool follow = false;;
+	Matrix cameraPos;
 
 public:
-	PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camera* cam);
+	PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camera* cam, bool camFollowsPlane);
 	void update(float delta);
-	float clamp(float upper, float lower, float& x);
 };
 
 #endif

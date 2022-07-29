@@ -17,99 +17,28 @@
 #define GLFW_INCLUDE_GLEXT
 #include <glfw/glfw3.h>
 #endif
-#include "lineplanemodel.h"
-#include "triangleplanemodel.h"
-#include "trianglespheremodel.h"
-#include "lineboxmodel.h"
-#include "triangleboxmodel.h"
-#include "model.h"
-#include "terrainshader.h"
-#include "HeightMapStorage.h"
-#include <thread>
+
 #include "CloudShader.h"
 #include "PlaneLoader.h"
-#include "PlaneLoaderImpl.h"
-#include "VolumetricCloudsLoader.h"
-#include "VolumetricCloudsLoaderImpl.h"
 #include "WaterLoader.h"
-#include "WaterLoaderImpl.h"
 #include "PlayerPlaneControls.h"
-#include <vector>
-#include "CloudBox.h"
+#include "ModelLoader.h"
+#include "TextureShader.h"
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
 {
-    std::cout << "Loading..." << std::endl;
-   
-    //loadLinePlane();
-    //loadSkyBox();
-    //loadSimpleWater();
-    //loadBattleship();
-    //loadPlane();
-    loadClouds();
+    print("Application loading start", "");
+    // Models
+    ModelLoader loader = ModelLoader::instance();
+    loader.loadDirLight();
+    Models.push_back(loader.loadSkyBox());
+    Models.push_back(loader.loadPlane());
+    Models.push_back(loader.loadLinePlane());
+    Models.push_back(loader.loadSphere());
+    Models.push_back(loader.loadSimpleWater());
 
-    
-    
-    std::cout << "------------------------------------------------------------------------" << std::endl;
-}
-
-
-void Application::loadLinePlane() {
-    LinePlaneModel* pModel = new LinePlaneModel(1000, 1000, 1000, 1000);
-    ConstantShader* pConstShader = new ConstantShader();
-    pConstShader->color(Color(0.5, 0.5, 0.5));
-    pModel->shader(pConstShader, true);
-    Models.push_back(pModel);
-}
-
-void Application::loadSkyBox() {
-    BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", true);
-    pModel1->shader(new PhongShader(), true);
-    Models.push_back(pModel1);
-}
-
-void Application::loadSimpleWater() {
-    int SxS = 12*2;
-    TrianglePlaneModel* lpm = new TrianglePlaneModel(10*2 * SxS,10*2 * SxS,1,1);
-    ConstantShader* underwater = new ConstantShader();
-    underwater->color(Color(0.023f, 0.25f, 0.45f));
-    lpm->shader(underwater);
-    Models.push_back(lpm);
-
-    Matrix m;
-    m.translation(Vector(9.94f*2 * SxS /2 - 9.94f*2 / 2, 0, 9.94f *2 * SxS / 2 - 9.94f*2 / 2));
-    lpm->transform(m);
-}
-
-
-void Application::loadClouds() {
-    VolumetricCloudsLoader* vcs_loader;
-    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
-    std::vector<CloudBox*> clouds = vcs_loader->createClouds(100,100,100);
-
-    for (auto cloud : clouds) {
-        Models.push_back(cloud);
-    }
-    Cam.setPosition(Vector(10, 175, 10));
-}
-
-
-// Testfunktion
-void Application::loadBattleship() {
-    Model* mod = new Model(ASSETS "battleship2.obj", false);
-    mod->shader(new PhongShader(), true);
-    Models.push_back(mod);
-    Matrix up;
-    up.translation(Vector(0, .6f, 0));
-    mod->transform(up);
-}
-
-void Application::loadPlane() {
-    PlaneLoader* pl = new PlaneLoaderImpl();
-    Plane* p = pl->createPlane(ASSETS "models/spitfire");
-    Models.push_back(p);
-    this->pPlane = p;
-    delete pl;
+    print("Application loading finished", "");
+    printDivider(70);
 }
 
 void Application::start()
@@ -120,18 +49,21 @@ void Application::start()
     glCullFace(GL_BACK);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void Application::update(float dtime)
 {
-    //std::cout << "UPDATE" << std::endl;
+    ShadowGenerator.generate(Models);
+
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
     // Spitfire Controls
-    //PlayerPlaneControls player(pWindow, pPlane, &Cam);
-    //player.update(deltaTime);
-
+    if (ModelLoader::pPlayerPlane) {
+        PlayerPlaneControls player(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
+		player.update(deltaTime);
+    }
 
     Cam.update();
 }
@@ -142,21 +74,21 @@ void Application::draw()
     // 1. clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-
+    ShaderLightMapper::instance().activate();
     // 2. setup shaders and draw models
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
         (*it)->draw(Cam);
     }
-
+    ShaderLightMapper::instance().deactivate();
     // 3. check once per frame for opengl errors
     GLenum Error = glGetError();
-    /*
+    
     switch (Error)
     {
         // opengl 2 errors (8)
     case GL_NO_ERROR:
-        std::cout << "GL_NO_ERROR" << std::endl;
+        //std::cout << "GL_NO_ERROR" << std::endl;
         break;
 
     case GL_INVALID_ENUM:
@@ -184,7 +116,7 @@ void Application::draw()
         std::cout << "GL_INVALID_FRAMEBUFFER_OPERATION" << std::endl;
         break;
     }
-    */
+    
     assert(Error == 0);
 }
 void Application::end()

@@ -26,7 +26,7 @@ public:
 	void activate();
 	void deactivate();
 	static ShaderLightMapper& instance();
-	GLuint uniformBlockID() { return UBO;  }
+	GLuint uniformBlockID() { return UBO; }
 protected:
 	struct ShaderLight
 	{

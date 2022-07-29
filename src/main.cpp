@@ -6,12 +6,10 @@
 #define GLFW_INCLUDE_GLEXT
 #include <glfw/glfw3.h>
 #endif
-#include <stdio.h>
 #include "Application.h"
 #include "freeimage.h"
 
 void PrintOpenGLVersion();
-
 
 int main () {
     FreeImage_Initialise();
@@ -30,8 +28,11 @@ int main () {
     
     const int WindowWidth = 1920;
     const int WindowHeight = 1080;
+	glfwWindowHint(GLFW_SAMPLES, 4);
+    GLFWwindow* window = glfwCreateWindow (WindowWidth, WindowHeight,
+        "Eagle Day", NULL, NULL);
+    GLFWimage test;
     
-    GLFWwindow* window = glfwCreateWindow (WindowWidth, WindowHeight, "Water through Heightmap in VertexShader - Hochschule Osnabrück", NULL, NULL);
     if (!window) {
         fprintf (stderr, "ERROR: can not open window with GLFW3\n");
         glfwTerminate();

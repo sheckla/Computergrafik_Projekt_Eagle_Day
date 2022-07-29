@@ -3,7 +3,7 @@
 #include <sstream>
 
 
-CloudShader::CloudShader() : PhongShader(false)
+CloudShader::CloudShader() : PhongShader()
 {
     // cloud fragment/vertex 
     std::string assets = ASSETS;

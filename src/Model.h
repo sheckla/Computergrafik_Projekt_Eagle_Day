@@ -41,7 +41,7 @@ protected: // protected types
     };
     struct Material
     {
-        Material() : DiffTex(NULL), DiffColor(1, 1, 1), SpecColor(0.3f, 0.3f, 0.3f), AmbColor(0, 0, 0), SpecExp(10) {}
+        Material() : DiffTex(NULL), DiffColor(0, 0, 0), SpecColor(0.3f, 0.3f, 0.3f), AmbColor(0, 0, 0), SpecExp(10) {}
         Color DiffColor;
         Color SpecColor;
         Color AmbColor;
@@ -82,7 +82,6 @@ protected: // protected member variables
     std::string Filepath; // stores pathname and filename
     std::string Path; // stores path without filename
     Node RootNode;
-
 };
 
 #endif /* Model_hpp */

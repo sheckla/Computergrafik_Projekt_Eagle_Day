@@ -103,6 +103,7 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Matrix.cpp" />
     <ClCompile Include="..\..\src\Model.cpp" />
+    <ClCompile Include="..\..\src\ModelLoader.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\src\TerrainShader.cpp" />
     <ClCompile Include="..\..\src\Texture.cpp" />
+    <ClCompile Include="..\..\src\TextureShader.cpp" />
     <ClCompile Include="..\..\src\TriangleBoxModel.cpp" />
     <ClCompile Include="..\..\src\TrianglePlaneModel.cpp" />
     <ClCompile Include="..\..\src\TriangleSphereModel.cpp" />
@@ -140,6 +142,7 @@
     <ClInclude Include="..\..\src\LinePlaneModel.h" />
     <ClInclude Include="..\..\src\Matrix.h" />
     <ClInclude Include="..\..\src\Model.h" />
+    <ClInclude Include="..\..\src\ModelLoader.h" />
     <ClInclude Include="..\..\src\PhongShader.h" />
     <ClInclude Include="..\..\src\Plane.h" />
     <ClInclude Include="..\..\src\PlaneLoader.h" />
@@ -148,9 +151,11 @@
     <ClInclude Include="..\..\src\rgbimage.h" />
     <ClInclude Include="..\..\src\ShaderLightMapper.h" />
     <ClInclude Include="..\..\src\ShadowMapGenerator.h" />
+    <ClInclude Include="..\..\src\StringUtils.h" />
     <ClInclude Include="..\..\src\Terrain.h" />
     <ClInclude Include="..\..\src\TerrainShader.h" />
     <ClInclude Include="..\..\src\Texture.h" />
+    <ClInclude Include="..\..\src\TextureShader.h" />
     <ClInclude Include="..\..\src\TriangleBoxModel.h" />
     <ClInclude Include="..\..\src\TrianglePlaneModel.h" />
     <ClInclude Include="..\..\src\TriangleSphereModel.h" />

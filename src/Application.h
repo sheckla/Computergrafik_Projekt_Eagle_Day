@@ -9,18 +9,11 @@
 #ifndef Application_hpp
 #define Application_hpp
 
-#include <stdio.h>
 #include <list>
-#include "camera.h"
-#include "phongshader.h"
-#include "constantshader.h"
-#include "vertexbuffer.h"
-#include "indexbuffer.h"
-#include "basemodel.h"
-#include "terrain.h"
-#include "Plane.h"
-#include "HeightMapStorage.h"
-
+#include "Camera.h"
+#include "PhongShader.h"
+#include "BaseModel.h"
+#include "ShadowMapGenerator.h"
 
 
 class Application
@@ -28,27 +21,19 @@ class Application
 public:
     typedef std::list<BaseModel*> ModelList;
     Application(GLFWwindow* pWin);
-    void loadLinePlane();
-    void loadSkyBox();
-    void loadSimpleWater();
-    void loadClouds();
-    void loadBattleship();
-    void loadPlane();
     void start();
     void update(float dtime);
     void draw();
     void end();
-
 protected:
     Camera Cam;
     ModelList Models;
     GLFWwindow* pWindow;
-    HeightMapStorage* heightMaps;
-    TerrainShader* pTerrainShader;
+
     double last=0;
-    double x_pos_tmp = 0;
-    double y_pos_tmp = 0;
-    Plane* pPlane;
+    double xPosTmp = 0;
+    double yPosTmp = 0;
+    ShadowMapGenerator ShadowGenerator;
 };
 
 #endif /* Application_hpp */

@@ -3,7 +3,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "PhongShader.h"
-#include "Aabb.h"
 
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
@@ -13,7 +12,7 @@
 
 ShadowMapShader::ShadowMapShader()
 {
-	bool loaded = load(ASSET_DIRECTORY"vsdepth.glsl", ASSET_DIRECTORY"fsdepth.glsl");
+	bool loaded = load(SHADERS "shadow/vsdepth.glsl", SHADERS"shadow/fsdepth.glsl");
 	if (!loaded)
 		throw std::exception();
 
@@ -57,7 +56,7 @@ ShadowMapGenerator::~ShadowMapGenerator()
 
 }
 
-Matrix ShadowMapGenerator::calcProjection(BaseLight* pLight, const AABB& BBox, const Matrix& View ) const
+Matrix ShadowMapGenerator::calcProjection(BaseLight* pLight, const AABB& BBox, const Matrix& View) const
 {
 	assert(pLight->type() != BaseLight::POINT);
 	Matrix Proj;
@@ -68,7 +67,7 @@ Matrix ShadowMapGenerator::calcProjection(BaseLight* pLight, const AABB& BBox, c
 	if (pLight->type() == BaseLight::SPOT)
 	{
 		SpotLight* sp = dynamic_cast<SpotLight*>(pLight);
-		Proj.perspective(sp->outerRadius()*2.0f / 180.0f*(float)M_PI, 1.0f, 0.001f, BBox.size().length() + (BBox.center()-InvView.translation()).length() );
+		Proj.perspective(sp->outerRadius() * 2.0f / 180.0f * (float)M_PI, 1.0f, 0.001f, BBox.size().length() + (BBox.center() - InvView.translation()).length());
 	}
 	else if (pLight->type() == BaseLight::DIRECTIONAL)
 	{
@@ -76,7 +75,7 @@ Matrix ShadowMapGenerator::calcProjection(BaseLight* pLight, const AABB& BBox, c
 		Vector v[8];
 		BBox.corners(v);
 
-		float MaxU=-1e6, MaxV=-1e6;
+		float MaxU = -1e6, MaxV = -1e6;
 
 		for (int i = 0; i < 8; ++i)
 		{
@@ -90,7 +89,7 @@ Matrix ShadowMapGenerator::calcProjection(BaseLight* pLight, const AABB& BBox, c
 			if (v > MaxV)
 				MaxV = v;
 		}
-		Proj.orthographic(MaxU * 2 +0.1f, MaxV * 2 + 0.1f, 0.001f, BBox.size().length() + 5.0f);
+		Proj.orthographic(MaxU * 2 + 0.1f, MaxV * 2 + 0.1f, 0.001f, BBox.size().length() + 5.0f);
 	}
 
 	return Proj;
@@ -114,7 +113,7 @@ Matrix ShadowMapGenerator::calcView(BaseLight* pLight, const AABB& BBox) const
 		DirectionalLight* dl = dynamic_cast<DirectionalLight*>(pLight);
 		Vector Pos = BBox.center();
 		float diag = BBox.size().length();
-		Pos = Pos - dl->direction()* 0.5f*diag;
+		Pos = Pos - dl->direction() * 0.5f * diag;
 		view.lookAt(Pos + dl->direction(), Vector(0, 1, 0), Pos);
 		dl->position(Pos);
 	}
@@ -125,9 +124,9 @@ Matrix ShadowMapGenerator::calcView(BaseLight* pLight, const AABB& BBox) const
 
 AABB ShadowMapGenerator::calcSceneBoundingBox(std::list<BaseModel*>& Models) const
 {
-	if(Models.size()<=0)
+	if (Models.size() <= 0)
 		return AABB(Vector(-5, -5, -5), Vector(5, 5, 5));
-	
+
 	AABB OverallBox;
 
 	BaseModel* FirstModel = *Models.begin();
@@ -148,7 +147,7 @@ AABB ShadowMapGenerator::calcSceneBoundingBox(std::list<BaseModel*>& Models) con
 		}
 	}
 
-	if(!ShadowCasterFound)
+	if (!ShadowCasterFound)
 		return AABB(Vector(-5, -5, -5), Vector(5, 5, 5));
 
 	return OverallBox;
@@ -158,7 +157,7 @@ bool ShadowMapGenerator::shadowCasterInScene() const
 {
 	for (BaseLight* pLight : ShaderLightMapper::instance().lights())
 	{
-		if (pLight->castShadows()) 
+		if (pLight->castShadows())
 			return true;
 	}
 
@@ -185,35 +184,35 @@ void ShadowMapGenerator::generate(std::list<BaseModel*>& Models)
 		ShadowCams[ShadowMapCount++].setProjectionMatrix(Proj);
 	}
 
-	
+
 	glClearColor(1.0f, 0.0, 0.0f, 1);
 	glCullFace(GL_FRONT);
 
 	GLint PrevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, PrevViewport);
 	glViewport(0, 0, ShadowMaps[0].width(), ShadowMaps[0].height());
-	
+
 	int i = 0;
 	for (BaseLight* pLight : ShaderLightMapper::instance().lights())
 	{
 		if (!pLight->castShadows())
 			continue;
-		
+
 		FrameBuffer.attachColorTarget(ShadowMaps[i]);
 		FrameBuffer.activate();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		for (BaseModel* pModel : Models)
 		{
 			if (!pModel->shadowCaster())
 				continue;
-			
+
 			BaseShader* PrevShader = pModel->shader();
-			
+
 			pModel->shader(&Shader);
 			pModel->draw(ShadowCams[i]);
 			pModel->shader(PrevShader);
-			
+
 			PhongShader* pPhong = dynamic_cast<PhongShader*>(PrevShader);
 			if (pPhong)
 			{
@@ -221,12 +220,12 @@ void ShadowMapGenerator::generate(std::list<BaseModel*>& Models)
 				pPhong->shadowMap(i, &ShadowMaps[i], ShadowMapMat);
 			}
 		}
-		
+
 		FrameBuffer.deactivate();
 		FrameBuffer.detachColorTarget();
 		++i;
 	}
-	
+
 	glClearColor(0, 0, 0, 1);
 	glCullFace(GL_BACK);
 	glViewport(PrevViewport[0], PrevViewport[1], PrevViewport[2], PrevViewport[3]);

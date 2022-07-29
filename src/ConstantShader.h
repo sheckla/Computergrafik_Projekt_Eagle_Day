@@ -31,15 +31,14 @@ class ConstantShader : public BaseShader
 {
 public:
     ConstantShader();
-    void color( const Color& c);
+    void color(const Color& c);
     const Color& color() const { return Col; }
-    virtual void activate(const BaseCamera& Cam) const;
+    virtual void activate(const BaseCamera& Cam) const override;
 private:
     Color Col;
     GLuint ShaderProgram;
     GLint ColorLoc;
     GLint ModelViewProjLoc;
-    
 };
 
 #endif /* ConstantShader_hpp */
