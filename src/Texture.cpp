@@ -61,7 +61,7 @@ Texture* Texture::defaultCubeMap()
     }
     print("loading Texture::Cubemap", "not found, initializing...");
     Texture* cube = new Texture();
-    cube->loadCubeMap(ASSETS "models/skybox/dark/cubemap.png");
+    cube->loadCubeMap(ASSETS "models/skybox/bright/cubemap.png");
     pDefaultCubeMapTex = cube;
     return pDefaultCubeMapTex;
 }

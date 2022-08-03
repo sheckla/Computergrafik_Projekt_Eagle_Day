@@ -25,8 +25,8 @@ void ModelLoader::loadDirLight()
 {
     print("loading light", "Directional");
     DirectionalLight* dl = new DirectionalLight();
-    dl->direction(Vector(0.2f, -1, 1));
-    dl->color(Color(0.25, 0.25, 1));
+    dl->direction(Vector(0, -1, -1));
+    dl->color(Color(1, 1, 1));
     dl->castShadows(true);
     ShaderLightMapper::instance().addLight(dl);
     print("loading light", "finished");
@@ -36,7 +36,7 @@ void ModelLoader::loadDirLight()
 BaseModel* ModelLoader::loadLinePlane()
 {
     print("loading lineplane", "constantShader");
-    LinePlaneModel* pModel = new LinePlaneModel(1000, 1000, 100, 100);
+    LinePlaneModel* pModel = new LinePlaneModel(100, 100, 100, 100);
     ConstantShader* pConstShader = new ConstantShader();
     pModel->shader(pConstShader, true);
     pModel->shadowCaster(true);
@@ -52,21 +52,22 @@ BaseModel* ModelLoader::loadSkyBox()
     BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", true);
     TextureShader* tShader = new TextureShader();
     pModel1->shader(tShader);
-    pModel1->shadowCaster(true);
+    pModel1->shadowCaster(false);
     print("loading skybox", "finished");
     printDivider();
     return pModel1;
 }
 
-BaseModel* ModelLoader::loadPlane()
+Model** ModelLoader::loadPlaneParts()
 {
     print("loading plane", "player plane");
     PlaneLoader* pl = new PlaneLoaderImpl();
-    Plane* p = pl->loadPlayerPlane(ASSETS "models/spitfire");
+    Model** planeParts = new Model * [PLANE_PARTS];
+    Plane* p = pl->loadPlayerPlane(ASSETS "models/spitfire", planeParts);
     delete pl;
     printDivider();
     ModelLoader::instance().pPlayerPlane = p;
-    return p;
+    return planeParts;
 }
 
 BaseModel* ModelLoader::loadClouds()
@@ -89,13 +90,17 @@ BaseModel* ModelLoader::loadSphere()
 BaseModel* ModelLoader::loadSimpleWater()
 {
     int SxS = 12 * 2;
-    TrianglePlaneModel* lpm = new TrianglePlaneModel(10 * 2 * SxS, 10 * 2 * SxS, 1, 1);
+    TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20 , 1, 1);
     ConstantShader* underwater = new ConstantShader();
     underwater->color(Color(0.023f, 0.25f, 0.45f));
     lpm->shader(underwater);
+    lpm->shader(new PhongShader());
+
 
     Matrix m;
-    m.translation(Vector(9.94f * 2 * SxS / 2 - 9.94f * 2 / 2, 0, 9.94f * 2 * SxS / 2 - 9.94f * 2 / 2));
+    m.translation(Vector(0,-1,0));
     lpm->transform(m);
     return lpm;
 }
+
+

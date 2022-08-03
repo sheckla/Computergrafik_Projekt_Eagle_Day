@@ -8,7 +8,7 @@ float Plane::speedPercentage() const
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const
 {
-	parts[index]->transform( this->transform() * Matrix().translation(OFFSETS[index]) * transform);
+	parts[index]->transform( parts[0]->transform() * Matrix().translation(OFFSETS[index]) * transform);
 }
 
 void Plane::aprroachZeroWithBoundaries(float& i, const float maxAngle) const
@@ -110,19 +110,8 @@ bool Plane::loadModels(const char* path)
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
 		parts[i]->transform(Matrix().translation(OFFSETS[i]));
-		parts[i]->shadowCaster(false);
 	}
 	return true;
-}
-
-#include "Printer.h"
-
-void Plane::draw(const BaseCamera& cam)
-{
-	for (size_t i = 0; i < PLANE_PARTS; i++)
-	{
-		parts[i]->draw(cam);
-	}
 }
 
 /* 
@@ -143,10 +132,10 @@ void Plane::update(double delta)
 	rollRight.rotationZ(ROTATION_SPEED * rightFlapsTilt * delta * speedMultiplier);
 
 	// Auf objekt anwenden
-	this->transform(transform() * forward * yaw * pitch * rollLeft * rollRight);
+	//this->transform(transform() * forward * yaw * pitch * rollLeft * rollRight);
 
 	// main-model
-	parts[0]->transform(this->transform());
+	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight);
 	
 	// Visuelle Transformationen
 	// rotor
@@ -219,6 +208,11 @@ void Plane::tiltRudder(float i)
 {
 	this->rudderTilt += i * DELTA_TIME_MULTIPLICATOR;
 	clampTilt(this->rudderTilt);
+}
+
+Model** Plane::getParts()
+{
+	return this->parts;
 }
 
 float Plane::getSpeed() const

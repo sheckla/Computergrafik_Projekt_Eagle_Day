@@ -8,5 +8,4 @@ void main()
 {
 	vec4 Pos = Position / Position.w;
 	FragColor = vec4(Pos.z,0,0,1);
-	FragColor = vec4(1,1,1,1);
 }

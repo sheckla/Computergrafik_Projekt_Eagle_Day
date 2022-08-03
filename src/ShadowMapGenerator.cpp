@@ -12,7 +12,7 @@
 
 ShadowMapShader::ShadowMapShader()
 {
-	bool loaded = load(SHADERS "shadow/vsdepth.glsl", SHADERS"shadow/fsdepth.glsl");
+	bool loaded = load(SHADERS "shadow/vsdepth.glsl", SHADERS "shadow/fsdepth.glsl");
 	if (!loaded)
 		throw std::exception();
 

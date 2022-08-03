@@ -13,7 +13,7 @@ class PlaneLoaderImpl : public PlaneLoader
 public:
 	PlaneLoaderImpl();
 	virtual ~PlaneLoaderImpl();
-	Plane* loadPlayerPlane(const char* path) override;
+	Plane* loadPlayerPlane(const char* path, Model**& planeParts) override;
 };
 
 #endif

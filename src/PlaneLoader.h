@@ -11,5 +11,5 @@
 class PlaneLoader {
 public:
 	virtual ~PlaneLoader() = default;
-	virtual Plane* loadPlayerPlane(const char*) = 0;
+	virtual Plane* loadPlayerPlane(const char*, Model**& planeParts) = 0;
 };

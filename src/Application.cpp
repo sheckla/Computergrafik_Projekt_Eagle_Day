@@ -30,15 +30,65 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     print("Application loading start", "");
     // Models
     ModelLoader loader = ModelLoader::instance();
+    //createShadowTestScene();
     loader.loadDirLight();
     Models.push_back(loader.loadSkyBox());
-    Models.push_back(loader.loadPlane());
-    Models.push_back(loader.loadLinePlane());
+    //Models.push_back(loader.loadLinePlane());
     Models.push_back(loader.loadSphere());
     Models.push_back(loader.loadSimpleWater());
 
+    Model** planeParts = new Model * [PLANE_PARTS];
+    planeParts = loader.loadPlaneParts();
+    for (int i = 0; i < PLANE_PARTS; i++)
+    {
+        Models.push_back(planeParts[i]);
+    }
+
     print("Application loading finished", "");
     printDivider(70);
+}
+
+void Application::createShadowTestScene()
+{
+    Model* pModel = new Model(ASSETS "models/shadowcube/shadowcube.obj", false);
+    pModel->shader(new PhongShader(), true);
+    Models.push_back(pModel);
+
+    pModel = new Model(ASSETS "models/bunny.dae", false);
+    pModel->shader(new PhongShader(), true);
+    Models.push_back(pModel);
+    pModel->transform(Matrix().translation(Vector(0, -0.01, 0)));
+
+    pModel = new Model(ASSETS "models/bunny.dae", false);
+    pModel->shader(new PhongShader(), true);
+    Models.push_back(pModel);
+    pModel->transform(Matrix().translation(Vector(0.25, 1, 1)));
+
+    pModel = new Model(ASSETS "models/spitfire/backwing_right.obj");
+    pModel->shader(new PhongShader(), true);
+    pModel->transform(Matrix().translation(Vector(0, 1, 1)));
+    Models.push_back(pModel);
+
+	pModel = new Model(ASSETS "models/spitfire/backwing_right.obj");
+    pModel->shader(new PhongShader(), true);
+    pModel->transform(Matrix().translation(Vector(0, 2, 2.1)));
+    Models.push_back(pModel);
+
+    // directional lights
+    DirectionalLight* dl = new DirectionalLight();
+    dl->direction(Vector(0, -1, -1));
+    dl->color(Color(0.5, 0.5, 0.5));
+    dl->castShadows(true);
+    ShaderLightMapper::instance().addLight(dl);
+
+    SpotLight* sl = new SpotLight();
+    sl->position(Vector(2, 2, 0));
+    sl->color(Color(0.5, 0.5, 0.5));
+    sl->direction(Vector(-1, -1, 0));
+    sl->innerRadius(10);
+    sl->outerRadius(13);
+    sl->castShadows(true);
+    ShaderLightMapper::instance().addLight(sl);
 }
 
 void Application::start()
@@ -54,7 +104,6 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-    ShadowGenerator.generate(Models);
 
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
@@ -71,6 +120,8 @@ void Application::update(float dtime)
 void Application::draw()
 {
     //std::cout << "DRAW..." << std::endl;
+    ShadowGenerator.generate(Models);
+
     // 1. clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -81,6 +132,7 @@ void Application::draw()
         (*it)->draw(Cam);
     }
     ShaderLightMapper::instance().deactivate();
+
     // 3. check once per frame for opengl errors
     GLenum Error = glGetError();
     

@@ -1,5 +1,6 @@
 /*
-* Plane 
+* Plane
+* - Containerklasse
 * - Generiert mittels laden des eines "plane.obj" ein Flugzeugmodell
 *   mit mehreren Teilen
 * 
@@ -43,7 +44,7 @@ struct PartsIndex
 	static constexpr int wingRight = 6;
 };
 
-class Plane : public BaseModel
+class Plane
 {
 	/*
 	* Positions-offsets
@@ -94,14 +95,13 @@ public:
 	Plane(const char* path);
 
 	virtual ~Plane();
-	void draw(const BaseCamera& cam) override;
 	void update(double delta);
 
 	void accelerate(float i);
 	void tiltLeftWingflaps(float i);
 	void tiltRightWingflaps(float i);
 	void tiltRudder(float i);
-
+	Model** getParts();
 	float getSpeed() const;
 };
 

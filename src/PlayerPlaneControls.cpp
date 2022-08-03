@@ -9,7 +9,7 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 void PlayerPlaneControls::update(float delta) 
 {
 
-    this->cameraPos = plane->transform() * Matrix().translation(CAMERA_OFFSET);
+    this->cameraPos = plane->getParts()[0]->transform() * Matrix().translation(CAMERA_OFFSET);
 
 
     // Beschleunigung
@@ -68,7 +68,7 @@ void PlayerPlaneControls::update(float delta)
 
     // camera follows plane
     if (follow) {
-        cam->setTarget(plane->transform().translation());
+        cam->setTarget(plane->getParts()[0]->transform().translation());
         cam->setPosition(cameraPos.translation());
         cam->zoom(-plane->getSpeed() / 60);
     }

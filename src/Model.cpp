@@ -169,28 +169,22 @@ void Model::loadMaterials(const aiScene* pScene) //ist super
 
 void Model::calcBoundingBox(const aiScene* pScene, AABB& Box)
 {
-	float minX, minY, minZ, maxX, maxY, maxZ;
-	minX = minY = minZ = FLT_MAX;
-	maxX = maxY = maxZ = FLT_MIN;
+	Vector min = Vector(0, 0, 0);
+	Vector max = Vector(0, 0, 0);
 
-	
-	MeshCount = pScene->mNumMeshes;
-	for (size_t i = 0; i < MeshCount; i++)
-	{
-		for (size_t j = 0; j < pScene->mMeshes[i]->mNumVertices; j++)
-		{
-			aiVector3D v = pScene->mMeshes[i]->mVertices[j];
-			if (minX > v.x) minX = v.x;
-			if (minY > v.y) minY = v.y;
-			if (minZ > v.z) minZ = v.z;
-			if (maxX < v.x) maxX = v.x;
-			if (maxY < v.y) maxY = v.y;
-			if (maxZ < v.z) maxZ = v.z;
+	for (int i = 0; i < pScene->mNumMeshes; i++) {
+		for (int j = 0; j < pScene->mMeshes[i]->mNumVertices;j++) {
+			if (pScene->mMeshes[i]->mVertices[j].x < min.X) min.X = pScene->mMeshes[i]->mVertices[j].x;
+			if (pScene->mMeshes[i]->mVertices[j].y < min.Y) min.Y = pScene->mMeshes[i]->mVertices[j].y;
+			if (pScene->mMeshes[i]->mVertices[j].z < min.Z) min.Z = pScene->mMeshes[i]->mVertices[j].z;
+			if (pScene->mMeshes[i]->mVertices[j].x > max.X) max.X = pScene->mMeshes[i]->mVertices[j].x;
+			if (pScene->mMeshes[i]->mVertices[j].y > max.Y) max.Y = pScene->mMeshes[i]->mVertices[j].y;
+			if (pScene->mMeshes[i]->mVertices[j].z > max.Z) max.Z = pScene->mMeshes[i]->mVertices[j].z;
 		}
 	}
-
-
-	Box = AABB(minX, minY, minZ, maxX, maxY, maxZ);
+	Box.Max = max;
+	Box.Min = min;
+	this->BoundingBox = Box;
 }
 
 void Model::loadNodes(const aiScene* pScene)

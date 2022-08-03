@@ -31,7 +31,14 @@ int main () {
 	glfwWindowHint(GLFW_SAMPLES, 4);
     GLFWwindow* window = glfwCreateWindow (WindowWidth, WindowHeight,
         "Eagle Day", NULL, NULL);
-    GLFWimage test;
+
+    // Icon - Logo
+    GLFWimage logo;
+	unsigned char* data = Texture::LoadDataPtr(ASSETS "logo.png");
+    logo.pixels = data;
+    logo.width = 1080;
+    logo.height = 1080;
+    glfwSetWindowIcon(window, 1, &logo);
     
     if (!window) {
         fprintf (stderr, "ERROR: can not open window with GLFW3\n");

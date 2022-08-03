@@ -21,6 +21,7 @@ class Application
 public:
     typedef std::list<BaseModel*> ModelList;
     Application(GLFWwindow* pWin);
+    void createShadowTestScene();
     void start();
     void update(float dtime);
     void draw();

@@ -19,6 +19,7 @@
 #include "texture.h"
 #include "aabb.h"
 #include <string>
+#include "Vector.h"
 
 class Model : public BaseModel
 {
@@ -29,7 +30,7 @@ public:
 
     bool load(const char* ModelFile, bool FitSize = true);
     virtual void draw(const BaseCamera& Cam);
-    const AABB& boundingBox() const { return BoundingBox; }
+    const AABB& boundingBox() const override { return BoundingBox; }
 
 protected: // protected types
     struct Mesh

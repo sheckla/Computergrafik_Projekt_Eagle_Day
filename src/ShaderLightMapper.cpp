@@ -111,7 +111,6 @@ void ShaderLightMapper::activate()
 
 void ShaderLightMapper::deactivate()
 {
-
 }
 
 void ShaderLightMapper::clear()

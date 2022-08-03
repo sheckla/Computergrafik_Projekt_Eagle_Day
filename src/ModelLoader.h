@@ -16,7 +16,7 @@ public:
     static void loadDirLight();
     static BaseModel* loadLinePlane();
     static BaseModel* loadSkyBox();
-    static BaseModel* loadPlane();
+    static Model** loadPlaneParts();
     static BaseModel* loadClouds();
     static BaseModel* loadSphere();
     static BaseModel* loadSimpleWater();

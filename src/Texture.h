@@ -64,6 +64,7 @@ public:
 
     const RGBImage* getRGBImage() const;
     GLuint ID() const;
+    static unsigned char* LoadDataPtr(const char* filename);
 
 protected:
     void release();
@@ -80,7 +81,6 @@ protected:
 
 	unsigned char* loadDataPtr(const char* Filename);
     FIBITMAP* checkFileFormat(const char* Filename);
-    static unsigned char* LoadDataPtr(const char* filename);
 
     mutable int CurrentTextureUnit;
     unsigned int Width;
