@@ -246,7 +246,7 @@ void CloudBox::load(const char* worleyPath, const char* noisePath)
         if (!DetailTex[i].load(s.c_str())) {
             std::cout << "load error!" << std::endl;
         }
-        std::cout << s << std::endl;
+        //std::cout << s << std::endl;
         ss.str("");
     }
 

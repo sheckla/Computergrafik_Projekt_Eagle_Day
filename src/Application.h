@@ -20,6 +20,7 @@
 #include "terrain.h"
 #include "Plane.h"
 #include "HeightMapStorage.h"
+#include "vector.h"
 #include "EnemyPlane.h"
 
 
@@ -40,6 +41,8 @@ public:
     void draw();
     void end();
 
+    //Vector EnemyPosition;
+
 protected:
     Camera Cam;
     ModelList Models;
@@ -50,7 +53,7 @@ protected:
     double x_pos_tmp = 0;
     double y_pos_tmp = 0;
     Plane* pPlane;
-    EnemyPlane* enemy;
+    EnemyPlane* pEnemy;
 };
 
 #endif /* Application_hpp */

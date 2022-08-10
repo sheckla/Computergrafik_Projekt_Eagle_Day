@@ -38,10 +38,11 @@
 #include "CloudBox.h"
 
 #include "EnemyPlane.h"
+#include "NetworkConnector.h"
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
 {
-    std::cout << "Loading..." << std::endl;
+    std::cout << "[Eagle Day Application] Starting..." << std::endl;
    
     //loadLinePlane();
     //loadSimpleWater();
@@ -49,10 +50,10 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
     loadPlane();
     loadSkyBox();
     loadClouds();
-
-    enemy = new EnemyPlane();
-    enemy->loadModels(ASSETS "models/messerschmitt");
-    Models.push_back(enemy);
+    
+    pEnemy = new EnemyPlane("127.0.0.1", 19413);
+    pEnemy->loadModels(ASSETS "models/messerschmitt");
+    Models.push_back(pEnemy);
     
     std::cout << "------------------------------------------------------------------------" << std::endl;
 }
@@ -85,7 +86,6 @@ void Application::loadSimpleWater() {
     lpm->transform(m);
 }
 
-
 void Application::loadClouds() {
     VolumetricCloudsLoader* vcs_loader;
     vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
@@ -99,7 +99,6 @@ void Application::loadClouds() {
     }
     Cam.setPosition(Vector(10, 5, 10));
 }
-
 
 // Testfunktion
 void Application::loadBattleship() {
@@ -136,9 +135,11 @@ void Application::update(float dtime)
     last = glfwGetTime();
 
     // Spitfire Controls
-    //PlayerPlaneControls player(pWindow, pPlane, &Cam);
-    //player.update(deltaTime);
-    this->enemy->update(deltaTime);
+     //PlayerPlaneControls player(pWindow, pPlane, &Cam);
+     //player.update(deltaTime);
+
+    this->pEnemy->update(deltaTime);
+    std::cout << this->pEnemy->Enemy_Position.X <<" | "<< this->pEnemy->Enemy_Position.Y << " | " << this->pEnemy->Enemy_Position.Z << std::endl;
 
     Cam.update();
 }

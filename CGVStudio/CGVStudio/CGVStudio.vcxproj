@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Matrix.cpp" />
     <ClCompile Include="..\..\src\Model.cpp" />
+    <ClCompile Include="..\..\src\NetworkConnector.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="..\..\src\LinePlaneModel.h" />
     <ClInclude Include="..\..\src\Matrix.h" />
     <ClInclude Include="..\..\src\Model.h" />
+    <ClInclude Include="..\..\src\NetworkConnector.h" />
     <ClInclude Include="..\..\src\PhongShader.h" />
     <ClInclude Include="..\..\src\Plane.h" />
     <ClInclude Include="..\..\src\PlaneLoader.h" />

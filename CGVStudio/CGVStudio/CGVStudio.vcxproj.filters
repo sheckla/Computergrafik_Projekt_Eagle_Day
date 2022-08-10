@@ -104,6 +104,9 @@
     <Filter Include="Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl\shader">
       <UniqueIdentifier>{bde8404a-a8ec-4db7-9dec-8dd8784ea8c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Network">
+      <UniqueIdentifier>{b93ec506-4d39-49a7-a450-f845a23823b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Application.cpp">
@@ -213,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\EnemyPlane.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NetworkConnector.cpp">
+      <Filter>Quelldateien\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +338,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\EnemyPlane.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NetworkConnector.h">
+      <Filter>Quelldateien\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

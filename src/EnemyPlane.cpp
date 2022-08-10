@@ -1,19 +1,24 @@
 #include "EnemyPlane.h"
 #include "PhongShader.h"
+#include "NetworkConnector.h"
 
-EnemyPlane::EnemyPlane() 
+EnemyPlane::EnemyPlane(const char* srv_Adr,int port) 
 {
-	std::cout << "ENEMY" << std::endl;
+	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
+
+	Enemy_Position = Vector(-1, 3, -2.0f);
 	
 	Matrix m, r, s;
-	m.translation(Vector(-1, 3, -2.0f));
+
+	m.translation(Enemy_Position);
 	r.rotationY(3.1415f);
 	s.scale(.8f);
 
+
 	//Matrix tR;
 	//tR.rotationX(.6f);
-
 	this->transform(m * r * s/* * tR*/);
+	NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
 	
 }
 
@@ -32,10 +37,10 @@ void EnemyPlane::update(double delta)
 	m.translation(Vector(0, 0, -0.1f));
 	r.rotationY(.0f);
 
+	//this->Enemy_Position
 	this->transform(transform() * r * m);
 	
 	this->model->transform(this->transform());
-	//std::cout << "MOVE" << std::endl;
 }
 
 void EnemyPlane::loadModels(const char* path)
