@@ -10,8 +10,8 @@ void print(const char* error, T msg);
 
 #ifdef WIN32
 #define ASSETS "../../assets/"
-#define WORLEY_AMOUNT 30
-#define MAX_TEXTURE_ARR_SIZE 50
+#define WORLEY_AMOUNT 128
+#define MAX_TEXTURE_ARR_SIZE 128
 #else
 #define ASSETS "../assets/"
 #endif

@@ -20,6 +20,7 @@
 #include "terrain.h"
 #include "Plane.h"
 #include "HeightMapStorage.h"
+#include "EnemyPlane.h"
 
 
 
@@ -49,6 +50,7 @@ protected:
     double x_pos_tmp = 0;
     double y_pos_tmp = 0;
     Plane* pPlane;
+    EnemyPlane* enemy;
 };
 
 #endif /* Application_hpp */

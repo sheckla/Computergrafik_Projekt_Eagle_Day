@@ -211,6 +211,9 @@
     <ClCompile Include="..\..\src\CloudBox.cpp">
       <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\EnemyPlane.cpp">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -326,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\CloudBox.h">
       <Filter>Quelldateien\graphics\models\baseModel::derived\volumetricClouds\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\EnemyPlane.h">
+      <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

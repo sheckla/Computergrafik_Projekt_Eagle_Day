@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\src\CloudShader.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
+    <ClCompile Include="..\..\src\EnemyPlane.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="..\..\src\CloudShader.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\ConstantShader.h" />
+    <ClInclude Include="..\..\src\EnemyPlane.h" />
     <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\Globals.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />

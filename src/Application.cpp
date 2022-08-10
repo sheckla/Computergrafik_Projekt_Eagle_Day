@@ -37,18 +37,22 @@
 #include <vector>
 #include "CloudBox.h"
 
+#include "EnemyPlane.h"
+
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
 {
     std::cout << "Loading..." << std::endl;
    
     //loadLinePlane();
-    //loadSkyBox();
     //loadSimpleWater();
     //loadBattleship();
-    //loadPlane();
+    loadPlane();
+    loadSkyBox();
     loadClouds();
 
-    
+    enemy = new EnemyPlane();
+    enemy->loadModels(ASSETS "models/messerschmitt");
+    Models.push_back(enemy);
     
     std::cout << "------------------------------------------------------------------------" << std::endl;
 }
@@ -63,7 +67,7 @@ void Application::loadLinePlane() {
 }
 
 void Application::loadSkyBox() {
-    BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", true);
+    BaseModel* pModel1 = new Model(ASSETS "models/skybox/skybox.obj", true);
     pModel1->shader(new PhongShader(), true);
     Models.push_back(pModel1);
 }
@@ -85,12 +89,15 @@ void Application::loadSimpleWater() {
 void Application::loadClouds() {
     VolumetricCloudsLoader* vcs_loader;
     vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
-    std::vector<CloudBox*> clouds = vcs_loader->createClouds(100,100,100);
+    std::vector<CloudBox*> clouds = vcs_loader->createClouds(990,40,990);
 
     for (auto cloud : clouds) {
         Models.push_back(cloud);
+        Matrix m;
+        m.translation(Vector(0, 100, 0));
+        cloud->transform(m);
     }
-    Cam.setPosition(Vector(10, 175, 10));
+    Cam.setPosition(Vector(10, 5, 10));
 }
 
 
@@ -131,7 +138,7 @@ void Application::update(float dtime)
     // Spitfire Controls
     //PlayerPlaneControls player(pWindow, pPlane, &Cam);
     //player.update(deltaTime);
-
+    this->enemy->update(deltaTime);
 
     Cam.update();
 }
