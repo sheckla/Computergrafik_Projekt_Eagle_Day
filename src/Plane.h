@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "PhongShader.h"
 #include <stdlib.h>
+#include "NetworkSender.h"
 
 const float EPSILON = 1e-4; 
 const int PLANE_MODEL_AMOUNT = 7;
@@ -67,7 +68,7 @@ public:
 	*
 	* Optimisierung: Nur die benötigten Teile der Texturen laden
 	*/
-	Plane();
+	Plane(const char* srv_Adr, int port);
 
 	virtual ~Plane();
 	void loadModels(const char* path);
@@ -77,6 +78,8 @@ public:
 	void leftFlapTilt(float i);
 	void rightFlapTilt(float i);
 	void rudderTilt(float i);
+
+	NetworkSender* Sender;
 };
 
 #endif

@@ -14,10 +14,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	r.rotationY(3.1415f);
 	s.scale(.8f);
 
-
-	//Matrix tR;
-	//tR.rotationX(.6f);
-	this->transform(m * r * s/* * tR*/);
+	this->transform(m * r * s);
 	NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
 	
 }
@@ -32,15 +29,13 @@ void EnemyPlane::draw(const BaseCamera& cam)
 
 void EnemyPlane::update(double delta) 
 {
-	/* Get Values here */
-	Matrix m,r;
-	m.translation(Vector(0, 0, -0.1f));
-	r.rotationY(.0f);
+	Matrix OnlineMovement;
 
-	//this->Enemy_Position
-	this->transform(transform() * r * m);
-	
-	this->model->transform(this->transform());
+	/* Get Values here */
+	OnlineMovement.translation(this->Enemy_Position);
+	/* Apply active Values here */
+	this->model->transform(OnlineMovement);
+
 }
 
 void EnemyPlane::loadModels(const char* path)

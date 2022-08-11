@@ -16,6 +16,7 @@ private:
     void WinSockSettings();
     int PORT;
     const char* Server_Address;
+    void ReadAndSetData(char* buf, EnemyPlane* enemy);
 };
 
 

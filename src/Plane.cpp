@@ -1,4 +1,5 @@
 #include "PlaneLoader.h"
+#include "NetworkSender.h"
 
 float Plane::speedPercentage()
 {
@@ -52,7 +53,7 @@ void Plane::updateModel(int i, Matrix& rotation)
 	models[i]->transform(transform() * Matrix().translation(modelPos[i]) * rotation);
 }
 
-Plane::Plane()
+Plane::Plane(const char* srv_Adr, int port)
 {
 	// Blender Y = -Z
 	// Blender Z = Y
@@ -63,6 +64,8 @@ Plane::Plane()
 	modelPos[4] = Vector(0, 0.616756, -4.62009); // backwing_right
 	modelPos[5] = Vector(2.82589, 0.119194, -0.946365); // wingflaps_left
 	modelPos[6] = Vector(-2.82589, 0.119194,-0.946365); // wingflaps_right
+
+	Sender = new NetworkSender(srv_Adr, port);
 }
 Plane::~Plane()
 {

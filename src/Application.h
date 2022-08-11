@@ -35,7 +35,7 @@ public:
     void loadSimpleWater();
     void loadClouds();
     void loadBattleship();
-    void loadPlane();
+    void loadPlane(const char* srv_Adr, int port);
     void start();
     void update(float dtime);
     void draw();

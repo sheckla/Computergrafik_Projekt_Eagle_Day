@@ -220,6 +220,9 @@
     <ClCompile Include="..\..\src\NetworkConnector.cpp">
       <Filter>Quelldateien\Network</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\NetworkSender.cpp">
+      <Filter>Quelldateien\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -340,6 +343,9 @@
       <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\NetworkConnector.h">
+      <Filter>Quelldateien\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NetworkSender.h">
       <Filter>Quelldateien\Network</Filter>
     </ClInclude>
   </ItemGroup>

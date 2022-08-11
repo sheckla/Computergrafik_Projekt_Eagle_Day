@@ -9,9 +9,9 @@ PlaneLoaderImpl::~PlaneLoaderImpl()
 
 }
 
-Plane* PlaneLoaderImpl::createPlane(const char* path)
+Plane* PlaneLoaderImpl::createPlane(const char* path, const char* srv_Adr, int port)
 {
-    Plane* plane = new Plane();
+    Plane* plane = new Plane(srv_Adr, port);
     plane->loadModels(path);
     return plane;
 }

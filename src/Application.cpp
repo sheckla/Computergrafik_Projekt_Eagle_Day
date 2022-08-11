@@ -39,6 +39,7 @@
 
 #include "EnemyPlane.h"
 #include "NetworkConnector.h"
+#include "NetworkSender.h"
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
 {
@@ -47,7 +48,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin)
     //loadLinePlane();
     //loadSimpleWater();
     //loadBattleship();
-    loadPlane();
+    loadPlane("127.0.0.1", 19411);
     loadSkyBox();
     loadClouds();
     
@@ -110,9 +111,9 @@ void Application::loadBattleship() {
     mod->transform(up);
 }
 
-void Application::loadPlane() {
+void Application::loadPlane(const char* srv_Adr, int port) {
     PlaneLoader* pl = new PlaneLoaderImpl();
-    Plane* p = pl->createPlane(ASSETS "models/spitfire");
+    Plane* p = pl->createPlane(ASSETS "models/spitfire",srv_Adr,port);
     Models.push_back(p);
     this->pPlane = p;
     delete pl;
@@ -134,12 +135,14 @@ void Application::update(float dtime)
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
-    // Spitfire Controls
+     //Spitfire Controls
      //PlayerPlaneControls player(pWindow, pPlane, &Cam);
      //player.update(deltaTime);
 
+    this->pPlane->Sender->SendData(&Cam);
     this->pEnemy->update(deltaTime);
-    std::cout << this->pEnemy->Enemy_Position.X <<" | "<< this->pEnemy->Enemy_Position.Y << " | " << this->pEnemy->Enemy_Position.Z << std::endl;
+
+    //std::cout <<"[AppLoop] " << this->pEnemy->Enemy_Position.X << " | " << this->pEnemy->Enemy_Position.Y << " | " << this->pEnemy->Enemy_Position.Z << std::endl;
 
     Cam.update();
 }

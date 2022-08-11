@@ -13,7 +13,7 @@ class PlaneLoaderImpl : public PlaneLoader
 public:
 	PlaneLoaderImpl();
 	~PlaneLoaderImpl();
-	Plane* createPlane(const char* path);
+	Plane* createPlane(const char* path, const char* srv_Adr, int port);
 };
 
 #endif
