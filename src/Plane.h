@@ -107,7 +107,7 @@ public:
 	Model** getParts();
 	float getSpeed() const;
 
-	NetworkSender* Sender;
+	//NetworkSender* Sender;
 };
 
 #endif

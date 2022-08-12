@@ -73,7 +73,7 @@ Plane::Plane(const char* path)
 Plane::Plane(const char* srv_Adr, int port)
 {
 	loadModels(ASSETS "models/spitfire");
-	Sender = new NetworkSender(srv_Adr, port);
+	//Sender = new NetworkSender(srv_Adr, port);
 }
 
 Plane::~Plane()

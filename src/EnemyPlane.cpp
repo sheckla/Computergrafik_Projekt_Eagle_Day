@@ -15,7 +15,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	s.scale(.8f);
 
 	this->transform(m * r * s);
-	NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
+	//NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
 	
 }
 

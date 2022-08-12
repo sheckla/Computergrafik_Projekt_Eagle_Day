@@ -64,6 +64,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     loader.loadSimpleWater();
     loader.loadPlaneParts();
 
+
     print("Application loading finished", "");
     printDivider(70);
 }
@@ -117,7 +118,6 @@ void Application::draw()
 
     buffer.attachColorTarget(tex);
     buffer.activate();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
         (*it)->draw(Cam);
