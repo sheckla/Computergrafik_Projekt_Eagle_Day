@@ -1,7 +1,7 @@
 #include "TerrainShader.h"
 #include <string>
 
-TerrainShader::TerrainShader(const std::string& AssetDirectory) : PhongShader(false), 
+TerrainShader::TerrainShader(const std::string& AssetDirectory) : PhongShader(), 
 Scaling(1, 1, 1), MixTex(NULL)
 {
     std::string VSFile = AssetDirectory + "vsterrain.glsl";

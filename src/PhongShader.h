@@ -27,11 +27,12 @@
 #include "baseshader.h"
 #include "texture.h"
 #include "ShaderLightMapper.h"
+#include "Texture.h"
 
 class PhongShader : public BaseShader
 {
 public:
-    PhongShader(bool LoadStaticShaderCode = true);
+    PhongShader(bool loadPhongShaderCode = true);
     // setter
     void diffuseColor(const Color& c);
     void ambientColor(const Color& c);
@@ -39,6 +40,7 @@ public:
     void specularExp(float exp);
     void diffuseTexture(const Texture* pTex);
     void normalTexture(const Texture* pTex);
+    void cubeMap(const Texture* pTex);
     void lightPos(const Vector& pos);
     void lightColor(const Color& c);
     void shadowMap(unsigned int slot, const Texture* pTex, const Matrix& Mtx);
@@ -64,6 +66,7 @@ private:
     Color LightColor;
     const Texture* DiffuseTexture;
     const Texture* NormalTexture;
+    const Texture* CubeMapTexture;
     const Texture* ShadowMapTexture[MaxLightCount];
     Matrix ShadowMapMat[MaxLightCount];
 
@@ -78,6 +81,7 @@ private:
     GLint EyePosLoc;
     GLint DiffuseTexLoc;
     GLint NormalTexLoc;
+    GLint CubeMapTextureLoc;
     GLint ShadowMapTextureLoc[MaxLightCount];
     GLint ShadowMapMatLoc[MaxLightCount];
 
@@ -92,7 +96,8 @@ private:
         LIGHT_POS_CHANGED = 1 << 4,
         LIGHT_COLOR_CHANGED = 1 << 5,
         DIFF_TEX_CHANGED = 1 << 6,
-        NORM_TEX_CHANGED = 1 << 7
+        NORM_TEX_CHANGED = 1 << 7,
+        CUBE_TEX_CHANGED = 1 << 8
     };
 
 };

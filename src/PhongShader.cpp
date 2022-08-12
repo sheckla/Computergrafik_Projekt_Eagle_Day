@@ -8,6 +8,9 @@
 
 #include "PhongShader.h"
 #include <string>
+#include "BaseModel.h"
+#include "Model.h"
+#include <sstream>
 
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
@@ -15,57 +18,7 @@
 #define ASSET_DIRECTORY "../assets/"
 #endif
 
-const char* VertexShaderCode =
-"#version 400\n"
-"layout(location=0) in vec4 VertexPos;"
-"layout(location=1) in vec4 VertexNormal;"
-"layout(location=2) in vec2 VertexTexcoord;"
-"out vec3 Position;"
-"out vec3 Normal;"
-"out vec2 Texcoord;"
-"uniform mat4 ModelMat;"
-"uniform mat4 ModelViewProjMat;"
-"void main()"
-"{"
-"    Position = (ModelMat * VertexPos).xyz;"
-"    Normal =  (ModelMat * VertexNormal).xyz;"
-"    Texcoord = VertexTexcoord;"
-"    gl_Position = ModelViewProjMat * VertexPos;"
-"}";
-
-
-const char* FragmentShaderCode =
-"#version 400\n"
-"uniform vec3 EyePos;"
-"uniform vec3 LightPos;"
-"uniform vec3 LightColor;"
-"uniform vec3 DiffuseColor;"
-"uniform vec3 SpecularColor;"
-"uniform vec3 AmbientColor;"
-"uniform float SpecularExp;"
-"uniform sampler2D DiffuseTexture;"
-"in vec3 Position;"
-"in vec3 Normal;"
-"in vec2 Texcoord;"
-"out vec4 FragColor;"
-"float sat( in float a)"
-"{"
-"    return clamp(a, 0.0, 1.0);"
-"}"
-"void main()"
-"{"
-"    vec4 DiffTex = texture( DiffuseTexture, Texcoord);"
-"    if(DiffTex.a <0.3f) discard;"
-"    vec3 N = normalize(Normal);"
-"    vec3 L = normalize(LightPos-Position);"
-"    vec3 E = normalize(EyePos-Position);"
-"    vec3 R = reflect(-L,N);"
-"    vec3 DiffuseComponent = LightColor * DiffuseColor * sat(dot(N,L));"
-"    vec3 SpecularComponent = LightColor * SpecularColor * pow( sat(dot(R,E)), SpecularExp);"
-"    FragColor = vec4((DiffuseComponent + AmbientColor)*DiffTex.rgb + SpecularComponent ,DiffTex.a);"
-"}";
-
-PhongShader::PhongShader(bool LoadStaticShaderCode) :
+PhongShader::PhongShader(bool loadPhongShaderCode) :
     DiffuseColor(0.8f, 0.8f, 0.8f),
     SpecularColor(0.5f, 0.5f, 0.5f),
     AmbientColor(0.2f, 0.2f, 0.2f),
@@ -76,13 +29,20 @@ PhongShader::PhongShader(bool LoadStaticShaderCode) :
     NormalTexture(Texture::defaultNormalTex()),
     UpdateState(0xFFFFFFFF)
 {
-    if (!LoadStaticShaderCode)
-        return;
-    ShaderProgram = createShaderProgram(VertexShaderCode, FragmentShaderCode);
-    bool loaded = load(ASSET_DIRECTORY"vsphong.glsl", ASSET_DIRECTORY"fsphong.glsl");
+    if (!loadPhongShaderCode) return;
+
+    bool loaded = load(ASSET_DIRECTORY"shaders/phong/vsphong.glsl",
+        ASSET_DIRECTORY"shaders/phong/fsphong.glsl");
     if (!loaded)
+    {
+        print("PhongShader", "init failed", true);
         throw std::exception();
+    }
     assignLocations();
+
+    print("loading PhongShader", "default Cubemap");
+    const Texture* cubeMap = Texture::defaultCubeMap();
+    CubeMapTexture = cubeMap;
 
 }
 void PhongShader::assignLocations()
@@ -98,6 +58,7 @@ void PhongShader::assignLocations()
     EyePosLoc = glGetUniformLocation(ShaderProgram, "EyePos");
     ModelMatLoc = glGetUniformLocation(ShaderProgram, "ModelMat");
     ModelViewProjLoc = glGetUniformLocation(ShaderProgram, "ModelViewProjMat");
+    CubeMapTextureLoc = glGetUniformLocation(ShaderProgram, "CubeMapTexture");
 
     for (int i = 0; i < MaxLightCount; ++i)
     {
@@ -113,6 +74,7 @@ void PhongShader::activate(const BaseCamera& Cam) const
 {
     BaseShader::activate(Cam);
 
+
     // update uniforms if necessary
     if (UpdateState & DIFF_COLOR_CHANGED)
         glUniform3f(DiffuseColorLoc, DiffuseColor.R, DiffuseColor.G, DiffuseColor.B);
@@ -127,12 +89,18 @@ void PhongShader::activate(const BaseCamera& Cam) const
     DiffuseTexture->activate(TexSlotIdx++);
     if (UpdateState & DIFF_TEX_CHANGED && DiffuseTexture)
         glUniform1i(DiffuseTexLoc, TexSlotIdx - 1);
-    NormalTexture->activate(TexSlotIdx++);
-    if (UpdateState & NORM_TEX_CHANGED && NormalTexture)
-        glUniform1i(NormalTexLoc, TexSlotIdx - 1);
+
+	NormalTexture->activate(TexSlotIdx++);
+	if (UpdateState & NORM_TEX_CHANGED && NormalTexture)
+		glUniform1i(NormalTexLoc, TexSlotIdx - 1);
+
+    CubeMapTexture->activateCubeMap(TexSlotIdx++);
+    if (UpdateState & CUBE_TEX_CHANGED && CubeMapTexture)
+        glUniform1i(CubeMapTextureLoc, TexSlotIdx - 1);
 
     if (UpdateState & LIGHT_COLOR_CHANGED)
         glUniform3f(LightColorLoc, LightColor.R, LightColor.G, LightColor.B);
+
     if (UpdateState & LIGHT_POS_CHANGED)
         glUniform3f(LightPosLoc, LightPos.X, LightPos.Y, LightPos.Z);
 
@@ -143,7 +111,7 @@ void PhongShader::activate(const BaseCamera& Cam) const
 
     Vector EyePos = Cam.position();
     glUniform3f(EyePosLoc, EyePos.X, EyePos.Y, EyePos.Z);
-    return;
+
     for (int i = 0; i < MaxLightCount; ++i)
     {
         if (ShadowMapTexture[i] && (ShadowMapMatLoc[i] != -1))
@@ -211,6 +179,15 @@ void PhongShader::normalTexture(const Texture* pTex)
         NormalTexture = Texture::defaultNormalTex();
 
     UpdateState |= NORM_TEX_CHANGED;
+}
+
+void PhongShader::cubeMap(const Texture* pTex)
+{
+    this->CubeMapTexture = pTex;
+    if (!CubeMapTexture)
+        CubeMapTexture = Texture::defaultCubeMap();
+
+    UpdateState |= CUBE_TEX_CHANGED;
 }
 
 

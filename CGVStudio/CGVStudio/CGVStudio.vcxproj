@@ -55,7 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;$(ProjectDir)..\thirdparty\cocoaAsyncSocket</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -95,6 +95,8 @@
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
+    <ClCompile Include="..\..\src\guiElement.cpp" />
+    <ClCompile Include="..\..\src\GUIShader.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\Lights.cpp" />
@@ -103,16 +105,21 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Matrix.cpp" />
     <ClCompile Include="..\..\src\Model.cpp" />
+    <ClCompile Include="..\..\src\ModelLoader.cpp" />
+    <ClCompile Include="..\..\src\MouseLogger.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
     <ClCompile Include="..\..\src\PlayerPlaneControls.cpp" />
+    <ClCompile Include="..\..\src\PostProcessingShader.cpp" />
     <ClCompile Include="..\..\src\rgbimage.cpp" />
+    <ClCompile Include="..\..\src\ScreenQuadModel.cpp" />
     <ClCompile Include="..\..\src\ShaderLightMapper.cpp" />
     <ClCompile Include="..\..\src\ShadowMapGenerator.cpp" />
     <ClCompile Include="..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\src\TerrainShader.cpp" />
     <ClCompile Include="..\..\src\Texture.cpp" />
+    <ClCompile Include="..\..\src\TextureShader.cpp" />
     <ClCompile Include="..\..\src\TriangleBoxModel.cpp" />
     <ClCompile Include="..\..\src\TrianglePlaneModel.cpp" />
     <ClCompile Include="..\..\src\TriangleSphereModel.cpp" />
@@ -133,6 +140,8 @@
     <ClInclude Include="..\..\src\ConstantShader.h" />
     <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\Globals.h" />
+    <ClInclude Include="..\..\src\guiElement.h" />
+    <ClInclude Include="..\..\src\GUIShader.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
     <ClInclude Include="..\..\src\IndexBuffer.h" />
     <ClInclude Include="..\..\src\Lights.h" />
@@ -140,17 +149,23 @@
     <ClInclude Include="..\..\src\LinePlaneModel.h" />
     <ClInclude Include="..\..\src\Matrix.h" />
     <ClInclude Include="..\..\src\Model.h" />
+    <ClInclude Include="..\..\src\ModelLoader.h" />
+    <ClInclude Include="..\..\src\MouseLogger.h" />
     <ClInclude Include="..\..\src\PhongShader.h" />
     <ClInclude Include="..\..\src\Plane.h" />
     <ClInclude Include="..\..\src\PlaneLoader.h" />
     <ClInclude Include="..\..\src\PlaneLoaderImpl.h" />
     <ClInclude Include="..\..\src\PlayerPlaneControls.h" />
+    <ClInclude Include="..\..\src\PostProcessingShader.h" />
     <ClInclude Include="..\..\src\rgbimage.h" />
+    <ClInclude Include="..\..\src\ScreenQuadModel.h" />
     <ClInclude Include="..\..\src\ShaderLightMapper.h" />
     <ClInclude Include="..\..\src\ShadowMapGenerator.h" />
+    <ClInclude Include="..\..\src\StringUtils.h" />
     <ClInclude Include="..\..\src\Terrain.h" />
     <ClInclude Include="..\..\src\TerrainShader.h" />
     <ClInclude Include="..\..\src\Texture.h" />
+    <ClInclude Include="..\..\src\TextureShader.h" />
     <ClInclude Include="..\..\src\TriangleBoxModel.h" />
     <ClInclude Include="..\..\src\TrianglePlaneModel.h" />
     <ClInclude Include="..\..\src\TriangleSphereModel.h" />

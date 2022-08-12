@@ -9,7 +9,7 @@ RGBImage::RGBImage(unsigned int Width, unsigned int Height) : m_Width(Width), m_
 
 RGBImage::~RGBImage()
 {
-	delete[] this->m_Image;
+	if (this->m_Image) delete[] this->m_Image;
 }
 
 void RGBImage::setPixelColor(unsigned int x, unsigned int y, const Color& c)

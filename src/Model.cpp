@@ -10,6 +10,8 @@
 #include "phongshader.h"
 #include <list>
 
+#include "TextureShader.h"
+
 Model::Model() : pMeshes(NULL), MeshCount(0), pMaterials(NULL), MaterialCount(0)
 {
 
@@ -17,8 +19,10 @@ Model::Model() : pMeshes(NULL), MeshCount(0), pMaterials(NULL), MaterialCount(0)
 
 Model::Model(const char* ModelFile, bool FitSize) : pMeshes(NULL), MeshCount(0), pMaterials(NULL), MaterialCount(0)
 {
+	print("loading Model", ModelFile);
 	bool ret = load(ModelFile, FitSize);
 	if (!ret) {
+		print("loading Model", "failed", true);
 		throw std::exception();
 	}
 		
@@ -63,7 +67,6 @@ bool Model::load(const char* ModelFile, bool FitSize)
 	loadMeshes(pScene, FitSize);
 	loadMaterials(pScene);
 	loadNodes(pScene);
-
 	return true;
 }
 
@@ -151,41 +154,37 @@ void Model::loadMaterials(const aiScene* pScene) //ist super
 			mtrl->Get(AI_MATKEY_COLOR_AMBIENT, color);
 			material.AmbColor = Color(color.r, color.g, color.b);
 
-
 			aiString einString;
 			mtrl->GetTexture(aiTextureType_DIFFUSE, 0, &einString);
 			std::string p = Path + einString.data;
-			material.DiffTex = Texture().LoadShared(p.c_str());
+			if (p.at(p.length()-1) != '/')
+			{
+				material.DiffTex = Texture().LoadShared(p.c_str());
+				pMaterials[i] = material;
 
-			pMaterials[i] = material;
+			}
 		}
 	}
 }
 
 void Model::calcBoundingBox(const aiScene* pScene, AABB& Box)
 {
-	float minX, minY, minZ, maxX, maxY, maxZ;
-	minX = minY = minZ = FLT_MAX;
-	maxX = maxY = maxZ = FLT_MIN;
+	Vector min = Vector(0, 0, 0);
+	Vector max = Vector(0, 0, 0);
 
-	
-	MeshCount = pScene->mNumMeshes;
-	for (size_t i = 0; i < MeshCount; i++)
-	{
-		for (size_t j = 0; j < pScene->mMeshes[i]->mNumVertices; j++)
-		{
-			aiVector3D v = pScene->mMeshes[i]->mVertices[j];
-			if (minX > v.x) minX = v.x;
-			if (minY > v.y) minY = v.y;
-			if (minZ > v.z) minZ = v.z;
-			if (maxX < v.x) maxX = v.x;
-			if (maxY < v.y) maxY = v.y;
-			if (maxZ < v.z) maxZ = v.z;
+	for (int i = 0; i < pScene->mNumMeshes; i++) {
+		for (int j = 0; j < pScene->mMeshes[i]->mNumVertices;j++) {
+			if (pScene->mMeshes[i]->mVertices[j].x < min.X) min.X = pScene->mMeshes[i]->mVertices[j].x;
+			if (pScene->mMeshes[i]->mVertices[j].y < min.Y) min.Y = pScene->mMeshes[i]->mVertices[j].y;
+			if (pScene->mMeshes[i]->mVertices[j].z < min.Z) min.Z = pScene->mMeshes[i]->mVertices[j].z;
+			if (pScene->mMeshes[i]->mVertices[j].x > max.X) max.X = pScene->mMeshes[i]->mVertices[j].x;
+			if (pScene->mMeshes[i]->mVertices[j].y > max.Y) max.Y = pScene->mMeshes[i]->mVertices[j].y;
+			if (pScene->mMeshes[i]->mVertices[j].z > max.Z) max.Z = pScene->mMeshes[i]->mVertices[j].z;
 		}
 	}
-
-
-	Box = AABB(minX, minY, minZ, maxX, maxY, maxZ);
+	Box.Max = max;
+	Box.Min = min;
+	this->BoundingBox = Box;
 }
 
 void Model::loadNodes(const aiScene* pScene)
@@ -224,13 +223,21 @@ void Model::applyMaterial(unsigned int index)
 	if (index >= MaterialCount)
 		return;
 
-	PhongShader* pPhong = dynamic_cast<PhongShader*>(shader());
-	if (!pPhong) {
-		std::cout << "Model::applyMaterial(): WARNING Invalid shader-type. Please apply PhongShader for rendering models.\n";
+	Material* pMat = &pMaterials[index];
+
+	TextureShader* tShader = dynamic_cast<TextureShader*>(shader());
+	if (tShader)
+	{
+		tShader->diffuseTexture(pMat->DiffTex);
 		return;
 	}
 
-	Material* pMat = &pMaterials[index];
+	PhongShader* pPhong = dynamic_cast<PhongShader*>(shader());
+	if (!pPhong) {
+		//std::cout << "Model::applyMaterial(): WARNING Invalid shader-type. Please apply PhongShader for rendering models.\n";
+		return;
+	}
+
 	pPhong->ambientColor(pMat->AmbColor);
 	pPhong->diffuseColor(pMat->DiffColor);
 	pPhong->specularExp(pMat->SpecExp);
@@ -241,7 +248,7 @@ void Model::applyMaterial(unsigned int index)
 void Model::draw(const BaseCamera& Cam)
 {
 	if (!pShader) {
-		std::cout << "BaseModel::draw() no shader found" << std::endl;
+		print("BaseModel::draw()", "no shader found", true);
 		return;
 	}
 	pShader->modelTransform(transform());
@@ -286,6 +293,3 @@ Matrix Model::convert(const aiMatrix4x4& m)
 		m.c1, m.c2, m.c3, m.c4,
 		m.d1, m.d2, m.d3, m.d4);
 }
-
-
-

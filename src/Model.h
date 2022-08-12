@@ -19,6 +19,7 @@
 #include "texture.h"
 #include "aabb.h"
 #include <string>
+#include "Vector.h"
 
 class Model : public BaseModel
 {
@@ -29,7 +30,7 @@ public:
 
     bool load(const char* ModelFile, bool FitSize = true);
     virtual void draw(const BaseCamera& Cam);
-    const AABB& boundingBox() const { return BoundingBox; }
+    const AABB& boundingBox() const override { return BoundingBox; }
 
 protected: // protected types
     struct Mesh
@@ -41,7 +42,7 @@ protected: // protected types
     };
     struct Material
     {
-        Material() : DiffTex(NULL), DiffColor(1, 1, 1), SpecColor(0.3f, 0.3f, 0.3f), AmbColor(0, 0, 0), SpecExp(10) {}
+        Material() : DiffTex(NULL), DiffColor(0, 0, 0), SpecColor(0.3f, 0.3f, 0.3f), AmbColor(0, 0, 0), SpecExp(10) {}
         Color DiffColor;
         Color SpecColor;
         Color AmbColor;
@@ -82,7 +83,6 @@ protected: // protected member variables
     std::string Filepath; // stores pathname and filename
     std::string Path; // stores path without filename
     Node RootNode;
-
 };
 
 #endif /* Model_hpp */
