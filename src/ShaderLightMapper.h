@@ -1,5 +1,4 @@
-/*
-#LIGHTMANAGER_H
+#ifndef LIGHTMANAGER_H
 #define LIGHTMANAGER_H
 
 #include <vector>
@@ -59,4 +58,3 @@ protected:
 
 #endif
 
-*/

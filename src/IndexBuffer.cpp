@@ -11,12 +11,10 @@
 
 IndexBuffer::IndexBuffer() : BufferInitialized(false), WithinBeginAndEnd(false), IndexFormat(GL_UNSIGNED_INT), IndexCount(0)
 {
-   // std::cout << "new IB" << std::endl;
 }
 
 IndexBuffer::~IndexBuffer()
 {
-    std::cout << "delete IB" << std::endl;
 }
 
 void IndexBuffer::begin()

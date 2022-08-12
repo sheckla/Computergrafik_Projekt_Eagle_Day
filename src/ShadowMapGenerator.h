@@ -1,4 +1,4 @@
-/*
+
 #ifndef SHADOWMAPGENERATOR_H
 #define SHADOWMAPGENERATOR_H
 
@@ -41,4 +41,3 @@ protected:
 
 
 #endif
-*/

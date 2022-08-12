@@ -1,9 +1,7 @@
 #include "NetworkConnector.h"
 #include <iostream>
 #include <thread>
-#include <winsock2.h>
 
-#pragma comment(lib,"ws2_32.lib") //Winsock Library
 
 void NetworkConnector::WinSockSettings() {
 	WSADATA wsa;

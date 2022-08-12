@@ -3,7 +3,9 @@
 
 #pragma once
 #include <vector>
-#include <Windows.h>
+#include <winsock2.h> // Include-Reihenfolge wichtig!
+#include <Ws2tcpip.h>
+#include <Windows.h> // windows.h muss als letztes
 #include <string.h>
 #include <iostream>
 

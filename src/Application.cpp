@@ -18,6 +18,7 @@
 #include <glfw/glfw3.h>
 #endif
 
+#include "CloudBox.h"
 #include "CloudShader.h"
 #include "guiElement.h"
 #include "PlaneLoader.h"
@@ -27,12 +28,15 @@
 #include "TextureShader.h"
 #include "ScreenQuadModel.h"
 #include "guiElement.h"
+#include "LinePlaneModel.h"
 #include "MouseLogger.h"
+#include "VolumetricCloudsLoaderImpl.h"
 
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
 {
-    print("Application loading start", "");
+    std::cout << "[Eagle Day Application] Starting..." << std::endl;
+
 
 
     GUITexture* gTex = new GUITexture(0, 0, new Texture(ASSETS "circle.png"), false);
@@ -41,7 +45,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     gTex->height(100);
     gTex->startIsCenter(true);
     gTex->followMouse(true);
-    guis.push_back(gTex);
+    //guis.push_back(gTex);
 
     GUITexture* ui = new GUITexture(0, 0, new Texture(ASSETS "ui.png"), true);
     ui->color(Color(0.5, 0, 0));
@@ -53,41 +57,13 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     this->buffer.create(true, 1920, 1080);
     this->buffer.attachColorTarget(tex);
     this->screen = ScreenQuadModel();
-    std::cout << "[Eagle Day Application] Starting..." << std::endl;
-   
-    //loadLinePlane();
-    //loadSimpleWater();
-    //loadBattleship();
-    loadPlane("127.0.0.1", 19411);
-    loadSkyBox();
-    loadClouds();
-    
-    pEnemy = new EnemyPlane("127.0.0.1", 19413);
-    pEnemy->loadModels(ASSETS "models/messerschmitt");
-    Models.push_back(pEnemy);
-    
-    std::cout << "------------------------------------------------------------------------" << std::endl;
-}
 
-
-    // Models
     ModelLoader loader = ModelLoader::instance();
-    //createShadowTestScene();
+    loader.init(&Models);
     loader.loadDirLight();
-    Models.push_back(loader.loadSkyBox());
-    //Models.push_back(loader.loadLinePlane());
-    //Models.push_back(loader.loadSphere());
-    Models.push_back(loader.loadSimpleWater());
+    loader.loadSimpleWater();
+    loader.loadPlaneParts();
 
-    Model** planeParts = new Model * [PLANE_PARTS];
-    planeParts = loader.loadPlaneParts();
-    for (int i = 0; i < PLANE_PARTS; i++)
-    {
-        Models.push_back(planeParts[i]);
-    }
-    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
-
-    MouseLogger::instance();
     print("Application loading finished", "");
     printDivider(70);
 }
@@ -107,50 +83,8 @@ void Application::createShadowTestScene()
     pModel->shader(new PhongShader(), true);
     Models.push_back(pModel);
     pModel->transform(Matrix().translation(Vector(0.25, 1, 1)));
-    Matrix m;
-    m.translation(Vector(9.94f*2 * SxS /2 - 9.94f*2 / 2, 0, 9.94f *2 * SxS / 2 - 9.94f*2 / 2));
-    lpm->transform(m);
 }
 
-void Application::loadClouds() {
-    VolumetricCloudsLoader* vcs_loader;
-    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
-    std::vector<CloudBox*> clouds = vcs_loader->createClouds(990,40,990);
-
-    pModel = new Model(ASSETS "models/spitfire/backwing_right.obj");
-    pModel->shader(new PhongShader(), true);
-    pModel->transform(Matrix().translation(Vector(0, 1, 1)));
-    Models.push_back(pModel);
-    for (auto cloud : clouds) {
-        Models.push_back(cloud);
-        Matrix m;
-        m.translation(Vector(0, 100, 0));
-        cloud->transform(m);
-    }
-    Cam.setPosition(Vector(10, 5, 10));
-}
-
-	pModel = new Model(ASSETS "models/spitfire/backwing_right.obj");
-    pModel->shader(new PhongShader(), true);
-    pModel->transform(Matrix().translation(Vector(0, 2, 2.1)));
-    Models.push_back(pModel);
-
-    // directional lights
-    DirectionalLight* dl = new DirectionalLight();
-    dl->direction(Vector(0, -1, -1));
-    dl->color(Color(0.5, 0.5, 0.5));
-    dl->castShadows(true);
-    ShaderLightMapper::instance().addLight(dl);
-
-    SpotLight* sl = new SpotLight();
-    sl->position(Vector(2, 2, 0));
-    sl->color(Color(0.5, 0.5, 0.5));
-    sl->direction(Vector(-1, -1, 0));
-    sl->innerRadius(10);
-    sl->outerRadius(13);
-    sl->castShadows(true);
-    ShaderLightMapper::instance().addLight(sl);
-}
 
 void Application::start()
 {
@@ -169,18 +103,6 @@ void Application::update(float dtime)
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
-    // Spitfire Controls
-    if (ModelLoader::pPlayerPlane) {
-		planeControls->update(deltaTime);
-    }
-     //Spitfire Controls
-     //PlayerPlaneControls player(pWindow, pPlane, &Cam);
-     //player.update(deltaTime);
-
-    this->pPlane->Sender->SendData(&Cam);
-    this->pEnemy->update(deltaTime);
-
-    //std::cout <<"[AppLoop] " << this->pEnemy->Enemy_Position.X << " | " << this->pEnemy->Enemy_Position.Y << " | " << this->pEnemy->Enemy_Position.Z << std::endl;
 
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);
@@ -192,6 +114,7 @@ void Application::draw()
 {
     ShadowGenerator.generate(Models);
     ShaderLightMapper::instance().activate();
+
     buffer.attachColorTarget(tex);
     buffer.activate();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

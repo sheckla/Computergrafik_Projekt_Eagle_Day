@@ -1,9 +1,9 @@
-/*
 #include "ShaderLightMapper.h"
 #include "BaseShader.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "Globals.h"
+#include "Lights.h"
 
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
@@ -121,4 +121,3 @@ void ShaderLightMapper::clear()
 
 	Lights.clear();
 }
-*/

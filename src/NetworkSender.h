@@ -2,9 +2,9 @@
 #define NetworkSender_hpp
 
 #include <stdio.h>
-#include <winsock2.h>
-#include <Ws2tcpip.h>
 #include "Camera.h"
+#include "Globals.h"
+#pragma comment(lib,"ws2_32.lib") //Winsock Library
 
 class NetworkSender
 {

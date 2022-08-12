@@ -12,9 +12,8 @@ class PlaneLoaderImpl : public PlaneLoader
 {
 public:
 	PlaneLoaderImpl();
-	~PlaneLoaderImpl();
-	Plane* createPlane(const char* path, const char* srv_Adr, int port);
 	virtual ~PlaneLoaderImpl();
+	Plane* createPlane(const char* path, const char* srv_Adr, int port);
 	Plane* loadPlayerPlane(const char* path, Model**& planeParts) override;
 };
 

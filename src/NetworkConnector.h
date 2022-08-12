@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include "Application.h"
 #include "EnemyPlane.h"
-#include <winsock2.h>
-#include <Ws2tcpip.h>
+#include "Globals.h"
+#pragma comment(lib,"ws2_32.lib") //Winsock Library
+
 
 class NetworkConnector
 {

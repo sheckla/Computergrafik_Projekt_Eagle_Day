@@ -19,17 +19,7 @@
 #include "Model.h"
 #include "PlayerPlaneControls.h"
 #include "ScreenQuadModel.h"
-#include "camera.h"
-#include "phongshader.h"
-#include "constantshader.h"
-#include "vertexbuffer.h"
-#include "indexbuffer.h"
-#include "basemodel.h"
-#include "terrain.h"
-#include "Plane.h"
-#include "HeightMapStorage.h"
-#include "vector.h"
-#include "EnemyPlane.h"
+
 
 class Application
 {

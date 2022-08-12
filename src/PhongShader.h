@@ -29,8 +29,6 @@
 #include "ShaderLightMapper.h"
 #include "Texture.h"
 
-const int MaxLightCount = 14;
-
 class PhongShader : public BaseShader
 {
 public:

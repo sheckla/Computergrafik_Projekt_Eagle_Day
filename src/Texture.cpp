@@ -17,7 +17,7 @@
 #include "FreeImage.h"
 #include "StringUtils.h"
 
-Texture* Texture::pDefaultTex = NULL;
+Texture * Texture::pDefaultTex = NULL;
 Texture* Texture::pDefaultNormalTex = NULL;
 Texture* Texture::pDefaultCubeMapTex = NULL;
 Texture::SharedTexMap Texture::SharedTextures;
@@ -255,9 +255,9 @@ bool Texture::loadCubeMap(const char* Filename)
 
     for (int i = 0; i < 6; i++)
     {
-		//glGenerateMipmap(GL_TEXTURE_2D);
+        //glGenerateMipmap(GL_TEXTURE_2D);
         print("loading cubemap Face", cData.facePaths[i].c_str(), 0, 0);
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, 
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
             cData.faceWidth, cData.faceHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, LoadDataPtr(cData.facePaths.at(i).c_str())); // todo free
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -440,7 +440,7 @@ Texture::CubeMapData Texture::splitCubeMap(const char* path, unsigned char* Data
     }
 
     // Generate Faces
-	print("loading Cubemap, faces not found, generating in", dir);
+    print("loading Cubemap, faces not found, generating in", dir);
 
     std::vector<RGBImage*> faces;
     for (int i = 0; i < 6; i++) faces.push_back(new RGBImage(wSlice, hSlice));
@@ -448,47 +448,47 @@ Texture::CubeMapData Texture::splitCubeMap(const char* path, unsigned char* Data
     // first row, y = [0, 1/3*height)
     for (uint i = 0; i < hSlice; i++)
     {
-	    for (uint j = 0; j < width; j++)
-	    {
-	    	Color c((float)*Data / 255.0f, (float)*(Data + 1) / 255.0f, (float)*(Data + 2) / 255.0f);
-	    	faces.at(0)->setPixelColor(j - wSlice, i, c);
+        for (uint j = 0; j < width; j++)
+        {
+            Color c((float)*Data / 255.0f, (float)*(Data + 1) / 255.0f, (float)*(Data + 2) / 255.0f);
+            faces.at(0)->setPixelColor(j - wSlice, i, c);
             Data += 4;
-	    }
+        }
     }
 
     // second row, y = [1/3*height, 2/3*height)
     for (uint i = 0; i < hSlice; i++)
     {
-	    for (uint j = 0; j < width; j++)
-	    {
+        for (uint j = 0; j < width; j++)
+        {
             Color c((float)*Data / 255.0f, (float)*(Data + 1) / 255.0f, (float)*(Data + 2) / 255.0f);
 
             // left, x = [0,1/4*width]
-		    if (j < wSlice) faces.at(1)->setPixelColor(j, i, c);
+            if (j < wSlice) faces.at(1)->setPixelColor(j, i, c);
 
             // front, x =[1/4*width, 2/4*width]
-            if (j >= wSlice && j < wSlice*2) faces.at(2)->setPixelColor(j - wSlice, i, c);
+            if (j >= wSlice && j < wSlice * 2) faces.at(2)->setPixelColor(j - wSlice, i, c);
 
             // right, x = [2/4*width, 3/4*width]
-            if (j >= wSlice*2 && j < wSlice*3) faces.at(3)->setPixelColor(j - wSlice * 2, i, c);
+            if (j >= wSlice * 2 && j < wSlice * 3) faces.at(3)->setPixelColor(j - wSlice * 2, i, c);
 
             // back, x = [3/4*width, width]
-            if (j >= wSlice*3) faces.at(4)->setPixelColor(j - wSlice * 3, i, c);
+            if (j >= wSlice * 3) faces.at(4)->setPixelColor(j - wSlice * 3, i, c);
 
             Data += 4;
-	    }
+        }
     }
 
     // third row, y = [2/3*height, height)
     RGBImage bottom(wSlice, hSlice);
     for (uint i = 0; i < hSlice; i++)
     {
-	    for (uint j = 0; j < width; j++)
-	    {
+        for (uint j = 0; j < width; j++)
+        {
             Color c((float)*Data / 255.0f, (float)*(Data + 1) / 255.0f, (float)*(Data + 2) / 255.0f);
             faces.at(5)->setPixelColor(j - wSlice, i, c);
             Data += 4;
-	    }
+        }
     }
     for (int i = 0; i < 6; i++) faces[i]->saveToDisk(facePaths[i].c_str());
     return cubeMapData;
@@ -552,7 +552,7 @@ FIBITMAP* Texture::checkFileFormat(const char* filename)
     }
     FREE_IMAGE_TYPE Type = FreeImage_GetImageType(pBitmap);
     assert(Type == FIT_BITMAP);
-    
+
     unsigned int Width = FreeImage_GetWidth(pBitmap);
     unsigned int Height = FreeImage_GetHeight(pBitmap);
     this->Width = Width;

@@ -155,5 +155,4 @@ void main()
     SpecularFactor = sat(SpecularFactor);
     vec3 mixed = mix(Reflection, phongColor, SpecularFactor);
     FragColor = vec4(mixed, DiffTex.a);
-    //FragColor = mix(vec4(0,1,0,1), FragColor, 0.5);
 }
