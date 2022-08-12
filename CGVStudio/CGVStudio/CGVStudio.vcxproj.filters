@@ -238,6 +238,12 @@
     <ClCompile Include="..\..\src\NetworkSender.cpp">
       <Filter>Quelldateien\util\network</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GUILoader.cpp">
+      <Filter>Quelldateien\application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PostProcessingBuffer.cpp">
+      <Filter>Quelldateien\application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -383,6 +389,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\NetworkSender.h">
       <Filter>Quelldateien\util\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUILoader.h">
+      <Filter>Quelldateien\application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\PostProcessingBuffer.h">
+      <Filter>Quelldateien\application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

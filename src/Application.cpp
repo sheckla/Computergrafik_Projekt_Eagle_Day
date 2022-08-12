@@ -27,6 +27,7 @@
 #include "TextureShader.h"
 #include "ScreenQuadModel.h"
 #include "guiElement.h"
+#include "GUILoader.h"
 #include "MouseLogger.h"
 
 
@@ -35,26 +36,14 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     print("Application loading start", "");
 
     // GUI
-    GUITexture* gTex = new GUITexture(0, 0, new Texture(ASSETS "circle.png"), false);
-    gTex->scale(Vector(1, 1, 0));
-    gTex->width(100);
-    gTex->height(100);
-    gTex->startIsCenter(true);
-    gTex->followMouse(true);
-    guis.push_back(gTex);
-
-    GUITexture* ui = new GUITexture(0, 0, new Texture(ASSETS "ui.png"), true);
-    ui->color(Color(0.5, 0, 0));
-    guis.push_back(ui);
-
-    this->tex.create(1920, 1080,
-        GL_RGB, GL_RGB, GL_FLOAT, GL_LINEAR, GL_LINEAR,
-        GL_CLAMP_TO_EDGE, false);
-    this->buffer.create(true, 1920, 1080);
-    this->buffer.attachColorTarget(tex);
-    this->screen = ScreenQuadModel();
+    GUILoader gui = GUILoader::instance();
+    gui.init(&this->guis);
+    gui.crossHair();
+    gui.GUI();
 
 
+
+    ppBuffer = new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT);
     // Models
     ModelLoader loader = ModelLoader::instance();
     loader.init(&Models);
@@ -152,18 +141,16 @@ void Application::draw()
     ShaderLightMapper::instance().activate();
 
     // Main Buffer - 3D Scene
-    buffer.attachColorTarget(tex);
-    buffer.activate();
+    ppBuffer->preDraw();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
         (*it)->draw(Cam);
     }
-    buffer.deactivate();
-    buffer.detachColorTarget();
+    ppBuffer->postDraw();
 
     // Post Processing
-    this->screen.draw(Cam, &tex);
+    ppBuffer->draw(Cam);
 
     // GUI
     for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
