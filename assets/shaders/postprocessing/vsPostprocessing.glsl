@@ -10,7 +10,6 @@ out vec2 Texcoord;
 void main()
 {
     Position = vec4(VertexPos.x, VertexPos.y, 0.0, 1.0);
-    //Texcoord = VertexTexcoord;
     Texcoord = vec2(VertexPos.x, VertexPos.y);
     gl_Position = Position;
 }
