@@ -34,7 +34,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
 {
     print("Application loading start", "");
 
-
+    // GUI
     GUITexture* gTex = new GUITexture(0, 0, new Texture(ASSETS "circle.png"), false);
     gTex->scale(Vector(1, 1, 0));
     gTex->width(100);
@@ -57,22 +57,16 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
 
     // Models
     ModelLoader loader = ModelLoader::instance();
-    //createShadowTestScene();
+    loader.init(&Models);
     loader.loadDirLight();
-    Models.push_back(loader.loadSkyBox());
-    //Models.push_back(loader.loadLinePlane());
-    //Models.push_back(loader.loadSphere());
-    Models.push_back(loader.loadSimpleWater());
+    loader.loadSkyBox();
+    loader.loadSimpleWater();
+    loader.loadPlaneParts();
+    //loader.clouds();
 
-    Model** planeParts = new Model * [PLANE_PARTS];
-    planeParts = loader.loadPlaneParts();
-    for (int i = 0; i < PLANE_PARTS; i++)
-    {
-        Models.push_back(planeParts[i]);
-    }
+    // Controls
     planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
 
-    MouseLogger::instance();
     print("Application loading finished", "");
     printDivider(70);
 }
@@ -142,16 +136,22 @@ void Application::update(float dtime)
 		planeControls->update(deltaTime);
     }
 
+    // Update Mouse-Pos
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
+
+    // Finally update Cam
     Cam.update();
 }
 
 void Application::draw()
 {
+    // Shadow Mapping
     ShadowGenerator.generate(Models);
     ShaderLightMapper::instance().activate();
+
+    // Main Buffer - 3D Scene
     buffer.attachColorTarget(tex);
     buffer.activate();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -162,15 +162,16 @@ void Application::draw()
     buffer.deactivate();
     buffer.detachColorTarget();
 
+    // Post Processing
     this->screen.draw(Cam, &tex);
 
+    // GUI
     for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
     {
         (*it)->draw(Cam);
     }
 
     GLenum Error = glGetError();
-    
     switch (Error)
     {
         // opengl 2 errors (8)

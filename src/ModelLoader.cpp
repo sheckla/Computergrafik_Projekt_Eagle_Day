@@ -1,7 +1,7 @@
 #include "ModelLoader.h"
 
+#include "CloudBox.h"
 #include "ConstantShader.h"
-#include "Globals.h"
 #include "GUIShader.h"
 #include "LinePlaneModel.h"
 #include "PhongShader.h"
@@ -11,9 +11,12 @@
 #include "TextureShader.h"
 #include "TrianglePlaneModel.h"
 #include "TriangleSphereModel.h"
+#include "VolumetricCloudsLoader.h"
+#include "VolumetricCloudsLoaderImpl.h"
 
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
+std::list<BaseModel*>* ModelLoader::Models;
 
 ModelLoader& ModelLoader::instance()
 {
@@ -21,87 +24,120 @@ ModelLoader& ModelLoader::instance()
     return *pModelLoader;
 }
 
-// via ShaderLightMappe also kein return-typ
-void ModelLoader::loadDirLight()
+bool ModelLoader::init(std::list<BaseModel*>* Models)
+{
+    instance().Models = Models;
+    return true;
+}
+
+// via ShaderLightMapper also kein return-typ
+bool ModelLoader::loadDirLight()
 {
     print("loading light", "Directional");
+
     DirectionalLight* dl = new DirectionalLight();
     dl->direction(Vector(0, -1, -1));
     dl->color(Color(1, 1, 1));
     dl->castShadows(true);
     ShaderLightMapper::instance().addLight(dl);
+
     print("loading light", "finished");
     printDivider();
+    return true;
 }
 
-BaseModel* ModelLoader::loadLinePlane()
+bool ModelLoader::loadLinePlane()
 {
     print("loading lineplane", "constantShader");
+
     LinePlaneModel* pModel = new LinePlaneModel(100, 100, 100, 100);
     ConstantShader* pConstShader = new ConstantShader();
     pModel->shader(pConstShader, true);
     pModel->shadowCaster(true);
+    Models->push_back(pModel);
+
     print("loading lineplane", "finished");
     printDivider();
-    return pModel;
+
+    return true;
 }
 
-BaseModel* ModelLoader::loadSkyBox()
+bool ModelLoader::loadSkyBox()
 {
 
     print("loading skybox", "skybox.obj");
+
     BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", true);
     TextureShader* tShader = new TextureShader();
     pModel1->shader(tShader);
     pModel1->shadowCaster(false);
+    Models->push_back(pModel1);
+
+
     print("loading skybox", "finished");
     printDivider();
-    return pModel1;
+
+    return true;
 }
 
-Model** ModelLoader::loadPlaneParts()
+bool ModelLoader::loadPlaneParts()
 {
     print("loading plane", "player plane");
+
     PlaneLoader* pl = new PlaneLoaderImpl();
     Model** planeParts = new Model * [PLANE_PARTS];
     Plane* p = pl->loadPlayerPlane(ASSETS "models/spitfire", planeParts);
-    delete pl;
-    printDivider();
     ModelLoader::instance().pPlayerPlane = p;
-    return planeParts;
+    delete pl;
+
+    for (int i = 0; i < PLANE_PARTS; i++) {
+        Models->push_back(planeParts[i]);
+    }
+
+    printDivider();
+    return true;
 }
 
-BaseModel* ModelLoader::loadClouds()
+bool ModelLoader::loadClouds()
 {
     // TODO
-	return nullptr;
+    return true;
 }
 
-BaseModel* ModelLoader::loadSphere()
+bool ModelLoader::loadSphere()
 {
     print("loading sphere", "phongshader");
-	TriangleSphereModel* p = new TriangleSphereModel(10, 1000, 1000);
+
+    TriangleSphereModel* p = new TriangleSphereModel(10, 1000, 1000);
     PhongShader* ps = new PhongShader();
     p->shader(ps);
+    Models->push_back(p);
+
     print("loading sphere", "finished");
     printDivider();
-    return p;
+    return true;
 }
 
-BaseModel* ModelLoader::loadSimpleWater()
+bool ModelLoader::loadSimpleWater()
 {
-    int SxS = 12 * 2;
-    TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20 , 1, 1);
-    ConstantShader* underwater = new ConstantShader();
-    underwater->color(Color(0.023f, 0.25f, 0.45f));
-
-
-    Matrix m;
-    m.translation(Vector(0,-1,0));
-    lpm->transform(m);
-    lpm->shader(underwater);
+    TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20, 1, 1);
     lpm->shader(new PhongShader());
-    return lpm;
+    lpm->transform(Matrix().translation(Vector(0, -1, 0)));
+    Models->push_back(lpm);
+    return true;
 }
 
+bool ModelLoader::clouds()
+{
+    VolumetricCloudsLoader* vcs_loader;
+    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
+    std::vector<CloudBox*> clouds = vcs_loader->createClouds(990, 40, 990);
 
+    for (auto cloud : clouds) {
+        ModelLoader::instance().Models->push_back(cloud);
+        Matrix m;
+        m.translation(Vector(0, 100, 0));
+        cloud->transform(m);
+    }
+    return true;
+}

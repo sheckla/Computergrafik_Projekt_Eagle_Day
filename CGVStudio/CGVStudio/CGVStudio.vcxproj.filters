@@ -101,6 +101,9 @@
     <Filter Include="Quelldateien\graphics\gui">
       <UniqueIdentifier>{3d23cac1-71aa-447f-a01a-52e8f997abbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\util\network">
+      <UniqueIdentifier>{8f8e4e74-64a6-4e0d-b8b3-91ada7f2c86c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Application.cpp">
@@ -228,6 +231,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MouseLogger.cpp">
       <Filter>Quelldateien\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NetworkConnector.cpp">
+      <Filter>Quelldateien\util\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NetworkSender.cpp">
+      <Filter>Quelldateien\util\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,6 +377,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\MouseLogger.h">
       <Filter>Quelldateien\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NetworkConnector.h">
+      <Filter>Quelldateien\util\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NetworkSender.h">
+      <Filter>Quelldateien\util\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
