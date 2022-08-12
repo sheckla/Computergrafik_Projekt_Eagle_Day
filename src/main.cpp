@@ -26,8 +26,8 @@ int main () {
     glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
     
-    const int WindowWidth = 1920;
-    const int WindowHeight = 1080;
+    const int WindowWidth = ASPECT_WIDTH;
+    const int WindowHeight = ASPECT_HEIGHT;
 	glfwWindowHint(GLFW_SAMPLES, 4);
     GLFWwindow* window = glfwCreateWindow (WindowWidth, WindowHeight,
         "Eagle Day", NULL, NULL);

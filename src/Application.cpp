@@ -19,22 +19,49 @@
 #endif
 
 #include "CloudShader.h"
+#include "guiElement.h"
 #include "PlaneLoader.h"
 #include "WaterLoader.h"
 #include "PlayerPlaneControls.h"
 #include "ModelLoader.h"
 #include "TextureShader.h"
+#include "ScreenQuadModel.h"
+#include "guiElement.h"
+#include "MouseLogger.h"
+
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
 {
     print("Application loading start", "");
+
+
+    GUITexture* gTex = new GUITexture(0, 0, new Texture(ASSETS "circle.png"), false);
+    gTex->scale(Vector(1, 1, 0));
+    gTex->width(100);
+    gTex->height(100);
+    gTex->startIsCenter(true);
+    gTex->followMouse(true);
+    guis.push_back(gTex);
+
+    GUITexture* ui = new GUITexture(0, 0, new Texture(ASSETS "ui.png"), true);
+    ui->color(Color(0.5, 0, 0));
+    guis.push_back(ui);
+
+    this->tex.create(1920, 1080,
+        GL_RGB, GL_RGB, GL_FLOAT, GL_LINEAR, GL_LINEAR,
+        GL_CLAMP_TO_EDGE, false);
+    this->buffer.create(true, 1920, 1080);
+    this->buffer.attachColorTarget(tex);
+    this->screen = ScreenQuadModel();
+
+
     // Models
     ModelLoader loader = ModelLoader::instance();
     //createShadowTestScene();
     loader.loadDirLight();
     Models.push_back(loader.loadSkyBox());
     //Models.push_back(loader.loadLinePlane());
-    Models.push_back(loader.loadSphere());
+    //Models.push_back(loader.loadSphere());
     Models.push_back(loader.loadSimpleWater());
 
     Model** planeParts = new Model * [PLANE_PARTS];
@@ -43,7 +70,9 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     {
         Models.push_back(planeParts[i]);
     }
+    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
 
+    MouseLogger::instance();
     print("Application loading finished", "");
     printDivider(70);
 }
@@ -110,30 +139,36 @@ void Application::update(float dtime)
 
     // Spitfire Controls
     if (ModelLoader::pPlayerPlane) {
-        PlayerPlaneControls player(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
-		player.update(deltaTime);
+		planeControls->update(deltaTime);
     }
 
+    double x,y;
+    glfwGetCursorPos(pWindow, &x, &y);
+    MouseLogger::instance().update(x, y);
     Cam.update();
 }
 
 void Application::draw()
 {
-    //std::cout << "DRAW..." << std::endl;
     ShadowGenerator.generate(Models);
-
-    // 1. clear screen
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
     ShaderLightMapper::instance().activate();
-    // 2. setup shaders and draw models
+    buffer.attachColorTarget(tex);
+    buffer.activate();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
         (*it)->draw(Cam);
     }
-    ShaderLightMapper::instance().deactivate();
+    buffer.deactivate();
+    buffer.detachColorTarget();
 
-    // 3. check once per frame for opengl errors
+    this->screen.draw(Cam, &tex);
+
+    for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
+    {
+        (*it)->draw(Cam);
+    }
+
     GLenum Error = glGetError();
     
     switch (Error)

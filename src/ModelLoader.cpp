@@ -2,6 +2,7 @@
 
 #include "ConstantShader.h"
 #include "Globals.h"
+#include "GUIShader.h"
 #include "LinePlaneModel.h"
 #include "PhongShader.h"
 #include "PlaneLoader.h"
@@ -93,13 +94,13 @@ BaseModel* ModelLoader::loadSimpleWater()
     TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20 , 1, 1);
     ConstantShader* underwater = new ConstantShader();
     underwater->color(Color(0.023f, 0.25f, 0.45f));
-    lpm->shader(underwater);
-    lpm->shader(new PhongShader());
 
 
     Matrix m;
     m.translation(Vector(0,-1,0));
     lpm->transform(m);
+    lpm->shader(underwater);
+    lpm->shader(new PhongShader());
     return lpm;
 }
 

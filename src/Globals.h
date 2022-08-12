@@ -13,7 +13,12 @@
 #define SHADERS "../../assets/shaders/"
 #define WORLEY_AMOUNT 30
 #define MAX_TEXTURE_ARR_SIZE 50
+
 #define DEBUG_MESSAGES true
+
+#define ASPECT_RATIO 16.0f/9.0f
+#define ASPECT_WIDTH 1920
+#define ASPECT_HEIGHT 1080
 
 #define NC "\033[0m"
 #define RED "\033[31m"

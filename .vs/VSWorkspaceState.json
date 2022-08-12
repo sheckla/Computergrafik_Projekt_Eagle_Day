@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\CGVStudio",
+    "\\CGVStudio\\thirdparty",
+    "\\src"
   ],
-  "SelectedNode": "\\CGVStudio.sln",
+  "SelectedNode": "\\CGVStudio\\CGVStudio.sln",
   "PreviewInSolutionExplorer": false
 }

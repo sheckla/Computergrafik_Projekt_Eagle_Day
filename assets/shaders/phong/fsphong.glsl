@@ -44,6 +44,8 @@ float sat( in float a)
     return clamp(a, 0.0, 1.0);
 }
 
+// schatten normalen vergleichen
+
 float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 
 	float shadow = 0.0f, bias = 0.0005;  							// Bias, damit es zu keinen Artefakten an der Oberfläche kommt
@@ -51,6 +53,7 @@ float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 	vec4 PosSM = ShadowMapMat[LightIndex] * vec4(Position, 1);		// PosSM = Position des Punktes im Shadowmap-System
 	PosSM.xyz /= PosSM.w; 											// perspektivische Teilung vollziehen 
 	PosSM.xy = PosSM.xy*0.5 + 0.5; 									// Koordinaten von norm. Bildraum [-1,1] in Texturkoordinaten [0,1]
+    
     if (PosSM.z > 1.0) {
         shadow = 0;
         return shadow;
@@ -152,4 +155,5 @@ void main()
     SpecularFactor = sat(SpecularFactor);
     vec3 mixed = mix(Reflection, phongColor, SpecularFactor);
     FragColor = vec4(mixed, DiffTex.a);
+    //FragColor = mix(vec4(0,1,0,1), FragColor, 0.5);
 }

@@ -6,6 +6,10 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 {
 }
 
+static Vector lerp(const Vector& A, const Vector& B, float t) {
+    return A * t + B * (1.f - t);
+}
+
 void PlayerPlaneControls::update(float delta) 
 {
 
@@ -69,7 +73,22 @@ void PlayerPlaneControls::update(float delta)
     // camera follows plane
     if (follow) {
         cam->setTarget(plane->getParts()[0]->transform().translation());
-        cam->setPosition(cameraPos.translation());
+        //print("prev", prevCameraPos.translation());
+        //print("current", cameraPos.translation());
+        //print("lerp", lerp(prevCameraPos.translation(), cameraPos.translation(), 0.5));
+        cam->setPosition(prevCameraPos.translation());
         cam->zoom(-plane->getSpeed() / 60);
+
+        if (init)
+        {
+            //print("double", "");
+        }
+    	else
+        {
+            //print("once", "");
+            cam->setPosition(cameraPos.translation());
+			this->init = true;
+        }
+			prevCameraPos = cameraPos;
     }
 }

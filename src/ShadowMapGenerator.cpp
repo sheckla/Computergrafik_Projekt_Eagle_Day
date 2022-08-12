@@ -41,7 +41,9 @@ ShadowMapGenerator::ShadowMapGenerator(unsigned int ShadowMapWidth, unsigned int
 {
 	for (int i = 0; i < MaxLightCount; ++i)
 	{
-		bool created = ShadowMaps[i].create(ShadowMapWidth, ShadowMapHeight, GL_R32F, GL_RED, GL_FLOAT, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE, false);
+		bool created = ShadowMaps[i].create(ShadowMapWidth, ShadowMapHeight,
+			GL_R32F, GL_RED, GL_FLOAT, GL_NEAREST, GL_NEAREST, 
+			GL_CLAMP_TO_EDGE, false);
 		if (!created)
 			throw std::exception();
 	}
