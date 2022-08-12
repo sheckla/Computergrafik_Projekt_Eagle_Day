@@ -1,5 +1,6 @@
 #include "ModelLoader.h"
 
+#include "CloudBox.h"
 #include "ConstantShader.h"
 #include "GUIShader.h"
 #include "LinePlaneModel.h"
@@ -10,6 +11,8 @@
 #include "TextureShader.h"
 #include "TrianglePlaneModel.h"
 #include "TriangleSphereModel.h"
+#include "VolumetricCloudsLoader.h"
+#include "VolumetricCloudsLoaderImpl.h"
 
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
@@ -84,7 +87,7 @@ bool ModelLoader::loadPlaneParts()
     PlaneLoader* pl = new PlaneLoaderImpl();
     Model** planeParts = new Model * [PLANE_PARTS];
     Plane* p = pl->loadPlayerPlane(ASSETS "models/spitfire", planeParts);
-    instance().pPlayerPlane = p;
+    ModelLoader::instance().pPlayerPlane = p;
     delete pl;
 
     for (int i = 0; i < PLANE_PARTS; i++) {
@@ -98,14 +101,14 @@ bool ModelLoader::loadPlaneParts()
 bool ModelLoader::loadClouds()
 {
     // TODO
-	return true;
+    return true;
 }
 
 bool ModelLoader::loadSphere()
 {
     print("loading sphere", "phongshader");
 
-	TriangleSphereModel* p = new TriangleSphereModel(10, 1000, 1000);
+    TriangleSphereModel* p = new TriangleSphereModel(10, 1000, 1000);
     PhongShader* ps = new PhongShader();
     p->shader(ps);
     Models->push_back(p);
@@ -117,11 +120,24 @@ bool ModelLoader::loadSphere()
 
 bool ModelLoader::loadSimpleWater()
 {
-    TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20 , 1, 1);
+    TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20, 1, 1);
     lpm->shader(new PhongShader());
     lpm->transform(Matrix().translation(Vector(0, -1, 0)));
     Models->push_back(lpm);
     return true;
 }
 
+bool ModelLoader::clouds()
+{
+    VolumetricCloudsLoader* vcs_loader;
+    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
+    std::vector<CloudBox*> clouds = vcs_loader->createClouds(990, 40, 990);
 
+    for (auto cloud : clouds) {
+        ModelLoader::instance().Models->push_back(cloud);
+        Matrix m;
+        m.translation(Vector(0, 100, 0));
+        cloud->transform(m);
+    }
+    return true;
+}

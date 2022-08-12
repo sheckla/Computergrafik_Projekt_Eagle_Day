@@ -28,7 +28,7 @@
 #include "TextureShader.h"
 #include "ScreenQuadModel.h"
 #include "guiElement.h"
-#include "LinePlaneModel.h"
+#include "GUILoader.h"
 #include "MouseLogger.h"
 #include "VolumetricCloudsLoaderImpl.h"
 
@@ -37,33 +37,26 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
 {
     std::cout << "[Eagle Day Application] Starting..." << std::endl;
 
+    // GUI
+    GUILoader gui = GUILoader::instance();
+    gui.init(&this->guis);
+    gui.crossHair();
+    gui.GUI();
 
 
-    GUITexture* gTex = new GUITexture(0, 0, new Texture(ASSETS "circle.png"), false);
-    gTex->scale(Vector(1, 1, 0));
-    gTex->width(100);
-    gTex->height(100);
-    gTex->startIsCenter(true);
-    gTex->followMouse(true);
-    //guis.push_back(gTex);
 
-    GUITexture* ui = new GUITexture(0, 0, new Texture(ASSETS "ui.png"), true);
-    ui->color(Color(0.5, 0, 0));
-    guis.push_back(ui);
-
-    this->tex.create(1920, 1080,
-        GL_RGB, GL_RGB, GL_FLOAT, GL_LINEAR, GL_LINEAR,
-        GL_CLAMP_TO_EDGE, false);
-    this->buffer.create(true, 1920, 1080);
-    this->buffer.attachColorTarget(tex);
-    this->screen = ScreenQuadModel();
-
+    ppBuffer = new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT);
+    // Models
     ModelLoader loader = ModelLoader::instance();
     loader.init(&Models);
     loader.loadDirLight();
+    loader.loadSkyBox();
     loader.loadSimpleWater();
     loader.loadPlaneParts();
+    //loader.clouds();
 
+    // Controls
+    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
 
     print("Application loading finished", "");
     printDivider(70);
@@ -105,35 +98,40 @@ void Application::update(float dtime)
     last = glfwGetTime();
 
 
+    // Update Mouse-Pos
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
+
+    // Finally update Cam
     Cam.update();
 }
 
 void Application::draw()
 {
+    // Shadow Mapping
     ShadowGenerator.generate(Models);
     ShaderLightMapper::instance().activate();
 
-    buffer.attachColorTarget(tex);
-    buffer.activate();
+    // Main Buffer - 3D Scene
+    ppBuffer->preDraw();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
         (*it)->draw(Cam);
     }
-    buffer.deactivate();
-    buffer.detachColorTarget();
+    ppBuffer->postDraw();
 
-    this->screen.draw(Cam, &tex);
+    // Post Processing
+    ppBuffer->draw(Cam);
 
+    // GUI
     for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
     {
         (*it)->draw(Cam);
     }
 
     GLenum Error = glGetError();
-    
     switch (Error)
     {
         // opengl 2 errors (8)

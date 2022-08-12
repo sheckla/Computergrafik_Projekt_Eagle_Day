@@ -24,6 +24,7 @@ public:
     static bool loadClouds();
     static bool loadSphere();
     static bool loadSimpleWater();
+    static bool clouds();
 
 };
 

@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\src\EnemyPlane.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
     <ClCompile Include="..\..\src\guiElement.cpp" />
+    <ClCompile Include="..\..\src\GUILoader.cpp" />
     <ClCompile Include="..\..\src\GUIShader.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
@@ -110,10 +111,13 @@
     <ClCompile Include="..\..\src\NetworkSender.cpp" />
     <ClCompile Include="..\..\src\ModelLoader.cpp" />
     <ClCompile Include="..\..\src\MouseLogger.cpp" />
+    <ClCompile Include="..\..\src\NetworkConnector.cpp" />
+    <ClCompile Include="..\..\src\NetworkSender.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
     <ClCompile Include="..\..\src\PlayerPlaneControls.cpp" />
+    <ClCompile Include="..\..\src\PostProcessingBuffer.cpp" />
     <ClCompile Include="..\..\src\PostProcessingShader.cpp" />
     <ClCompile Include="..\..\src\rgbimage.cpp" />
     <ClCompile Include="..\..\src\ScreenQuadModel.cpp" />
@@ -145,6 +149,7 @@
     <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\Globals.h" />
     <ClInclude Include="..\..\src\guiElement.h" />
+    <ClInclude Include="..\..\src\GUILoader.h" />
     <ClInclude Include="..\..\src\GUIShader.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
     <ClInclude Include="..\..\src\IndexBuffer.h" />
@@ -162,6 +167,7 @@
     <ClInclude Include="..\..\src\PlaneLoader.h" />
     <ClInclude Include="..\..\src\PlaneLoaderImpl.h" />
     <ClInclude Include="..\..\src\PlayerPlaneControls.h" />
+    <ClInclude Include="..\..\src\PostProcessingBuffer.h" />
     <ClInclude Include="..\..\src\PostProcessingShader.h" />
     <ClInclude Include="..\..\src\rgbimage.h" />
     <ClInclude Include="..\..\src\ScreenQuadModel.h" />
