@@ -9,9 +9,10 @@ PlaneLoaderImpl::~PlaneLoaderImpl()
 
 }
 
-Plane* PlaneLoaderImpl::createPlane(const char* path, const char* srv_Adr, int port)
+Plane* PlaneLoaderImpl::loadPlayerPlaneOnline(const char* path, Model**& planeParts, const char* srv_Adr, int port)
 {
-    Plane* plane = new Plane(srv_Adr, port);
+    Plane* plane = new Plane(path, srv_Adr, port);
+	planeParts = plane->getParts();
     return plane;
 }
 

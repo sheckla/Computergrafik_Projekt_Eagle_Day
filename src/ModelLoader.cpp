@@ -13,6 +13,7 @@
 #include "TriangleSphereModel.h"
 #include "VolumetricCloudsLoader.h"
 #include "VolumetricCloudsLoaderImpl.h"
+#include "EnemyPlane.h"
 
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
@@ -80,6 +81,24 @@ bool ModelLoader::loadSkyBox()
     return true;
 }
 
+bool ModelLoader::loadPlanePartsOnline(std::string ip, int port)
+{
+    print("loading plane", "player plane");
+
+    PlaneLoader* pl = new PlaneLoaderImpl();
+    Model** planeParts = new Model * [PLANE_PARTS];
+    Plane* p = pl->loadPlayerPlaneOnline(ASSETS "models/spitfire", planeParts, ip.c_str(), port);
+    ModelLoader::instance().pPlayerPlane = p;
+    delete pl;
+
+    for (int i = 0; i < PLANE_PARTS; i++) {
+        Models->push_back(planeParts[i]);
+    }
+
+    printDivider();
+    return true;
+}
+
 bool ModelLoader::loadPlaneParts()
 {
     print("loading plane", "player plane");
@@ -93,6 +112,8 @@ bool ModelLoader::loadPlaneParts()
     for (int i = 0; i < PLANE_PARTS; i++) {
         Models->push_back(planeParts[i]);
     }
+    
+
 
     printDivider();
     return true;
@@ -158,5 +179,13 @@ bool ModelLoader::clouds()
         m.translation(Vector(0, 100, 0));
         cloud->transform(m);
     }
+    return true;
+}
+
+bool ModelLoader::loadEnemyPlane(std::string ip, int port)
+{
+    EnemyPlane* ep = new EnemyPlane(ip.c_str(), port);
+    ep->loadModels(ASSETS "models/messerschmitt");
+    Models->push_back(ep);
     return true;
 }

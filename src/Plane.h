@@ -95,7 +95,7 @@ public:
 	* Optimisierung: Nur die benötigten Teile der Texturen laden
 	*/
 	Plane(const char* path);
-	Plane(const char* srv_Adr, int port);
+	Plane(const char* path, const char* srv_Adr, int port);
 
 	virtual ~Plane();
 	void update(double delta);
@@ -107,7 +107,7 @@ public:
 	Model** getParts();
 	float getSpeed() const;
 
-	//NetworkSender* Sender;
+	NetworkSender* Sender;
 };
 
 #endif

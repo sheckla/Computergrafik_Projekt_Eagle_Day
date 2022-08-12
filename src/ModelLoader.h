@@ -22,9 +22,11 @@ public:
     static bool loadLinePlane();
     static bool loadSkyBox();
     static bool loadPlaneParts();
+    static bool loadPlanePartsOnline(std::string ip, int port);
     static bool loadClouds();
     static bool loadSphere();
     static bool loadSimpleWater();
+    static bool loadEnemyPlane(std::string ip, int port);
     static bool clouds();
 
 };

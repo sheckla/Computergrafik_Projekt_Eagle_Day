@@ -11,6 +11,6 @@
 class PlaneLoader {
 public:
 	virtual ~PlaneLoader() = default;
-	virtual Plane* loadPlayerPlane(const char*, Model**& planeParts) = 0;
-	virtual Plane* createPlane(const char*, const char* srv_Adr, int port) = 0;
+	virtual Plane* loadPlayerPlane(const char* path, Model**& planeParts) = 0;
+	virtual Plane* loadPlayerPlaneOnline(const char* path ,Model**& planeParts, const char* srv_Adr, int port) = 0;
 };

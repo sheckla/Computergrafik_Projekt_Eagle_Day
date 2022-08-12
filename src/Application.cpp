@@ -53,10 +53,13 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     loader.loadSkyBox();
     loader.loadSimpleWater();
     loader.loadPlaneParts();
+    loader.loadPlanePartsOnline("127.0.0.1", 19411);
+    loader.loadEnemyPlane("127.0.0.1", 19411);
     loader.clouds();
 
-    // Controls
-    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
+    // Controls - PlayerPlane an controls anheften
+    // -> CamFollowPlane = true setzen fuer verfolgende Kamera
+    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
     print("Application loading finished", "");
     printDivider(70);
@@ -79,6 +82,10 @@ void Application::update(float dtime)
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
+    if (ModelLoader::pPlayerPlane)
+    {
+        this->planeControls->update(deltaTime);
+    }
 
     // Update Mouse-Pos
     double x,y;
