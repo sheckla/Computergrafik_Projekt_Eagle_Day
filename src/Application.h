@@ -28,12 +28,10 @@ public:
     typedef std::list<BaseModel*> ModelList;
     typedef std::list<GUIElement*> GUIList;
     Application(GLFWwindow* pWin);
-    void createShadowTestScene();
     void start();
     void update(float dtime);
     void draw();
     void end();
-    Framebuffer buffer;
 protected:
     Camera Cam;
     ModelList Models;
@@ -43,9 +41,8 @@ protected:
     double last=0;
     double xPosTmp = 0;
     double yPosTmp = 0;
+
     ShadowMapGenerator ShadowGenerator;
-    Texture tex;
-    ScreenQuadModel screen;
     PlayerPlaneControls* planeControls;
     PostProcessingBuffer* ppBuffer;
 };

@@ -8,8 +8,8 @@ CloudShader::CloudShader() : PhongShader()
     std::cout << "[Clouds] Loading Volumetric Clouds..." << std::endl;
     // cloud fragment/vertex 
     std::string assets = ASSETS;
-    std::string VSFile = assets + "vscloud.glsl";
-    std::string FSFile = assets + "fscloud.glsl";
+    std::string VSFile = SHADERS "cloud/vscloud.glsl";
+    std::string FSFile = SHADERS "cloud/fscloud.glsl";
 
     // debug - max_layers
     GLint max_layers;

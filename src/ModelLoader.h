@@ -18,6 +18,7 @@ public:
     static bool init(std::list<BaseModel*>* Models);
 
     static bool loadDirLight();
+    static bool loadTestScene();
     static bool loadLinePlane();
     static bool loadSkyBox();
     static bool loadPlaneParts();

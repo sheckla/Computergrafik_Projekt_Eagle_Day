@@ -24,6 +24,7 @@ std::vector<CloudBox*> VolumetricCloudsLoaderImpl::createClouds(float width, flo
 		cloudBox->load(worleyPath, noisePath);
 		cloudShader->aabb(&cloudBox->boundingBox());
 		cloudBox->shader(cloudShader, true);
+		cloudBox->shadowCaster(false); // wichtig fuer Schlagschatten
 		//cloudBox->shadowCaster(false);
 
 		Matrix translation;

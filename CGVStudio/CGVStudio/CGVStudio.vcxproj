@@ -107,8 +107,6 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Matrix.cpp" />
     <ClCompile Include="..\..\src\Model.cpp" />
-    <ClCompile Include="..\..\src\NetworkConnector.cpp" />
-    <ClCompile Include="..\..\src\NetworkSender.cpp" />
     <ClCompile Include="..\..\src\ModelLoader.cpp" />
     <ClCompile Include="..\..\src\MouseLogger.cpp" />
     <ClCompile Include="..\..\src\NetworkConnector.cpp" />

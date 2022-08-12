@@ -118,6 +118,25 @@ bool ModelLoader::loadSphere()
     return true;
 }
 
+bool ModelLoader::loadTestScene()
+{
+    Model* pModel = new Model(ASSETS "models/shadowcube/shadowcube.obj", false);
+    pModel->shader(new PhongShader(), true);
+    Models->push_back(pModel);
+
+    pModel = new Model(ASSETS "models/bunny.dae", false);
+    pModel->shader(new PhongShader(), true);
+    Models->push_back(pModel);
+    pModel->transform(Matrix().translation(Vector(0, -0.01, 0)));
+
+    pModel = new Model(ASSETS "models/bunny.dae", false);
+    pModel->shader(new PhongShader(), true);
+    Models->push_back(pModel);
+    pModel->transform(Matrix().translation(Vector(0.25, 1, 1)));
+
+    return true;
+}
+
 bool ModelLoader::loadSimpleWater()
 {
     TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20, 1, 1);

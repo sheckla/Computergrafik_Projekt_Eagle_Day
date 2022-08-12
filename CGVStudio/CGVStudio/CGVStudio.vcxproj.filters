@@ -26,86 +26,107 @@
     <Filter Include="Quelldateien\graphics\camera">
       <UniqueIdentifier>{30e7757a-a51d-45dd-9eb1-991dc21b139b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\graphics\Texture">
-      <UniqueIdentifier>{a52b22e9-9df9-468c-84d1-d67dab5b3916}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\graphics\lighting">
       <UniqueIdentifier>{65f84911-a729-4859-baca-99ca8ae115b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\graphics\standard_shaders">
-      <UniqueIdentifier>{6a54a247-36e2-4ceb-a2f9-a70627911295}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\AABB">
-      <UniqueIdentifier>{4227f2e9-4758-4b54-88aa-16e514ac1060}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\baseModel">
-      <UniqueIdentifier>{fdbaa13b-3cc4-4c63-90f5-d091a8d3f0b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\lineBox">
-      <UniqueIdentifier>{fcc45571-3096-4601-9393-5844a256c4f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\linePlane">
-      <UniqueIdentifier>{2ec4e2ec-5869-471c-a9c2-b93ff305afdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\model">
-      <UniqueIdentifier>{e97a1d50-47d5-47e5-b9b1-fb5c8153ef63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\plane">
-      <UniqueIdentifier>{f7b58dd7-b037-4d99-a2bb-27284a82a3b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\triangleBox">
-      <UniqueIdentifier>{8bf9cd8f-3f8d-4786-8804-bfeb38ca6876}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\trianglePlane">
-      <UniqueIdentifier>{d62fd0f8-5663-42c4-b08e-5d91fea83845}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\triangleSphere">
-      <UniqueIdentifier>{765b8f3d-800c-4f8e-9e07-ad7a38ec62e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\volumetricClouds">
-      <UniqueIdentifier>{1a7b5837-7a92-4b71-a811-28dccdbcf64e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\volumetricClouds\interface">
-      <UniqueIdentifier>{18cb2c98-22db-4ebe-9854-6f73c22cfb73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\volumetricClouds\impl">
-      <UniqueIdentifier>{1ba48717-8622-4ca9-a371-42ec41195729}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\volumetricClouds\impl\shader">
-      <UniqueIdentifier>{bde8404a-a8ec-4db7-9dec-8dd8784ea8c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\water">
-      <UniqueIdentifier>{283b2d7a-34ad-4336-b175-455e7d5fd704}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\water\interface">
-      <UniqueIdentifier>{88866a0a-4f06-46cf-8eef-bcb170f42b5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\water\shader">
-      <UniqueIdentifier>{6ee09aa7-7e45-47fb-b1ce-c398e8fa0c08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\water\util">
-      <UniqueIdentifier>{a24e12cb-2a39-4f56-b672-1a03ac94f6fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\plane\controls">
-      <UniqueIdentifier>{206a1ce0-4dd3-4038-83fd-49f13add0666}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\plane\loader">
-      <UniqueIdentifier>{efa0eba3-90c1-4ded-8338-d7c8e4548bf0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\plane\loader\impl">
-      <UniqueIdentifier>{29326793-f56d-4a28-b22a-3af46e9b9d66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\screenQuad">
-      <UniqueIdentifier>{36843b59-1200-4abd-8c5f-5e9957689d6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Network">
-      <UniqueIdentifier>{b93ec506-4d39-49a7-a450-f845a23823b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\graphics\gui">
-      <UniqueIdentifier>{3d23cac1-71aa-447f-a01a-52e8f997abbd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\util\network">
       <UniqueIdentifier>{8f8e4e74-64a6-4e0d-b8b3-91ada7f2c86c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\application\loader">
+      <UniqueIdentifier>{d769f3d8-bc11-4099-b318-b991fb666e59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple">
+      <UniqueIdentifier>{1d96e090-2fd2-4399-b51f-68f91b379b6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\linePlane">
+      <UniqueIdentifier>{2ec4e2ec-5869-471c-a9c2-b93ff305afdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\lineBox">
+      <UniqueIdentifier>{fcc45571-3096-4601-9393-5844a256c4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\triangleBox">
+      <UniqueIdentifier>{8bf9cd8f-3f8d-4786-8804-bfeb38ca6876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\trianglePlane">
+      <UniqueIdentifier>{d62fd0f8-5663-42c4-b08e-5d91fea83845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\triangleSphere">
+      <UniqueIdentifier>{765b8f3d-800c-4f8e-9e07-ad7a38ec62e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex">
+      <UniqueIdentifier>{ab1ca37e-d6da-4c40-a9be-f2ad4ada5dab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\plane">
+      <UniqueIdentifier>{f7b58dd7-b037-4d99-a2bb-27284a82a3b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\plane\loader">
+      <UniqueIdentifier>{efa0eba3-90c1-4ded-8338-d7c8e4548bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\plane\loader\impl">
+      <UniqueIdentifier>{29326793-f56d-4a28-b22a-3af46e9b9d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\water">
+      <UniqueIdentifier>{283b2d7a-34ad-4336-b175-455e7d5fd704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\water\interface">
+      <UniqueIdentifier>{88866a0a-4f06-46cf-8eef-bcb170f42b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\water\shader">
+      <UniqueIdentifier>{6ee09aa7-7e45-47fb-b1ce-c398e8fa0c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\water\util">
+      <UniqueIdentifier>{a24e12cb-2a39-4f56-b672-1a03ac94f6fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\AABB">
+      <UniqueIdentifier>{4227f2e9-4758-4b54-88aa-16e514ac1060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\base_classes">
+      <UniqueIdentifier>{9a74ce6b-c83f-4431-a5fe-1e5dadf1b302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\baseModel">
+      <UniqueIdentifier>{fdbaa13b-3cc4-4c63-90f5-d091a8d3f0b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\model">
+      <UniqueIdentifier>{e97a1d50-47d5-47e5-b9b1-fb5c8153ef63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_simple\screenQuad">
+      <UniqueIdentifier>{36843b59-1200-4abd-8c5f-5e9957689d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\post_processing">
+      <UniqueIdentifier>{a3591fbf-3f9e-46fc-b046-7c5cb22b25d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\volumetricClouds">
+      <UniqueIdentifier>{1a7b5837-7a92-4b71-a811-28dccdbcf64e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\volumetricClouds\interface">
+      <UniqueIdentifier>{18cb2c98-22db-4ebe-9854-6f73c22cfb73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\volumetricClouds\impl">
+      <UniqueIdentifier>{1ba48717-8622-4ca9-a371-42ec41195729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\volumetricClouds\impl\shader">
+      <UniqueIdentifier>{bde8404a-a8ec-4db7-9dec-8dd8784ea8c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\util\Texture">
+      <UniqueIdentifier>{a52b22e9-9df9-468c-84d1-d67dab5b3916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui">
+      <UniqueIdentifier>{3d23cac1-71aa-447f-a01a-52e8f997abbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\controls">
+      <UniqueIdentifier>{1977a932-ddb3-49dd-a2c0-bbc73a2693cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\controls\plane">
+      <UniqueIdentifier>{206a1ce0-4dd3-4038-83fd-49f13add0666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\shader">
+      <UniqueIdentifier>{6a54a247-36e2-4ceb-a2f9-a70627911295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\shader">
+      <UniqueIdentifier>{343577ef-6d19-46f4-a0e6-5d92ac63d513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\graphics\models_complex\enemyPlane">
+      <UniqueIdentifier>{e08362b4-d611-46e8-ad13-1485fec05f5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,52 +158,52 @@
       <Filter>Quelldateien\util\image_generation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\BaseModel.cpp">
-      <Filter>Quelldateien\graphics\baseModel</Filter>
+      <Filter>Quelldateien\graphics\models_simple\baseModel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\LineBoxModel.cpp">
-      <Filter>Quelldateien\graphics\lineBox</Filter>
+      <Filter>Quelldateien\graphics\models_simple\lineBox</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\LinePlaneModel.cpp">
-      <Filter>Quelldateien\graphics\linePlane</Filter>
+      <Filter>Quelldateien\graphics\models_simple\linePlane</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Model.cpp">
-      <Filter>Quelldateien\graphics\model</Filter>
+      <Filter>Quelldateien\graphics\models_simple\model</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TrianglePlaneModel.cpp">
-      <Filter>Quelldateien\graphics\trianglePlane</Filter>
+      <Filter>Quelldateien\graphics\models_simple\trianglePlane</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TriangleSphereModel.cpp">
-      <Filter>Quelldateien\graphics\triangleSphere</Filter>
+      <Filter>Quelldateien\graphics\models_simple\triangleSphere</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Aabb.cpp">
-      <Filter>Quelldateien\graphics\AABB</Filter>
+      <Filter>Quelldateien\graphics\models_simple\AABB</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Texture.cpp">
-      <Filter>Quelldateien\graphics\Texture</Filter>
+      <Filter>Quelldateien\util\Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ConstantShader.cpp">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\PhongShader.cpp">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\CloudShader.cpp">
-      <Filter>Quelldateien\graphics\volumetricClouds\impl\shader</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\impl\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\VolumetricCloudsLoaderImpl.cpp">
-      <Filter>Quelldateien\graphics\volumetricClouds\interface</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\interface</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Terrain.cpp">
-      <Filter>Quelldateien\graphics\water</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TerrainShader.cpp">
-      <Filter>Quelldateien\graphics\water\shader</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\HeightMapStorage.cpp">
-      <Filter>Quelldateien\graphics\water\util</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\util</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\WaterLoaderImpl.cpp">
-      <Filter>Quelldateien\graphics\water\interface</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\interface</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Framebuffer.cpp">
       <Filter>Quelldateien\graphics\buffer</Filter>
@@ -197,64 +218,64 @@
       <Filter>Quelldateien\graphics\lighting</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TriangleBoxModel.cpp">
-      <Filter>Quelldateien\graphics\triangleBox</Filter>
+      <Filter>Quelldateien\graphics\models_simple\triangleBox</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\CloudBox.cpp">
-      <Filter>Quelldateien\graphics\volumetricClouds\impl</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\impl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp">
-      <Filter>Quelldateien\graphics\plane\loader\impl</Filter>
+      <Filter>Quelldateien\graphics\models_complex\plane\loader\impl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Plane.cpp">
-      <Filter>Quelldateien\graphics\plane</Filter>
+      <Filter>Quelldateien\graphics\models_complex\plane</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\PlayerPlaneControls.cpp">
-      <Filter>Quelldateien\graphics\plane\controls</Filter>
+      <Filter>Quelldateien\controls\plane</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\BaseShader.cpp">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TextureShader.cpp">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ModelLoader.cpp">
-      <Filter>Quelldateien\application</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\PostProcessingShader.cpp">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ScreenQuadModel.cpp">
-      <Filter>Quelldateien\graphics\screenQuad</Filter>
+      <Filter>Quelldateien\graphics\models_simple\screenQuad</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\guiElement.cpp">
-      <Filter>Quelldateien\graphics\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\GUIShader.cpp">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MouseLogger.cpp">
       <Filter>Quelldateien\util</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkConnector.cpp">
-      <Filter>Quelldateien\util\network</Filter>
+      <Filter>Quelldateien\Network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkSender.cpp">
-      <Filter>Quelldateien\util\network</Filter>
+      <Filter>Quelldateien\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ModelLoader.cpp">
+      <Filter>Quelldateien\application\loader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\GUILoader.cpp">
-      <Filter>Quelldateien\application</Filter>
+      <Filter>Quelldateien\application\loader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\PostProcessingBuffer.cpp">
-      <Filter>Quelldateien\application</Filter>
+      <Filter>Quelldateien\graphics\post_processing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PostProcessingShader.cpp">
+      <Filter>Quelldateien\graphics\post_processing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GUIShader.cpp">
+      <Filter>Quelldateien\gui\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\EnemyPlane.cpp">
-      <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
+      <Filter>Quelldateien\graphics\models_complex\enemyPlane</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkConnector.cpp">
-      <Filter>Quelldateien\Network</Filter>
+      <Filter>Quelldateien\util\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkSender.cpp">
-      <Filter>Quelldateien\Network</Filter>
+      <Filter>Quelldateien\util\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,61 +304,61 @@
       <Filter>Quelldateien\util\image_generation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PlaneLoader.h">
-      <Filter>Quelldateien\graphics\plane\loader</Filter>
+      <Filter>Quelldateien\graphics\models_complex\plane\loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\BaseModel.h">
-      <Filter>Quelldateien\graphics\baseModel</Filter>
+      <Filter>Quelldateien\graphics\models_simple\baseModel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\LineBoxModel.h">
-      <Filter>Quelldateien\graphics\lineBox</Filter>
+      <Filter>Quelldateien\graphics\models_simple\lineBox</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\LinePlaneModel.h">
-      <Filter>Quelldateien\graphics\linePlane</Filter>
+      <Filter>Quelldateien\graphics\models_simple\linePlane</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Model.h">
-      <Filter>Quelldateien\graphics\model</Filter>
+      <Filter>Quelldateien\graphics\models_simple\model</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TrianglePlaneModel.h">
-      <Filter>Quelldateien\graphics\trianglePlane</Filter>
+      <Filter>Quelldateien\graphics\models_simple\trianglePlane</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TriangleSphereModel.h">
-      <Filter>Quelldateien\graphics\triangleSphere</Filter>
+      <Filter>Quelldateien\graphics\models_simple\triangleSphere</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Aabb.h">
-      <Filter>Quelldateien\graphics\AABB</Filter>
+      <Filter>Quelldateien\graphics\models_simple\AABB</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Texture.h">
-      <Filter>Quelldateien\graphics\Texture</Filter>
+      <Filter>Quelldateien\util\Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\ConstantShader.h">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PhongShader.h">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CloudShader.h">
-      <Filter>Quelldateien\graphics\volumetricClouds\impl\shader</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\impl\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\VolumetricCloudsLoader.h">
-      <Filter>Quelldateien\graphics\volumetricClouds\interface</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\VolumetricCloudsLoaderImpl.h">
-      <Filter>Quelldateien\graphics\volumetricClouds\interface</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Terrain.h">
-      <Filter>Quelldateien\graphics\water</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TerrainShader.h">
-      <Filter>Quelldateien\graphics\water\shader</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\HeightMapStorage.h">
-      <Filter>Quelldateien\graphics\water\util</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\WaterLoaderImpl.h">
-      <Filter>Quelldateien\graphics\water\interface</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\WaterLoader.h">
-      <Filter>Quelldateien\graphics\water\interface</Filter>
+      <Filter>Quelldateien\graphics\models_complex\water\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Globals.h">
       <Filter>Quelldateien\application</Filter>
@@ -355,67 +376,67 @@
       <Filter>Quelldateien\graphics\lighting</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TriangleBoxModel.h">
-      <Filter>Quelldateien\graphics\triangleBox</Filter>
+      <Filter>Quelldateien\graphics\models_simple\triangleBox</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CloudBox.h">
-      <Filter>Quelldateien\graphics\volumetricClouds\impl</Filter>
+      <Filter>Quelldateien\graphics\models_complex\volumetricClouds\impl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PlaneLoaderImpl.h">
-      <Filter>Quelldateien\graphics\plane\loader\impl</Filter>
+      <Filter>Quelldateien\graphics\models_complex\plane\loader\impl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Plane.h">
-      <Filter>Quelldateien\graphics\plane</Filter>
+      <Filter>Quelldateien\graphics\models_complex\plane</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PlayerPlaneControls.h">
-      <Filter>Quelldateien\graphics\plane\controls</Filter>
+      <Filter>Quelldateien\controls\plane</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\BaseShader.h">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TextureShader.h">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\StringUtils.h">
       <Filter>Quelldateien\util</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ModelLoader.h">
-      <Filter>Quelldateien\application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\PostProcessingShader.h">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\ScreenQuadModel.h">
-      <Filter>Quelldateien\graphics\screenQuad</Filter>
+      <Filter>Quelldateien\graphics\models_simple\screenQuad</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\guiElement.h">
-      <Filter>Quelldateien\graphics\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\GUIShader.h">
-      <Filter>Quelldateien\graphics\standard_shaders</Filter>
+      <Filter>Quelldateien\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\MouseLogger.h">
       <Filter>Quelldateien\util</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\EnemyPlane.h">
-      <Filter>Quelldateien\graphics\models\baseModel::derived\plane\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\NetworkConnector.h">
-      <Filter>Quelldateien\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\NetworkSender.h">
-      <Filter>Quelldateien\Network</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\NetworkConnector.h">
       <Filter>Quelldateien\util\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\NetworkSender.h">
       <Filter>Quelldateien\util\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ModelLoader.h">
+      <Filter>Quelldateien\application\loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\GUILoader.h">
-      <Filter>Quelldateien\application</Filter>
+      <Filter>Quelldateien\application\loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PostProcessingBuffer.h">
-      <Filter>Quelldateien\application</Filter>
+      <Filter>Quelldateien\graphics\post_processing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\PostProcessingShader.h">
+      <Filter>Quelldateien\graphics\post_processing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUIShader.h">
+      <Filter>Quelldateien\gui\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\EnemyPlane.h">
+      <Filter>Quelldateien\graphics\models_complex\enemyPlane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NetworkConnector.h">
+      <Filter>Quelldateien\util\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NetworkSender.h">
+      <Filter>Quelldateien\util\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

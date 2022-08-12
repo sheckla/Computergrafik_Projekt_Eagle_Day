@@ -43,9 +43,9 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     gui.crossHair();
     gui.GUI();
 
-
-
+    // Post Processing //TODO verschiedene post-processing effekte aktivieren
     ppBuffer = new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT);
+
     // Models
     ModelLoader loader = ModelLoader::instance();
     loader.init(&Models);
@@ -53,7 +53,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     loader.loadSkyBox();
     loader.loadSimpleWater();
     loader.loadPlaneParts();
-    //loader.clouds();
+    loader.clouds();
 
     // Controls
     planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, false);
@@ -61,24 +61,6 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     print("Application loading finished", "");
     printDivider(70);
 }
-
-void Application::createShadowTestScene()
-{
-    Model* pModel = new Model(ASSETS "models/shadowcube/shadowcube.obj", false);
-    pModel->shader(new PhongShader(), true);
-    Models.push_back(pModel);
-
-    pModel = new Model(ASSETS "models/bunny.dae", false);
-    pModel->shader(new PhongShader(), true);
-    Models.push_back(pModel);
-    pModel->transform(Matrix().translation(Vector(0, -0.01, 0)));
-
-    pModel = new Model(ASSETS "models/bunny.dae", false);
-    pModel->shader(new PhongShader(), true);
-    Models.push_back(pModel);
-    pModel->transform(Matrix().translation(Vector(0.25, 1, 1)));
-}
-
 
 void Application::start()
 {
@@ -103,7 +85,6 @@ void Application::update(float dtime)
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
 
-    // Finally update Cam
     Cam.update();
 }
 

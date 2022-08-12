@@ -3,8 +3,7 @@
 
 #include "basemodel.h"
 #include "Model.h"
-//#include "NetworkConnector.h"
-//#pragma once
+#include "NetworkConnector.h"
 
 const int ENEMY_MODEL_AMOUNT = 1;
 
@@ -12,7 +11,8 @@ class EnemyPlane : public BaseModel
 {
 	Model* models[ENEMY_MODEL_AMOUNT];
 	Model* model;
-	//NetworkConnector* nwc;
+	//NetworkConnector* nwc; Gab mir mir Fehler aufgrund #include. Code läuft aber
+	float s;
 
 public:
 	Vector Enemy_Position;
