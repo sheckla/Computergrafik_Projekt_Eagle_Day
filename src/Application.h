@@ -18,6 +18,7 @@
 #include "guiElement.h"
 #include "Model.h"
 #include "PlayerPlaneControls.h"
+#include "PostProcessingBuffer.h"
 #include "ScreenQuadModel.h"
 
 class Application
@@ -45,6 +46,7 @@ protected:
     Texture tex;
     ScreenQuadModel screen;
     PlayerPlaneControls* planeControls;
+    PostProcessingBuffer* ppBuffer;
 };
 
 #endif /* Application_hpp */
