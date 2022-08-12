@@ -17,7 +17,7 @@ std::vector<CloudBox*> VolumetricCloudsLoaderImpl::createClouds(float width, flo
 
 	CloudShader* cloudShader = new CloudShader();
 	cloudShader->diffuseTexture(Texture::LoadShared(ASSETS "worley/worley0.bmp"));
-	cloudShader->normalTexture(Texture::LoadShared(ASSETS "noise/noise.bmp"));
+	//cloudShader->normalTexture(Texture::LoadShared(ASSETS "noise/noise.bmp"));
 
 	for (int i = 0; i <= size; i++) {
 		CloudBox* cloudBox = new CloudBox(width, height, depth);

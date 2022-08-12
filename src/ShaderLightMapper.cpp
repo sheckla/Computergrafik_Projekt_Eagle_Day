@@ -2,6 +2,7 @@
 #include "BaseShader.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Globals.h"
 
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
@@ -28,26 +29,26 @@ ShaderLightMapper::ShaderLightMapper()
 {
 
 	BaseShader Shader;
-	bool loaded = Shader.load(ASSET_DIRECTORY"vslightdummy.glsl", ASSET_DIRECTORY"fslightdummy.glsl");
+	bool loaded = Shader.load(SHADERS "shadow/vslightdummy.glsl", SHADERS "shadow/fslightdummy.glsl");
 	assert(loaded);
 
-	//GLuint BlockIndex = glGetUniformBlockIndex(Shader.openGLProgramID(), "Lights");
+	GLuint BlockIndex = glGetUniformBlockIndex(Shader.openGLProgramID(), "Lights");
 	assert(BlockIndex != GL_INVALID_INDEX);
 
 	GLint BlockSize = 0;
-	//glGetActiveUniformBlockiv(Shader.openGLProgramID(), BlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &BlockSize);
+	glGetActiveUniformBlockiv(Shader.openGLProgramID(), BlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &BlockSize);
 
-    // If the following assertion fails:
-    // You have to adjust the shaderLightBlock structure.
-    // The ShaderLightBlock structure does not match the structure size of the compiled shader block.
-    // Please check BlockSize to obtain the actual size of the shader structure and update
-    // the ShaderLightBlock structure of this class. The size of ShaderLightBlock should fit to BlockSize!
+	// If the following assertion fails:
+	// You have to adjust the shaderLightBlock structure.
+	// The ShaderLightBlock structure does not match the structure size of the compiled shader block.
+	// Please check BlockSize to obtain the actual size of the shader structure and update
+	// the ShaderLightBlock structure of this class. The size of ShaderLightBlock should fit to BlockSize!
 	assert(sizeof(ShaderLightBlock) == BlockSize);
 
 	glGenBuffers(1, &UBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(ShaderLightBlock), NULL, GL_DYNAMIC_DRAW);
-	
+
 }
 
 ShaderLightMapper::~ShaderLightMapper()
@@ -71,7 +72,7 @@ void ShaderLightMapper::activate()
 	ShaderLights.LightCount = (int)lights().size();
 	int ShadowCasterIndex = 0;
 
-	for (int i = 0; i<ShaderLights.LightCount; i++)
+	for (int i = 0; i < ShaderLights.LightCount; i++)
 	{
 		BaseLight* L = lights()[i];
 		ShaderLight* SL = &ShaderLights.lights[i];
@@ -84,23 +85,23 @@ void ShaderLightMapper::activate()
 
 		switch (L->type())
 		{
-			case BaseLight::DIRECTIONAL:
-			{
-				DirectionalLight* dl = dynamic_cast<DirectionalLight*>(L);
-				SL->Direction = dl->direction();
-				SL->Direction.normalize();
-				break;
-			}
-			case BaseLight::SPOT:
-			{
-				SpotLight* sl = dynamic_cast<SpotLight*>(L);
-				SL->Direction = sl->direction();
-				SL->SpotRadius = Vector( toRad(sl->innerRadius()), toRad(sl->outerRadius()), 0);
-				SL->Direction.normalize();
-				break;
-			}
-            case BaseLight::POINT:
-                break;
+		case BaseLight::DIRECTIONAL:
+		{
+			DirectionalLight* dl = dynamic_cast<DirectionalLight*>(L);
+			SL->Direction = dl->direction();
+			SL->Direction.normalize();
+			break;
+		}
+		case BaseLight::SPOT:
+		{
+			SpotLight* sl = dynamic_cast<SpotLight*>(L);
+			SL->Direction = sl->direction();
+			SL->SpotRadius = Vector(toRad(sl->innerRadius()), toRad(sl->outerRadius()), 0);
+			SL->Direction.normalize();
+			break;
+		}
+		case BaseLight::POINT:
+			break;
 		}
 	}
 
@@ -110,7 +111,6 @@ void ShaderLightMapper::activate()
 
 void ShaderLightMapper::deactivate()
 {
-
 }
 
 void ShaderLightMapper::clear()

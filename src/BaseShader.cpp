@@ -7,10 +7,11 @@
 //
 
 #include "BaseShader.h"
+#include "ShaderLightMapper.h"
 
 const BaseShader* BaseShader::ShaderInPipe = NULL;
 
-BaseShader::BaseShader()
+BaseShader::BaseShader() : LightUniformBuffer(GL_INVALID_INDEX)
 {
     ModelTransform.identity();
 }
@@ -59,7 +60,7 @@ GLuint BaseShader::createShaderProgram(const char* VScode, const char* FScode)
     if (Error != 0)
     {
         std::cout << "Unable to create shader objects. Please ensure that the Shader is used for the first time AFTER successful creation of an OpenGL context!";
-        exit(0);
+        throw std::exception();
     }
 
     glShaderSource(VS, 1, &VScode, NULL);
@@ -91,7 +92,7 @@ GLuint BaseShader::createShaderProgram(const char* VScode, const char* FScode)
     {
         // compilation failed
         std::cout << ShaderLog;
-        exit(0);
+        throw std::exception();
     }
 
     ShaderProgram = glCreateProgram();
@@ -105,14 +106,20 @@ GLuint BaseShader::createShaderProgram(const char* VScode, const char* FScode)
 
     glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
     if (Success == GL_FALSE)
-        glGetShaderInfoLog(ShaderProgram, LogSize - WrittenToLog, NULL, &ShaderLog[WrittenToLog]);
+    {
+        GLsizei Written = 0;
+        glGetProgramInfoLog(ShaderProgram, LogSize - WrittenToLog, &Written, &ShaderLog[WrittenToLog]);
+        WrittenToLog += Written;
+    }
 
     if (WrittenToLog > 0)
     {
         // compilation failed
         std::cout << ShaderLog;
-        exit(0);
+        throw std::exception();
     }
+
+    LightUniformBuffer = getBlockID("Lights");
     return ShaderProgram;
 }
 
@@ -143,7 +150,11 @@ char* BaseShader::loadFile(const char* File, unsigned int& Filesize)
 void BaseShader::activate(const BaseCamera& Cam) const
 {
     if (ShaderInPipe != this)
+    {
         glUseProgram(ShaderProgram);
+        if (LightUniformBuffer != GL_INVALID_INDEX)
+            setBlock(LightUniformBuffer, ShaderLightMapper::instance().uniformBlockID());
+    }
     ShaderInPipe = this;
 }
 
@@ -152,6 +163,17 @@ void BaseShader::deactivate() const
 {
     glUseProgram(0);
 }
+
+GLuint BaseShader::getBlockID(const char* BlockName) const
+{
+    return glGetUniformBlockIndex(ShaderProgram, BlockName);
+}
+
+void BaseShader::setBlock(GLuint ID, GLuint UniformBufferID) const
+{
+    glBindBufferBase(GL_UNIFORM_BUFFER, ID, UniformBufferID);
+}
+
 
 GLint BaseShader::getParameterID(const char* ParamenterName) const
 {

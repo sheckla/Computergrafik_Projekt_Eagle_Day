@@ -21,6 +21,7 @@ Framebuffer::~Framebuffer()
 
 }
 
+
 bool Framebuffer::create(bool CreateDepthTarget, unsigned int Width, unsigned int Height)
 {
     glGenFramebuffers(1, &m_FramebufferID);
@@ -51,7 +52,6 @@ bool Framebuffer::create(bool CreateDepthTarget, unsigned int Width, unsigned in
     return true;
 }
 
-
 bool Framebuffer::attachColorTarget( const Texture& Tex)
 {
     assert(Tex.width() == width() && Tex.height() == height() );
@@ -75,8 +75,6 @@ void Framebuffer::activate()
     glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
     GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     assert(Status==GL_FRAMEBUFFER_COMPLETE);
-
-    
 }
 void Framebuffer::deactivate()
 {

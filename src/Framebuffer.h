@@ -29,6 +29,7 @@ public:
     ~Framebuffer();
     
     bool create(bool CreateDepthTarget=true, unsigned int Width=0, unsigned int Height=0);
+
     bool attachColorTarget( const Texture& Tex);
     bool detachColorTarget();
     const Texture* getAttachedTexture() { return m_pTexture; }

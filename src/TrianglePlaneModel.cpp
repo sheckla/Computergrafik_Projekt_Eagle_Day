@@ -57,6 +57,10 @@ TrianglePlaneModel::TrianglePlaneModel( float DimX, float DimZ, int NumSegX, int
             IB.addIndex( idx + NumSegX );
         }
     IB.end();
+
+    AABB boundingBox;
+    boundingBox = AABB(-DimX/2, 0, -DimZ/2, DimX/2, 0, DimZ/2);
+    this->BoundingBox = boundingBox;
 }
 
 void TrianglePlaneModel::draw( const BaseCamera& Cam )
@@ -71,4 +75,9 @@ void TrianglePlaneModel::draw( const BaseCamera& Cam )
     IB.deactivate();
     VB.deactivate();
     
+}
+
+const AABB& TrianglePlaneModel::boundingBox() const
+{
+    return this->BoundingBox;
 }

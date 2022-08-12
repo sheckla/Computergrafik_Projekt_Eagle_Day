@@ -14,7 +14,7 @@ public:
 		SPOT
 	};
 
-	BaseLight(const Vector& p = Vector(10, 10, 10), const Color& c = ::Color(1, 1, 1)) : Position(p), Col(c), Attenuation(1,0,0), ShadowCaster(false) {}
+	BaseLight(const Vector& p = Vector(10, 10, 10), const Color& c = ::Color(1, 1, 1)) : Position(p), Col(c), Attenuation(1, 0, 0), ShadowCaster(false) {}
 	virtual ~BaseLight() {}
 
 	const Vector& position() const { return Position; }
@@ -26,8 +26,8 @@ public:
 	const Color& color() const { return Col; }
 	void color(const Color& c) { Col = c; }
 
-	bool castShadows() const { return type() == POINT ? false : ShadowCaster;  }
-	void castShadows(bool b) { type()==POINT ? ShadowCaster = false : ShadowCaster = b;  }
+	bool castShadows() const { return type() == POINT ? false : ShadowCaster; }
+	void castShadows(bool b) { type() == POINT ? ShadowCaster = false : ShadowCaster = b; }
 
 	virtual LightType type() const = 0;
 
@@ -41,7 +41,7 @@ protected:
 class PointLight : public BaseLight
 {
 public:
-	PointLight(const Vector& p = Vector(10, 10, 10), const Color& c = ::Color(1, 1, 1)) : BaseLight(p,c) {}
+	PointLight(const Vector& p = Vector(10, 10, 10), const Color& c = ::Color(1, 1, 1)) : BaseLight(p, c) {}
 	virtual ~PointLight() {}
 
 	virtual LightType type() const { return POINT; }
@@ -50,7 +50,7 @@ public:
 class DirectionalLight : public BaseLight
 {
 public:
-	DirectionalLight(const Vector& d = Vector(-1, -1, -1), const Color& c = ::Color(1, 1, 1)) : BaseLight(Vector(10,10,10), c), Direction(d) {}
+	DirectionalLight(const Vector& d = Vector(-1, -1, -1), const Color& c = ::Color(1, 1, 1)) : BaseLight(Vector(10, 10, 10), c), Direction(d) {}
 	virtual ~DirectionalLight() {}
 
 	virtual LightType type() const { return DIRECTIONAL; }

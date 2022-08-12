@@ -8,8 +8,11 @@
 
 #include "LinePlaneModel.h"
 
+#include "Globals.h"
+
 LinePlaneModel::LinePlaneModel( float DimX, float DimZ, int NumSegX, int NumSegZ )
 {
+    print("loading LinePlaneModel", "");
     VB.begin();
     
     float StepX = DimX / (float)NumSegX;

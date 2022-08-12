@@ -283,7 +283,7 @@ void VertexBuffer::activate()
     
     
 
-    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindVertexArray(VAO);
     
 }
