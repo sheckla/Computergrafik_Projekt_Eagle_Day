@@ -5,6 +5,7 @@
 
 CloudShader::CloudShader() : PhongShader()
 {
+    std::cout << "[Clouds] Loading Volumetric Clouds..." << std::endl;
     // cloud fragment/vertex 
     std::string assets = ASSETS;
     std::string VSFile = assets + "vscloud.glsl";
@@ -13,7 +14,7 @@ CloudShader::CloudShader() : PhongShader()
     // debug - max_layers
     GLint max_layers;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &max_layers);
-    std::cout << max_layers;
+    //std::cout << max_layers<<std::endl;
 
     if (!load(VSFile.c_str(), FSFile.c_str()))
         throw std::exception();
@@ -31,10 +32,11 @@ CloudShader::CloudShader() : PhongShader()
         DetailTex[i] = NULL;
         std::string s;
         s += "DetailTex[" + std::to_string(i) + "]";
-        std::cout << s << std::endl;
+        //std::cout << s << std::endl;
         DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
         DetailTexLoc[i] = getParameterID(s.c_str());
     }
+    std::cout << "[Clouds] Loading done..." << std::endl;
 }
 
 CloudShader::~CloudShader()
@@ -63,6 +65,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
     setParameter(ProjectionMatrixLoc, ip);
     setParameter(boundsMinLoc, bounds->Min);
     setParameter(boundsMaxLoc, bounds->Max);
+
 }
 
 void CloudShader::deactivate() const

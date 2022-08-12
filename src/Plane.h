@@ -16,6 +16,8 @@
 #include "Model.h"
 #include "Camera.h"
 #include "PhongShader.h"
+#include <stdlib.h>
+#include "NetworkSender.h"
 
 constexpr float EPSILON = 1e-4f; 
 constexpr int PLANE_PARTS = 7;
@@ -93,6 +95,7 @@ public:
 	* Optimisierung: Nur die benötigten Teile der Texturen laden
 	*/
 	Plane(const char* path);
+	Plane(const char* srv_Adr, int port);
 
 	virtual ~Plane();
 	void update(double delta);
@@ -103,6 +106,8 @@ public:
 	void tiltRudder(float i);
 	Model** getParts();
 	float getSpeed() const;
+
+	NetworkSender* Sender;
 };
 
 #endif

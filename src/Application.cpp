@@ -53,6 +53,21 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     this->buffer.create(true, 1920, 1080);
     this->buffer.attachColorTarget(tex);
     this->screen = ScreenQuadModel();
+    std::cout << "[Eagle Day Application] Starting..." << std::endl;
+   
+    //loadLinePlane();
+    //loadSimpleWater();
+    //loadBattleship();
+    loadPlane("127.0.0.1", 19411);
+    loadSkyBox();
+    loadClouds();
+    
+    pEnemy = new EnemyPlane("127.0.0.1", 19413);
+    pEnemy->loadModels(ASSETS "models/messerschmitt");
+    Models.push_back(pEnemy);
+    
+    std::cout << "------------------------------------------------------------------------" << std::endl;
+}
 
 
     // Models
@@ -92,11 +107,28 @@ void Application::createShadowTestScene()
     pModel->shader(new PhongShader(), true);
     Models.push_back(pModel);
     pModel->transform(Matrix().translation(Vector(0.25, 1, 1)));
+    Matrix m;
+    m.translation(Vector(9.94f*2 * SxS /2 - 9.94f*2 / 2, 0, 9.94f *2 * SxS / 2 - 9.94f*2 / 2));
+    lpm->transform(m);
+}
+
+void Application::loadClouds() {
+    VolumetricCloudsLoader* vcs_loader;
+    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
+    std::vector<CloudBox*> clouds = vcs_loader->createClouds(990,40,990);
 
     pModel = new Model(ASSETS "models/spitfire/backwing_right.obj");
     pModel->shader(new PhongShader(), true);
     pModel->transform(Matrix().translation(Vector(0, 1, 1)));
     Models.push_back(pModel);
+    for (auto cloud : clouds) {
+        Models.push_back(cloud);
+        Matrix m;
+        m.translation(Vector(0, 100, 0));
+        cloud->transform(m);
+    }
+    Cam.setPosition(Vector(10, 5, 10));
+}
 
 	pModel = new Model(ASSETS "models/spitfire/backwing_right.obj");
     pModel->shader(new PhongShader(), true);
@@ -141,6 +173,14 @@ void Application::update(float dtime)
     if (ModelLoader::pPlayerPlane) {
 		planeControls->update(deltaTime);
     }
+     //Spitfire Controls
+     //PlayerPlaneControls player(pWindow, pPlane, &Cam);
+     //player.update(deltaTime);
+
+    this->pPlane->Sender->SendData(&Cam);
+    this->pEnemy->update(deltaTime);
+
+    //std::cout <<"[AppLoop] " << this->pEnemy->Enemy_Position.X << " | " << this->pEnemy->Enemy_Position.Y << " | " << this->pEnemy->Enemy_Position.Z << std::endl;
 
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);

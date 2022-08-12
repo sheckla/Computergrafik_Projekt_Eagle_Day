@@ -17,108 +17,197 @@ CloudBox::CloudBox(float Width, float Height, float Depth, bool bottomOff, bool 
 
     VB.begin();
     // bottom
-    if (!bottomOff) {
-        VB.addNormal(0, 0, -1);
-        VB.addTexcoord0(0, 1);
-        VB.addTexcoord0(1, 1);
-        VB.addTexcoord0(1, 0);
-        VB.addTexcoord0(0, 0);
-        VB.addVertex(D);
-        VB.addVertex(C);
-        VB.addVertex(B);
-        VB.addVertex(A);
-    }
+    VB.addNormal(0, 1, 0);
+    VB.addTexcoord0(0, 0);
+    VB.addVertex(D); // 0
+
+    VB.addTexcoord0(1, 0);
+    VB.addVertex(C); // 1
+
+    VB.addTexcoord0(0, 1);
+    VB.addVertex(A); // 2
+
+    VB.addTexcoord0(1, 1);
+    VB.addVertex(B); // 3
 
     // top
-    if (!topOff) {
-        VB.addNormal(0, 0, 1);
-        VB.addTexcoord0(0, 1);
-        VB.addTexcoord0(1, 1);
-        VB.addTexcoord0(1, 0);
-        VB.addTexcoord0(0, 0);
-        VB.addVertex(E);
-        VB.addVertex(F);
-        VB.addVertex(G);
-        VB.addVertex(H);
-    }
+    VB.addNormal(0, -1, 0);
+    VB.addTexcoord0(0, 0);
+    VB.addVertex(H); // 4
+
+    VB.addTexcoord0(1, 0);
+    VB.addVertex(G); // 5
+
+    VB.addTexcoord0(0, 1);
+    VB.addVertex(E); // 6
+
+    VB.addTexcoord0(1, 1);
+    VB.addVertex(F); // 7
 
     // front
-    if (!frontOff) {
-        VB.addNormal(0, 0, -1);
-        VB.addTexcoord0(0, 1);
-        VB.addTexcoord0(1, 1);
-        VB.addTexcoord0(1, 0);
-        VB.addTexcoord0(0, 0);
-        VB.addVertex(A);
-        VB.addVertex(B);
-        VB.addVertex(F);
-        VB.addVertex(E);
-    }
+    VB.addNormal(0, 0, 1);
+    VB.addTexcoord0(1, 1);
+    VB.addVertex(A); // 8
+
+    VB.addTexcoord0(0, 1);
+    VB.addVertex(B); // 9
+
+    VB.addTexcoord0(1, 0);
+    VB.addVertex(E); // 10
+
+    VB.addTexcoord0(0, 0);
+    VB.addVertex(F); // 11
 
     // back
-    if (!backOff) {
-        VB.addNormal(0, 0, -1);
-        VB.addTexcoord0(0, 1);
-        VB.addTexcoord0(1, 1);
-        VB.addTexcoord0(1, 0);
-        VB.addTexcoord0(0, 0);
-        VB.addVertex(C);
-        VB.addVertex(D);
-        VB.addVertex(H);
-        VB.addVertex(G);
-    }
+    VB.addNormal(0, 0, -1);
+    VB.addTexcoord0(1, 1);
+    VB.addVertex(D); // 12
+
+    VB.addTexcoord0(0, 1);
+    VB.addVertex(C); // 13
+
+    VB.addTexcoord0(1, 0);
+    VB.addVertex(H); // 14
+
+    VB.addTexcoord0(0, 0);
+    VB.addVertex(G); // 15
 
     // right
-    if (!rightOff) {
-        VB.addNormal(1, 0, 0);
-        VB.addTexcoord0(0, 1);
-        VB.addTexcoord0(1, 1);
-        VB.addTexcoord0(1, 0);
-        VB.addTexcoord0(0, 0);
-        VB.addVertex(B);
-        VB.addVertex(C);
-        VB.addVertex(G);
-        VB.addVertex(F);
-    }
+    VB.addNormal(1, 0, 0);
+    VB.addTexcoord0(0, 0);
+    VB.addVertex(F); // 16
+
+    VB.addTexcoord0(1, 0);
+    VB.addVertex(G); // 17
+
+    VB.addTexcoord0(0, 1);
+    VB.addVertex(B); // 18
+
+    VB.addTexcoord0(1, 1);
+    VB.addVertex(C); // 19
 
     // left
-    if (!leftOff) {
-        VB.addNormal(-1, 0, 0);
-        VB.addTexcoord0(0, 1);
-        VB.addTexcoord0(1, 1);
-        VB.addTexcoord0(1, 0);
-        VB.addTexcoord0(0, 0);
-        VB.addVertex(D);
-        VB.addVertex(A);
-        VB.addVertex(E);
-        VB.addVertex(H);
-    }
+    VB.addNormal(-1, 0, 0);
+    VB.addTexcoord0(0, 0);
+    VB.addVertex(E); // 20
+
+    VB.addTexcoord0(1, 0);
+    VB.addVertex(H); // 21
+
+    VB.addTexcoord0(0, 1);
+    VB.addVertex(A); // 22
+
+    VB.addTexcoord0(1, 1);
+    VB.addVertex(D); // 23
 
     VB.end();
 
     IB.begin();
-    // Indexbuffer
-    int sum = bottomOff + topOff + frontOff + backOff + rightOff + leftOff;
-    for (size_t i = 0; i <= 20 - (4 * sum); i += 4)
-    {
-        IB.addIndex(i + 0);
-        IB.addIndex(i + 1);
-        IB.addIndex(i + 2);
+    // bottom
+    IB.addIndex(0);
+    IB.addIndex(1);
+    IB.addIndex(2);
+    IB.addIndex(2);
+    IB.addIndex(1);
+    IB.addIndex(3);
 
-        IB.addIndex(i + 0);
-        IB.addIndex(i + 2);
-        IB.addIndex(i + 3);
 
-        /*IB.addIndex(i + 2);
-        IB.addIndex(i + 1);
-        IB.addIndex(i + 0);
 
-        IB.addIndex(i + 3);
-        IB.addIndex(i + 2);
-        IB.addIndex(i + 0);*/
-    }
+    IB.addIndex(1);
+    IB.addIndex(0);
+    IB.addIndex(2);
+    IB.addIndex(2);
+    IB.addIndex(3);
+    IB.addIndex(1);
+
+
+
+    // top 
+    IB.addIndex(7);
+    IB.addIndex(5);
+    IB.addIndex(4);
+    IB.addIndex(4);
+    IB.addIndex(6);
+    IB.addIndex(7);
+
+
+
+    IB.addIndex(7);
+    IB.addIndex(4);
+    IB.addIndex(5);
+    IB.addIndex(6);
+    IB.addIndex(4);
+    IB.addIndex(7);
+
+
+
+    //front
+    IB.addIndex(10);
+    IB.addIndex(8);
+    IB.addIndex(9);
+    IB.addIndex(9);
+    IB.addIndex(11);
+    IB.addIndex(10);
+
+
+    IB.addIndex(8);
+    IB.addIndex(10);
+    IB.addIndex(9);
+    IB.addIndex(9);
+    IB.addIndex(10);
+    IB.addIndex(11);
+
+    //back
+    IB.addIndex(13);
+    IB.addIndex(14);
+    IB.addIndex(15);
+    IB.addIndex(13);
+    IB.addIndex(12);
+    IB.addIndex(14);
+
+
+    IB.addIndex(14);
+    IB.addIndex(13);
+    IB.addIndex(15);
+    IB.addIndex(13);
+    IB.addIndex(14);
+    IB.addIndex(12);
+
+    // right
+    IB.addIndex(16);
+    IB.addIndex(18);
+    IB.addIndex(19);
+    IB.addIndex(19);
+    IB.addIndex(17);
+    IB.addIndex(16);
+
+
+
+    IB.addIndex(18);
+    IB.addIndex(16);
+    IB.addIndex(19);
+    IB.addIndex(17);
+    IB.addIndex(19);
+    IB.addIndex(16);
+
+    // left
+    IB.addIndex(23);
+    IB.addIndex(22);
+    IB.addIndex(21);
+    IB.addIndex(22);
+    IB.addIndex(20);
+    IB.addIndex(21);
+
+
+    IB.addIndex(22);
+    IB.addIndex(23);
+    IB.addIndex(21);
+    IB.addIndex(22);
+    IB.addIndex(21);
+    IB.addIndex(20);
+
     IB.end();
-    this->bounds = AABB(Vector(-x, -y, -z), Vector(x, y, z));
+
 }
 
 void CloudBox::draw(const BaseCamera& Cam)
@@ -157,7 +246,7 @@ void CloudBox::load(const char* worleyPath, const char* noisePath)
         if (!DetailTex[i].load(s.c_str())) {
             std::cout << "load error!" << std::endl;
         }
-        std::cout << s << std::endl;
+        //std::cout << s << std::endl;
         ss.str("");
     }
 

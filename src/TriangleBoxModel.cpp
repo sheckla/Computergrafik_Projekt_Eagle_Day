@@ -19,7 +19,7 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 {
 
     /// TODO: Add your code (Exercise 2)
-
+    //
     float x = Width / 2;
     float y = Height / 2;
     float z = Depth / 2;

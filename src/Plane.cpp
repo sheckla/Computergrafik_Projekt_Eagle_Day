@@ -1,5 +1,6 @@
 #include "PlaneLoader.h"
 #include "Printer.h"
+#include "NetworkSender.h"
 
 float Plane::speedPercentage() const
 {
@@ -67,6 +68,7 @@ Plane::Plane(const char* path)
 	{
 		throw "err";
 	}
+	Sender = new NetworkSender(srv_Adr, port);
 }
 
 Plane::~Plane()

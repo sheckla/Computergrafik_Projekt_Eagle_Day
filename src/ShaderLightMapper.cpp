@@ -1,3 +1,4 @@
+/*
 #include "ShaderLightMapper.h"
 #include "BaseShader.h"
 #define _USE_MATH_DEFINES
@@ -120,3 +121,4 @@ void ShaderLightMapper::clear()
 
 	Lights.clear();
 }
+*/
