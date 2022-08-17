@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\Aabb.cpp" />
     <ClCompile Include="..\..\src\Application.cpp" />
+    <ClCompile Include="..\..\src\AudioManager.cpp" />
     <ClCompile Include="..\..\src\BaseModel.cpp" />
     <ClCompile Include="..\..\src\BaseShader.cpp" />
     <ClCompile Include="..\..\src\Camera.cpp" />
@@ -111,6 +112,9 @@
     <ClCompile Include="..\..\src\MouseLogger.cpp" />
     <ClCompile Include="..\..\src\NetworkConnector.cpp" />
     <ClCompile Include="..\..\src\NetworkSender.cpp" />
+    <ClCompile Include="..\..\src\ParticleInstance.cpp" />
+    <ClCompile Include="..\..\src\ParticleLoader.cpp" />
+    <ClCompile Include="..\..\src\ParticleSprite.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
     <ClCompile Include="..\..\src\PlaneLoaderImpl.cpp" />
@@ -121,8 +125,8 @@
     <ClCompile Include="..\..\src\ScreenQuadModel.cpp" />
     <ClCompile Include="..\..\src\ShaderLightMapper.cpp" />
     <ClCompile Include="..\..\src\ShadowMapGenerator.cpp" />
-    <ClCompile Include="..\..\src\Terrain.cpp" />
-    <ClCompile Include="..\..\src\TerrainShader.cpp" />
+    <ClCompile Include="..\..\src\OceanSegment.cpp" />
+    <ClCompile Include="..\..\src\OceanShader.cpp" />
     <ClCompile Include="..\..\src\Texture.cpp" />
     <ClCompile Include="..\..\src\TextureShader.cpp" />
     <ClCompile Include="..\..\src\TriangleBoxModel.cpp" />
@@ -136,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\Aabb.h" />
     <ClInclude Include="..\..\src\Application.h" />
+    <ClInclude Include="..\..\src\AudioManager.h" />
     <ClInclude Include="..\..\src\BaseModel.h" />
     <ClInclude Include="..\..\src\BaseShader.h" />
     <ClInclude Include="..\..\src\Camera.h" />
@@ -160,6 +165,9 @@
     <ClInclude Include="..\..\src\MouseLogger.h" />
     <ClInclude Include="..\..\src\NetworkConnector.h" />
     <ClInclude Include="..\..\src\NetworkSender.h" />
+    <ClInclude Include="..\..\src\ParticleInstance.h" />
+    <ClInclude Include="..\..\src\ParticleLoader.h" />
+    <ClInclude Include="..\..\src\ParticleSprite.h" />
     <ClInclude Include="..\..\src\PhongShader.h" />
     <ClInclude Include="..\..\src\Plane.h" />
     <ClInclude Include="..\..\src\PlaneLoader.h" />
@@ -172,8 +180,8 @@
     <ClInclude Include="..\..\src\ShaderLightMapper.h" />
     <ClInclude Include="..\..\src\ShadowMapGenerator.h" />
     <ClInclude Include="..\..\src\StringUtils.h" />
-    <ClInclude Include="..\..\src\Terrain.h" />
-    <ClInclude Include="..\..\src\TerrainShader.h" />
+    <ClInclude Include="..\..\src\OceanSegment.h" />
+    <ClInclude Include="..\..\src\OceanShader.h" />
     <ClInclude Include="..\..\src\Texture.h" />
     <ClInclude Include="..\..\src\TextureShader.h" />
     <ClInclude Include="..\..\src\TriangleBoxModel.h" />

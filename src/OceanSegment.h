@@ -1,5 +1,5 @@
-#ifndef Terrain_hpp
-#define Terrain_hpp
+#ifndef OceanSegment_hpp
+#define OceanSegment_hpp
 
 #include <stdio.h>
 #include "basemodel.h"
@@ -7,19 +7,19 @@
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
 #include "HeightMapStorage.h"
-#include "TerrainShader.h"
+#include "OceanShader.h"
 
-class Terrain : public BaseModel
+class OceanSegment : public BaseModel
 {
 public:
-    Terrain(HeightMapStorage* hms,int resolution,const char* HeightMap=NULL, const char* DetailMap1=NULL, const char* DetailMap2=NULL);
-    virtual ~Terrain();
+    OceanSegment(HeightMapStorage* hms,int resolution,const char* HeightMap=NULL, const char* DetailMap1=NULL, const char* DetailMap2=NULL);
+    virtual ~OceanSegment();
     bool load();
 
     virtual void shader( BaseShader* shader, bool deleteOnDestruction=false );
     virtual void draw(const BaseCamera& Cam);
     
-    void update();
+    void update(double deltaTime);
     float width() const { return Size.X; }
     float height() const { return Size.Y; }
     float depth() const { return Size.Z; }
@@ -51,10 +51,9 @@ protected:
     int Resolution;
 
 private:
-    //Texture Water_Frames[100];
     HeightMapStorage* HeightMaps;
 };
 
 
 
-#endif /* Terrain_hpp */
+#endif /* OceanSegment_hpp */

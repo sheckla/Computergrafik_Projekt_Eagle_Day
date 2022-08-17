@@ -24,6 +24,7 @@ bool GUILoader::crossHair()
 	gTex->startIsCenter(true);
 	gTex->followMouse(true);
 	guis->push_back(gTex);
+	return false;
 }
 
 bool GUILoader::GUI()

@@ -3,23 +3,25 @@
 
 #include <stdio.h>
 #include "Application.h"
-#include "Globals.h"
 #include "EnemyPlane.h"
-//#pragma comment(lib,"ws2_32.lib") //Winsock Library
+#include <winsock2.h>
+#include <Ws2tcpip.h>
 
 
-class EnemyPlane;
+//class EnemyPlane;
 
 class NetworkConnector
 {
 public:
-    NetworkConnector(EnemyPlane &, const char* srv_Adr, int port);
+    NetworkConnector(EnemyPlane &Enemy, const char* srv_Adr, int port);
     void Connection(EnemyPlane &enemy);
 private:
     void WinSockSettings();
     int PORT;
     const char* Server_Address;
     void ReadAndSetData(char* buf, EnemyPlane* enemy);
+    bool hasRecievedDummyData = false;
+    bool hasRecievedActualData = false;
 };
 
 

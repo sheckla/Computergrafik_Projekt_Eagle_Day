@@ -3,8 +3,8 @@
 
 #include "WaterLoader.h";
 #include "Globals.h"
-#include "Terrain.h"
-#include "TerrainShader.h"
+#include "OceanSegment.h"
+#include "OceanShader.h"
 #include <stdio.h>
 #include <string>
 #include <thread>
@@ -13,23 +13,26 @@
 class WaterLoaderImpl : public WaterLoader
 {
 private:
-	Terrain* water[80][80];
-	Terrain* OceanCenter;
+	OceanSegment* water[80][80];
+	OceanSegment* OceanCenter;
 	HeightMapStorage* heightMaps;
-	TerrainShader* pTerrainShader;
+	OceanShader* pTerrainShader;
 	double last = 0;
 	std::list<BaseModel*> Models;
 
 public:
 	WaterLoaderImpl();
 	~WaterLoaderImpl();
-	Terrain* createWater(std::list<BaseModel*> models);
+
+	OceanSegment* createWater(std::list<BaseModel*>* models);
 
 	void generateSegment(int i, int j, int resolution);
 
 	void createOceanSegments();
 
-	void TestMethode(int num);
+	void OceanLoaderThread(int num);
+
+	void updateOcean(Camera* cam, double deltaTime);
 
 };
 

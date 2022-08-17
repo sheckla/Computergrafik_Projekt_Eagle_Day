@@ -6,7 +6,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 {
 	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
 
-	Enemy_Position = Vector(-1, 3, -2.0f);
+	Vector Enemy_Position = Vector(-1, 3, -2.0f);
 	
 	Matrix m, r, s;
 
@@ -15,6 +15,8 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	s.scale(.8f);
 
 	this->transform(m * r * s);
+
+	Enemy_Tranformation.identity();
 	NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
 	
 }
@@ -27,15 +29,21 @@ void EnemyPlane::draw(const BaseCamera& cam)
 
 }
 
-void EnemyPlane::update(double delta) 
+void EnemyPlane::update(double delta)
 {
-	Matrix OnlineMovement;
-
-	/* Get Values here */
-	OnlineMovement.translation(this->Enemy_Position);
-	/* Apply active Values here */
-	this->model->transform(OnlineMovement);
-
+	if(Enemy_Tranformation_Validation==true) //Last update is current
+	{
+		this->model->transform(Enemy_Tranformation);
+	}
+	else
+	{
+		//Motion Estimate!
+		Matrix forward;
+		forward.translation(Vector(0, 0, Enemy_Speed * delta));
+		this->model->transform(this->model->transform() * forward);
+		//std::cout << "[Enemy] Last update one frame behind: <Motion Estimate>" << std::endl;
+	}
+	Enemy_Tranformation_Validation = false;
 }
 
 void EnemyPlane::loadModels(const char* path)

@@ -1,12 +1,12 @@
-#ifndef TerrainShader_hpp
-#define TerrainShader_hpp
+#ifndef OceanShader_hpp
+#define OceanShader_hpp
 
 #include <stdio.h>
 #include <assert.h>
 #include "PhongShader.h"
 
 
-class TerrainShader : public PhongShader
+class OceanShader : public PhongShader
 {
 public:
     enum {
@@ -15,8 +15,8 @@ public:
         DETAILTEX_COUNT
     };
     
-    TerrainShader(const std::string& AssetDirectory);
-    virtual ~TerrainShader() { std::cout << "DELETED!" << std::endl; }
+    OceanShader(const std::string& AssetDirectory);
+    virtual ~OceanShader() { std::cout << "DELETED!" << std::endl; }
     virtual void activate(const BaseCamera& Cam) const;
     virtual void deactivate() const;
     
@@ -48,4 +48,4 @@ private:
     GLint DetailTexKLoc; // DetailText Multiplier
 };
 
-#endif /* TerrainShader_hpp */
+#endif /* OceanShader_hpp */

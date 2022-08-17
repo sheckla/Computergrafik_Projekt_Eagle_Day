@@ -31,7 +31,11 @@
 #include "GUILoader.h"
 #include "MouseLogger.h"
 #include "VolumetricCloudsLoaderImpl.h"
+#include "ParticleLoader.h"
+#include "AudioManager.h"
+#include "WaterLoaderImpl.h"
 
+#define online false
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
 {
@@ -52,15 +56,30 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     loader.loadDirLight();
     loader.loadSkyBox();
     loader.loadSimpleWater();
-    loader.loadPlaneParts();
-    loader.loadPlanePartsOnline("127.0.0.1", 19411);
-    loader.loadEnemyPlane("127.0.0.1", 19411);
+
+    if (!online) {
+        loader.loadPlaneParts();
+    }
+    else {
+        loader.loadPlanePartsOnline("127.0.0.1", 19411);
+        this->enemy = loader.loadEnemyPlane("127.0.0.1", 19413);
+    }
     loader.clouds();
 
     // Controls - PlayerPlane an controls anheften
     // -> CamFollowPlane = true setzen fuer verfolgende Kamera
     planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
+    particleSystem = new ParticleLoader(.02,.5); //TEXTURE IS STILL HARDCODED!! ERROR will happen!
+    soundManager = new AudioManager();
+    //soundManager->PlayAsync(L"C:/Users/Computer/Videos/Desktop/superbang.wav");
+
+    printDivider(70);
+
+    pWaterLoader = new WaterLoaderImpl();
+    pWaterLoader->createWater(&(this->Ocean)); //Writes Ocean-Segments into Ocean-Array
+    
+    printDivider(70);
     print("Application loading finished", "");
     printDivider(70);
 }
@@ -78,19 +97,24 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
+
+    //particleSystem->update(deltaTime, ModelLoader::pPlayerPlane->getPosition()); //Generates Particles
 
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(deltaTime);
+        if (online)this->enemy->update(deltaTime);
     }
+
+    //std::cout<<"Plane_Position: "<<ModelLoader::pPlayerPlane->getPosition().X <<" "<< ModelLoader::pPlayerPlane->getPosition().Y<<" "<< ModelLoader::pPlayerPlane->getPosition().Z<<std::endl;
 
     // Update Mouse-Pos
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
+    pWaterLoader->updateOcean(&Cam,deltaTime);
 
     Cam.update();
 }
@@ -104,11 +128,22 @@ void Application::draw()
     // Main Buffer - 3D Scene
     ppBuffer->preDraw();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    particleSystem->draw(Cam); //DRAW-PARTICLES
+
+    for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
+    {
+        (*it)->draw(Cam); //DRAW-OCEAN!
+    }
+
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
-        (*it)->draw(Cam);
+        (*it)->draw(Cam); //DRAW-MODELS!
     }
+
     ppBuffer->postDraw();
+
+
 
     // Post Processing
     ppBuffer->draw(Cam);

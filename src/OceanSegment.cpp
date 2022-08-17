@@ -1,9 +1,9 @@
-#include "Terrain.h"
+#include "OceanSegment.h"
 #include "rgbimage.h"
-#include "Terrainshader.h"
+#include "OceanShader.h"
 
 
-Terrain::Terrain(HeightMapStorage* hms,int resolution, const char* HeightMap, const char* DetailMap1, const char* DetailMap2) : Size(20, 1, 20),HeightMaps(hms),Resolution(resolution)
+OceanSegment::OceanSegment(HeightMapStorage* hms,int resolution, const char* HeightMap, const char* DetailMap1, const char* DetailMap2) : Size(20, 1, 20),HeightMaps(hms),Resolution(resolution)
 {
 	if (HeightMap && DetailMap1 && DetailMap2)
 	{
@@ -15,13 +15,13 @@ Terrain::Terrain(HeightMapStorage* hms,int resolution, const char* HeightMap, co
 	this->VB = new VertexBuffer;
 }
 
-Terrain::~Terrain()
+OceanSegment::~OceanSegment()
 {
 	//delete(Water_Frames);
 	std::cout << "DELETED!" << std::endl;
 }
 
-Vector& Terrain::convert_heightmap_color_to_vec(const RGBImage* img, int x, int y) const {
+Vector& OceanSegment::convert_heightmap_color_to_vec(const RGBImage* img, int x, int y) const {
 	float vec_x, vec_y, vec_z;
 
 	//      (      ratio[0,1]  *  scale           ) - (centralised offset)
@@ -31,7 +31,7 @@ Vector& Terrain::convert_heightmap_color_to_vec(const RGBImage* img, int x, int 
 	return Vector(vec_x, 0, vec_z);
 }
 
-bool Terrain::load()
+bool OceanSegment::load()
 {
 	int width = Resolution;
 	int height = Resolution;
@@ -102,12 +102,12 @@ bool Terrain::load()
 	return true;
 }
 
-void Terrain::shader(BaseShader* shader, bool deleteOnDestruction)
+void OceanSegment::shader(BaseShader* shader, bool deleteOnDestruction)
 {
 	BaseModel::shader(shader, deleteOnDestruction);
 }
 
-void Terrain::draw(const BaseCamera& Cam)
+void OceanSegment::draw(const BaseCamera& Cam)
 {
 	applyShaderParameter();
 	BaseModel::draw(Cam);
@@ -125,9 +125,9 @@ void Terrain::draw(const BaseCamera& Cam)
 
 }
 
-void Terrain::applyShaderParameter()
+void OceanSegment::applyShaderParameter()
 {
-	TerrainShader* Shader = dynamic_cast<TerrainShader*>(BaseModel::shader());
+	OceanShader* Shader = dynamic_cast<OceanShader*>(BaseModel::shader());
 	if (!Shader)
 		return;
 
@@ -143,4 +143,9 @@ void Terrain::applyShaderParameter()
 	Shader->scaling(Size);
 
 	// TODO: add additional parameters if needed..
+}
+
+void OceanSegment::update(double deltaTime)
+{
+	
 }

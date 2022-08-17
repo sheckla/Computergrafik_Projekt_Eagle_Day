@@ -182,10 +182,10 @@ bool ModelLoader::clouds()
     return true;
 }
 
-bool ModelLoader::loadEnemyPlane(std::string ip, int port)
+EnemyPlane* ModelLoader::loadEnemyPlane(std::string ip, int port)
 {
     EnemyPlane* ep = new EnemyPlane(ip.c_str(), port);
     ep->loadModels(ASSETS "models/messerschmitt");
     Models->push_back(ep);
-    return true;
+    return ep;
 }

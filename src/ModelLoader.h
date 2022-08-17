@@ -5,6 +5,7 @@
 
 #include "BaseModel.h"
 #include "Plane.h"
+#include "EnemyPlane.h"
 
 class ModelLoader
 {
@@ -12,6 +13,7 @@ class ModelLoader
     static ModelLoader* pModelLoader;
 public:
     static Plane* pPlayerPlane;
+
     static std::list<BaseModel*>* Models;
 
     static ModelLoader& instance();
@@ -26,7 +28,7 @@ public:
     static bool loadClouds();
     static bool loadSphere();
     static bool loadSimpleWater();
-    static bool loadEnemyPlane(std::string ip, int port);
+    static EnemyPlane* loadEnemyPlane(std::string ip, int port);
     static bool clouds();
 
 };

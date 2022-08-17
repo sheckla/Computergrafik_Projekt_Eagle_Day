@@ -1,7 +1,7 @@
-#include "TerrainShader.h"
+#include "OceanShader.h"
 #include <string>
 
-TerrainShader::TerrainShader(const std::string& AssetDirectory) : PhongShader(), 
+OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
 Scaling(1, 1, 1), MixTex(NULL)
 {
     std::string VSFile = AssetDirectory + "vsterrain.glsl";
@@ -26,7 +26,7 @@ Scaling(1, 1, 1), MixTex(NULL)
 
 }
 
-void TerrainShader::activate(const BaseCamera& Cam) const
+void OceanShader::activate(const BaseCamera& Cam) const
 {
     PhongShader::activate(Cam);
     //std::cout << "Scaling of shader: " << this->Scaling << "\n";
@@ -41,7 +41,7 @@ void TerrainShader::activate(const BaseCamera& Cam) const
     setParameter(ResolutionLoc, Resolution);
 }
 
-void TerrainShader::deactivate() const
+void OceanShader::deactivate() const
 {
     PhongShader::deactivate();
     for (int i = DETAILTEX_COUNT - 1; i >= 0; i--)
@@ -49,7 +49,7 @@ void TerrainShader::deactivate() const
     if (MixTex) MixTex->deactivate();
 }
 
-void TerrainShader::activateTex(const Texture* pTex, GLint Loc, int slot) const
+void OceanShader::activateTex(const Texture* pTex, GLint Loc, int slot) const
 {
     if (pTex && Loc >= 0)
     {

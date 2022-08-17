@@ -106,8 +106,10 @@ public:
 	void tiltRudder(float i);
 	Model** getParts();
 	float getSpeed() const;
+	Vector getPosition() { return Vector(parts[1]->transform().m03, parts[1]->transform().m13, parts[1]->transform().m23); }
 
 	NetworkSender* Sender;
+	bool Online_Mode = false;
 };
 
 #endif

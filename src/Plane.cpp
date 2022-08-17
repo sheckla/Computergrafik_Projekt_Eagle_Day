@@ -1,6 +1,7 @@
 #include "PlaneLoader.h"
 #include "Printer.h"
 #include "NetworkSender.h"
+#include "Plane.h"
 
 float Plane::speedPercentage() const
 {
@@ -78,6 +79,7 @@ Plane::Plane(const char* path, const char* srv_Adr, int port)
 		throw "err";
 	}
 	Sender = new NetworkSender(srv_Adr, port);
+	Online_Mode = true;
 }
 
 Plane::~Plane()
@@ -186,6 +188,8 @@ void Plane::update(double delta)
 	print("flap left", this->leftFlapsTilt);
 	print("speed", speedPercentage());
 	print("speedval", this->speed);*/
+
+	if (Online_Mode)Sender->SendData(this);
 }
 
 // Spitfire max km/h = 594
