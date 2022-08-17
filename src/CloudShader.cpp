@@ -2,6 +2,7 @@
 #include "Matrix.h"
 #include <sstream>
 
+float CloudShader::TimeTranslation = 0.0f;
 
 CloudShader::CloudShader() : PhongShader()
 {
@@ -28,6 +29,8 @@ CloudShader::CloudShader() : PhongShader()
     boundsMaxLoc = glGetUniformLocation(ShaderProgram, "boundsMax");
     NoiseLoc = glGetUniformLocation(ShaderProgram, "noise");
 
+    TimeTranslationLoc = glGetUniformLocation(ShaderProgram, "TimeTranslation");
+
     for (int i = 0; i < WORLEY_AMOUNT; i++) {
         DetailTex[i] = NULL;
         std::string s;
@@ -36,6 +39,7 @@ CloudShader::CloudShader() : PhongShader()
         DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
         DetailTexLoc[i] = getParameterID(s.c_str());
     }
+    //TimeTranslation = 0;
     std::cout << "[Clouds] Loading done..." << std::endl;
 }
 
@@ -66,6 +70,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
     setParameter(boundsMinLoc, bounds->Min);
     setParameter(boundsMaxLoc, bounds->Max);
 
+    setParameter(TimeTranslationLoc, CloudShader::TimeTranslation);
 }
 
 void CloudShader::deactivate() const

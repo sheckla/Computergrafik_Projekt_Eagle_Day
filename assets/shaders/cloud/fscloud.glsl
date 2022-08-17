@@ -18,6 +18,8 @@ uniform mat4 InverseProjectionMatrix;
 
 uniform vec3 boundsMin;
 uniform vec3 boundsMax;
+
+uniform float TimeTranslation;
 /*
 //https://github.com/Erkaman/glsl-worley
 vec2 rayBoxDst (in vec3 origin, in vec3 dir) {
@@ -104,7 +106,7 @@ void main()
     
    // mat4 InverseViewMatrix=inverse(ViewMatrix);
    // mat4 InverseProjectionMatrix=inverse(ProjectionMatrix);
-
+   //float abc= TimeTranslation;
     /*
     float X = m00*v.X + m01*v.Y + m02*v.Z + m03;
     float Y = m10*v.X + m11*v.Y + m12*v.Z + m13;
@@ -186,7 +188,8 @@ void main()
     float AlfaIntensity=0;
     for(int i=0;i<128;i++){
 
-    vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/128)*i,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/128)*i);
+    vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/128)*i +TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/128)*i);
+
         float texVal=texture(DetailTex[i], coor).r;
         texVal*=static_noise;
         if(texVal>1)texVal=1;

@@ -14,6 +14,8 @@ public:
 	virtual void activate(const BaseCamera& Cam) const;
 	virtual void deactivate() const;
 
+	static float TimeTranslation;
+
 	CloudShader();
 
 	virtual ~CloudShader();
@@ -22,6 +24,8 @@ public:
 	void activateTex(const Texture* pTex, GLint Loc, int slot) const;
 	void aabb(AABB* bounds);
 	void noise(const Texture* n);
+
+	//static float TimeTranslation;
 private:
 	// Views
 	GLint ViewMatrixLoc;
@@ -33,6 +37,8 @@ private:
 
 	GLint boundsMinLoc;
 	GLint boundsMaxLoc;
+
+	GLint TimeTranslationLoc;
 
 	AABB* bounds;
 	const Texture* DetailTex[WORLEY_AMOUNT];

@@ -34,6 +34,7 @@
 #include "ParticleLoader.h"
 #include "AudioManager.h"
 #include "WaterLoaderImpl.h"
+#include "CloudShader.h"
 
 #define online false
 
@@ -109,6 +110,8 @@ void Application::update(float dtime)
     }
 
     //std::cout<<"Plane_Position: "<<ModelLoader::pPlayerPlane->getPosition().X <<" "<< ModelLoader::pPlayerPlane->getPosition().Y<<" "<< ModelLoader::pPlayerPlane->getPosition().Z<<std::endl;
+
+    CloudShader::TimeTranslation = last;
 
     // Update Mouse-Pos
     double x,y;
