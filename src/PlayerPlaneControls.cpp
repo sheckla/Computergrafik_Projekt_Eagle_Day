@@ -6,15 +6,13 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 {
 }
 
-static Vector lerp(const Vector& A, const Vector& B, float t) {
-    return A * t + B * (1.f - t);
-}
-
 void PlayerPlaneControls::update(float delta) 
 {
+    Vector offset = CAMERA_OFFSET + Vector(0, 0*(plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * delta, 0);
+    this->cameraPos = plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
 
-    this->cameraPos = plane->getParts()[0]->transform() * Matrix().translation(CAMERA_OFFSET);
-
+    // Bei maximalen 'Tilt' werden die eingaben ignorieren, Plane hat schon maximale Wendung
+    plane->update(delta);
 
     // Beschleunigung
     if (glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT))
@@ -45,8 +43,8 @@ void PlayerPlaneControls::update(float delta)
     // Aufstieg
     if (glfwGetKey(this->window, GLFW_KEY_S))
     {
-        plane->tiltLeftWingflaps(delta);
-        plane->tiltRightWingflaps(delta);
+        if (!plane->d) plane->tiltLeftWingflaps(delta);
+        if (abs(plane->tilt().rightFlapsTilt) < MAX_TILT) plane->tiltRightWingflaps(delta);
     }
 
     // Absturz
@@ -68,27 +66,9 @@ void PlayerPlaneControls::update(float delta)
         plane->tiltRudder(delta);
     }
 
-    plane->update(delta);
 
     // camera follows plane
-    if (follow) {
-        cam->setTarget(plane->getParts()[0]->transform().translation());
-        //print("prev", prevCameraPos.translation());
-        //print("current", cameraPos.translation());
-        //print("lerp", lerp(prevCameraPos.translation(), cameraPos.translation(), 0.5));
-        cam->setPosition(prevCameraPos.translation());
-        cam->zoom(-plane->getSpeed() / 60);
-
-        if (init)
-        {
-            //print("double", "");
-        }
-    	else
-        {
-            //print("once", "");
-            cam->setPosition(cameraPos.translation());
-			this->init = true;
-        }
-			prevCameraPos = cameraPos;
-    }
+    cam->setTarget(plane->getParts()[0]->transform().translation());
+    cam->setPosition(cameraPos.translation());
+    //cam->zoom(-plane->getSpeed() / 60);
 }

@@ -15,8 +15,6 @@ class PlayerPlaneControls
 	Camera* cam;
 	bool follow = false;
 	Matrix cameraPos;
-	Matrix prevCameraPos;
-	bool init = false;
 public:
 	PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camera* cam, bool camFollowsPlane);
 	void update(float delta);

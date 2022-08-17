@@ -53,8 +53,8 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     loader.loadSkyBox();
     loader.loadSimpleWater();
     loader.loadPlaneParts();
-    loader.loadPlanePartsOnline("127.0.0.1", 19411);
-    loader.loadEnemyPlane("127.0.0.1", 19411);
+    //loader.loadPlanePartsOnline("127.0.0.1", 19411);
+    //loader.loadEnemyPlane("127.0.0.1", 19411);
     loader.clouds();
 
     // Controls - PlayerPlane an controls anheften

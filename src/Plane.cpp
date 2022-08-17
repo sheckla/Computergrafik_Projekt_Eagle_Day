@@ -137,10 +137,10 @@ void Plane::update(double delta)
 	const float speedMultiplier = speedPercentage();
 
 	forward.translation(Vector(0, 0, SPEED_GAIN * speed * delta));
-	yaw.rotationY(ROTATION_SPEED * -rudderTilt * delta * speedMultiplier);
-	pitch.rotationX(ROTATION_SPEED * -(leftFlapsTilt + rightFlapsTilt) * delta * speedMultiplier);
-	rollLeft.rotationZ(ROTATION_SPEED * -leftFlapsTilt * delta * speedMultiplier);
-	rollRight.rotationZ(ROTATION_SPEED * rightFlapsTilt * delta * speedMultiplier);
+	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * delta * speedMultiplier);
+	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * delta * speedMultiplier);
+	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * delta * speedMultiplier);
+	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * delta * speedMultiplier);
 
 	// Auf objekt anwenden
 	//this->transform(transform() * forward * yaw * pitch * rollLeft * rollRight);
@@ -157,35 +157,32 @@ void Plane::update(double delta)
 
 	// rudder
 	Matrix rudderRotation;
-	rudderRotation.rotationY(RUDDER_ROTATION * rudderTilt * delta);
+	rudderRotation.rotationY(RUDDER_ROTATION * Tilt.rudder * delta);
 	updateModelPos(PartsIndex::rudder, rudderRotation);
 
 	// left and right backwings
 	Matrix leftBackwingRotation, rightBackwingRotation;
-	leftBackwingRotation.rotationX(FLAP_ROTATION * leftFlapsTilt * delta);
-	rightBackwingRotation.rotationX(FLAP_ROTATION * rightFlapsTilt * delta);
+	leftBackwingRotation.rotationX(FLAP_ROTATION * Tilt.leftFlapsTilt * delta);
+	rightBackwingRotation.rotationX(FLAP_ROTATION * Tilt.rightFlapsTilt * delta);
 	updateModelPos(PartsIndex::backWingLeft, leftBackwingRotation);
 	updateModelPos(PartsIndex::backWingRight, rightBackwingRotation);
 
 	// left and right wingflaps
 	// - wingflaps brauchen spezielle rotation damit sie korrekt aussehen
 	Matrix leftWingRotation, rightWingRotation;
-	leftWingRotation.rotationZ(this->leftFlapsTilt * WINGFLAP_OFFSET_ROTATION);
-	rightWingRotation.rotationZ(this->rightFlapsTilt * -WINGFLAP_OFFSET_ROTATION);
+	leftWingRotation.rotationZ(Tilt.leftFlapsTilt * WINGFLAP_OFFSET_ROTATION);
+	rightWingRotation.rotationZ(Tilt.rightFlapsTilt * -WINGFLAP_OFFSET_ROTATION);
 	updateModelPos(PartsIndex::wingLeft, leftWingRotation * leftBackwingRotation);
 	updateModelPos(PartsIndex::wingRight, rightWingRotation * rightBackwingRotation);
 
-
 	// Fall-off fuer rudder & flaps gegen 0
-	aprroachZeroWithBoundaries(this->rudderTilt, MAX_TILT);
-	aprroachZeroWithBoundaries(this->leftFlapsTilt, MAX_TILT);
-	aprroachZeroWithBoundaries(this->rightFlapsTilt, MAX_TILT);
+	aprroachZeroWithBoundaries(Tilt.rudder, MAX_TILT);
+	if (!d) aprroachZeroWithBoundaries(Tilt.leftFlapsTilt, MAX_TILT);
+	aprroachZeroWithBoundaries(Tilt.rightFlapsTilt, MAX_TILT);
 
+	// Geschwindigkeitsabfall TODO
 	this->speed = speed * 0.999999;
-	/*print("flap right", this->rightFlapsTilt);
-	print("flap left", this->leftFlapsTilt);
-	print("speed", speedPercentage());
-	print("speedval", this->speed);*/
+	print("flap left", this->Tilt.leftFlapsTilt);
 }
 
 // Spitfire max km/h = 594
@@ -205,20 +202,27 @@ void Plane::accelerate(float i)
 
 void Plane::tiltLeftWingflaps(float i)
 {
-	this->leftFlapsTilt += i * DELTA_TIME_MULTIPLICATOR;
-	clampTilt(this->leftFlapsTilt);
+	Tilt.leftFlapsTilt += i * DELTA_TIME_MULTIPLICATOR;
+	clampTilt(Tilt.leftFlapsTilt);
+	if (abs(Tilt.leftFlapsTilt) == MAX_TILT)
+	{
+		d = true;
+	} else
+	{
+		d = false;
+	}
 }
 
 void Plane::tiltRightWingflaps(float i)
 {
-	this->rightFlapsTilt += i * DELTA_TIME_MULTIPLICATOR;
-	clampTilt(this->rightFlapsTilt);
+	Tilt.rightFlapsTilt += i * DELTA_TIME_MULTIPLICATOR;
+	clampTilt(Tilt.leftFlapsTilt);
 }
 
 void Plane::tiltRudder(float i)
 {
-	this->rudderTilt += i * DELTA_TIME_MULTIPLICATOR;
-	clampTilt(this->rudderTilt);
+	Tilt.rudder += i * DELTA_TIME_MULTIPLICATOR;
+	clampTilt(Tilt.rudder);
 }
 
 Model** Plane::getParts()
@@ -229,4 +233,9 @@ Model** Plane::getParts()
 float Plane::getSpeed() const
 {
 	return this->speed;
+}
+
+TiltStatus Plane::tilt()
+{
+	return Tilt;
 }

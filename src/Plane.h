@@ -27,7 +27,7 @@ constexpr float PI = 3.14159265359f;
 constexpr int DELTA_TIME_MULTIPLICATOR = 60; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
 constexpr float SPEED_GAIN = 0.05f;
 constexpr float ROTATION_SPEED = 0.02f;
-constexpr float MAX_TILT = 30; // tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
+constexpr float MAX_TILT = 30; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
 constexpr int MAX_SPEED = 800;
 
 // Visuelle Rotationswerte
@@ -46,6 +46,14 @@ struct PartsIndex
 	static constexpr int wingRight = 6;
 };
 
+struct TiltStatus
+{
+	float leftFlapsTilt = 0;
+	float rightFlapsTilt = 0;
+	float rudder = 0;
+};
+
+
 class Plane
 {
 	/*
@@ -62,17 +70,15 @@ class Plane
 	Vector wingRight = Vector(-2.82589f, 0.119194f, -0.946365f);
 	const Vector OFFSETS[PLANE_PARTS]{model, rotor, rudder, backWingLeft, backWingRight, wingLeft, wingRight};
 	Model* parts[PLANE_PARTS];
+	Matrix previousRotorRotation = Matrix().rotationZ(0);
 
 	/*
 	 * Orientierung = Hinter dem Flugzeug
 	 * positive Werte = flaps werden nach 'oben' gekippt
 	 * negative Werte = flaps werden nach 'unten' gekippt
 	 */
-	float leftFlapsTilt = 0; 
-	float rightFlapsTilt = 0;
-	float rudderTilt = 0; // positiv = links, negativ = rechts
+	TiltStatus Tilt;// positiv = links, negativ = rechts
 	float speed = 0;
-	Matrix previousRotorRotation = Matrix().rotationZ(0);
 
 	/*
 	* Wert bleibt innerhalb [max_angle,-max_angle] und wird schrittweise
@@ -96,16 +102,20 @@ public:
 	*/
 	Plane(const char* path);
 	Plane(const char* path, const char* srv_Adr, int port);
-
+	bool d = false;
 	virtual ~Plane();
 	void update(double delta);
 
+	// Setter
 	void accelerate(float i);
 	void tiltLeftWingflaps(float i);
 	void tiltRightWingflaps(float i);
 	void tiltRudder(float i);
+
+	// Getter
 	Model** getParts();
 	float getSpeed() const;
+	TiltStatus tilt();
 
 	NetworkSender* Sender;
 };
