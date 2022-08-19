@@ -2,15 +2,16 @@
 #define GUILoader_h
 #include <list>
 
-#include "guiElement.h"
+
+class GUIBaseComponent;
 
 class GUILoader
 {
 	static GUILoader* pGUILoader;
 public:
-	static std::list<GUIElement*>* guis;
+	static std::list<GUIBaseComponent*>* guis;
 	static GUILoader& instance();
-	static bool init(std::list<GUIElement*>* guis);
+	static bool init(std::list<GUIBaseComponent*>* guis);
 
 	static bool crossHair();
 	static bool GUI();

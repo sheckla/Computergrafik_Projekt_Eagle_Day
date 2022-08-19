@@ -4,11 +4,13 @@
 class MouseLogger
 {
 	static MouseLogger* pMouseLogger;
-	static double x, y;
+	static double X, Y;
 public:
 	static MouseLogger& instance();
 	static void update(double x, double y);
-	static double getX();
-	static double getY();
+	static double x();
+	static double y();
+	static double normY();
+	static double normX();
 };
 #endif

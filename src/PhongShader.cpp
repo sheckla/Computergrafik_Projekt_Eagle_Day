@@ -64,8 +64,8 @@ void PhongShader::assignLocations()
     {
         std::string smt = "ShadowMapTexture[" + std::to_string(i) + "]";
         std::string smm = "ShadowMapMat[" + std::to_string(i) + "]";
-        ShadowMapTextureLoc[i] = getParameterID(smt.c_str());
-        ShadowMapMatLoc[i] = getParameterID(smm.c_str());
+        ShadowMapTextureLoc[i] = initUniformParameter(smt.c_str());
+        ShadowMapMatLoc[i] = initUniformParameter(smm.c_str());
         ShadowMapTexture[i] = NULL;
         ShadowMapMat[i].identity();
     }
@@ -117,8 +117,8 @@ void PhongShader::activate(const BaseCamera& Cam) const
         if (ShadowMapTexture[i] && (ShadowMapMatLoc[i] != -1))
         {
             ShadowMapTexture[i]->activate(TexSlotIdx);
-            setParameter(ShadowMapTextureLoc[i], TexSlotIdx++);
-            setParameter(ShadowMapMatLoc[i], ShadowMapMat[i]);
+            setUniformParameter(ShadowMapTextureLoc[i], TexSlotIdx++);
+            setUniformParameter(ShadowMapMatLoc[i], ShadowMapMat[i]);
         }
     }
 

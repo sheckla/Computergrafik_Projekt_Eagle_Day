@@ -96,9 +96,12 @@
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
     <ClCompile Include="..\..\src\EnemyPlane.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
-    <ClCompile Include="..\..\src\guiElement.cpp" />
+    <ClCompile Include="..\..\src\GUIButton.cpp" />
+    <ClCompile Include="..\..\src\GUIConstantQuad.cpp" />
+    <ClCompile Include="..\..\src\GUIConstantTriangle.cpp" />
     <ClCompile Include="..\..\src\GUILoader.cpp" />
     <ClCompile Include="..\..\src\GUIShader.cpp" />
+    <ClCompile Include="..\..\src\GUITexture.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\Lights.cpp" />
@@ -128,6 +131,8 @@
     <ClCompile Include="..\..\src\TriangleBoxModel.cpp" />
     <ClCompile Include="..\..\src\TrianglePlaneModel.cpp" />
     <ClCompile Include="..\..\src\TriangleSphereModel.cpp" />
+    <ClCompile Include="..\..\src\GUIBaseComponent.cpp" />
+    <ClCompile Include="..\..\src\GUIMeter.cpp" />
     <ClCompile Include="..\..\src\vector.cpp" />
     <ClCompile Include="..\..\src\VertexBuffer.cpp" />
     <ClCompile Include="..\..\src\VolumetricCloudsLoaderImpl.cpp" />
@@ -146,9 +151,12 @@
     <ClInclude Include="..\..\src\EnemyPlane.h" />
     <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\Globals.h" />
-    <ClInclude Include="..\..\src\guiElement.h" />
+    <ClInclude Include="..\..\src\GUIButton.h" />
+    <ClInclude Include="..\..\src\GUIConstantQuad.h" />
+    <ClInclude Include="..\..\src\GUIConstantTriangle.h" />
     <ClInclude Include="..\..\src\GUILoader.h" />
     <ClInclude Include="..\..\src\GUIShader.h" />
+    <ClInclude Include="..\..\src\GUITexture.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
     <ClInclude Include="..\..\src\IndexBuffer.h" />
     <ClInclude Include="..\..\src\Lights.h" />
@@ -179,6 +187,8 @@
     <ClInclude Include="..\..\src\TriangleBoxModel.h" />
     <ClInclude Include="..\..\src\TrianglePlaneModel.h" />
     <ClInclude Include="..\..\src\TriangleSphereModel.h" />
+    <ClInclude Include="..\..\src\GUIBaseComponent.h" />
+    <ClInclude Include="..\..\src\GUIMeter.h" />
     <ClInclude Include="..\..\src\vector.h" />
     <ClInclude Include="..\..\src\VertexBuffer.h" />
     <ClInclude Include="..\..\src\VolumetricCloudsLoader.h" />

@@ -26,23 +26,23 @@ PostProcessingShader::PostProcessingShader()
 	if (!loaded)
 		throw std::exception();
 
-	EyePosLoc = getParameterID("EyePos");
+	EyePosLoc = initUniformParameter("EyePos");
 	//assert(EyePosLoc != -1);
-	ModelMatLoc = getParameterID("ModelMat");
+	ModelMatLoc = initUniformParameter("ModelMat");
 	//assert(ModelMatLoc != -1);
-	ModelViewProjMatLoc = getParameterID("ModelViewProjMat");
-	ScreenTextureLoc = getParameterID("ScreenTexture");
+	ModelViewProjMatLoc = initUniformParameter("ModelViewProjMat");
+	ScreenTextureLoc = initUniformParameter("ScreenTexture");
 }
 
 void PostProcessingShader::activate(const BaseCamera& Cam) const
 {
     BaseShader::activate(Cam);
 	Matrix ModelViewProj = Cam.getProjectionMatrix() * Cam.getViewMatrix() * modelTransform();
-	setParameter(ModelMatLoc, modelTransform());
-	setParameter(ModelViewProjMatLoc, ModelViewProj);
+	setUniformParameter(ModelMatLoc, modelTransform());
+	setUniformParameter(ModelViewProjMatLoc, ModelViewProj);
 
 	Vector EyePos = Cam.position();
-	setParameter(EyePosLoc, EyePos);
+	setUniformParameter(EyePosLoc, EyePos);
 	ScreenTexture->activate();
 	glUniform1i(ScreenTextureLoc, 0);
 

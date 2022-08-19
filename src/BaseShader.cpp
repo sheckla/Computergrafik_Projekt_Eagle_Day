@@ -158,6 +158,16 @@ void BaseShader::activate(const BaseCamera& Cam) const
     ShaderInPipe = this;
 }
 
+void BaseShader::activate() const
+{
+    if (ShaderInPipe != this)
+    {
+        glUseProgram(ShaderProgram);
+        if (LightUniformBuffer != GL_INVALID_INDEX)
+            setBlock(LightUniformBuffer, ShaderLightMapper::instance().uniformBlockID());
+    }
+    ShaderInPipe = this;
+}
 
 void BaseShader::deactivate() const
 {
@@ -175,29 +185,29 @@ void BaseShader::setBlock(GLuint ID, GLuint UniformBufferID) const
 }
 
 
-GLint BaseShader::getParameterID(const char* ParamenterName) const
+GLint BaseShader::initUniformParameter(const char* ParamenterName) const
 {
     return glGetUniformLocation(ShaderProgram, ParamenterName);
 }
 
-void BaseShader::setParameter(GLint ID, float Param) const
+void BaseShader::setUniformParameter(GLint ID, float Param) const
 {
     glUniform1f(ID, Param);
 }
-void BaseShader::setParameter(GLint ID, int Param) const
+void BaseShader::setUniformParameter(GLint ID, int Param) const
 {
     glUniform1i(ID, Param);
 }
-void BaseShader::setParameter(GLint ID, const Vector& Param) const
+void BaseShader::setUniformParameter(GLint ID, const Vector& Param) const
 {
     glUniform3f(ID, Param.X, Param.Y, Param.Z);
 }
-void BaseShader::setParameter(GLint ID, const Color& Param) const
+void BaseShader::setUniformParameter(GLint ID, const Color& Param) const
 {
     glUniform3f(ID, Param.R, Param.G, Param.B);
 }
 
-void BaseShader::setParameter(GLint ID, const Matrix& Param) const
+void BaseShader::setUniformParameter(GLint ID, const Matrix& Param) const
 {
     glUniformMatrix4fv(ID, 1, GL_FALSE, Param.m);
 }

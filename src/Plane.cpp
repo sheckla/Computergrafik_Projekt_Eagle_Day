@@ -1,10 +1,12 @@
+#include "constantshader.h"
 #include "PlaneLoader.h"
 #include "Printer.h"
 #include "NetworkSender.h"
+#include "TriangleSphereModel.h"
 
 float Plane::speedPercentage() const
 {
-	return (0 + (this->speed / MAX_SPEED));
+	return (0 + (this->speed / (float)MAX_SPEED));
 }
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const
@@ -21,20 +23,6 @@ void Plane::aprroachZeroWithBoundaries(float& i, const float maxAngle) const
 		return;
 	}
 
-	// obere Grenze ueberschritten
-	if (i > maxAngle)
-	{
-		i = maxAngle;
-		return;
-	}
-
-	// untere Grenze uerberschritten
-	if (i < -maxAngle)
-	{
-		i = -maxAngle;
-		return;
-	}
-
 	// positiv; innerhalb Grenze
 	if (i >= 0)
 	{
@@ -42,7 +30,7 @@ void Plane::aprroachZeroWithBoundaries(float& i, const float maxAngle) const
 		return;
 	}
 	// negativ: innerhalb Grenze
-	else if (i < 0)
+	if (i < 0)
 	{
 		i = i * 0.99;
 		return;
@@ -122,6 +110,15 @@ bool Plane::loadModels(const char* path)
 	{
 		parts[i]->transform(Matrix().translation(OFFSETS[i]));
 	}
+	dot = new TriangleSphereModel(0.1, 20, 20);
+	dot->shader(new ConstantShader());
+	dot->shadowCaster(false);
+	dot->transform(Matrix().translation(dotOffset));
+
+	horizon = new TriangleBoxModel(20, 1, 1);
+	horizon->shader(new ConstantShader());
+	horizon->shadowCaster(false);
+	//horizon->transform(Matrix().translation(horizonOffset));
 	return true;
 }
 
@@ -132,67 +129,71 @@ bool Plane::loadModels(const char* path)
 */
 void Plane::update(double delta)
 {
-	// Konkrete Transformationen bezueglich Flugzeug- & Kameraposition
+	// Translations/Rotations Transformationen bezueglich Flugzeug- & Kameraposition
 	Matrix forward, yaw, rollLeft, rollRight, pitch;
 	const float speedMultiplier = speedPercentage();
 
-	forward.translation(Vector(0, 0, SPEED_GAIN * speed * delta));
-	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * delta * speedMultiplier);
-	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * delta * speedMultiplier);
-	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * delta * speedMultiplier);
-	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * delta * speedMultiplier);
-
-	// Auf objekt anwenden
-	//this->transform(transform() * forward * yaw * pitch * rollLeft * rollRight);
+	forward.translation(Vector(0, 0, ACCELERATION_GAIN * speed));
+	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * speedMultiplier);
+	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * speedMultiplier);
+	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier);
+	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier);
 
 	// main-model
 	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight);
-	
+	dot->transform(parts[0]->transform() * Matrix().translation(dotOffset));
+
+	Matrix rollLeftInvert, rollRightInvert;
+	rollLeftInvert.rotationZ(-(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier));
+	rollRightInvert.rotationZ(-(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier));
+	horizon->transform(parts[0]->transform() * rollLeftInvert * Matrix().translation(horizonOffset));
+
 	// Visuelle Transformationen
 	// rotor
 	Matrix rotorRotation;
-	rotorRotation.rotationZ(PI * delta * speed);
+	rotorRotation.rotationZ(PI * delta * speed * 5);
 	updateModelPos(PartsIndex::rotor, rotorRotation * previousRotorRotation);
 	previousRotorRotation = rotorRotation * previousRotorRotation;
 
 	// rudder
 	Matrix rudderRotation;
-	rudderRotation.rotationY(RUDDER_ROTATION * Tilt.rudder * delta);
+	rudderRotation.rotationY(RUDDER_ROTATION * Tilt.rudder);
 	updateModelPos(PartsIndex::rudder, rudderRotation);
 
 	// left and right backwings
 	Matrix leftBackwingRotation, rightBackwingRotation;
-	leftBackwingRotation.rotationX(FLAP_ROTATION * Tilt.leftFlapsTilt * delta);
-	rightBackwingRotation.rotationX(FLAP_ROTATION * Tilt.rightFlapsTilt * delta);
+	leftBackwingRotation.rotationX(FLAP_ROTATION * Tilt.leftFlapsTilt );
+	rightBackwingRotation.rotationX(FLAP_ROTATION * Tilt.rightFlapsTilt );
 	updateModelPos(PartsIndex::backWingLeft, leftBackwingRotation);
 	updateModelPos(PartsIndex::backWingRight, rightBackwingRotation);
 
-	// left and right wingflaps
-	// - wingflaps brauchen spezielle rotation damit sie korrekt aussehen
+	// visuelle rotation
 	Matrix leftWingRotation, rightWingRotation;
 	leftWingRotation.rotationZ(Tilt.leftFlapsTilt * WINGFLAP_OFFSET_ROTATION);
 	rightWingRotation.rotationZ(Tilt.rightFlapsTilt * -WINGFLAP_OFFSET_ROTATION);
-	updateModelPos(PartsIndex::wingLeft, leftWingRotation * leftBackwingRotation);
 	updateModelPos(PartsIndex::wingRight, rightWingRotation * rightBackwingRotation);
+	updateModelPos(PartsIndex::wingLeft, leftWingRotation * leftBackwingRotation);
+
+	// left and right wingflaps
+	// - wingflaps brauchen spezielle rotation damit sie korrekt aussehen
 
 	// Fall-off fuer rudder & flaps gegen 0
 	aprroachZeroWithBoundaries(Tilt.rudder, MAX_TILT);
-	if (!d) aprroachZeroWithBoundaries(Tilt.leftFlapsTilt, MAX_TILT);
+	aprroachZeroWithBoundaries(Tilt.leftFlapsTilt, MAX_TILT);
 	aprroachZeroWithBoundaries(Tilt.rightFlapsTilt, MAX_TILT);
 
 	// Geschwindigkeitsabfall TODO
 	this->speed = speed * 0.999999;
-	print("flap left", this->Tilt.leftFlapsTilt);
 }
 
 // Spitfire max km/h = 594
 void Plane::accelerate(float i)
 {
-	this->speed += i * DELTA_TIME_MULTIPLICATOR;
+	this->speed += i * DELTA_TIME_MULTIPLICATOR * 30;
 
-	if (this->speed >= 700)
+	if (this->speed >= MAX_SPEED)
 	{
-		this->speed = 700;
+		this->speed = MAX_SPEED;
 	}
 	else if (this->speed < 0)
 	{
@@ -204,19 +205,12 @@ void Plane::tiltLeftWingflaps(float i)
 {
 	Tilt.leftFlapsTilt += i * DELTA_TIME_MULTIPLICATOR;
 	clampTilt(Tilt.leftFlapsTilt);
-	if (abs(Tilt.leftFlapsTilt) == MAX_TILT)
-	{
-		d = true;
-	} else
-	{
-		d = false;
-	}
 }
 
 void Plane::tiltRightWingflaps(float i)
 {
 	Tilt.rightFlapsTilt += i * DELTA_TIME_MULTIPLICATOR;
-	clampTilt(Tilt.leftFlapsTilt);
+	clampTilt(Tilt.rightFlapsTilt);
 }
 
 void Plane::tiltRudder(float i)

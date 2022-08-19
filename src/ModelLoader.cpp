@@ -112,8 +112,8 @@ bool ModelLoader::loadPlaneParts()
     for (int i = 0; i < PLANE_PARTS; i++) {
         Models->push_back(planeParts[i]);
     }
-    
-
+    Models->push_back(p->dot);
+    //Models->push_back(p->horizon);
 
     printDivider();
     return true;

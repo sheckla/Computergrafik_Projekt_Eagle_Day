@@ -11,17 +11,17 @@ Scaling(1, 1, 1), MixTex(NULL)
     PhongShader::assignLocations();
     specularColor(Color(0, 0, 0));
 
-    MixTexLoc = getParameterID("MixTex");
-    ScalingLoc = getParameterID("Scaling");
+    MixTexLoc = initUniformParameter("MixTex");
+    ScalingLoc = initUniformParameter("Scaling");
 
-    ResolutionLoc = getParameterID("Resolution");
+    ResolutionLoc = initUniformParameter("Resolution");
 
     for (int i = 0; i < DETAILTEX_COUNT; i++)
     {
         DetailTex[i] = NULL;
         std::string s;
         s += "DetailTex[" + std::to_string(i) + "]";
-        DetailTexLoc[i] = getParameterID(s.c_str());
+        DetailTexLoc[i] = initUniformParameter(s.c_str());
     }
 
 }
@@ -37,8 +37,8 @@ void TerrainShader::activate(const BaseCamera& Cam) const
         activateTex(DetailTex[i], DetailTexLoc[i], slot++);
 
 
-    setParameter(ScalingLoc, Scaling);
-    setParameter(ResolutionLoc, Resolution);
+    setUniformParameter(ScalingLoc, Scaling);
+    setUniformParameter(ResolutionLoc, Resolution);
 }
 
 void TerrainShader::deactivate() const
@@ -54,7 +54,7 @@ void TerrainShader::activateTex(const Texture* pTex, GLint Loc, int slot) const
     if (pTex && Loc >= 0)
     {
         pTex->activate(slot);
-        setParameter(Loc, slot);
+        setUniformParameter(Loc, slot);
     }
 
 }

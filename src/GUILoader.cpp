@@ -1,7 +1,9 @@
 #include "GUILoader.h"
 
+#include "GUITexture.h"
+
 GUILoader* GUILoader::pGUILoader = nullptr;
-std::list<GUIElement*>* GUILoader::guis;
+std::list<GUIBaseComponent*>* GUILoader::guis;
 
 GUILoader& GUILoader::instance()
 {
@@ -9,7 +11,7 @@ GUILoader& GUILoader::instance()
 	return *pGUILoader;
 }
 
-bool GUILoader::init(std::list<GUIElement*>* guis)
+bool GUILoader::init(std::list<GUIBaseComponent*>* guis)
 {
 	instance().guis = guis;
 	return true;
@@ -21,9 +23,13 @@ bool GUILoader::crossHair()
 	gTex->scale(Vector(1, 1, 0));
 	gTex->width(100);
 	gTex->height(100);
-	gTex->startIsCenter(true);
+	gTex->centred(true);
 	gTex->followMouse(true);
+	gTex->constantColorMode(true);
+	gTex->color(Color(1, 1, 1));
 	guis->push_back(gTex);
+
+	return true;
 }
 
 bool GUILoader::GUI()

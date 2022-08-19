@@ -6,7 +6,7 @@
 #include "Plane.h"
 #include "Vector.h"
 
-const Vector CAMERA_OFFSET(0.0f, 2.2f, -8.0f);
+const Vector CAMERA_OFFSET(0.0f, 2.2, -8.0f);
 
 class PlayerPlaneControls
 {

@@ -34,7 +34,7 @@ CloudShader::CloudShader() : PhongShader()
         s += "DetailTex[" + std::to_string(i) + "]";
         //std::cout << s << std::endl;
         DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
-        DetailTexLoc[i] = getParameterID(s.c_str());
+        DetailTexLoc[i] = initUniformParameter(s.c_str());
     }
     std::cout << "[Clouds] Loading done..." << std::endl;
 }
@@ -61,10 +61,10 @@ void CloudShader::activate(const BaseCamera& Cam) const
     Matrix ip = Cam.getProjectionMatrix();
     ip.invert();
 
-    setParameter(ViewMatrixLoc, iv);
-    setParameter(ProjectionMatrixLoc, ip);
-    setParameter(boundsMinLoc, bounds->Min);
-    setParameter(boundsMaxLoc, bounds->Max);
+    setUniformParameter(ViewMatrixLoc, iv);
+    setUniformParameter(ProjectionMatrixLoc, ip);
+    setUniformParameter(boundsMinLoc, bounds->Min);
+    setUniformParameter(boundsMaxLoc, bounds->Max);
 
 }
 
@@ -81,7 +81,7 @@ void CloudShader::deactivate() const
 void CloudShader::activateTex(const Texture* pTex, GLint Loc, int slot) const {
     if (pTex && Loc >= 0) {
         pTex->activate(slot);
-        setParameter(Loc, slot);
+        setUniformParameter(Loc, slot);
     }
 }
 

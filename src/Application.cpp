@@ -20,33 +20,38 @@
 
 #include "CloudBox.h"
 #include "CloudShader.h"
-#include "guiElement.h"
+#include "GUIButton.h"
+#include "GUILoader.h"
 #include "PlaneLoader.h"
 #include "WaterLoader.h"
 #include "PlayerPlaneControls.h"
 #include "ModelLoader.h"
 #include "TextureShader.h"
-#include "ScreenQuadModel.h"
-#include "guiElement.h"
-#include "GUILoader.h"
 #include "MouseLogger.h"
-#include "VolumetricCloudsLoaderImpl.h"
+#include "GUIMeter.h"
 
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
 {
+    // ----------- START ----------- 
     std::cout << "[Eagle Day Application] Starting..." << std::endl;
 
-    // GUI
+
+    // ----------- GUI INIT ----------- 
     GUILoader gui = GUILoader::instance();
     gui.init(&this->guis);
     gui.crossHair();
-    gui.GUI();
+    //gui.GUI();
+    GUIMeter* meter = new GUIMeter(50,20);
+    GUIButton* button = new GUIButton(1000, 500, 100, 100);
+    guis.push_back(meter);
+    guis.push_back(button);
 
-    // Post Processing //TODO verschiedene post-processing effekte aktivieren
+    // ----------- POST PROCESSING INIT ----------- 
     ppBuffer = new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT);
 
-    // Models
+
+    // ----------- MODEL INIT ----------- 
     ModelLoader loader = ModelLoader::instance();
     loader.init(&Models);
     loader.loadDirLight();
@@ -57,10 +62,16 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     //loader.loadEnemyPlane("127.0.0.1", 19411);
     loader.clouds();
 
-    // Controls - PlayerPlane an controls anheften
+
+    // ----------- CONTROLS INIT ----------- 
     // -> CamFollowPlane = true setzen fuer verfolgende Kamera
     planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
+
+    // attach plane to GUI
+    meter->plane = ModelLoader::pPlayerPlane;
+
+    // ----------- FINISH ----------- 
     print("Application loading finished", "");
     printDivider(70);
 }
@@ -78,30 +89,39 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-
+    // ----------- DELTA TIME ----------- 
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
+
+
+    // ----------- Plane Control handler ----------- 
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(deltaTime);
     }
 
-    // Update Mouse-Pos
+
+    // ----------- 'Singleton' MouseLogger update ----------- 
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
+
 
     Cam.update();
 }
 
 void Application::draw()
 {
-    // Shadow Mapping
+    // ----------- FRAME START ----------- 
+
+
+    // ----------- SHADOW MAPPPING ----------- 
     ShadowGenerator.generate(Models);
     ShaderLightMapper::instance().activate();
 
-    // Main Buffer - 3D Scene
+
+    // ----------- PostProc. Init & 3D SCENE ----------- 
     ppBuffer->preDraw();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
@@ -110,17 +130,34 @@ void Application::draw()
     }
     ppBuffer->postDraw();
 
-    // Post Processing
+    // ----------- PostProc. DRAW ----------- 
     ppBuffer->draw(Cam);
 
-    // GUI
+    // ----------- GUI DRAW ----------- 
     for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
     {
-        (*it)->draw(Cam);
+        (*it)->draw(); // no cam needed
     }
 
+    // ----------- ERROR HANDLING ----------- 
     GLenum Error = glGetError();
-    switch (Error)
+    glErrorHandler(Error);
+    assert(Error == 0);
+
+    // ----------- FRAME FINISH ----------- 
+
+}
+void Application::end()
+{
+    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        delete* it;
+
+    Models.clear();
+}
+
+void Application::glErrorHandler(GLenum err)
+{
+    switch (err)
     {
         // opengl 2 errors (8)
     case GL_NO_ERROR:
@@ -152,13 +189,4 @@ void Application::draw()
         std::cout << "GL_INVALID_FRAMEBUFFER_OPERATION" << std::endl;
         break;
     }
-    
-    assert(Error == 0);
-}
-void Application::end()
-{
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-        delete* it;
-
-    Models.clear();
 }

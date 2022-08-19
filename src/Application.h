@@ -14,24 +14,22 @@
 #include "PhongShader.h"
 #include "BaseModel.h"
 #include "ShadowMapGenerator.h"
-#include "Framebuffer.h"
-#include "guiElement.h"
-#include "Model.h"
+#include "GUIConstantQuad.h"
 #include "PlayerPlaneControls.h"
 #include "PostProcessingBuffer.h"
-#include "ScreenQuadModel.h"
 
 
 class Application
 {
 public:
     typedef std::list<BaseModel*> ModelList;
-    typedef std::list<GUIElement*> GUIList;
+    typedef std::list<GUIBaseComponent*> GUIList;
     Application(GLFWwindow* pWin);
     void start();
     void update(float dtime);
     void draw();
     void end();
+    void glErrorHandler(GLenum err);
 protected:
     Camera Cam;
     ModelList Models;

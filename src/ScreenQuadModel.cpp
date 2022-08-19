@@ -1,6 +1,6 @@
 
 #include "ScreenQuadModel.h"
-#include "guiElement.h"
+#include "GUIConstantQuad.h"
 #include "Vector.h"
 
 ScreenQuadModel::ScreenQuadModel()

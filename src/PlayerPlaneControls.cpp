@@ -1,5 +1,7 @@
 #include "PlayerPlaneControls.h"
 
+#include "MouseLogger.h"
+
 
 PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camera* cam, bool camFollowsPlane) :
     window(window), plane(plane), cam(cam), follow(camFollowsPlane)
@@ -8,11 +10,12 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 
 void PlayerPlaneControls::update(float delta) 
 {
-    Vector offset = CAMERA_OFFSET + Vector(0, 0*(plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * delta, 0);
-    this->cameraPos = plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
+    float yOffset = (plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * plane->speedPercentage();
+    float xOffset = (-plane->tilt().rudder) * plane->speedPercentage() * 30;
+    Vector offset = CAMERA_OFFSET + Vector(xOffset, yOffset, 0);
+    this->cameraPos = Matrix().translation(Vector(0,2.2,0)) * plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
+    this->cameraPos =  plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
 
-    // Bei maximalen 'Tilt' werden die eingaben ignorieren, Plane hat schon maximale Wendung
-    plane->update(delta);
 
     // Beschleunigung
     if (glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT))
@@ -43,8 +46,8 @@ void PlayerPlaneControls::update(float delta)
     // Aufstieg
     if (glfwGetKey(this->window, GLFW_KEY_S))
     {
-        if (!plane->d) plane->tiltLeftWingflaps(delta);
-        if (abs(plane->tilt().rightFlapsTilt) < MAX_TILT) plane->tiltRightWingflaps(delta);
+        plane->tiltLeftWingflaps(delta);
+        plane->tiltRightWingflaps(delta);
     }
 
     // Absturz
@@ -66,9 +69,35 @@ void PlayerPlaneControls::update(float delta)
         plane->tiltRudder(delta);
     }
 
+    MouseLogger logger = MouseLogger::instance();
+    float normX = ((float)logger.x() / ASPECT_WIDTH * 2) - 1;
+    float normY = ((float)logger.y() / ASPECT_HEIGHT * 2) - 1;
+    float up = -normY / 2;
+    float leftTilt, rightTilt;
+    leftTilt = 0;
+    rightTilt = 0;
+
+    // Rolle Rechts
+    if (normX > 0) {
+        leftTilt = normY * normX;
+        rightTilt = -normY * normX;
+    }
+    // Rolle links
+    if (normX < 0) {
+        leftTilt = normY * normX;
+        rightTilt = -normY * normX;
+    }
+
+	//plane->tiltRudder(delta * normX);
+ //   plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
+ //   plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
+
+
+    plane->update(delta);
+
 
     // camera follows plane
     cam->setTarget(plane->getParts()[0]->transform().translation());
     cam->setPosition(cameraPos.translation());
-    //cam->zoom(-plane->getSpeed() / 60);
+    cam->zoom(-plane->getSpeed() / 60);
 }
