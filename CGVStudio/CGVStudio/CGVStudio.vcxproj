@@ -113,7 +113,10 @@
     <ClCompile Include="..\..\src\NetworkConnector.cpp" />
     <ClCompile Include="..\..\src\NetworkSender.cpp" />
     <ClCompile Include="..\..\src\ParticleInstance.cpp" />
+    <ClCompile Include="..\..\src\ParticleInstanceBullet.cpp" />
+    <ClCompile Include="..\..\src\ParticleInstanceSmoke.cpp" />
     <ClCompile Include="..\..\src\ParticleLoader.cpp" />
+    <ClCompile Include="..\..\src\ParticleShader.cpp" />
     <ClCompile Include="..\..\src\ParticleSprite.cpp" />
     <ClCompile Include="..\..\src\PhongShader.cpp" />
     <ClCompile Include="..\..\src\Plane.cpp" />
@@ -166,7 +169,10 @@
     <ClInclude Include="..\..\src\NetworkConnector.h" />
     <ClInclude Include="..\..\src\NetworkSender.h" />
     <ClInclude Include="..\..\src\ParticleInstance.h" />
+    <ClInclude Include="..\..\src\ParticleInstanceBullet.h" />
+    <ClInclude Include="..\..\src\ParticleInstanceSmoke.h" />
     <ClInclude Include="..\..\src\ParticleLoader.h" />
+    <ClInclude Include="..\..\src\ParticleShader.h" />
     <ClInclude Include="..\..\src\ParticleSprite.h" />
     <ClInclude Include="..\..\src\PhongShader.h" />
     <ClInclude Include="..\..\src\Plane.h" />

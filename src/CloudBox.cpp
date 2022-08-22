@@ -123,13 +123,14 @@ CloudBox::CloudBox(float Width, float Height, float Depth, bool bottomOff, bool 
 
 
     // top 
+    /*
     IB.addIndex(7);
     IB.addIndex(5);
     IB.addIndex(4);
-    IB.addIndex(4);
+    IB.addIndex(4); // Wird durch unten-innen ersetzt!
     IB.addIndex(6);
     IB.addIndex(7);
-
+    */
 
 
     IB.addIndex(7);
@@ -212,6 +213,15 @@ CloudBox::CloudBox(float Width, float Height, float Depth, bool bottomOff, bool 
 
 void CloudBox::draw(const BaseCamera& Cam)
 {   
+    Matrix inv, transl;
+    inv = Cam.getViewMatrix();
+    inv.invert();
+
+    transl.translation(Vector(inv.m03, this->transform().m13, inv.m23));
+    this->transform(transl);
+
+
+
     applyShaderParameter();
     BaseModel::draw(Cam);
 

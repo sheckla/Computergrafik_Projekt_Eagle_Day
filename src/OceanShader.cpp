@@ -1,5 +1,7 @@
 #include "OceanShader.h"
 #include <string>
+#include "Texture.h"
+#include "Matrix.h"
 
 OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
 Scaling(1, 1, 1), MixTex(NULL)
@@ -14,7 +16,12 @@ Scaling(1, 1, 1), MixTex(NULL)
     MixTexLoc = getParameterID("MixTex");
     ScalingLoc = getParameterID("Scaling");
 
+    PerlinNoiseLoc = getParameterID("Perlin");
+
     ResolutionLoc = getParameterID("Resolution");
+    ViewMatrixLoc = getParameterID("InvViewMatrix");
+    ProjMatrixLoc = getParameterID("InvProjMatrix");
+    
 
     for (int i = 0; i < DETAILTEX_COUNT; i++)
     {
@@ -24,6 +31,8 @@ Scaling(1, 1, 1), MixTex(NULL)
         DetailTexLoc[i] = getParameterID(s.c_str());
     }
 
+    std::string pNoise = AssetDirectory + "perlin_noise.jpg";
+    PerlinTex = new Texture(pNoise.c_str());
 }
 
 void OceanShader::activate(const BaseCamera& Cam) const
@@ -33,12 +42,21 @@ void OceanShader::activate(const BaseCamera& Cam) const
     int slot = 0;
     activateTex(MixTex, MixTexLoc, slot++);
 
+    activateTex(PerlinTex, PerlinNoiseLoc, slot++);
+
     for (int i = 0; i < DETAILTEX_COUNT; i++)
         activateTex(DetailTex[i], DetailTexLoc[i], slot++);
 
 
     setParameter(ScalingLoc, Scaling);
     setParameter(ResolutionLoc, Resolution);
+
+    Matrix iv = Cam.getViewMatrix();
+    iv.invert();
+    Matrix ip = Cam.getProjectionMatrix();
+    ip.invert();
+    setParameter(ViewMatrixLoc, iv);
+    setParameter(ProjMatrixLoc, ip);
 }
 
 void OceanShader::deactivate() const
@@ -47,6 +65,8 @@ void OceanShader::deactivate() const
     for (int i = DETAILTEX_COUNT - 1; i >= 0; i--)
         if (DetailTex[i] && DetailTexLoc[i] >= 0) DetailTex[i]->deactivate();
     if (MixTex) MixTex->deactivate();
+
+    if (PerlinTex) PerlinTex->deactivate();
 }
 
 void OceanShader::activateTex(const Texture* pTex, GLint Loc, int slot) const

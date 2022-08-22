@@ -9,11 +9,15 @@ out vec3 Normal; // (to be scaled) Normal in World-Space
 out vec2 Texcoord;
 out vec3 Pos;
 
+out vec4 PositionWS;
+
 // Uniforms are unique global variables accessable from any shader stage
 // Declared via. PhongShader::activate -> glUniformMatrixx4fv(...)
 uniform mat4 ModelMat; // BaseShader::modelTransform Matrix -> Position (World Space)
 uniform mat4 ModelViewProjMat; // CamProjMatrix * CamViewMatrix * TransformMat -> normalised Viewspace
 uniform vec3 Scaling; // global Scaling Vector
+
+uniform sampler2D Perlin;
 
 //uniform vec3 Resolution;
 
@@ -27,7 +31,10 @@ void main()
         
 
     vec3 _vertex = vec3(VertexPos.xyz);
-    _vertex.y = texture(MixTex, Texcoord).r * heightMultip;
+
+    vec2 globalUV = vec2(VertexPos.x / 3000,VertexPos.z / 3000);
+
+    _vertex.y = texture(MixTex, Texcoord).r * heightMultip /* (texture(Perlin,globalUV).r)*/;
 
     float height_N = _vertex.y;
 
@@ -75,5 +82,6 @@ void main()
     Pos = vec3(_vertex.xyz);
 
     Texcoord = VertexTexcoord;
+    PositionWS = ModelViewProjMat * vec4(_vertex.xyz, 1.0);
     gl_Position = ModelViewProjMat * vec4(_vertex.xyz, 1.0); // clip-space output position
 }

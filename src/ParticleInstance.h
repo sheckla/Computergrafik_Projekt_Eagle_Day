@@ -2,7 +2,6 @@
 #define ParticleInstance_h
 
 #include "Camera.h"
-#include "BaseModel.h"
 #include "BaseShader.h"
 #include "vector.h"
 #include "ParticleSprite.h"
@@ -16,10 +15,10 @@ public:
 
     ParticleInstance::~ParticleInstance() { delete ParticleModel; }
 
-    void ParticleInstance::update(double deltaTime);
+    virtual void ParticleInstance::update(double deltaTime);
     void ParticleInstance::draw(const BaseCamera& Cam);
     bool isAlive();
-private:
+protected:
     double TimeAlive = 0;
     double TTL;
     ParticleSprite* ParticleModel;

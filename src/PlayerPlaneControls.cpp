@@ -68,6 +68,36 @@ void PlayerPlaneControls::update(float delta)
         plane->tiltRudder(delta);
     }
 
+
+
+    ///////////////////////////////////////////////////////////////////////////////TEST//////////
+    if (glfwGetKey(this->window, GLFW_KEY_T))
+    {
+        plane->Smoke_System->StartGenerating();
+        std::cout << "[PlayerPlaneControls] Start Particles" << std::endl;
+    }
+
+    if (glfwGetKey(this->window, GLFW_KEY_G))
+    {
+        plane->Smoke_System->StopGenerating();
+        std::cout << "[PlayerPlaneControls] Stop Particles" << std::endl;
+    }
+
+
+    if (glfwGetKey(this->window, GLFW_KEY_SPACE))
+    {
+        plane->Gun_Left->StartGenerating();
+        plane->Gun_Right->StartGenerating();
+        //std::cout << "[PlayerPlaneControls] Start Gun Particles" << std::endl;
+    }
+    else
+    {
+        plane->Gun_Left->StopGenerating();
+        plane->Gun_Right->StopGenerating();
+        //std::cout << "[PlayerPlaneControls] Stop Gun Particles" << std::endl;
+    }
+    ///////////////////////////////////////////////////////////////////////////////TEST//////////
+
     plane->update(delta);
 
     // camera follows plane

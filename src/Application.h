@@ -20,10 +20,9 @@
 #include "PlayerPlaneControls.h"
 #include "PostProcessingBuffer.h"
 #include "ScreenQuadModel.h"
-#include "ParticleLoader.h"
-#include "AudioManager.h"
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
+#include "vector.h"
 
 
 class Application
@@ -49,12 +48,11 @@ protected:
     ShadowMapGenerator ShadowGenerator;
     PlayerPlaneControls* planeControls;
     PostProcessingBuffer* ppBuffer;
-    ParticleLoader* particleSystem;
-    AudioManager* soundManager;
     EnemyPlane* enemy;
     WaterLoader* pWaterLoader;
 
     std::list<BaseModel*> Ocean;
+    std::vector<BaseModel*> Cloud_Box;
 };
 
 #endif /* Application_hpp */

@@ -35,6 +35,8 @@ private:
     void activateTex(const Texture* pTex, GLint Loc, int slot) const;
 
     const Texture* MixTex;
+
+    const Texture* PerlinTex;
     int Resolution;
     const Texture* DetailTex[DETAILTEX_COUNT];
     Vector Scaling;
@@ -46,6 +48,10 @@ private:
     GLint DetailTexLoc[DETAILTEX_COUNT];
     GLint ScalingLoc;
     GLint DetailTexKLoc; // DetailText Multiplier
+
+    GLint PerlinNoiseLoc;
+    GLint ViewMatrixLoc;
+    GLint ProjMatrixLoc;
 };
 
 #endif /* OceanShader_hpp */

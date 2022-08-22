@@ -18,6 +18,7 @@
 #include "PhongShader.h"
 #include <stdlib.h>
 #include "NetworkSender.h"
+#include "ParticleLoader.h"
 
 constexpr float EPSILON = 1e-4f; 
 constexpr int PLANE_PARTS = 7;
@@ -108,8 +109,24 @@ public:
 	float getSpeed() const;
 	Vector getPosition() { return Vector(parts[1]->transform().m03, parts[1]->transform().m13, parts[1]->transform().m23); }
 
+	void drawParticles(const BaseCamera& Cam) { 
+		this->Smoke_System->draw(Cam);
+		this->Gun_Left->draw(Cam);
+		this->Gun_Right->draw(Cam);
+	}
+
+	/*
+	* Sendet infos ueber Internet
+	*/
 	NetworkSender* Sender;
 	bool Online_Mode = false;
+
+	/**
+	* Rauch, kann mit T und G ein- und ausgeschaltet werden (Bis HP existiert)
+	*/
+	ParticleLoader* Smoke_System;
+	ParticleLoader* Gun_Left;
+	ParticleLoader* Gun_Right;
 };
 
 #endif

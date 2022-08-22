@@ -18,6 +18,7 @@
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
 std::list<BaseModel*>* ModelLoader::Models;
+std::vector<BaseModel*>* ModelLoader::CloudVector;
 
 ModelLoader& ModelLoader::instance()
 {
@@ -25,9 +26,10 @@ ModelLoader& ModelLoader::instance()
     return *pModelLoader;
 }
 
-bool ModelLoader::init(std::list<BaseModel*>* Models)
+bool ModelLoader::init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* Cloud_Box)
 {
     instance().Models = Models;
+    instance().CloudVector = Cloud_Box;
     return true;
 }
 
@@ -65,7 +67,6 @@ bool ModelLoader::loadLinePlane()
 
 bool ModelLoader::loadSkyBox()
 {
-
     print("loading skybox", "skybox.obj");
 
     BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", true);
@@ -174,10 +175,11 @@ bool ModelLoader::clouds()
     std::vector<CloudBox*> clouds = vcs_loader->createClouds(990, 40, 990);
 
     for (auto cloud : clouds) {
-        ModelLoader::instance().Models->push_back(cloud);
+        ModelLoader::instance().CloudVector->push_back(cloud);
         Matrix m;
         m.translation(Vector(0, 100, 0));
         cloud->transform(m);
+
     }
     return true;
 }

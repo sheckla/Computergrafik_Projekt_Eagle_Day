@@ -295,6 +295,15 @@
     <ClCompile Include="..\..\src\AudioManager.cpp">
       <Filter>Quelldateien\util\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ParticleInstanceSmoke.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleInstanceBullet.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleShader.cpp">
+      <Filter>Quelldateien\graphics\shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -467,6 +476,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\OceanShader.h">
       <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleInstanceSmoke.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleInstanceBullet.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleShader.h">
+      <Filter>Quelldateien\graphics\shader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

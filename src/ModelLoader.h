@@ -15,9 +15,10 @@ public:
     static Plane* pPlayerPlane;
 
     static std::list<BaseModel*>* Models;
+    static std::vector<BaseModel*>* CloudVector;
 
     static ModelLoader& instance();
-    static bool init(std::list<BaseModel*>* Models);
+    static bool init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* Cloud_Box);
 
     static bool loadDirLight();
     static bool loadTestScene();

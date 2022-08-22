@@ -7,6 +7,7 @@ WaterLoaderImpl::WaterLoaderImpl()
 
 WaterLoaderImpl::~WaterLoaderImpl()
 {
+    delete[] water;
 }
 
 OceanSegment* WaterLoaderImpl::createWater(std::list<BaseModel*>* models)

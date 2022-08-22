@@ -1,28 +1,45 @@
-#include "ModelLoader.h"
-
 #include "ParticleLoader.h"
 #include "ParticleSprite.h"
-#include "ConstantShader.h"
+#include "ParticleShader.h"
+#include "ParticleInstanceSmoke.h"
+#include "ParticleInstanceBullet.h"
+#include "ParticleInstance.h"
+#include "Matrix.h"
+#include "vector.h"
 
-ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl) : ParticlesEveryXSeconds(particlesEveryXSeconds_),Particle_TTL(ttl)
+ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl, ParticleType type) : ParticlesEveryXSeconds(particlesEveryXSeconds_),Particle_TTL(ttl),pType(type)
 {
-	PhongShader* ps = new PhongShader(true);
-	ps->diffuseTexture(new Texture("G:/Repository/Eagle_Day/assets/smokeparticle.png"));
+	ParticleShader* ps = new ParticleShader();
 
-	ParticleShader = ps;
-	
+	const std::string Path = ASSETS "models/spitfire";
+
+	if(pType == ParticleType::Smoke)
+		ps->diffuseTexture(new Texture((Path +"/particles/smokeparticle.png").c_str())); // SMOKE-TEXTURE
+
+	if (pType == ParticleType::Bullet)
+		ps->diffuseTexture(new Texture((Path + "/particles/smokeparticle.png").c_str())); // GUN-TEXTURE
+
+	Particle_Shader = ps;
 }
 
-void ParticleLoader::update(double deltaTime, Vector origin) 
+void ParticleLoader::update(double deltaTime, Matrix origin) 
 {
-	Threshhold += deltaTime;
-	if (Threshhold > ParticlesEveryXSeconds)
-	{							
-		ParticleInstance* instance = new ParticleInstance(Particle_TTL, new ParticleSprite(), ParticleShader,origin);
-		ParticleList.push_back(instance);
-		Threshhold = 0;
+	if (IsGenerating == true) {
+		Threshold += deltaTime;
+		if (Threshold > ParticlesEveryXSeconds)
+		{
+			//For new ParticleTypes: new if-Block here! Update will be automatically called for new instance to define specific behaviour
+			if (pType == ParticleType::Smoke) {
+				ParticleInstanceSmoke* instance = new ParticleInstanceSmoke(Particle_TTL, new ParticleSprite(), Particle_Shader, Vector(origin.m03, origin.m13, origin.m23));
+				ParticleList.push_back((ParticleInstance*)instance);
+			}
+			if (pType == ParticleType::Bullet) {
+				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin);
+				ParticleList.push_back((ParticleInstance*)instance);
+			}
+			Threshold = 0;
+		}
 	}
-
 	
 	for (auto const& it : ParticleList)
 		it->update(deltaTime);
@@ -39,7 +56,6 @@ void ParticleLoader::update(double deltaTime, Vector origin)
 
 		if (!alive) {
 			ParticleInstance* instance = ParticleList.front();
-			//ParticleList.pop_front();
 			ParticleList.erase(previous);
 			delete instance;
 		}

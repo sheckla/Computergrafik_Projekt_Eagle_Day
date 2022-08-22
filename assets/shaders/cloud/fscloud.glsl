@@ -188,7 +188,7 @@ void main()
     float AlfaIntensity=0;
     for(int i=0;i<128;i++){
 
-    vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/128)*i +TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/128)*i);
+    vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/128)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/128)*i);
 
         float texVal=texture(DetailTex[i], coor).r;
         texVal*=static_noise;

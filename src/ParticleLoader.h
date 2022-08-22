@@ -5,20 +5,35 @@
 #include "ParticleInstance.h"
 #include "PhongShader.h"
 #include "vector.h"
+#include <list>
+#include "Matrix.h"
+
+enum ParticleType { Smoke, Bullet }; //Ableitungstypen von ParticleInstance, für weitere Partikelarten hinzufügen...
 
 class ParticleLoader
 {
 public:
-    ParticleLoader::ParticleLoader(float particlesPerSecond_, double ttl);
-    void ParticleLoader::update(double deltaTime,Vector origin);
+    ParticleLoader::ParticleLoader(float particlesPerSecond_, double ttl,ParticleType type);
+    ParticleLoader::~ParticleLoader() {/* TODO */ }
+    void ParticleLoader::update(double deltaTime,Matrix origin);
     void ParticleLoader::draw(const BaseCamera& Cam);
+
+    void ParticleLoader::StartGenerating() { this->IsGenerating = true; }
+    void ParticleLoader::StopGenerating() { this->IsGenerating = false; }
+
+    void setOffset(float offset) { this->Offset_Value = offset; }
 private:
     float ParticlesEveryXSeconds;
-    double Threshhold = 0;
-    BaseShader* ParticleShader;
+    double Threshold = 0;
+    BaseShader* Particle_Shader;
     double Particle_TTL;
 
+    float Offset_Value = 0;
+
+    const ParticleType pType;
+
     std::list<ParticleInstance*> ParticleList;
+    bool IsGenerating = false;
 };
 
 #endif

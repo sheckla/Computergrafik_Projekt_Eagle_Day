@@ -69,15 +69,18 @@ Plane::Plane(const char* path)
 	{
 		throw "err";
 	}
+
+	Smoke_System = new ParticleLoader(.02, .5, ParticleType::Smoke);
+
+	Gun_Left = new ParticleLoader(.01, 2, ParticleType::Bullet);
+	Gun_Left->setOffset(-2.5f);
+
+	Gun_Right = new ParticleLoader(.01, 2, ParticleType::Bullet);
+	Gun_Right->setOffset(2.5f);
 }
 
-Plane::Plane(const char* path, const char* srv_Adr, int port)
+Plane::Plane(const char* path, const char* srv_Adr, int port) : Plane(path) // <- Calls normal constructor
 {
-	print("loading plane", path);
-	if (!loadModels(path))
-	{
-		throw "err";
-	}
 	Sender = new NetworkSender(srv_Adr, port);
 	Online_Mode = true;
 }
@@ -188,6 +191,10 @@ void Plane::update(double delta)
 	print("flap left", this->leftFlapsTilt);
 	print("speed", speedPercentage());
 	print("speedval", this->speed);*/
+
+	Smoke_System->update(delta, this->parts[1]->transform());
+	Gun_Left->update(delta, this->parts[0]->transform()); 
+	Gun_Right->update(delta, this->parts[0]->transform());
 
 	if (Online_Mode)Sender->SendData(this);
 }

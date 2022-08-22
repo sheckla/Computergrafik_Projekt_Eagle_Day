@@ -35,6 +35,7 @@
 #include "AudioManager.h"
 #include "WaterLoaderImpl.h"
 #include "CloudShader.h"
+#include "TextureShader.h"
 
 #define online false
 
@@ -53,7 +54,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
 
     // Models
     ModelLoader loader = ModelLoader::instance();
-    loader.init(&Models);
+    loader.init(&Models,&Cloud_Box);
     loader.loadDirLight();
     loader.loadSkyBox();
     loader.loadSimpleWater();
@@ -62,8 +63,8 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
         loader.loadPlaneParts();
     }
     else {
-        loader.loadPlanePartsOnline("127.0.0.1", 19411);
-        this->enemy = loader.loadEnemyPlane("127.0.0.1", 19413);
+        loader.loadPlanePartsOnline("127.0.0.1", 19411); //SERVER-Address!
+        this->enemy = loader.loadEnemyPlane("127.0.0.1", 19413); //CLIENT-Address!
     }
     loader.clouds();
 
@@ -71,8 +72,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     // -> CamFollowPlane = true setzen fuer verfolgende Kamera
     planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
-    particleSystem = new ParticleLoader(.02,.5); //TEXTURE IS STILL HARDCODED!! ERROR will happen!
-    soundManager = new AudioManager();
+    //soundManager = new AudioManager();
     //soundManager->PlayAsync(L"C:/Users/Computer/Videos/Desktop/superbang.wav");
 
     printDivider(70);
@@ -83,6 +83,16 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
     printDivider(70);
     print("Application loading finished", "");
     printDivider(70);
+
+    ///////////////////////////////////////////////////////////////////////////////TEST//////////
+    Model* ship = new Model("C:/Users/Computer/Desktop/hms_victorious.obj");
+    ship->shader(new PhongShader, true);
+    Matrix sm,ss;
+    sm.translation(Vector(0, 10, 0));
+    ss.scale(30);
+    ship->transform(sm * ss);
+    Models.push_back(ship);
+    ///////////////////////////////////////////////////////////////////////////////TEST//////////
 }
 
 void Application::start()
@@ -101,8 +111,6 @@ void Application::update(float dtime)
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
-    //particleSystem->update(deltaTime, ModelLoader::pPlayerPlane->getPosition()); //Generates Particles
-
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(deltaTime);
@@ -118,7 +126,7 @@ void Application::update(float dtime)
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
     pWaterLoader->updateOcean(&Cam,deltaTime);
-
+   
     Cam.update();
 }
 
@@ -132,16 +140,22 @@ void Application::draw()
     ppBuffer->preDraw();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    particleSystem->draw(Cam); //DRAW-PARTICLES
+   // ModelLoader::pPlayerPlane->drawParticles(Cam);
+
+    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+    {
+        (*it)->draw(Cam); //DRAW-MODELS!
+    }
 
     for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
     {
         (*it)->draw(Cam); //DRAW-OCEAN!
     }
 
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-    {
-        (*it)->draw(Cam); //DRAW-MODELS!
+    ModelLoader::pPlayerPlane->drawParticles(Cam); 
+
+    for (auto cloud : Cloud_Box) {
+        cloud->draw(Cam);
     }
 
     ppBuffer->postDraw();
@@ -199,4 +213,9 @@ void Application::end()
         delete* it;
 
     Models.clear();
+
+
+    for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
+        delete* it;
+    Ocean.clear();
 }
