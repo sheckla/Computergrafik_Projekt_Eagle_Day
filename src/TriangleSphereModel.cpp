@@ -49,7 +49,9 @@ void TriangleSphereModel::draw(const BaseCamera& Cam)
     
     VB.activate();
     IB.activate();
+    glDisable(GL_DEPTH_TEST);
     glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
+    glEnable(GL_DEPTH_TEST);
     IB.deactivate();
     VB.deactivate();
 }

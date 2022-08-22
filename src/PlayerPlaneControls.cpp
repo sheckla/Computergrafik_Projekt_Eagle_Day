@@ -1,19 +1,20 @@
 #include "PlayerPlaneControls.h"
 
+#include "MouseLogger.h"
+
 
 PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camera* cam, bool camFollowsPlane) :
     window(window), plane(plane), cam(cam), follow(camFollowsPlane)
 {
 }
 
-static Vector lerp(const Vector& A, const Vector& B, float t) {
-    return A * t + B * (1.f - t);
-}
-
 void PlayerPlaneControls::update(float delta) 
 {
-
-    this->cameraPos = plane->getParts()[0]->transform() * Matrix().translation(CAMERA_OFFSET);
+    float yOffset = (plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * plane->speedPercentage();
+    float xOffset = (-plane->tilt().rudder) * plane->speedPercentage();
+    Vector offset = CAMERA_OFFSET + Vector(xOffset, yOffset, 0);
+    this->cameraPos = Matrix().translation(Vector(0,2.2,0)) * plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
+    this->cameraPos =  plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
 
 
     // Beschleunigung
@@ -98,27 +99,35 @@ void PlayerPlaneControls::update(float delta)
     }
     ///////////////////////////////////////////////////////////////////////////////TEST//////////
 
+    MouseLogger logger = MouseLogger::instance();
+    float normX = ((float)logger.x() / ASPECT_WIDTH * 2) - 1;
+    float normY = ((float)logger.y() / ASPECT_HEIGHT * 2) - 1;
+    float up = -normY / 2;
+    float leftTilt, rightTilt;
+    leftTilt = 0;
+    rightTilt = 0;
+
+    // Rolle Rechts
+    if (normX > 0) {
+        leftTilt = normY * normX;
+        rightTilt = -normY * normX;
+    }
+    // Rolle links
+    if (normX < 0) {
+        leftTilt = normY * normX;
+        rightTilt = -normY * normX;
+    }
+
+	plane->tiltRudder(delta * normX);
+    plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
+    plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
+
+
     plane->update(delta);
 
-    // camera follows plane
-    if (follow) {
-        cam->setTarget(plane->getParts()[0]->transform().translation());
-        //print("prev", prevCameraPos.translation());
-        //print("current", cameraPos.translation());
-        //print("lerp", lerp(prevCameraPos.translation(), cameraPos.translation(), 0.5));
-        cam->setPosition(prevCameraPos.translation());
-        cam->zoom(-plane->getSpeed() / 60);
 
-        if (init)
-        {
-            //print("double", "");
-        }
-    	else
-        {
-            //print("once", "");
-            cam->setPosition(cameraPos.translation());
-			this->init = true;
-        }
-			prevCameraPos = cameraPos;
-    }
+    // camera follows plane
+    cam->setTarget(plane->getParts()[0]->transform().translation());
+    cam->setPosition(cameraPos.translation());
+    cam->zoom(-plane->getSpeed() / 60);
 }

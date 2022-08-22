@@ -40,7 +40,7 @@ private:
     int Resolution;
     const Texture* DetailTex[DETAILTEX_COUNT];
     Vector Scaling;
-    // shader locations
+    // Shader locations
     int DetailTexK;
 
     GLint ResolutionLoc;

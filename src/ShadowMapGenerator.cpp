@@ -17,11 +17,11 @@ ShadowMapShader::ShadowMapShader()
 	if (!loaded)
 		throw std::exception();
 
-	EyePosLoc = getParameterID("EyePos");
+	EyePosLoc = initUniformParameter("EyePos");
 	//assert(EyePosLoc != -1);
-	ModelMatLoc = getParameterID("ModelMat");
+	ModelMatLoc = initUniformParameter("ModelMat");
 	//assert(ModelMatLoc != -1);
-	ModelViewProjMatLoc = getParameterID("ModelViewProjMat");
+	ModelViewProjMatLoc = initUniformParameter("ModelViewProjMat");
 	//assert(ModelViewProjMatLoc != -1);
 }
 
@@ -30,11 +30,11 @@ void ShadowMapShader::activate(const BaseCamera& Cam) const
 	BaseShader::activate(Cam);
 	// always update matrices
 	Matrix ModelViewProj = Cam.getProjectionMatrix() * Cam.getViewMatrix() * modelTransform();
-	setParameter(ModelMatLoc, modelTransform());
-	setParameter(ModelViewProjMatLoc, ModelViewProj);
+	setUniformParameter(ModelMatLoc, modelTransform());
+	setUniformParameter(ModelViewProjMatLoc, ModelViewProj);
 
 	Vector EyePos = Cam.position();
-	setParameter(EyePosLoc, EyePos);
+	setUniformParameter(EyePosLoc, EyePos);
 
 }
 

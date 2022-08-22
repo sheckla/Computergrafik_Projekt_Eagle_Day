@@ -11,6 +11,10 @@
 
 // Aktuell nur getestet unter Windows 10
 #ifdef WIN32
+#include <GL/glew.h>
+#include <glfw/glfw3.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #define ASSETS "../../assets/"
 #define SHADERS "../../assets/shaders/"
 #define WORLEY_AMOUNT 30
@@ -59,6 +63,9 @@ static void printDivider(int size = 45)
 
 #else
 // Kompatibilitaet fuer andere Betriebssysteme ueberpruefen
+#define GLFW_INCLUDE_GLCOREARB
+#define GLFW_INCLUDE_GLEXT
+#include <glfw/glfw3.h>
 #define ASSETS "../assets/"
 #endif
 

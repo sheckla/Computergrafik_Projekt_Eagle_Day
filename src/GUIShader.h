@@ -2,43 +2,40 @@
 #ifndef GUIShader_h
 #define GUIShader_h
 
-#include <stdio.h>
-#ifdef WIN32
-#include <GL/glew.h>
-#include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
-#include <iostream>
-#include <assert.h>
 #include "color.h"
-#include "vector.h"
-#include "matrix.h"
 #include "camera.h"
 #include "baseshader.h"
 #include "texture.h"
-#include "ShaderLightMapper.h"
-#include "Texture.h"
 
 class GUIShader : public BaseShader
 {
 public:
     GUIShader();
-    ~GUIShader();
-    virtual void activate(const BaseCamera& Cam) const;
+    ~GUIShader() override;
+    void activate() const override;
     void texture(Texture* tex);
     void color(Color c);
+    void constantColorMode(bool b);
+    void isGUITex(bool b);
+    void mouseoverHighlight(bool b);
+    void mouseInside(bool b);
+    void isFont(bool b);
 private:
-    GLint EyePosLoc;
-    GLint ModelMatLoc;
-    GLint ModelViewProjMatLoc;
     GLint TexLoc;
     GLint ColorLoc;
+    GLint ConstantColorModeLoc;
+    GLint IsGUITexLoc;
+    GLint MouseoverHighlightLoc;
+    GLint MouseInsideLoc;
+    GLint IsFontLoc;
 
     Texture* pTex;
     Color Col;
+    bool ConstantColorMode;
+    bool IsGUITex;
+    bool MouseoverHighlight;
+    bool MouseInside;
+    bool IsFont;
 };
 
 #endif

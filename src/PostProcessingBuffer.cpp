@@ -16,7 +16,7 @@ PostProcessingBuffer::PostProcessingBuffer(int width = ASPECT_WIDTH, int height 
 
 void PostProcessingBuffer::draw(Camera cam)
 {
-    this->screenQuad.draw(cam, &screenTex);
+    screenQuad.draw(cam, &screenTex);
 }
 
 void PostProcessingBuffer::postDraw()
@@ -30,4 +30,14 @@ void PostProcessingBuffer::preDraw()
 {
     buffer.attachColorTarget(screenTex);
     buffer.activate();
+}
+
+void PostProcessingBuffer::gaussianBlur(bool b)
+{
+    screenQuad.shader()->gaussianBlur(b);
+}
+
+void PostProcessingBuffer::elapseTime(float delta)
+{
+    screenQuad.shader()->elapsedTime(delta);
 }

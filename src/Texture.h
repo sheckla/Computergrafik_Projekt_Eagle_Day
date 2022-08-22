@@ -58,6 +58,7 @@ public:
     static Texture* defaultTex();
     static Texture* defaultNormalTex();
     static Texture* defaultCubeMap();
+    static Texture* defaultFontMap();
 
     static const Texture* LoadShared(const char* Filename);
     static void ReleaseShared(const Texture* pTex);
@@ -92,6 +93,7 @@ protected:
     static Texture* pDefaultTex;
     static Texture* pDefaultNormalTex;
     static Texture* pDefaultCubeMapTex;
+    static Texture* pDefaultFontMap;
 
     struct TexEntry
     {

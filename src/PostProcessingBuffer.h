@@ -15,6 +15,9 @@ public:
 	void draw(Camera cam);
 	void postDraw();
 	void preDraw();
+
+	void gaussianBlur(bool b);
+	void elapseTime(float delta);
 };
 
 #endif

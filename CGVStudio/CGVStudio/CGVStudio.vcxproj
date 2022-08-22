@@ -55,13 +55,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;$(ProjectDir)..\thirdparty\cocoaAsyncSocket</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;$(ProjectDir)..\thirdparty\glut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\thirdparty\glfw\lib;$(ProjectDir)..\thirdparty\glew\lib;$(ProjectDir)..\thirdparty\assimp\lib;$(ProjectDir)..\thirdparty\freeimage\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;FreeImage.lib;assimp-vc140-mt.lib;glfw3.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\thirdparty\glut\lib;$(ProjectDir)..\thirdparty\glfw\lib;$(ProjectDir)..\thirdparty\glew\lib;$(ProjectDir)..\thirdparty\assimp\lib;$(ProjectDir)..\thirdparty\freeimage\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;FreeImage.lib;assimp-vc140-mt.lib;glfw3.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -88,6 +88,8 @@
     <ClCompile Include="..\..\src\Aabb.cpp" />
     <ClCompile Include="..\..\src\Application.cpp" />
     <ClCompile Include="..\..\src\AudioManager.cpp" />
+    <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp" />
+    <ClCompile Include="..\..\src\ApplicationGUIPrototype.h" />
     <ClCompile Include="..\..\src\BaseModel.cpp" />
     <ClCompile Include="..\..\src\BaseShader.cpp" />
     <ClCompile Include="..\..\src\Camera.cpp" />
@@ -96,15 +98,26 @@
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
     <ClCompile Include="..\..\src\EnemyPlane.cpp" />
+    <ClCompile Include="..\..\src\EscapeMenuGUI.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
-    <ClCompile Include="..\..\src\guiElement.cpp" />
+    <ClCompile Include="..\..\src\ApplicationGUI.cpp" />
+    <ClCompile Include="..\..\src\GameplayGUI.cpp" />
+    <ClCompile Include="..\..\src\GUIConstantQuadWrapper.cpp" />
+    <ClCompile Include="..\..\src\GUIButton.cpp" />
+    <ClCompile Include="..\..\src\GUIConstantQuad.cpp" />
+    <ClCompile Include="..\..\src\GUIConstantTriangle.cpp" />
     <ClCompile Include="..\..\src\GUILoader.cpp" />
+    <ClCompile Include="..\..\src\GUILoadingMeter.cpp" />
     <ClCompile Include="..\..\src\GUIShader.cpp" />
+    <ClCompile Include="..\..\src\GUIChar.cpp" />
+    <ClCompile Include="..\..\src\GUIText.cpp" />
+    <ClCompile Include="..\..\src\GUITexture.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\Lights.cpp" />
     <ClCompile Include="..\..\src\LineBoxModel.cpp" />
     <ClCompile Include="..\..\src\LinePlaneModel.cpp" />
+    <ClCompile Include="..\..\src\LoadingScreenGUI.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Matrix.cpp" />
     <ClCompile Include="..\..\src\Model.cpp" />
@@ -128,6 +141,9 @@
     <ClCompile Include="..\..\src\ScreenQuadModel.cpp" />
     <ClCompile Include="..\..\src\ShaderLightMapper.cpp" />
     <ClCompile Include="..\..\src\ShadowMapGenerator.cpp" />
+    <ClCompile Include="..\..\src\StartScreenGUI.cpp" />
+    <ClCompile Include="..\..\src\Terrain.cpp" />
+    <ClCompile Include="..\..\src\TerrainShader.cpp" />
     <ClCompile Include="..\..\src\OceanSegment.cpp" />
     <ClCompile Include="..\..\src\OceanShader.cpp" />
     <ClCompile Include="..\..\src\Texture.cpp" />
@@ -135,6 +151,8 @@
     <ClCompile Include="..\..\src\TriangleBoxModel.cpp" />
     <ClCompile Include="..\..\src\TrianglePlaneModel.cpp" />
     <ClCompile Include="..\..\src\TriangleSphereModel.cpp" />
+    <ClCompile Include="..\..\src\GUIBaseComponent.cpp" />
+    <ClCompile Include="..\..\src\GUINumericPointerMeter.cpp" />
     <ClCompile Include="..\..\src\vector.cpp" />
     <ClCompile Include="..\..\src\VertexBuffer.cpp" />
     <ClCompile Include="..\..\src\VolumetricCloudsLoaderImpl.cpp" />
@@ -152,16 +170,28 @@
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\ConstantShader.h" />
     <ClInclude Include="..\..\src\EnemyPlane.h" />
+    <ClInclude Include="..\..\src\EscapeMenuGUI.h" />
     <ClInclude Include="..\..\src\Framebuffer.h" />
+    <ClInclude Include="..\..\src\ApplicationGUI.h" />
+    <ClInclude Include="..\..\src\GameplayGUI.h" />
     <ClInclude Include="..\..\src\Globals.h" />
-    <ClInclude Include="..\..\src\guiElement.h" />
+    <ClInclude Include="..\..\src\GUIConstantQuadWrapper.h" />
+    <ClInclude Include="..\..\src\GUIButton.h" />
+    <ClInclude Include="..\..\src\GUIConstantQuad.h" />
+    <ClInclude Include="..\..\src\GUIConstantTriangle.h" />
     <ClInclude Include="..\..\src\GUILoader.h" />
+    <ClInclude Include="..\..\src\GUILoadingMeter.h" />
     <ClInclude Include="..\..\src\GUIShader.h" />
+    <ClInclude Include="..\..\src\GUIChar.h" />
+    <ClInclude Include="..\..\src\GUIText.h" />
+    <ClInclude Include="..\..\src\GUITexture.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
     <ClInclude Include="..\..\src\IndexBuffer.h" />
     <ClInclude Include="..\..\src\Lights.h" />
     <ClInclude Include="..\..\src\LineBoxModel.h" />
     <ClInclude Include="..\..\src\LinePlaneModel.h" />
+    <ClInclude Include="..\..\src\LoadingScreenGUI.h" />
+    <ClInclude Include="..\..\src\MathUtil.h" />
     <ClInclude Include="..\..\src\Matrix.h" />
     <ClInclude Include="..\..\src\Model.h" />
     <ClInclude Include="..\..\src\ModelLoader.h" />
@@ -181,10 +211,12 @@
     <ClInclude Include="..\..\src\PlayerPlaneControls.h" />
     <ClInclude Include="..\..\src\PostProcessingBuffer.h" />
     <ClInclude Include="..\..\src\PostProcessingShader.h" />
+    <ClInclude Include="..\..\src\PressListener.h" />
     <ClInclude Include="..\..\src\rgbimage.h" />
     <ClInclude Include="..\..\src\ScreenQuadModel.h" />
     <ClInclude Include="..\..\src\ShaderLightMapper.h" />
     <ClInclude Include="..\..\src\ShadowMapGenerator.h" />
+    <ClInclude Include="..\..\src\StartScreenGUI.h" />
     <ClInclude Include="..\..\src\StringUtils.h" />
     <ClInclude Include="..\..\src\OceanSegment.h" />
     <ClInclude Include="..\..\src\OceanShader.h" />
@@ -193,6 +225,8 @@
     <ClInclude Include="..\..\src\TriangleBoxModel.h" />
     <ClInclude Include="..\..\src\TrianglePlaneModel.h" />
     <ClInclude Include="..\..\src\TriangleSphereModel.h" />
+    <ClInclude Include="..\..\src\GUIBaseComponent.h" />
+    <ClInclude Include="..\..\src\GUINumericPointerMeter.h" />
     <ClInclude Include="..\..\src\vector.h" />
     <ClInclude Include="..\..\src\VertexBuffer.h" />
     <ClInclude Include="..\..\src\VolumetricCloudsLoader.h" />

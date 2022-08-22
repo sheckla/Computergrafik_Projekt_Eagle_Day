@@ -113,8 +113,8 @@ bool ModelLoader::loadPlaneParts()
     for (int i = 0; i < PLANE_PARTS; i++) {
         Models->push_back(planeParts[i]);
     }
-    
-
+    Models->push_back(p->dot);
+    //Models->push_back(p->horizon);
 
     printDivider();
     return true;
@@ -161,7 +161,7 @@ bool ModelLoader::loadTestScene()
 
 bool ModelLoader::loadSimpleWater()
 {
-    TrianglePlaneModel* lpm = new TrianglePlaneModel(20, 20, 1, 1);
+    TrianglePlaneModel* lpm = new TrianglePlaneModel(200, 200, 1, 1);
     lpm->shader(new PhongShader());
     lpm->transform(Matrix().translation(Vector(0, -1, 0)));
     Models->push_back(lpm);

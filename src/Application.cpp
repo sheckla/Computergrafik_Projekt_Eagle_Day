@@ -7,29 +7,19 @@
 //
 
 #include "Application.h"
-#ifdef WIN32
-#include <GL/glew.h>
-#include <glfw/glfw3.h>
-#define _USE_MATH_DEFINES
-#include <math.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
+
 
 #include "CloudBox.h"
 #include "CloudShader.h"
-#include "guiElement.h"
+#include "GUIButton.h"
+#include "GUILoader.h"
 #include "PlaneLoader.h"
 #include "WaterLoader.h"
 #include "PlayerPlaneControls.h"
 #include "ModelLoader.h"
 #include "TextureShader.h"
-#include "ScreenQuadModel.h"
-#include "guiElement.h"
-#include "GUILoader.h"
 #include "MouseLogger.h"
+#include "GUINumericPointerMeter.h"
 #include "VolumetricCloudsLoaderImpl.h"
 #include "ParticleLoader.h"
 #include "AudioManager.h"
@@ -37,50 +27,25 @@
 #include "CloudShader.h"
 #include "TextureShader.h"
 
-#define online false
+PlayerPlaneControls* Application::planeControls = nullptr;
+Camera* Application::Cam;
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
 {
+    // ----------- START ----------- 
     std::cout << "[Eagle Day Application] Starting..." << std::endl;
 
-    // GUI
-    GUILoader gui = GUILoader::instance();
-    gui.init(&this->guis);
-    gui.crossHair();
-    gui.GUI();
+    // ----------- MODEL INIT ----------- 
+    ModelLoader::instance().init(&Models);
 
-    // Post Processing //TODO verschiedene post-processing effekte aktivieren
-    ppBuffer = new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT);
+    // ----------- GUI INIT -----------
+    AppGUI->setGUIStatus(LOADING_SCREEN_GUI, true);
 
-    // Models
-    ModelLoader loader = ModelLoader::instance();
-    loader.init(&Models,&Cloud_Box);
-    loader.loadDirLight();
-    loader.loadSkyBox();
-    loader.loadSimpleWater();
-
-    if (!online) {
-        loader.loadPlaneParts();
-    }
-    else {
-        loader.loadPlanePartsOnline("127.0.0.1", 19411); //SERVER-Address!
-        this->enemy = loader.loadEnemyPlane("127.0.0.1", 19413); //CLIENT-Address!
-    }
-    loader.clouds();
-
-    // Controls - PlayerPlane an controls anheften
+    // ----------- CONTROLS INIT ----------- 
     // -> CamFollowPlane = true setzen fuer verfolgende Kamera
-    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
+    //planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
-    //soundManager = new AudioManager();
-    //soundManager->PlayAsync(L"C:/Users/Computer/Videos/Desktop/superbang.wav");
-
-    printDivider(70);
-
-    pWaterLoader = new WaterLoaderImpl();
-    pWaterLoader->createWater(&(this->Ocean)); //Writes Ocean-Segments into Ocean-Array
-    
-    printDivider(70);
+    // ----------- FINISH ----------- 
     print("Application loading finished", "");
     printDivider(70);
 
@@ -97,7 +62,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
 
 void Application::start()
 {
-    glEnable(GL_DEPTH_TEST); // enable depth-testing
+    glEnable(GL_DEPTH_TEST); // postProcessingEffects depth-testing
     glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -108,71 +73,79 @@ void Application::start()
 
 void Application::update(float dtime)
 {
+    // ----------- DELTA TIME -----------
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
+    // ----------- 'Singleton' MouseLogger update ----------- 
+    double x,y;
+    glfwGetCursorPos(pWindow, &x, &y);
+    MouseLogger::instance().update(x, y);
+
+    // ----------- GUI Keyboard Input update ----------- 
+    AppGUI->updateInputs(deltaTime);
+    if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu) return;
+
+    // ----------- (GAME) Plane Control handler ----------- 
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(deltaTime);
         if (online)this->enemy->update(deltaTime);
     }
 
-    //std::cout<<"Plane_Position: "<<ModelLoader::pPlayerPlane->getPosition().X <<" "<< ModelLoader::pPlayerPlane->getPosition().Y<<" "<< ModelLoader::pPlayerPlane->getPosition().Z<<std::endl;
-
-    CloudShader::TimeTranslation = last;
-
-    // Update Mouse-Pos
-    double x,y;
-    glfwGetCursorPos(pWindow, &x, &y);
-    MouseLogger::instance().update(x, y);
-    pWaterLoader->updateOcean(&Cam,deltaTime);
-   
-    Cam.update();
+    Cam->update();
 }
 
 void Application::draw()
 {
-    // Shadow Mapping
-    ShadowGenerator.generate(Models);
-    ShaderLightMapper::instance().activate();
-
-    // Main Buffer - 3D Scene
-    ppBuffer->preDraw();
+    // ----------- FRAME START ----------- 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (!AppGUI->status().startscreenGUI && !AppGUI->status().loadingScreen) {
+        // ----------- SHADOW MAPPPING ----------- 
+        ShadowGenerator.generate(Models);
+        ShaderLightMapper::instance().activate();
 
-   // ModelLoader::pPlayerPlane->drawParticles(Cam);
 
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-    {
-        (*it)->draw(Cam); //DRAW-MODELS!
+        // ----------- PostProc. Init & 3D SCENE ----------- 
+        AppGUI->ppBuffer->preDraw();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        {
+            (*it)->draw(*Cam);
+        }
+        AppGUI->ppBuffer->postDraw();
+
+        // ----------- PostProc. DRAW ----------- 
+        AppGUI->ppBuffer->draw(*Cam);
     }
 
-    for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
-    {
-        (*it)->draw(Cam); //DRAW-OCEAN!
-    }
-
-    ModelLoader::pPlayerPlane->drawParticles(Cam); 
-
-    for (auto cloud : Cloud_Box) {
-        cloud->draw(Cam);
-    }
-
-    ppBuffer->postDraw();
-
-
-
-    // Post Processing
-    ppBuffer->draw(Cam);
-
-    // GUI
+    // ----------- GUI DRAW ----------- 
     for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
     {
-        (*it)->draw(Cam);
+        (*it)->draw(); // no cam needed
     }
+    AppGUI->draw();
 
+
+    // ----------- ERROR HANDLING ----------- 
     GLenum Error = glGetError();
-    switch (Error)
+    glErrorHandler(Error);
+    assert(Error == 0);
+
+    // ----------- FRAME FINISH ----------- 
+
+}
+void Application::end()
+{
+    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        delete* it;
+
+    Models.clear();
+}
+
+void Application::glErrorHandler(GLenum err)
+{
+    switch (err)
     {
         // opengl 2 errors (8)
     case GL_NO_ERROR:
@@ -204,18 +177,4 @@ void Application::draw()
         std::cout << "GL_INVALID_FRAMEBUFFER_OPERATION" << std::endl;
         break;
     }
-    
-    assert(Error == 0);
-}
-void Application::end()
-{
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-        delete* it;
-
-    Models.clear();
-
-
-    for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
-        delete* it;
-    Ocean.clear();
 }

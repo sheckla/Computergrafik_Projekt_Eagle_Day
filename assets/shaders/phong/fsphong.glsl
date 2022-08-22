@@ -48,8 +48,8 @@ float sat( in float a)
 
 float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 
-	float shadow = 0.0f, bias = 0.0005;  							// Bias, damit es zu keinen Artefakten an der Oberfläche kommt
-    bias = 0.05*tan(acos(cosTheta));
+	float shadow = 0.0f;  							
+    float bias = 0.05*tan(acos(cosTheta));
 	vec4 PosSM = ShadowMapMat[LightIndex] * vec4(Position, 1);		// PosSM = Position des Punktes im Shadowmap-System
 	PosSM.xyz /= PosSM.w; 											// perspektivische Teilung vollziehen 
 	PosSM.xy = PosSM.xy*0.5 + 0.5; 									// Koordinaten von norm. Bildraum [-1,1] in Texturkoordinaten [0,1]
@@ -126,8 +126,7 @@ void main()
             float phi_o = lights[i].SpotRadius.y; // outer radius (RAD)
             float cutoff = (acos(sigma)-phi_i) / (phi_o - phi_i); // acos() [0,pi] to get RAD from COSINE, math libs use RAD most of the times
             Attenuation *= 1.0f - sat(cutoff);
-            float cosTheta = sat(dot(N, L));
-            visibility += 1.0f - shadowAmount(i, L, cosTheta);
+            visibility += 1.0f - shadowAmount(i, L, sat(dot(N, L)));
         }
 
         vec3 H = normalize(L + E); 

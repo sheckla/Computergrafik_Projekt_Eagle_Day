@@ -34,18 +34,19 @@ public:
     virtual const Matrix& modelTransform() const { return ModelTransform; }
 
     virtual void activate(const BaseCamera& Cam) const;
+    virtual void activate() const;
     virtual void deactivate() const;
 
     bool load(const char* VertexShaderFile, const char* FragmentShaderFile);
-    GLint getParameterID(const char* ParamenterName) const;
+    GLint initUniformParameter(const char* ParamenterName) const;
     GLuint getBlockID(const char* BlockName) const;
 
     void setBlock(GLuint ID, GLuint UniformBufferID) const;
-    void setParameter(GLint ID, float Param) const;
-    void setParameter(GLint ID, int Param) const;
-    void setParameter(GLint ID, const Vector& Param) const;
-    void setParameter(GLint ID, const Color& Param) const;
-    void setParameter(GLint ID, const Matrix& Param) const;
+    void setUniformParameter(GLint ID, float Param) const;
+    void setUniformParameter(GLint ID, int Param) const;
+    void setUniformParameter(GLint ID, const Vector& Param) const;
+    void setUniformParameter(GLint ID, const Color& Param) const;
+    void setUniformParameter(GLint ID, const Matrix& Param) const;
 
     GLuint openGLProgramID() { return ShaderProgram; }
 protected:

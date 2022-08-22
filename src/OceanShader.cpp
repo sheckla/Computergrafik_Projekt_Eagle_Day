@@ -13,8 +13,8 @@ Scaling(1, 1, 1), MixTex(NULL)
     PhongShader::assignLocations();
     specularColor(Color(0, 0, 0));
 
-    MixTexLoc = getParameterID("MixTex");
-    ScalingLoc = getParameterID("Scaling");
+    MixTexLoc = initUniformParameter("MixTex");
+    ScalingLoc = initUniformParameter("Scaling");
 
     PerlinNoiseLoc = getParameterID("Perlin");
 
@@ -28,7 +28,7 @@ Scaling(1, 1, 1), MixTex(NULL)
         DetailTex[i] = NULL;
         std::string s;
         s += "DetailTex[" + std::to_string(i) + "]";
-        DetailTexLoc[i] = getParameterID(s.c_str());
+        DetailTexLoc[i] = initUniformParameter(s.c_str());
     }
 
     std::string pNoise = AssetDirectory + "perlin_noise.jpg";
@@ -74,7 +74,7 @@ void OceanShader::activateTex(const Texture* pTex, GLint Loc, int slot) const
     if (pTex && Loc >= 0)
     {
         pTex->activate(slot);
-        setParameter(Loc, slot);
+        setUniformParameter(Loc, slot);
     }
 
 }

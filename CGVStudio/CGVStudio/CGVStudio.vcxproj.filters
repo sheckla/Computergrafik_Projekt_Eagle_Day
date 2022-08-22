@@ -80,9 +80,6 @@
     <Filter Include="Quelldateien\graphics\models_simple\AABB">
       <UniqueIdentifier>{4227f2e9-4758-4b54-88aa-16e514ac1060}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\graphics\models_simple\base_classes">
-      <UniqueIdentifier>{9a74ce6b-c83f-4431-a5fe-1e5dadf1b302}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\graphics\models_simple\baseModel">
       <UniqueIdentifier>{fdbaa13b-3cc4-4c63-90f5-d091a8d3f0b3}</UniqueIdentifier>
     </Filter>
@@ -122,11 +119,29 @@
     <Filter Include="Quelldateien\graphics\shader">
       <UniqueIdentifier>{6a54a247-36e2-4ceb-a2f9-a70627911295}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\gui\shader">
-      <UniqueIdentifier>{343577ef-6d19-46f4-a0e6-5d92ac63d513}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\graphics\models_complex\enemyPlane">
       <UniqueIdentifier>{e08362b4-d611-46e8-ad13-1485fec05f5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\elements">
+      <UniqueIdentifier>{e425458a-e862-4a74-be1e-7b3830968831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\elements\core">
+      <UniqueIdentifier>{7ca7972d-da33-4b0b-8e1d-9db4e471aa1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\elements\shader">
+      <UniqueIdentifier>{343577ef-6d19-46f4-a0e6-5d92ac63d513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\elements\components">
+      <UniqueIdentifier>{951c0a2d-6f28-46d4-8d0d-bcac257c42b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\application">
+      <UniqueIdentifier>{2c864ba3-23c9-4cd3-b605-11e5cacddb05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\application\gui_types">
+      <UniqueIdentifier>{d37e535c-602f-4327-a0a5-82d3a02e942e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\elements\components\font">
+      <UniqueIdentifier>{1edb62a6-4e0b-4a04-8f75-b6f60911daf6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Quelldateien\particles">
       <UniqueIdentifier>{1207bace-d29c-4d3a-9481-9b6b60b9d54c}</UniqueIdentifier>
@@ -247,9 +262,6 @@
     <ClCompile Include="..\..\src\ScreenQuadModel.cpp">
       <Filter>Quelldateien\graphics\models_simple\screenQuad</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\guiElement.cpp">
-      <Filter>Quelldateien\gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MouseLogger.cpp">
       <Filter>Quelldateien\util</Filter>
     </ClCompile>
@@ -266,7 +278,7 @@
       <Filter>Quelldateien\graphics\post_processing</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\GUIShader.cpp">
-      <Filter>Quelldateien\gui\shader</Filter>
+      <Filter>Quelldateien\gui\elements\shader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\EnemyPlane.cpp">
       <Filter>Quelldateien\graphics\models_complex\enemyPlane</Filter>
@@ -283,26 +295,56 @@
     <ClCompile Include="..\..\src\NetworkSender.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ParticleLoader.cpp">
-      <Filter>Quelldateien\particles</Filter>
+    <ClCompile Include="..\..\src\GUIButton.cpp">
+      <Filter>Quelldateien\gui\elements\components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ParticleInstance.cpp">
-      <Filter>Quelldateien\particles</Filter>
+    <ClCompile Include="..\..\src\GUINumericPointerMeter.cpp">
+      <Filter>Quelldateien\gui\elements\components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ParticleSprite.cpp">
-      <Filter>Quelldateien\particles</Filter>
+    <ClCompile Include="..\..\src\GUIBaseComponent.cpp">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\AudioManager.cpp">
-      <Filter>Quelldateien\util\Sound</Filter>
+    <ClCompile Include="..\..\src\GUIConstantQuad.cpp">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ParticleInstanceSmoke.cpp">
-      <Filter>Quelldateien\particles</Filter>
+    <ClCompile Include="..\..\src\GUIConstantQuadWrapper.cpp">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ParticleInstanceBullet.cpp">
-      <Filter>Quelldateien\particles</Filter>
+    <ClCompile Include="..\..\src\GUIConstantTriangle.cpp">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ParticleShader.cpp">
-      <Filter>Quelldateien\graphics\shader</Filter>
+    <ClCompile Include="..\..\src\GUITexture.cpp">
+      <Filter>Quelldateien\gui\elements\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ApplicationGUI.cpp">
+      <Filter>Quelldateien\gui\application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\EscapeMenuGUI.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GameplayGUI.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ApplicationGUIPrototype.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StartScreenGUI.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LoadingScreenGUI.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GUILoadingMeter.cpp">
+      <Filter>Quelldateien\gui\elements\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GUIChar.cpp">
+      <Filter>Quelldateien\gui\elements\components\font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GUIText.cpp">
+      <Filter>Quelldateien\gui\elements\components\font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,9 +468,6 @@
     <ClInclude Include="..\..\src\ScreenQuadModel.h">
       <Filter>Quelldateien\graphics\models_simple\screenQuad</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\guiElement.h">
-      <Filter>Quelldateien\gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\MouseLogger.h">
       <Filter>Quelldateien\util</Filter>
     </ClInclude>
@@ -451,7 +490,7 @@
       <Filter>Quelldateien\graphics\post_processing</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\GUIShader.h">
-      <Filter>Quelldateien\gui\shader</Filter>
+      <Filter>Quelldateien\gui\elements\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\EnemyPlane.h">
       <Filter>Quelldateien\graphics\models_complex\enemyPlane</Filter>
@@ -462,29 +501,56 @@
     <ClInclude Include="..\..\src\NetworkSender.h">
       <Filter>Quelldateien\util\network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ParticleLoader.h">
-      <Filter>Quelldateien\particles</Filter>
+    <ClInclude Include="..\..\src\GUIButton.h">
+      <Filter>Quelldateien\gui\elements\components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ParticleInstance.h">
-      <Filter>Quelldateien\particles</Filter>
+    <ClInclude Include="..\..\src\GUINumericPointerMeter.h">
+      <Filter>Quelldateien\gui\elements\components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ParticleSprite.h">
-      <Filter>Quelldateien\particles</Filter>
+    <ClInclude Include="..\..\src\GUIBaseComponent.h">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\AudioManager.h">
-      <Filter>Quelldateien\util\Sound</Filter>
+    <ClInclude Include="..\..\src\GUIConstantQuad.h">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\OceanShader.h">
-      <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
+    <ClInclude Include="..\..\src\GUIConstantQuadWrapper.h">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ParticleInstanceSmoke.h">
-      <Filter>Quelldateien\particles</Filter>
+    <ClInclude Include="..\..\src\GUIConstantTriangle.h">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ParticleInstanceBullet.h">
-      <Filter>Quelldateien\particles</Filter>
+    <ClInclude Include="..\..\src\GUITexture.h">
+      <Filter>Quelldateien\gui\elements\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ParticleShader.h">
-      <Filter>Quelldateien\graphics\shader</Filter>
+    <ClInclude Include="..\..\src\ApplicationGUI.h">
+      <Filter>Quelldateien\gui\application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\EscapeMenuGUI.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GameplayGUI.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\PressListener.h">
+      <Filter>Quelldateien\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\StartScreenGUI.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\MathUtil.h">
+      <Filter>Quelldateien\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\LoadingScreenGUI.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUILoadingMeter.h">
+      <Filter>Quelldateien\gui\elements\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUIChar.h">
+      <Filter>Quelldateien\gui\elements\components\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUIText.h">
+      <Filter>Quelldateien\gui\elements\components\font</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
