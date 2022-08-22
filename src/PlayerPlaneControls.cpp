@@ -11,7 +11,7 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 void PlayerPlaneControls::update(float delta) 
 {
     float yOffset = (plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * plane->speedPercentage();
-    float xOffset = (-plane->tilt().rudder) * plane->speedPercentage() * 30;
+    float xOffset = (-plane->tilt().rudder) * plane->speedPercentage();
     Vector offset = CAMERA_OFFSET + Vector(xOffset, yOffset, 0);
     this->cameraPos = Matrix().translation(Vector(0,2.2,0)) * plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
     this->cameraPos =  plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
@@ -88,9 +88,9 @@ void PlayerPlaneControls::update(float delta)
         rightTilt = -normY * normX;
     }
 
-	//plane->tiltRudder(delta * normX);
- //   plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
- //   plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
+	plane->tiltRudder(delta * normX);
+    plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
+    plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
 
 
     plane->update(delta);

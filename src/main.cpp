@@ -12,8 +12,9 @@
 void PrintOpenGLVersion();
 
 int main () {
+    srand(time(NULL));
     FreeImage_Initialise();
-    // start GL context and O/S window using the GLFW helper library
+    // start GL context and O/S Window using the GLFW helper library
     if (!glfwInit ()) {
         fprintf (stderr, "ERROR: could not start GLFW3\n");
         return 1;
@@ -41,7 +42,7 @@ int main () {
     glfwSetWindowIcon(window, 1, &logo);
     
     if (!window) {
-        fprintf (stderr, "ERROR: can not open window with GLFW3\n");
+        fprintf (stderr, "ERROR: can not open Window with GLFW3\n");
         glfwTerminate();
         return 1;
     }

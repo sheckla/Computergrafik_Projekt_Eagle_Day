@@ -3,7 +3,7 @@
 #include "Model.h"
 #include <sstream>
 
-GUIShader::GUIShader() : pTex(nullptr), Col(1, 1, 1), ConstantColorMode(false), IsGUITex(false)
+GUIShader::GUIShader() : pTex(nullptr), Col(1, 1, 1), ConstantColorMode(false), IsGUITex(false), MouseoverHighlight(false), MouseInside(false), IsFont(false)
 {
 	bool loaded = load(SHADERS "gui/vsgui.glsl",
 		SHADERS "gui/fsgui.glsl");
@@ -14,6 +14,9 @@ GUIShader::GUIShader() : pTex(nullptr), Col(1, 1, 1), ConstantColorMode(false), 
 	ColorLoc = initUniformParameter("Color");
 	ConstantColorModeLoc = initUniformParameter("ConstantColorMode");
 	IsGUITexLoc = initUniformParameter("IsGUITex");
+	MouseoverHighlightLoc = initUniformParameter("MouseoverHighlight");
+	MouseInsideLoc = initUniformParameter("MouseInside");
+	IsFontLoc = initUniformParameter("IsFont");
 }
 
 GUIShader::~GUIShader()
@@ -29,6 +32,9 @@ void GUIShader::activate() const
 	glUniform3f(ColorLoc, Col.R, Col.G, Col.B);
 	glUniform1i(ConstantColorModeLoc, ConstantColorMode);
 	glUniform1i(IsGUITexLoc, IsGUITex);
+	glUniform1i(MouseoverHighlightLoc, MouseoverHighlight);
+	glUniform1i(MouseInsideLoc, MouseInside);
+	glUniform1i(IsFontLoc, IsFont);
 }
 
 void GUIShader::texture(Texture* tex)
@@ -49,4 +55,19 @@ void GUIShader::constantColorMode(bool b)
 void GUIShader::isGUITex(bool b)
 {
 	IsGUITex = b;
+}
+
+void GUIShader::mouseoverHighlight(bool b)
+{
+	MouseoverHighlight = b;
+}
+
+void GUIShader::mouseInside(bool b)
+{
+	MouseInside = b;
+}
+
+void GUIShader::isFont(bool b)
+{
+	IsFont = b;
 }

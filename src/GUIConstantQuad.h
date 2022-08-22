@@ -19,55 +19,73 @@ class GUIConstantQuad : public GUIBaseComponent
 {
 protected:
 	GUIShader* Shader = new GUIShader();
-	Color Col = Color(1, 1, 1);
-	Color MouseHitColor = Color(0.6, 0.6, 0.6);
-
 	IndexBuffer IB;
 	VertexBuffer VB;
-
 	Vector LowerBound = Vector(-0.5f, -0.5f, 0); 
 	Vector UpperBound = Vector(0.5f, 0.5f, 0); 
+	Color Col = Color(1, 1, 1);
 	Vector Scale = Vector(1, 1, 0); 
 
 	// normal pixel-width/height
-	int startPixelX, startPixelY, Width, Height;
+	float startPixelX, startPixelY, Width, Height;
+
+	// Display
 	bool Centred = false;
 	bool FollowMouse = false;
-	bool MouseoverHighlight = false;
+
+	// Mouseover
+	bool MouseoverHighlight = false; bool ForceMouseoverHighlight = false;
+	Color MouseoverHighlightColor = Color(0.6, 0.6, 0.6);
+
+	// Mousepress
+	bool MousePress = false;
+	Color MousePressColor = Color(1, 0, 0);
 
 	// IB & VB aktualisieren mit dem aktuellen lower & upper bounds
 	virtual void updateBuffers();
-
 	// lower & upper Bound aktualisieren mit den aktuellen Scaling & StartpixelXY
 	virtual void updateBounds();
 
+	virtual void handleMouseEvents();
+
 public:
-	GUIConstantQuad(int startX, int startY, int width, int height);
+	GUIConstantQuad(float startX, float startY, float width, float height);
 	~GUIConstantQuad() override;
 	void draw() override;
 	virtual void shader(GUIShader* shader);
 
 	// Maus innerhalb des Elementes
 	bool mouseInside();
-	Vector startPixel();
 
-	// Setter
+	// --- Setter --- 
+	// General
 	void startPixel(Vector v);
-	void followMouse(bool b);
-	void centred(bool b);
+	void width(float width);
+	void height(float height);
 	void scale(Vector scale);
-	void width(int width);
-	void height(int height);
-	void constantColorMode(bool b); // statische Farbe
+
+	// Display
+	void centred(bool b);
+	void followMouse(bool b);
+
+	// Color mode
 	void color(Color c);
-	void mouseHitColor(Color c);
+	void constantColorMode(bool b); // statische Farbe
+
+	// Mouseover
 	void mouseoverHighlight(bool b);
+	void mouseoverHighlightColor(Color c);
+	void forceMouseoverHighlight(bool b);
+
+	// Mousepress
+	void mousePress(bool b);
+	void mousePressColor(Color c);
 
 	// Getter
 	int width();
 	int height();
+	Vector startPixel();
+	bool mousePress();
 };
-
-
 
 #endif 

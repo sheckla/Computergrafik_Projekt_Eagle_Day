@@ -14,10 +14,10 @@
 #include "PhongShader.h"
 #include "BaseModel.h"
 #include "ShadowMapGenerator.h"
-#include "GUIConstantQuad.h"
 #include "PlayerPlaneControls.h"
 #include "PostProcessingBuffer.h"
-
+#include "ApplicationGUI.h"
+#include "GUIBaseComponent.h"
 
 class Application
 {
@@ -30,8 +30,9 @@ public:
     void draw();
     void end();
     void glErrorHandler(GLenum err);
+    static PlayerPlaneControls* planeControls;
+    static Camera* Cam;
 protected:
-    Camera Cam;
     ModelList Models;
     GUIList guis;
     GLFWwindow* pWindow;
@@ -41,8 +42,7 @@ protected:
     double yPosTmp = 0;
 
     ShadowMapGenerator ShadowGenerator;
-    PlayerPlaneControls* planeControls;
-    PostProcessingBuffer* ppBuffer;
+    ApplicationGUI* AppGUI;
 };
 
 #endif /* Application_hpp */

@@ -17,16 +17,25 @@ public:
     void color(Color c);
     void constantColorMode(bool b);
     void isGUITex(bool b);
+    void mouseoverHighlight(bool b);
+    void mouseInside(bool b);
+    void isFont(bool b);
 private:
     GLint TexLoc;
     GLint ColorLoc;
     GLint ConstantColorModeLoc;
     GLint IsGUITexLoc;
+    GLint MouseoverHighlightLoc;
+    GLint MouseInsideLoc;
+    GLint IsFontLoc;
 
     Texture* pTex;
     Color Col;
     bool ConstantColorMode;
     bool IsGUITex;
+    bool MouseoverHighlight;
+    bool MouseInside;
+    bool IsFont;
 };
 
 #endif

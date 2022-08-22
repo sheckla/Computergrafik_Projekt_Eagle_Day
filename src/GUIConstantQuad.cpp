@@ -23,8 +23,8 @@ void GUIConstantQuad::updateBuffers()
     }
 
     /*
-    *    C - D UpperBound
-    *    |   |
+    *            C - D UpperBound
+    *            |   |
     * LowerBound A - B
     */
     VB.deactivate();
@@ -65,7 +65,20 @@ void GUIConstantQuad::updateBounds()
     UpperBound = Vector(normEndX, normEndY, 0);
 }
 
-GUIConstantQuad::GUIConstantQuad(int startX, int startY, int width, int height) : startPixelX(startX), startPixelY(startY), Width(width), Height(height)
+void GUIConstantQuad::handleMouseEvents()
+{
+    // Element an Maus binden
+    if (FollowMouse) {
+        this->startPixelX = MouseLogger::x();
+        this->startPixelY = ASPECT_HEIGHT - MouseLogger::y();
+        updateBounds();
+        updateBuffers();
+    }
+    (ForceMouseoverHighlight) ? Shader->color(MouseoverHighlightColor) : (mouseInside() && MouseoverHighlight && !MousePress) ? Shader->color(MouseoverHighlightColor) : (mouseInside() && MousePress) ? Shader->color(MousePressColor) : Shader->color(Col);
+}
+
+GUIConstantQuad::GUIConstantQuad(float startX, float startY, float width, float height) :
+startPixelX(startX), startPixelY(startY), Width(width), Height(height)
 {
     updateBounds();
     updateBuffers();
@@ -78,16 +91,7 @@ GUIConstantQuad::~GUIConstantQuad()
 
 void GUIConstantQuad::draw()
 {
-
-    // Element an Maus binden
-    if (FollowMouse) {
-        this->startPixelX = MouseLogger::x();
-        this->startPixelY = ASPECT_HEIGHT - MouseLogger::y();
-        updateBounds();
-        updateBuffers();
-    }
-
-    (MouseoverHighlight && mouseInside()) ? Shader->color(MouseHitColor) : Shader->color(Col);
+    handleMouseEvents();
 
 	Shader->activate();
     VB.activate();
@@ -113,29 +117,16 @@ void GUIConstantQuad::scale(Vector scale)
 
 bool GUIConstantQuad::mouseInside()
 {
-    if ((MouseLogger::normX() >= LowerBound.X && MouseLogger::normX() <= UpperBound.X) &&
-        (MouseLogger::normY() >= LowerBound.Y && MouseLogger::normY() <= UpperBound.Y)) return true;
+    float diffW = 0;
+    float diffH = 0;
+    if (Centred)
+    {
+        diffW = (UpperBound.X - LowerBound.X) / 2;
+        diffH = (UpperBound.Y - LowerBound.Y) / 2;
+    }
+    if ((MouseLogger::normX() >= LowerBound.X - diffW && MouseLogger::normX() <= UpperBound.X - diffW) &&
+        (MouseLogger::normY() >= LowerBound.Y - diffH && MouseLogger::normY() <= UpperBound.Y - diffH)) return true;
     return false;
-}
-
-Vector GUIConstantQuad::startPixel()
-{
-    return Vector(startPixelX, startPixelY, 0);
-}
-
-void GUIConstantQuad::color(Color c)
-{
-    this->Col = c;
-}
-
-void GUIConstantQuad::mouseHitColor(Color c)
-{
-    MouseHitColor = c;
-}
-
-void GUIConstantQuad::mouseoverHighlight(bool b)
-{
-    MouseoverHighlight = b;
 }
 
 int GUIConstantQuad::width()
@@ -146,6 +137,47 @@ int GUIConstantQuad::width()
 int GUIConstantQuad::height()
 {
     return Height * Scale.Y;
+}
+
+Vector GUIConstantQuad::startPixel()
+{
+    return Vector(startPixelX, startPixelY, 0);
+}
+
+bool GUIConstantQuad::mousePress()
+{
+    return MousePress;
+}
+
+void GUIConstantQuad::color(Color c)
+{
+    this->Col = c;
+}
+
+void GUIConstantQuad::mouseoverHighlightColor(Color c)
+{
+    MouseoverHighlightColor = c;
+}
+
+void GUIConstantQuad::mousePressColor(Color c)
+{
+    MousePressColor = c;
+}
+
+void GUIConstantQuad::mouseoverHighlight(bool b)
+{
+    MouseoverHighlight = b;
+    Shader->mouseoverHighlight(b);
+}
+
+void GUIConstantQuad::forceMouseoverHighlight(bool b)
+{
+    ForceMouseoverHighlight = b;
+}
+
+void GUIConstantQuad::mousePress(bool b)
+{
+    MousePress = b;
 }
 
 void GUIConstantQuad::startPixel(Vector v)
@@ -164,16 +196,18 @@ void GUIConstantQuad::followMouse(bool b)
 void GUIConstantQuad::centred(bool b)
 {
     this->Centred = b;
+    updateBounds();
+    updateBuffers();
 }
 
-void GUIConstantQuad::width(int width)
+void GUIConstantQuad::width(float width)
 {
     this->Width = width;
     updateBounds();
     updateBuffers();
 }
 
-void GUIConstantQuad::height(int height)
+void GUIConstantQuad::height(float height)
 {
     this->Height = height;
     updateBounds();

@@ -17,6 +17,7 @@ public:
 	GUIConstantTriangle(int startPixelX, int startPixelY, int width, int height);
 	~GUIConstantTriangle() override;
 	void draw() override;
+	void rotate180();
 };
 
 #endif

@@ -7,16 +7,7 @@
 //
 
 #include "Application.h"
-#ifdef WIN32
-#include <GL/glew.h>
-#include <glfw/glfw3.h>
-#define _USE_MATH_DEFINES
-#include <math.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
+
 
 #include "CloudBox.h"
 #include "CloudShader.h"
@@ -28,48 +19,25 @@
 #include "ModelLoader.h"
 #include "TextureShader.h"
 #include "MouseLogger.h"
-#include "GUIMeter.h"
+#include "GUINumericPointerMeter.h"
 
+PlayerPlaneControls* Application::planeControls = nullptr;
+Camera* Application::Cam;
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGenerator(1024, 1024)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
 {
     // ----------- START ----------- 
     std::cout << "[Eagle Day Application] Starting..." << std::endl;
 
-
-    // ----------- GUI INIT ----------- 
-    GUILoader gui = GUILoader::instance();
-    gui.init(&this->guis);
-    gui.crossHair();
-    //gui.GUI();
-    GUIMeter* meter = new GUIMeter(50,20);
-    GUIButton* button = new GUIButton(1000, 500, 100, 100);
-    guis.push_back(meter);
-    guis.push_back(button);
-
-    // ----------- POST PROCESSING INIT ----------- 
-    ppBuffer = new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT);
-
-
     // ----------- MODEL INIT ----------- 
-    ModelLoader loader = ModelLoader::instance();
-    loader.init(&Models);
-    loader.loadDirLight();
-    loader.loadSkyBox();
-    loader.loadSimpleWater();
-    loader.loadPlaneParts();
-    //loader.loadPlanePartsOnline("127.0.0.1", 19411);
-    //loader.loadEnemyPlane("127.0.0.1", 19411);
-    loader.clouds();
+    ModelLoader::instance().init(&Models);
 
+    // ----------- GUI INIT -----------
+    AppGUI->setGUIStatus(LOADING_SCREEN_GUI, true);
 
     // ----------- CONTROLS INIT ----------- 
     // -> CamFollowPlane = true setzen fuer verfolgende Kamera
-    planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
-
-
-    // attach plane to GUI
-    meter->plane = ModelLoader::pPlayerPlane;
+    //planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
     // ----------- FINISH ----------- 
     print("Application loading finished", "");
@@ -78,7 +46,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), ShadowGen
 
 void Application::start()
 {
-    glEnable(GL_DEPTH_TEST); // enable depth-testing
+    glEnable(GL_DEPTH_TEST); // postProcessingEffects depth-testing
     glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -89,55 +57,58 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-    // ----------- DELTA TIME ----------- 
+    // ----------- DELTA TIME -----------
     double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
-
-
-
-    // ----------- Plane Control handler ----------- 
-    if (ModelLoader::pPlayerPlane)
-    {
-        this->planeControls->update(deltaTime);
-    }
-
 
     // ----------- 'Singleton' MouseLogger update ----------- 
     double x,y;
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
 
+    // ----------- GUI Keyboard Input update ----------- 
+    AppGUI->updateInputs(deltaTime);
+    if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu) return;
 
-    Cam.update();
+    // ----------- (GAME) Plane Control handler ----------- 
+    if (ModelLoader::pPlayerPlane)
+    {
+        this->planeControls->update(deltaTime);
+    }
+
+    Cam->update();
 }
 
 void Application::draw()
 {
     // ----------- FRAME START ----------- 
-
-
-    // ----------- SHADOW MAPPPING ----------- 
-    ShadowGenerator.generate(Models);
-    ShaderLightMapper::instance().activate();
-
-
-    // ----------- PostProc. Init & 3D SCENE ----------- 
-    ppBuffer->preDraw();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-    {
-        (*it)->draw(Cam);
-    }
-    ppBuffer->postDraw();
+    if (!AppGUI->status().startscreenGUI && !AppGUI->status().loadingScreen) {
+        // ----------- SHADOW MAPPPING ----------- 
+        ShadowGenerator.generate(Models);
+        ShaderLightMapper::instance().activate();
 
-    // ----------- PostProc. DRAW ----------- 
-    ppBuffer->draw(Cam);
+
+        // ----------- PostProc. Init & 3D SCENE ----------- 
+        AppGUI->ppBuffer->preDraw();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        {
+            (*it)->draw(*Cam);
+        }
+        AppGUI->ppBuffer->postDraw();
+
+        // ----------- PostProc. DRAW ----------- 
+        AppGUI->ppBuffer->draw(*Cam);
+    }
 
     // ----------- GUI DRAW ----------- 
     for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
     {
         (*it)->draw(); // no cam needed
     }
+    AppGUI->draw();
+
 
     // ----------- ERROR HANDLING ----------- 
     GLenum Error = glGetError();

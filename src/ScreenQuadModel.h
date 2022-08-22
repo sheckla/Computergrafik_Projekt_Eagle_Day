@@ -14,12 +14,13 @@ class ScreenQuadModel
 {
 public:
     ScreenQuadModel();
-    virtual ~ScreenQuadModel() {}
+    virtual ~ScreenQuadModel();
     virtual void draw(Camera& cam, Texture* tex);
-    
+    void gaussianBlur(bool b);
+    PostProcessingShader* shader();
 protected:
     Texture noise;
-    PostProcessingShader shader;
+    PostProcessingShader* Shader;
     unsigned int VAO, VBO;
     IndexBuffer IB;
     VertexBuffer VB;

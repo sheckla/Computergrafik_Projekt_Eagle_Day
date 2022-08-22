@@ -20,6 +20,7 @@
 Texture * Texture::pDefaultTex = NULL;
 Texture* Texture::pDefaultNormalTex = NULL;
 Texture* Texture::pDefaultCubeMapTex = NULL;
+Texture* Texture::pDefaultFontMap = NULL;
 Texture::SharedTexMap Texture::SharedTextures;
 
 Texture* Texture::defaultTex()
@@ -64,6 +65,17 @@ Texture* Texture::defaultCubeMap()
     cube->loadCubeMap(ASSETS "models/skybox/bright/cubemap.png");
     pDefaultCubeMapTex = cube;
     return pDefaultCubeMapTex;
+}
+
+Texture* Texture::defaultFontMap()
+{
+    if (pDefaultFontMap)
+    {
+        return pDefaultFontMap;
+    }
+    Texture* fontMap = new Texture(ASSETS "arial.png");
+    pDefaultFontMap = fontMap;
+    return pDefaultFontMap;
 }
 
 const Texture* Texture::LoadShared(const char* Filename)

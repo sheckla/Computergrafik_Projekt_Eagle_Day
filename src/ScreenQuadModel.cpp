@@ -6,7 +6,7 @@
 ScreenQuadModel::ScreenQuadModel()
 {
 
-    shader = PostProcessingShader();
+    Shader = new PostProcessingShader();
     float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
         // positions   // texCoords
         -1.0f,  1.0f,  0.0f, 1.0f,
@@ -50,10 +50,14 @@ ScreenQuadModel::ScreenQuadModel()
 
 }
 
+ScreenQuadModel::~ScreenQuadModel()
+{
+}
+
 void ScreenQuadModel::draw(Camera& cam, Texture* tex)
 {
-    shader.screenTexture(tex);
-    shader.activate(cam);
+    Shader->screenTexture(tex);
+    Shader->activate(cam);
     VB.activate();
     IB.activate();
 	glDisable(GL_DEPTH_TEST);
@@ -69,4 +73,9 @@ void ScreenQuadModel::draw(Camera& cam, Texture* tex)
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 
+}
+
+PostProcessingShader* ScreenQuadModel::shader()
+{
+    return Shader;
 }
