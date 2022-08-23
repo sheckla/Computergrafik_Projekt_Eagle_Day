@@ -1,19 +1,17 @@
-
+/*
+ * TextureShader
+ * - simpler TexturShader
+ * 
+ * TODO notwendig?? evtl in ConstantShader einbauen
+ */
 #ifndef TextureShader_h
 #define TextureShader_h
 
-#ifdef WIN32
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
 #include "camera.h"
 #include "baseshader.h"
 #include "Texture.h"
-
 
 class TextureShader : public BaseShader
 {

@@ -1,3 +1,9 @@
+/*
+ * Volumetrische Wolken
+ * - TODO TEXT
+ *
+ */
+
 #ifndef CloudBox_h
 #define CloudBox_h
 

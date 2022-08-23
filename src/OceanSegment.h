@@ -1,3 +1,9 @@
+/*
+ * OceanSegment
+ * - einzelnes Segment des Oceans
+ * - erlaubt repositionierung
+ */
+
 #ifndef OceanSegment_hpp
 #define OceanSegment_hpp
 

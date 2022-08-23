@@ -1,3 +1,8 @@
+/*
+ * PressListener
+ * - erlaubt das abhoeren von Keyboard- oder Mausklicks
+ */
+
 #ifndef PressListener_h
 #define PressListener_h
 

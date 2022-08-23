@@ -1,11 +1,3 @@
-//
-//  PhongShader.cpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 16.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
-
 #include "PhongShader.h"
 #include <string>
 #include "BaseModel.h"

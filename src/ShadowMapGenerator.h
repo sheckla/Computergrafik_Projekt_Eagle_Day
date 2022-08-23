@@ -1,4 +1,3 @@
-
 #ifndef SHADOWMAPGENERATOR_H
 #define SHADOWMAPGENERATOR_H
 
@@ -9,6 +8,14 @@
 #include "BaseShader.h"
 #include <list>
 
+/*
+ * ShadowMapShader:
+ * - berechnet DepthMaps fuer ShadowMapGenerator
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 class ShadowMapShader : public BaseShader
 {
 public:
@@ -20,6 +27,15 @@ protected:
 	GLint ModelViewProjMatLoc;
 };
 
+/*
+ * ShadowMapGenerator
+ * - erstellte ShadowMaps fuer die einzelnen Lichteinheiten
+ * - ShadowMaps werden im Framebuffer gespeichert
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 class ShadowMapGenerator
 {
 public:

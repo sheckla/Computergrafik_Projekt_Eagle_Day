@@ -1,25 +1,18 @@
-//
-//  BaseShader.hpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 19.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
+/*
+ * BaseShader
+ * - dient als BasisShaderEinheit fuer ihre Ableitungen
+ * - lieftert wichtige Initialisierungsfunktionen fuer die Shader in OpenGL
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef BaseShader_hpp
-#define BaseShader_hpp
+#ifndef BaseShader_h
+#define BaseShader_h
 
-#include <stdio.h>
-#ifdef WIN32
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
-#include <iostream>
-#include <assert.h>
 #include "color.h"
 #include "vector.h"
 #include "matrix.h"
@@ -59,4 +52,4 @@ protected:
     static const BaseShader* ShaderInPipe;
 };
 
-#endif /* BaseShader_hpp */
+#endif

@@ -1,3 +1,8 @@
+/*
+ * GUILoadingMeter
+ * - Simpler Ladebalken mit Parametrisierung
+ */
+
 #ifndef GUILoadingMeter_h
 #define GUILoadingMeter_h
 #include "GUIBaseComponent.h"

@@ -1,9 +1,7 @@
 #include "ModelLoader.h"
 
 #include "CloudBox.h"
-#include "ConstantShader.h"
 #include "GUIShader.h"
-#include "LinePlaneModel.h"
 #include "PhongShader.h"
 #include "PlaneLoader.h"
 #include "PlaneLoaderImpl.h"
@@ -125,7 +123,7 @@ bool ModelLoader::simpleWater()
 bool ModelLoader::clouds()
 {
     VolumetricCloudsLoader* vcs_loader;
-    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "worley/", ASSETS "noise/");
+    vcs_loader = new VolumetricCloudsLoaderImpl(ASSETS "img/noise/worley/", ASSETS "img/noise/");
     std::vector<CloudBox*> clouds = vcs_loader->createClouds(990, 40, 990);
 
     for (auto cloud : clouds) {

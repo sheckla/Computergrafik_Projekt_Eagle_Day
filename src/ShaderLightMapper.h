@@ -1,32 +1,25 @@
+/*
+ * ShaderLightMapper
+ * - statische Instanz zum hinzufuegen von Lichteinheiten fuer den ShadowMapGenerator
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
+
 #ifndef LIGHTMANAGER_H
 #define LIGHTMANAGER_H
 
 #include <vector>
-#ifdef WIN32
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
 #include "lights.h"
 
 #define MaxLightCount 14
+typedef std::vector<BaseLight*> LightList;
 
 class ShaderLightMapper
 {
-public:
-	typedef std::vector<BaseLight*> LightList;
-
-	void addLight(BaseLight* Light);
-	const LightList& lights() const { return Lights; }
-	void clear();
-
-	void activate();
-	void deactivate();
-	static ShaderLightMapper& instance();
-	GLuint uniformBlockID() { return UBO; }
 protected:
 	struct ShaderLight
 	{
@@ -46,7 +39,7 @@ protected:
 		ShaderLight lights[MaxLightCount];
 
 	};
-protected:
+
 	ShaderLightMapper();
 	ShaderLightMapper(const ShaderLightMapper& m) {}
 	~ShaderLightMapper();
@@ -54,6 +47,16 @@ protected:
 	ShaderLightBlock ShaderLights;
 	GLuint UBO;
 	static ShaderLightMapper* pMapper;
+public:
+
+	void addLight(BaseLight* Light);
+	const LightList& lights() const { return Lights; }
+	void clear();
+
+	void activate();
+	void deactivate();
+	static ShaderLightMapper& instance();
+	GLuint uniformBlockID() { return UBO; }
 };
 
 #endif

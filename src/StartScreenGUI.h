@@ -1,3 +1,12 @@
+/*
+ * StartScreenGUI
+ * - wird nach dem erfolgreichen Laden der Anwendung angezeigt:
+ *			- Titelbild & Hintergrund
+ *			- bewegende Wolken
+ * - TODO erfmoeglicht Menuefuehrung bezueglich der Spieleinstellungen
+ */
+
+
 #ifndef StartScreenGUI_h
 #define StartScreenGUI_h
 

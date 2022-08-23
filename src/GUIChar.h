@@ -1,3 +1,9 @@
+
+/*
+ * GUIChar
+ * - einzelnes Zeichen
+ * - FontData muss mittels einer entsprechenden .fnt Datei uebergeben werden
+ */
 #ifndef GUIChar_h
 #define GUIChar_h
 #include <vector>
@@ -24,7 +30,7 @@ class GUIChar : public GUITexture
 public:
 	void updateBuffers() override;
 	GUIChar(int startX, int startY, int width, int height, FontData data);
-	~GUIChar();
+	virtual ~GUIChar();
 };
 
 #endif

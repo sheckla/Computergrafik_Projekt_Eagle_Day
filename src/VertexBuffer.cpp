@@ -18,11 +18,7 @@ VertexBuffer::VertexBuffer() : ActiveAttributes(0), WithinBeginBlock(false), VAO
 
 VertexBuffer::~VertexBuffer()
 {
-    if(BuffersInitialized)
-    {
-        glDeleteVertexArrays(1,&VAO);
-        glDeleteBuffers(1, &VBO);
-    }
+    unload();
 }
 
 void VertexBuffer::begin()
@@ -271,6 +267,89 @@ void VertexBuffer::end()
     
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
+}
+
+void VertexBuffer::unload()
+{
+    if (BuffersInitialized)
+    {
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteBuffers(1, &VBO);
+    }
+}
+
+void VertexBuffer::update()
+{
+    GLuint ElementSize = 4 * sizeof(float) +
+        ((ActiveAttributes & NORMAL) ? 4 * sizeof(float) : 0) +
+        ((ActiveAttributes & COLOR) ? 4 * sizeof(float) : 0) +
+        ((ActiveAttributes & TEXCOORD0) ? 3 * sizeof(float) : 0) +
+        ((ActiveAttributes & TEXCOORD1) ? 3 * sizeof(float) : 0) +
+        ((ActiveAttributes & TEXCOORD2) ? 3 * sizeof(float) : 0) +
+        ((ActiveAttributes & TEXCOORD3) ? 3 * sizeof(float) : 0);
+    GLuint BufferSize = (GLuint)Vertices.size() * ElementSize;
+
+    //std::cout << BufferSize << std::endl;
+
+    char* ByteBuf = new char[BufferSize];
+
+    //std::cout << "ByteBuf" << std::endl;
+    assert(ByteBuf);
+    float* Buffer = (float*)ByteBuf;
+
+    --Buffer;
+    for (unsigned long i = 0; i < VertexCount; ++i)
+    {
+        *(++Buffer) = Vertices[i].X;
+        *(++Buffer) = Vertices[i].Y;
+        *(++Buffer) = Vertices[i].Z;
+        *(++Buffer) = 1.0f;
+
+        if (ActiveAttributes & NORMAL)
+        {
+            *(++Buffer) = Normals[i].X;
+            *(++Buffer) = Normals[i].Y;
+            *(++Buffer) = Normals[i].Z;
+            *(++Buffer) = 0.0f;
+        }
+        if (ActiveAttributes & COLOR)
+        {
+            *(++Buffer) = Colors[i].R;
+            *(++Buffer) = Colors[i].G;
+            *(++Buffer) = Colors[i].B;
+            *(++Buffer) = 1.0f;
+        }
+        if (ActiveAttributes & TEXCOORD0)
+        {
+            *(++Buffer) = Texcoord0[i].X;
+            *(++Buffer) = Texcoord0[i].Y;
+            *(++Buffer) = Texcoord0[i].Z;
+        }
+        if (ActiveAttributes & TEXCOORD1)
+        {
+            *(++Buffer) = Texcoord1[i].X;
+            *(++Buffer) = Texcoord1[i].Y;
+            *(++Buffer) = Texcoord1[i].Z;
+        }
+        if (ActiveAttributes & TEXCOORD2)
+        {
+            *(++Buffer) = Texcoord2[i].X;
+            *(++Buffer) = Texcoord2[i].Y;
+            *(++Buffer) = Texcoord2[i].Z;
+        }
+        if (ActiveAttributes & TEXCOORD3)
+        {
+            *(++Buffer) = Texcoord3[i].X;
+            *(++Buffer) = Texcoord3[i].Y;
+            *(++Buffer) = Texcoord3[i].Z;
+        }
+
+    }
+    assert(((long)++Buffer - (long)ByteBuf) == BufferSize);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, BufferSize, ByteBuf);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    delete[] ByteBuf;
 }
 
 void VertexBuffer::activate()

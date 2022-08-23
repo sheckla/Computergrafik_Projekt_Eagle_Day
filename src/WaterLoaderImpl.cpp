@@ -12,7 +12,7 @@ WaterLoaderImpl::~WaterLoaderImpl()
 
 OceanSegment* WaterLoaderImpl::createWater(std::list<BaseModel*>* models)
 {
-	heightMaps = new HeightMapStorage(ASSETS "waves2/");
+	heightMaps = new HeightMapStorage(ASSETS "img/noise/waves/");
 	pTerrainShader = new OceanShader(ASSETS);
 
     createOceanSegments();

@@ -96,7 +96,7 @@ void LoadingScreenGUI::update(float delta)
 void LoadingScreenGUI::init()
 {
 	print("Loading Unit", "start");
-	GUITexture* bg = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "bg_color_4k.png"), true, true);
+	GUITexture* bg = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_color.png"), true, true);
 	Components.push_back(bg);
 
 	loadingMeter = new GUILoadingMeter(ASPECT_WIDTH/2 - 400, 20, 55, 800);

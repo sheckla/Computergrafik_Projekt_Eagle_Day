@@ -1,4 +1,7 @@
-
+/*
+ * StringUtils
+ * - statische Instanz mit Funktionene bezueglich der String-behandlung
+ */
 #pragma once
 #include <string>
 #include <vector>

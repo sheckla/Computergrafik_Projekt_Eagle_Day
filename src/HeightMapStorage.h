@@ -1,3 +1,10 @@
+/*
+ * HeightMapStorage
+ * - Speichert HoehenTexturen fuer das Ocean
+ * - HoehenTexturen werden genutzt um den Ocean dynamisch zu skalieren -> Welleneffekt
+ *
+ */
+
 #include "texture.h"
 #include <stdio.h>
 

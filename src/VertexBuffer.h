@@ -1,24 +1,18 @@
-//
-//  VertexBuffer.hpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 19.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
+/*
+ * VertexBuffer
+ * - erlaubt nun updaten von schon initialisierten VBO's
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef VertexBuffer_hpp
-#define VertexBuffer_hpp
-#ifdef WIN32
+#ifndef VertexBuffer_h
+#define VertexBuffer_h
+
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
-#include <iostream>
 #include <vector>
-#include <stdio.h>
 #include "vector.h"
 #include "color.h"
 
@@ -48,16 +42,18 @@ public:
     void addVertex( float x, float y, float z);
     void addVertex( const Vector& v);
     void end();
+    void unload();
+    void update();
     
     void activate();
     void deactivate();
     
     unsigned int vertexCount() const { return VertexCount; }
     
-    const std::vector<Vector>& vertices() const { return Vertices; }
+    std::vector<Vector>& vertices() { return Vertices; }
     const std::vector<Vector>& normals() const { return Vertices; }
     const std::vector<Color>& colors() const { return Colors; }
-    const std::vector<Vector>& texcoord0() const { return Texcoord0; }
+    std::vector<Vector>& texcoord0() { return Texcoord0; }
     const std::vector<Vector>& texcoord1() const { return Texcoord1; }
     const std::vector<Vector>& texcoord2() const { return Texcoord2; }
     const std::vector<Vector>& texcoord3() const { return Texcoord3; }
@@ -75,10 +71,10 @@ private:
         TEXCOORD2 = 1<<5,
         TEXCOORD3 = 1<<6,
     };
-    std::vector<Vector> Vertices;
     std::vector<Vector> Normals;
-    std::vector<Color> Colors;
+    std::vector<Vector> Vertices;
     std::vector<Vector> Texcoord0;
+    std::vector<Color> Colors;
     std::vector<Vector> Texcoord1;
     std::vector<Vector> Texcoord2;
     std::vector<Vector> Texcoord3;
@@ -92,4 +88,4 @@ private:
     
 };
 
-#endif /* VertexBuffer_hpp */
+#endif

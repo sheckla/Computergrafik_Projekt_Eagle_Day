@@ -55,13 +55,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;$(ProjectDir)..\thirdparty\glut\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;$(ProjectDir)..\thirdparty\irrklang\include;$(ProjectDir)..\thirdparty\glut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\thirdparty\glut\lib;$(ProjectDir)..\thirdparty\glfw\lib;$(ProjectDir)..\thirdparty\glew\lib;$(ProjectDir)..\thirdparty\assimp\lib;$(ProjectDir)..\thirdparty\freeimage\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;FreeImage.lib;assimp-vc140-mt.lib;glfw3.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImage.lib;assimp-vc140-mt.lib;glfw3.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;"irrKlang.lib";glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\thirdparty\glfw\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\assimp\include;$(ProjectDir)..\thirdparty\freeimage\include;$(ProjectDir)..\thirdparty\irrklang\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,7 +81,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\thirdparty\glfw\lib;$(ProjectDir)..\thirdparty\glew\lib;$(ProjectDir)..\thirdparty\assimp\lib;$(ProjectDir)..\thirdparty\freeimage\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;FreeImage.lib;assimp-vc140-mt.lib;glfw3.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImage.lib;assimp-vc140-mt.lib;glfw3.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;"irrKlang.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -113,7 +113,6 @@
     <ClCompile Include="..\..\src\GUITexture.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
-    <ClCompile Include="..\..\src\Lights.cpp" />
     <ClCompile Include="..\..\src\LineBoxModel.cpp" />
     <ClCompile Include="..\..\src\LinePlaneModel.cpp" />
     <ClCompile Include="..\..\src\LoadingScreenGUI.cpp" />

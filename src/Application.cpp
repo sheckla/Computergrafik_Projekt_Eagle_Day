@@ -7,11 +7,7 @@
 //
 
 #include "Application.h"
-
-
-#include "CloudBox.h"
 #include "CloudShader.h"
-#include "GUIButton.h"
 #include "GUILoader.h"
 #include "PlaneLoader.h"
 #include "WaterLoader.h"
@@ -19,18 +15,13 @@
 #include "ModelLoader.h"
 #include "TextureShader.h"
 #include "MouseLogger.h"
-#include "GUINumericPointerMeter.h"
-#include "VolumetricCloudsLoaderImpl.h"
-#include "ParticleLoader.h"
 #include "AudioManager.h"
 #include "WaterLoaderImpl.h"
-#include "CloudShader.h"
-#include "TextureShader.h"
-
 
 PlayerPlaneControls* Application::planeControls = nullptr;
 Camera* Application::Cam;
 EnemyPlane* Application::enemyPlane = nullptr;
+
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
 {
@@ -39,6 +30,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024
 
     // ----------- MODEL INIT ----------- 
     ModelLoader::instance().init(&Models, &Cloud_Box, &Ocean);
+
 
     // ----------- GUI INIT -----------
     AppGUI->setGUIStatus(LOADING_SCREEN_GUI, true);
@@ -115,11 +107,10 @@ void Application::draw()
         ShadowGenerator.generate(Models);
         ShaderLightMapper::instance().activate();
 
-
         // ----------- PostProc. Init & 3D SCENE ----------- 
         AppGUI->ppBuffer->preDraw();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
         {
             (*it)->draw(*Cam);
         }
@@ -157,9 +148,9 @@ void Application::draw()
 }
 void Application::end()
 {
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+    for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
         delete* it;
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+    for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
         delete* it;
 
     for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)

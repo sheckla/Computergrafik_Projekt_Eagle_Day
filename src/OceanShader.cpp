@@ -29,7 +29,7 @@ Scaling(1, 1, 1), MixTex(NULL)
         DetailTexLoc[i] = initUniformParameter(s.c_str());
     }
 
-    std::string pNoise = AssetDirectory + "perlin_noise.jpg";
+    std::string pNoise = AssetDirectory + "/img/noise/perlin_noise.jpg";
     PerlinTex = new Texture(pNoise.c_str());
 }
 

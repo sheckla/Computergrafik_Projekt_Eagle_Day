@@ -1,13 +1,3 @@
-//
-//  ConstantShader.cpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 16.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
-
-// 20.07 Leichte Veraenderung: unterstuetzt nun DiffuseTexture und Texcoord
-
 #include "ConstantShader.h"
 #include "Globals.h"
 

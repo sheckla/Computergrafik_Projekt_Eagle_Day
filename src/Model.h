@@ -1,10 +1,12 @@
-//
-//  Model.hpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 21.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
+/*
+ * Model
+ * - Komplexes 3-D Modell
+ * - wird mittels .obj Dateien geladen
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
 #ifndef Model_hpp
 #define Model_hpp

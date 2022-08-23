@@ -1,3 +1,11 @@
+/*
+ * GUI-Element - quader mit fester Farbe
+ * - bietet viele und grundlegende Funktionalitaeten fuer UI/Displayelemente
+ * - startpixel X/Y
+ * - breite/hoehe ausgehend vom startpixel X/Y
+ * - Quader zentrieren oder ab X/Y aufspannen -> Centred
+ */
+
 #ifndef GUIConstantQuad_h
 #define GUIConstantQuad_h
 
@@ -8,19 +16,12 @@
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 
-
-/*
- * GUI-Element - quader mit fester Farbe
- * - startpixel X/Y
- * - breite/hoehe ausgehend vom startpixel X/Y
- * - Quader zentrieren oder ab X/Y aufspannen -> Centred
- */
 class GUIConstantQuad : public GUIBaseComponent
 {
 protected:
 	GUIShader* Shader = new GUIShader();
-	IndexBuffer IB;
-	VertexBuffer VB;
+	IndexBuffer* IB = new IndexBuffer();
+	VertexBuffer* VB = new VertexBuffer();
 	Vector LowerBound = Vector(-0.5f, -0.5f, 0); 
 	Vector UpperBound = Vector(0.5f, 0.5f, 0); 
 	Color Col = Color(1, 1, 1);

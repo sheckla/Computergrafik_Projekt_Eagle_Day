@@ -1,3 +1,8 @@
+/*
+ * Interface Trennung: Application -> Ocean
+ *
+ */
+
 #ifndef WaterLoader_HPP
 #define WaterLoader_HPP
 

@@ -1,7 +1,6 @@
 /*
  * Interface
  * Trennung: Application -> Plane
- *
  */
 
 #pragma once

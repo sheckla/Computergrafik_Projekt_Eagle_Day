@@ -1,3 +1,8 @@
+/*
+ * Interface
+ * Trennung: Application -> VolumetricClouds
+ */
+
 #ifndef VolumetricCloudsLoader_h
 #define VolumetricCloudsLoader_h
 

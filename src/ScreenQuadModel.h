@@ -1,10 +1,13 @@
+/*
+ * ScreenQuadModel
+ * - einfaches Quad, welches sich ueber die normalisierten Bildschirmkoordinaten erstreckt
+ * - Der ganze Bildschirm wird mit diesem Quad gefuellt
+ * - der hier vorhandene Shader ist fuer die PostProcessing Bildberarbeitung zustaendig
+ */
+
 #ifndef ScreenQuadModel_h
 #define ScreenQuadModel_h
 
-#include <stdio.h>
-
-#include <stdio.h>
-#include "basemodel.h"
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
 #include "PostProcessingShader.h"

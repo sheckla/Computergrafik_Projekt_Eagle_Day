@@ -1,3 +1,8 @@
+/*
+ * WaterLoaderImplementation
+ * - Zustaendig fuer das korrekte Laden des Oceans innerhalb des Programmes
+ */
+
 #ifndef WaterLoaderImpl_HPP
 #define WaterLoaderImpl_HPP
 

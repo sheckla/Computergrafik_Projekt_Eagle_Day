@@ -20,6 +20,7 @@
 #include "NetworkSender.h"
 #include "TriangleBoxModel.h"
 #include "ParticleLoader.h"
+#include "irrKlang.h"
 
 class TriangleSphereModel;
 constexpr float EPSILON = 1e-7f; 
@@ -29,7 +30,7 @@ constexpr float PI = 3.14159265359f;
 // Konkrete Rotationswerte
 constexpr int DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
 constexpr float ACCELERATION_GAIN = 0.002f;
-constexpr float ROTATION_SPEED = .0115f;
+constexpr float ROTATION_SPEED = .0315f;
 constexpr float MAX_TILT = 1.0f; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
 constexpr int MAX_SPEED = 556;
 
@@ -142,6 +143,9 @@ public:
 	ParticleLoader* Smoke_System;
 	ParticleLoader* Gun_Left;
 	ParticleLoader* Gun_Right;
+	irrklang::ISoundEngine* SoundEngine = nullptr;
+	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
+	void startEngine();
 };
 
 #endif

@@ -1,15 +1,15 @@
-//
-//  BaseModel.hpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 19.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
+/*
+ * BaseModel
+ * - Dient als Basisklasse fuer alle weiteren Ableitungen dieser
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef BaseModel_hpp
-#define BaseModel_hpp
+#ifndef BaseModel_h
+#define BaseModel_h
 
-#include <stdio.h>
 #include "camera.h"
 #include "matrix.h"
 #include "baseshader.h"
@@ -17,6 +17,12 @@
 
 class BaseModel
 {
+protected:
+    Matrix Transform;
+    BaseShader* pShader;
+    bool DeleteShader;
+    bool ShadowCaster;
+
 public:
     BaseModel();
     virtual ~BaseModel();
@@ -28,13 +34,7 @@ public:
     virtual const AABB& boundingBox() const { return AABB::unitBox(); }
     bool shadowCaster() const { return ShadowCaster; }
     void shadowCaster(bool sc) { ShadowCaster = sc; }
-protected:
-    Matrix Transform;
-    BaseShader* pShader;
-    bool DeleteShader;
-    bool ShadowCaster;
-
 };
 
 
-#endif /* BaseModel_hpp */
+#endif 

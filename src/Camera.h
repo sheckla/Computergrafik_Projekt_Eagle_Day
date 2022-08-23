@@ -1,23 +1,16 @@
-//
-//  Camera.h
-//  RealtimeRending
-//
-//  Created by Philipp Lensing on 22.10.14.
-//  Copyright (c) 2014 Philipp Lensing. All rights reserved.
-//
+/*
+ * Camera & Subsclasses
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef __RealtimeRending__Camera__
-#define __RealtimeRending__Camera__
+#ifndef Camera_h
+#define Camera_h
 
-#include <iostream>
-#ifdef WIN32
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
 #include "vector.h"
 #include "matrix.h"
 
@@ -33,6 +26,10 @@ public:
 
 class SimpleCamera : public BaseCamera
 {
+protected:
+    Matrix View;
+    Matrix Proj;
+
 public:
     virtual void update() {}
     virtual const Matrix& getViewMatrix() const { return View; }
@@ -41,32 +38,10 @@ public:
     void setViewMatrix(const Matrix& m) { View = m; }
     void setProjectionMatrix(const Matrix& m) { Proj = m; }
     virtual ~SimpleCamera() {};
-protected:
-    Matrix View;
-    Matrix Proj;
-
 };
 
 class Camera : public BaseCamera
 {
-public:
-    Camera(GLFWwindow* pWin);
-    virtual ~Camera() {};
-
-    virtual Vector position() const;
-    Vector target() const;
-    Vector up() const;
-
-    void setPosition(const Vector& Pos);
-    void setTarget(const Vector& Target);
-    void setUp(const Vector& Up);
-
-    void mouseInput(int x, int y, int Button, int State);
-
-    virtual void update();
-    virtual const Matrix& getViewMatrix() const;
-    virtual const Matrix& getProjectionMatrix() const;
-    void zoom(float dz);
 protected:
     void updateMouseInput();
 
@@ -89,9 +64,25 @@ protected:
     int WindowHeight;
     GLFWwindow* pWindow;
 
-private:
+public:
+    Camera(GLFWwindow* pWin);
+    virtual ~Camera() {};
 
+    virtual Vector position() const;
+    Vector target() const;
+    Vector up() const;
+
+    void setPosition(const Vector& Pos);
+    void setTarget(const Vector& Target);
+    void setUp(const Vector& Up);
+
+    void mouseInput(int x, int y, int Button, int State);
+
+    virtual void update();
+    virtual const Matrix& getViewMatrix() const;
+    virtual const Matrix& getProjectionMatrix() const;
+    void zoom(float dz);
 };
 
 
-#endif /* defined(__RealtimeRending__Camera__) */
+#endif 

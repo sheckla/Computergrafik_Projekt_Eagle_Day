@@ -1,11 +1,12 @@
-#ifndef GUIConstantQuadWrapper_h
-#define GUIConstantQuadWrapper_h
-#include <vector>
-#include "GUIConstantQuad.h"
-
 /*
  * Simple Wrapper Klasse welche mehrere GUIConstantQuads und deren ableitung als vector<> speichert
  */
+#ifndef GUIConstantQuadWrapper_h
+#define GUIConstantQuadWrapper_h
+
+#include <vector>
+#include "GUIConstantQuad.h"
+
 class GUIConstantQuadWrapper : public GUIBaseComponent
 {
 	std::vector<GUIConstantQuad*> Components;
