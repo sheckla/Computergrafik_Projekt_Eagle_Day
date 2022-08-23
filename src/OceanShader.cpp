@@ -6,9 +6,7 @@
 OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
 Scaling(1, 1, 1), MixTex(NULL)
 {
-    std::string VSFile = AssetDirectory + "vsterrain.glsl";
-    std::string FSFile = AssetDirectory + "fsterrain.glsl";
-    if (!load(VSFile.c_str(), FSFile.c_str()))
+    if (!load(SHADERS "ocean/vsOcean.glsl", SHADERS "ocean/fsOcean.glsl"))
         throw std::exception();
     PhongShader::assignLocations();
     specularColor(Color(0, 0, 0));
