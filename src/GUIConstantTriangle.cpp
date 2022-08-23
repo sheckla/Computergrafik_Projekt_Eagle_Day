@@ -13,23 +13,36 @@ void GUIConstantTriangle::updateBuffers()
     *   A   |
     *     \ C
     */
-    VB.deactivate();
-    IB.deactivate();
 
-    VB.begin();
-    VB.addTexcoord0(1.0, 0.0f);
-    VB.addVertex(A); // 0 A
-    VB.addTexcoord0(0.0f, 0.0f);
-    VB.addVertex(B); // 1 B
-    VB.addTexcoord0(1.0f, 1.0f);
-    VB.addVertex(C); // 2 C
-    VB.end();
+    if (VB->vertices().size() >= 3)
+    {
+        VB->vertices().at(0) = A;
+        VB->vertices().at(1) = B;
+        VB->vertices().at(2) = C;
 
-    IB.begin();
-    IB.addIndex(0);
-    IB.addIndex(2);
-    IB.addIndex(1);
-    IB.end();
+        VB->update();
+        return;
+    }
+
+
+    VB->unload();
+    VB->deactivate();
+    IB->deactivate();
+      
+    VB->begin();
+    VB->addTexcoord0(1.0, 0.0f);
+    VB->addVertex(A); // 0 A
+    VB->addTexcoord0(0.0f, 0.0f);
+    VB->addVertex(B); // 1 B
+    VB->addTexcoord0(1.0f, 1.0f);
+    VB->addVertex(C); // 2 C
+    VB->end();
+      
+    IB->begin();
+    IB->addIndex(0);
+    IB->addIndex(2);
+    IB->addIndex(1);
+    IB->end();
 }
 
 void GUIConstantTriangle::updateBounds()
@@ -67,14 +80,14 @@ void GUIConstantTriangle::draw()
     handleMouseEvents();
 
     Shader->activate();
-    VB.activate();
-    IB.activate();
+    VB->activate();
+    IB->activate();
     glDisable(GL_DEPTH_TEST);
     glRotatef(90, 1, 1, 1);
-    glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
+    glDrawElements(GL_TRIANGLES, IB->indexCount(), IB->indexFormat(), 0);
     glEnable(GL_DEPTH_TEST);
-    IB.deactivate();
-    VB.deactivate();
+    IB->deactivate();
+    VB->deactivate();
 }
 
 void GUIConstantTriangle::rotate180()
@@ -88,21 +101,21 @@ void GUIConstantTriangle::rotate180()
     *   A   |
     *     \ C
     */
-    VB.deactivate();
-    IB.deactivate();
-
-    VB.begin();
-    VB.addTexcoord0(1.0, 0.0f);
-    VB.addVertex(A); // 0 A
-    VB.addTexcoord0(0.0f, 0.0f);
-    VB.addVertex(B); // 1 B
-    VB.addTexcoord0(1.0f, 1.0f);
-    VB.addVertex(C); // 2 C
-    VB.end();
-
-    IB.begin();
-    IB.addIndex(2);
-    IB.addIndex(0);
-    IB.addIndex(1);
-    IB.end();
+    VB->deactivate();
+    IB->deactivate();
+      
+    VB->begin();
+    VB->addTexcoord0(1.0, 0.0f);
+    VB->addVertex(A); // 0 A
+    VB->addTexcoord0(0.0f, 0.0f);
+    VB->addVertex(B); // 1 B
+    VB->addTexcoord0(1.0f, 1.0f);
+    VB->addVertex(C); // 2 C
+    VB->end();
+      
+    IB->begin();
+    IB->addIndex(2);
+    IB->addIndex(0);
+    IB->addIndex(1);
+    IB->end();
 }

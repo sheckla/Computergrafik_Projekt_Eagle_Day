@@ -1,4 +1,8 @@
-
+/*
+ * GUIShader
+ * - Shadereinheit fuer GUI-Elemente
+ * - verwaltet die verschiedenen Parametrisierungen bezueglich der GUI-Elemente
+ */
 #ifndef GUIShader_h
 #define GUIShader_h
 

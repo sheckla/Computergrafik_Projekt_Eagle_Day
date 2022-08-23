@@ -1,3 +1,11 @@
+/*
+ * Shader Volumetric Clouds
+ * - TODO TEXT
+ *
+ *
+ */
+
+
 #ifndef CloudShader_hpp
 #define CloudShader_hpp
 

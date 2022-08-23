@@ -6,11 +6,11 @@
 #include "ApplicationGUI.h"
 
 #include "MathUtil.h"
+#include "ModelLoader.h"
 
 StartScreenGUI::StartScreenGUI(GLFWwindow* window) : startButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), ApplicationGUIPrototype(window)
 {
 
-	return;
 }
 
 StartScreenGUI::~StartScreenGUI()
@@ -27,6 +27,7 @@ void StartScreenGUI::draw()
 		case RELEASE:
 			active(false);
 			ApplicationGUI::AppGUI->gameplayGUI->active(true);
+			ModelLoader::pPlayerPlane->startEngine();
 			break;
 		}
 	}
@@ -63,17 +64,17 @@ void StartScreenGUI::init()
 	int buttonHeight = 70;
 	int gap = 10;
 
-	GUITexture* skyBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "bg_color_4k.png"), true, true);
+	GUITexture* skyBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_color.png"), true, true);
 	Components.push_back(skyBG);
 
-	GUITexture* cloudsBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "bg_clouds_4k.png"), true, true);
+	GUITexture* cloudsBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_clouds.png"), true, true);
 	Components.push_back(cloudsBG);
 
-	GUITexture* logoBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "bg_logo_4k.png"), true, true);
+	GUITexture* logoBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_logo.png"), true, true);
 	Components.push_back(logoBG);
 
 	int offsetHeight = gap + buttonHeight;
-	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2 - offsetHeight * 4, new Texture(ASSETS "button.png"), true);
+	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2 - offsetHeight * 4, new Texture(ASSETS "img/button_start.png"), true);
 	gTex->centred(true);
 	gTex->scale(Vector(0.3, 0.3, 0));
 	gTex->mouseoverHighlight(true);

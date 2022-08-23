@@ -1,6 +1,10 @@
+/*
+ * Globale Utility Funktionen, Includes und Definitionen
+ */
 #ifndef Globals_HPP
 #define Globals_HPP
 
+// Globale Includes
 #pragma once
 #include <vector>
 #include <winsock2.h> // Include-Reihenfolge wichtig!
@@ -9,23 +13,30 @@
 #include <string.h>
 #include <iostream>
 
-// Aktuell nur getestet unter Windows 10
+// Windows includes
 #ifdef WIN32
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
+#include "freeimage.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+
+// Directories
 #define ASSETS "../../assets/"
 #define SHADERS "../../assets/shaders/"
+
+// Shader
 #define WORLEY_AMOUNT 30
 #define MAX_TEXTURE_ARR_SIZE 50
 
-#define DEBUG_MESSAGES true
 
+// Bildschirminformationen
 #define ASPECT_RATIO 16.0f/9.0f
 #define ASPECT_WIDTH 1920
 #define ASPECT_HEIGHT 1080
 
+// Debug-print Farben
+#define DEBUG_MESSAGES true
 #define NC "\033[0m"
 #define RED "\033[31m"
 #define GRN "\033[92m"

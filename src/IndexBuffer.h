@@ -1,28 +1,31 @@
-//
-//  IndexBuffer.hpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 19.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
+/*
+ * IndexBuffer
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef IndexBuffer_hpp
-#define IndexBuffer_hpp
+#ifndef IndexBuffer_h
+#define IndexBuffer_h
 
-#ifdef WIN32
 #include <GL/glew.h>
 #include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
-#include <iostream>
 #include <vector>
-#include <stdio.h>
 
 class IndexBuffer
 {
+private:
+
+    std::vector<unsigned int> Indices;
+
+    GLuint IBO;
+    bool BufferInitialized;
+    bool WithinBeginAndEnd;
+    
+    GLenum IndexFormat;
+    unsigned int IndexCount;
+    
 public:
     IndexBuffer();
     ~IndexBuffer();
@@ -37,17 +40,6 @@ public:
     GLenum indexFormat() const { return IndexFormat; }
     unsigned int indexCount() const { return IndexCount; }
     const std::vector<unsigned int>& indices() const { return Indices; }
-    
-private:
-
-    std::vector<unsigned int> Indices;
-
-    GLuint IBO;
-    bool BufferInitialized;
-    bool WithinBeginAndEnd;
-    
-    GLenum IndexFormat;
-    unsigned int IndexCount;
     
 };
 

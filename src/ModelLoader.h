@@ -1,8 +1,14 @@
+/*
+ * Application Modell-Ladeeinheit
+ * - statische BaseModel* listen welche von Application Initialisiert werden
+ * - Modell lassen sich so auﬂerhalb von Application reinladen
+ * - zentrale Modelle wie PlayerPlane oder EnemyPlane sind als statische Instanzen vorhanden zum abrufen von ausserhalb
+ */
+
 #ifndef ModelLoader_h
 #define ModelLoader_h
 
 #include <list>
-
 #include "BaseModel.h"
 #include "Plane.h"
 #include "EnemyPlane.h"
@@ -10,7 +16,6 @@
 
 class ModelLoader
 {
-
     static ModelLoader* pModelLoader;
 public:
     static Plane* pPlayerPlane;

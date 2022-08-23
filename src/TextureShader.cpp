@@ -1,5 +1,3 @@
-// 20.07 Leichte Veraenderung: unterstuetzt nun DiffuseTexture und Texcoord
-
 #include "TextureShader.h"
 
 TextureShader::TextureShader() : BaseShader()

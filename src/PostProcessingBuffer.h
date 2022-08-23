@@ -1,3 +1,10 @@
+/*
+ * PostProcessingBuffer
+ * - Wird vor dem Rendern der 3D-Szene aktiviert und danach wieder deaktiviert
+ * - Danach draw() aufrufen -> Post Processing Effekte werden auf die gerenderte Szene angewendet
+ * - zentrales Objekt ist ScreenQuadModel
+ */
+
 #ifndef PostProcessingBuffer_h
 #define PostProcessingBuffer_h
 #include "texture.h"

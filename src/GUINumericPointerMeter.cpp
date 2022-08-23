@@ -170,8 +170,8 @@ void GUINumericPointerMeter::draw()
 	// Pointer
 	float pointerMaxHeight = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 20, MeterMaxHeight);
 	float y = plane->getParts()[0]->transform().translation().Y;
-	if (y > 500) y = 500;
-	if (!leftBound) pointerMaxHeight = MathUtil::remapBounds(y, 0, 500, 20, MeterMaxHeight);
+	if (y > 200) y = 200;
+	if (!leftBound) pointerMaxHeight = MathUtil::remapBounds(y, 0, 200, 20, MeterMaxHeight);
 	MeterQuad->startPixel(Vector(MeterQuad->startPixel().X, pointerMaxHeight, 0));
 	MeterTriangle->startPixel(Vector(MeterTriangle->startPixel().X, pointerMaxHeight, 0));
 	if (!leftBound) MeterTriangle->rotate180();

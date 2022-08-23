@@ -1,3 +1,8 @@
+/*
+ * Gegnerisches Flugzeug
+ * - im Mehrspielermodus = Spieler 2
+ */
+
 #ifndef EnemyPlane_h
 #define EnemyPlane_h
 

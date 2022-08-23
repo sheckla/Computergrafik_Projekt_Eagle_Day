@@ -1,3 +1,11 @@
+/*
+ * GUINumericPointerMeter
+ * - DisplayKomponente fuer das Gameplay
+ * - funktioniert entweder fuer die Hoehe oder die Geschwindigkeit des Flugzeuges
+ *
+ *
+ */
+
 #ifndef GUIMeter_h
 #define GUIMeter_h
 

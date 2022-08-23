@@ -1,15 +1,15 @@
-//
-//  Aabb.hpp
-//  CGXcode
-//
-//  Created by Philipp Lensing on 02.11.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
+/* 
+ * Axis Aligned Bounding Box
+ * - Huellkoerper der komplexe oder simple 3-D Modelle einschließt
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef Aabb_hpp
-#define Aabb_hpp
+#ifndef Aabb_h
+#define Aabb_h
 
-#include <stdio.h>
 #include "vector.h"
 #include "matrix.h"
 
@@ -35,4 +35,4 @@ protected:
 
 
 
-#endif /* Aabb_hpp */
+#endif 

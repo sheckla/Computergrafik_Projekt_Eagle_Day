@@ -1,5 +1,6 @@
 #include "PlayerPlaneControls.h"
 
+#include "MathUtil.h"
 #include "MouseLogger.h"
 
 
@@ -90,11 +91,39 @@ void PlayerPlaneControls::update(float delta)
         plane->Gun_Left->StartGenerating();
         plane->Gun_Right->StartGenerating();
         //std::cout << "[PlayerPlaneControls] Start Gun Particles" << std::endl;
+        SoundEngine->setSoundVolume(0.8);
+        if (i++ % 7 == 0 || i == 0)
+        {
+
+            if (i == 0)
+            {
+                SoundEngine->play2D(ASSETS "audio/shoow.wav", false);
+                return;
+            }
+
+            if (MathUtil::randBool())
+            {
+            SoundEngine->play2D(ASSETS "audio/shoot_high.wav", false);
+	            
+            } else
+            {
+
+                if (MathUtil::randBool())
+                {
+					SoundEngine->play2D(ASSETS "audio/shoot_low.wav", false);
+                } else
+                {
+					SoundEngine->play2D(ASSETS "audio/shoot.wav", false);
+                }
+	            
+            }
+        }
     }
     else
     {
         plane->Gun_Left->StopGenerating();
         plane->Gun_Right->StopGenerating();
+        i = 0;
         //std::cout << "[PlayerPlaneControls] Stop Gun Particles" << std::endl;
     }
     ///////////////////////////////////////////////////////////////////////////////TEST//////////

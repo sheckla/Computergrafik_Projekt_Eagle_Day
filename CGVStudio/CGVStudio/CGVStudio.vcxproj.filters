@@ -29,9 +29,6 @@
     <Filter Include="Quelldateien\graphics\lighting">
       <UniqueIdentifier>{65f84911-a729-4859-baca-99ca8ae115b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\util\network">
-      <UniqueIdentifier>{8f8e4e74-64a6-4e0d-b8b3-91ada7f2c86c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\application\loader">
       <UniqueIdentifier>{d769f3d8-bc11-4099-b318-b991fb666e59}</UniqueIdentifier>
     </Filter>
@@ -146,8 +143,11 @@
     <Filter Include="Quelldateien\particles">
       <UniqueIdentifier>{1207bace-d29c-4d3a-9481-9b6b60b9d54c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\util\Sound">
+    <Filter Include="Quelldateien\sound">
       <UniqueIdentifier>{6297d616-951d-4b18-94f5-e0cb32a6236c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\network">
+      <UniqueIdentifier>{8f8e4e74-64a6-4e0d-b8b3-91ada7f2c86c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -229,9 +229,6 @@
     <ClCompile Include="..\..\src\Framebuffer.cpp">
       <Filter>Quelldateien\graphics\buffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Lights.cpp">
-      <Filter>Quelldateien\graphics\lighting</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\ShaderLightMapper.cpp">
       <Filter>Quelldateien\graphics\lighting</Filter>
     </ClCompile>
@@ -281,10 +278,10 @@
       <Filter>Quelldateien\graphics\models_complex\enemyPlane</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkConnector.cpp">
-      <Filter>Quelldateien\util\network</Filter>
+      <Filter>Quelldateien\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkSender.cpp">
-      <Filter>Quelldateien\util\network</Filter>
+      <Filter>Quelldateien\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkConnector.cpp">
       <Filter>Quelldateien</Filter>
@@ -359,7 +356,7 @@
       <Filter>Quelldateien\particles</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\AudioManager.cpp">
-      <Filter>Quelldateien\util\Sound</Filter>
+      <Filter>Quelldateien\sound</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp">
       <Filter>Quelldateien\gui\application\gui_types</Filter>
@@ -490,10 +487,10 @@
       <Filter>Quelldateien\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\NetworkConnector.h">
-      <Filter>Quelldateien\util\network</Filter>
+      <Filter>Quelldateien\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\NetworkSender.h">
-      <Filter>Quelldateien\util\network</Filter>
+      <Filter>Quelldateien\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\ModelLoader.h">
       <Filter>Quelldateien\application\loader</Filter>
@@ -586,7 +583,7 @@
       <Filter>Quelldateien\particles</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\AudioManager.h">
-      <Filter>Quelldateien\util\Sound</Filter>
+      <Filter>Quelldateien\sound</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\OceanShader.h">
       <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>

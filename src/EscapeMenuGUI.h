@@ -1,3 +1,8 @@
+/*
+ * EscapeMenuGUI
+ * - wird im Spielbetrieb der Anwendung angezeigt und bietet Menuefuehrung
+ */
+
 #ifndef EscapeMenu_h
 #define EscapeMenu_h
 

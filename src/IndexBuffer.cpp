@@ -1,13 +1,7 @@
-//
-//  IndexBuffer.cpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 19.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
-
 #include "IndexBuffer.h"
 #include <assert.h>
+
+#include "Globals.h"
 
 IndexBuffer::IndexBuffer() : BufferInitialized(false), WithinBeginAndEnd(false), IndexFormat(GL_UNSIGNED_INT), IndexCount(0)
 {
@@ -29,7 +23,11 @@ void IndexBuffer::begin()
 
 void IndexBuffer::addIndex( unsigned int Index)
 {
-    if(!WithinBeginAndEnd) { std::cout << "call addIndex only between begin() and end() method!\n"; return; }
+    if(!WithinBeginAndEnd)
+    {
+        print("IndexBuffer::addIndex", "call addIndex only between begin() and end() method!", true, 0);
+        return;
+    }
     Indices.push_back(Index);
     IndexCount = (unsigned int)Indices.size();
 }
@@ -38,7 +36,7 @@ void IndexBuffer::end()
 {
     if(Indices.size() == 0)
     {
-        std::cout << "IndexBuffer::end(): no indices found. call addIndex() within begin() and end() method\n";
+        print("IndexBuffer::end()", "no indices found. call addIndex() within begin() and end() method", true, 0);
         return;
     }
  
@@ -66,6 +64,7 @@ void IndexBuffer::end()
     
     
 }
+
 
 void IndexBuffer::activate()
 {

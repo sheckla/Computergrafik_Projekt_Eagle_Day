@@ -1,3 +1,10 @@
+/*
+ * MathUtil
+ * - nuetzliche mathematische Funktionen
+ * - zufaellige Zahlenberechnung
+ *
+ */
+
 #ifndef MathUtil_h
 #define MathUitl_h
 

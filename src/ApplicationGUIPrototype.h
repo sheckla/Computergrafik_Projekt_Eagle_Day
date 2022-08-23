@@ -1,3 +1,8 @@
+/*
+ * ApplicationGUIPrototype
+ * - Basisklasse fuer eine GUI-Application Komponente (bsp GameplayGUI, EscapeMenuGUI etc.)
+ */
+
 #ifndef ApplicationGUIPrototype_h
 #define ApplicationGUIPrototype_h
 

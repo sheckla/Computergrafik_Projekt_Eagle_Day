@@ -1,12 +1,14 @@
+/*
+ * PlaneLoaderImplementation:
+ * - Zustaendig fuer das korrekte Laden der Flugzeuge
+ */
+
 #ifndef PlaneLoaderImpl_h
 #define PlaneLoaderImpl_h
 
-#include "Application.h"
 #include "Plane.h"
 #include "PlaneLoader.h"
-#include "ConstantShader.h"
 #include "Model.h"
-
 
 class PlaneLoaderImpl : public PlaneLoader
 {

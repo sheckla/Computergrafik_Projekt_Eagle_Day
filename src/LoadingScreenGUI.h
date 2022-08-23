@@ -1,3 +1,10 @@
+/*
+ * LoadingScreenGUI
+ * - wird bei Start der Anwendung angezeigt
+ * - ist fuer das Laden der relevanten Anwendungskomponenten zustaendig
+ * - Zentrale Instanzen und Komponenten der Anwendung werden hier initialisiert und zusammengefuehrt
+ */
+
 #ifndef LoadingScreenGUI_h
 #define LoadingScreenGUI_h
 

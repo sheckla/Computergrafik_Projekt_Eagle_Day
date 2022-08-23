@@ -1,3 +1,11 @@
+/*
+ * Light Informationsklassen fuer ShadowMapper
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
+
 #ifndef LIGHTS_H
 #define LIGHTS_H
 

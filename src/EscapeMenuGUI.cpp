@@ -55,7 +55,7 @@ void EscapeMenuGUI::init()
 	int gap = 10;
 
 	int offsetHeight = gap + buttonHeight + 50;
-	GUITexture* tab3 = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - offsetHeight * 4, new Texture(ASSETS "button.png"), true);
+	GUITexture* tab3 = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - offsetHeight * 4, new Texture(ASSETS "img/button_return.png"), true);
 	tab3->centred(true);
 	tab3->scale(Vector(0.3, 0.3, 0));
 	tab3->mouseoverHighlight(true);
@@ -63,14 +63,14 @@ void EscapeMenuGUI::init()
 	Components.push_back(returnStartButton);
 
 	offsetHeight += gap + buttonHeight + 50;
-	GUITexture* leaveEscapeMenuTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - offsetHeight * 1, new Texture(ASSETS "button_return.png"), true);
+	GUITexture* leaveEscapeMenuTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - offsetHeight * 1, new Texture(ASSETS "img/button_return.png"), true);
 	leaveEscapeMenuTex->centred(true);
 	leaveEscapeMenuTex->scale(Vector(0.3, 0.3, 0));
 	leaveEscapeMenuTex->mouseoverHighlight(true);
 	leaveEscapeMenuButton = new GUIButton(Window, leaveEscapeMenuTex);
 	//Components.push_back(leaveEscapeMenuButton);
 
-	GUITexture* logo = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT- 200, new Texture(ASSETS "logo.png"), true, false);
+	GUITexture* logo = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT- 200, new Texture(ASSETS "img/logo.png"), true, false);
 	logo->centred(true);
 	logo->scale(Vector(0.3, 0.3, 0));
 	Components.push_back(logo);

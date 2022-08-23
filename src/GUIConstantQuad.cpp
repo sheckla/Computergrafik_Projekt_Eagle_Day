@@ -27,30 +27,50 @@ void GUIConstantQuad::updateBuffers()
     *            |   |
     * LowerBound A - B
     */
-    VB.deactivate();
-    IB.deactivate();
 
-    VB.begin();
-    VB.addNormal(0, 0, 1);
+    if (VB->vertexCount() >= 4)
+    {
+        VB->vertices().at(0) = A;
+        VB->vertices().at(1) = B;
+        VB->vertices().at(2) = C;
+        VB->vertices().at(3) = D;
 
-    VB.addTexcoord0(1.0, 0.0f);
-    VB.addVertex(A); // 0 A
-    VB.addTexcoord0(0.0f, 0.0f);
-    VB.addVertex(B); // 1 B
-    VB.addTexcoord0(1.0f, 1.0f);
-    VB.addVertex(C); // 2 C
-    VB.addTexcoord0(0.0f, 1.0f);
-    VB.addVertex(D); // 3 D
-    VB.end();
-
-    IB.begin();
-    IB.addIndex(2);
-    IB.addIndex(0);
-    IB.addIndex(1);
-    IB.addIndex(1);
-    IB.addIndex(3);
-    IB.addIndex(2);
-    IB.end();
+        VB->texcoord0().at(0) = Vector(1.0, 0.0, 0);
+        VB->texcoord0().at(1) = Vector(0.0, 0.0, 0);
+        VB->texcoord0().at(2) = Vector(1.0, 1.0, 0);
+        VB->texcoord0().at(3) = Vector(0.0, 1.0, 0);
+        VB->update();
+        return;
+    }
+    /*delete VB;
+    delete IB;
+    VB = new VertexBuffer();
+    IB = new IndexBuffer();*/
+      
+    VB->deactivate();
+    IB->deactivate();
+      
+    VB->begin();
+    VB->addNormal(0, 0, 1);
+      
+    VB->addTexcoord0(1.0, 0.0f);
+    VB->addVertex(A); // 0 A
+    VB->addTexcoord0(0.0f, 0.0f);
+    VB->addVertex(B); // 1 B
+    VB->addTexcoord0(1.0f, 1.0f);
+    VB->addVertex(C); // 2 C
+    VB->addTexcoord0(0.0f, 1.0f);
+    VB->addVertex(D); // 3 D
+    VB->end();
+      
+    IB->begin();
+    IB->addIndex(2);
+    IB->addIndex(0);
+    IB->addIndex(1);
+    IB->addIndex(1);
+    IB->addIndex(3);
+    IB->addIndex(2);
+    IB->end();
 }
 
 void GUIConstantQuad::updateBounds()
@@ -87,6 +107,8 @@ startPixelX(startX), startPixelY(startY), Width(width), Height(height)
 GUIConstantQuad::~GUIConstantQuad()
 {
     delete Shader;
+    delete IB;
+    delete VB;
 }
 
 void GUIConstantQuad::draw()
@@ -94,13 +116,13 @@ void GUIConstantQuad::draw()
     handleMouseEvents();
 
 	Shader->activate();
-    VB.activate();
-    IB.activate();
+    VB->activate();
+    IB->activate();
     glDisable(GL_DEPTH_TEST);
-    glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
+    glDrawElements(GL_TRIANGLES, IB->indexCount(), IB->indexFormat(), 0);
     glEnable(GL_DEPTH_TEST);
-    IB.deactivate();
-    VB.deactivate();
+    IB->deactivate();
+    VB->deactivate();
 }
 
 void GUIConstantQuad::shader(GUIShader* shader)

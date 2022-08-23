@@ -35,7 +35,7 @@ void GameplayGUI::update(float delta)
 
 void GameplayGUI::init()
 {
-	GUITexture* mouseCircle = new GUITexture(0, 0, new Texture(ASSETS "circle.png"), false, false);
+	GUITexture* mouseCircle = new GUITexture(0, 0, new Texture(ASSETS "img/circle.png"), false, false);
 	mouseCircle->scale(Vector(1, 1, 0));
 	mouseCircle->width(100.0f);
 	mouseCircle->height(100.0f);

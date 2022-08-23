@@ -1,19 +1,22 @@
-#ifdef WIN32
-#include <GL/glew.h>
-#include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
-#include "Application.h"
-#include "freeimage.h"
+/*
+ * MAIN - Programmstart
+ *
+ * - Window wird generiert
+ * - Frameloop
+ * - Window icon
+ */
 
+#include "Globals.h"
+#include "Application.h"
+#include "texture.h"
+
+// Forward declaration
 void PrintOpenGLVersion();
 
 int main () {
-    srand(time(NULL));
+    srand(time(NULL)); // Random-Number init
     FreeImage_Initialise();
+
     // start GL context and O/S Window using the GLFW helper library
     if (!glfwInit ()) {
         fprintf (stderr, "ERROR: could not start GLFW3\n");
@@ -26,16 +29,17 @@ int main () {
     glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
-    
+
+    // Window 
     const int WindowWidth = ASPECT_WIDTH;
     const int WindowHeight = ASPECT_HEIGHT;
 	glfwWindowHint(GLFW_SAMPLES, 4);
     GLFWwindow* window = glfwCreateWindow (WindowWidth, WindowHeight,
         "Eagle Day", NULL, NULL);
 
-    // Icon - Logo
+    // Window Icon - Logo
     GLFWimage logo;
-	unsigned char* data = Texture::LoadDataPtr(ASSETS "logo.png");
+	unsigned char* data = Texture::LoadDataPtr(ASSETS "img/logo.png");
     logo.pixels = data;
     logo.width = 1080;
     logo.height = 1080;

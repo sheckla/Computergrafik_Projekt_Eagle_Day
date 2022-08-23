@@ -1,3 +1,9 @@
+/*
+ * GUIButton
+ * - Displayelement bestehend aus GUIConstantQuad(s)
+ * - Funktionen bieten Moeglichkeit, um zu Wissen ob der Knopf gedrueckt wurde, oder nicht
+ */
+
 #ifndef GUIButton_h
 #define GUIButton_h
 #include "GUIBaseComponent.h"

@@ -1,4 +1,7 @@
+#include <irrKlang.h>
+
 #include "constantshader.h"
+#include "MathUtil.h"
 #include "PlaneLoader.h"
 #include "Printer.h"
 #include "NetworkSender.h"
@@ -7,6 +10,17 @@
 float Plane::speedPercentage() const
 {
 	return (0 + (this->speed / (float)MAX_SPEED));
+}
+
+void Plane::startEngine()
+{
+	SoundEngine = irrklang::createIrrKlangDevice();
+	SoundEngine->setSoundVolume(0);
+	SoundEngine->play2D(ASSETS "audio/steady.wav", true);
+
+	HighPitchSoundEngine = irrklang::createIrrKlangDevice();
+	HighPitchSoundEngine->setSoundVolume(0);
+	HighPitchSoundEngine->play2D(ASSETS "audio/steady_high_pitch.wav", true);
 }
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const
@@ -26,13 +40,13 @@ void Plane::aprroachZeroWithBoundaries(float& i, const float maxAngle) const
 	// positiv; innerhalb Grenze
 	if (i >= 0)
 	{
-		i = i * 0.99;
+		i = i * 0.90;
 		return;
 	}
 	// negativ: innerhalb Grenze
 	if (i < 0)
 	{
-		i = i * 0.99;
+		i = i * 0.90;
 		return;
 	}
 }
@@ -187,7 +201,7 @@ void Plane::update(double delta)
 	aprroachZeroWithBoundaries(Tilt.rightFlapsTilt, MAX_TILT);
 
 	// Geschwindigkeitsabfall TODO
-	this->speed = speed * 0.999999;
+	this->speed = speed - (5*delta * speedPercentage());
 	/*print("flap right", this->rightFlapsTilt);
 	print("flap left", this->leftFlapsTilt);
 	print("speed", speedPercentage());
@@ -198,12 +212,28 @@ void Plane::update(double delta)
 	Gun_Right->update(delta, this->parts[0]->transform());
 
 	if (Online_Mode)Sender->SendData(this);
+
+	if (SoundEngine && HighPitchSoundEngine)
+	{
+		float steady =  1 - speedPercentage();
+		float high = speedPercentage();
+
+		SoundEngine->setSoundVolume(0.3 + speedPercentage() * 0.5);
+		if (speedPercentage() > 0.55)
+		{
+			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * 0.5);
+			
+		} else
+		{
+			HighPitchSoundEngine->setSoundVolume(0);
+		}
+	}
 }
 
 // Spitfire max km/h = 594
 void Plane::accelerate(float i)
 {
-	this->speed += i * DELTA_TIME_MULTIPLICATOR * 30;
+	this->speed += i * DELTA_TIME_MULTIPLICATOR * 80;
 
 	if (this->speed >= MAX_SPEED)
 	{

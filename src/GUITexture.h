@@ -1,3 +1,10 @@
+/*
+ * Erweiterung zu GUIConstantQuad
+ * - Texturen/Bilder koennen uebergeben werden
+ * - KeepImageSize=true uebernimmt die echte groesse des Bildes
+ * - FillScreen=true spreizt das Bild ueber das ganze Fenster
+ */
+
 #ifndef GUITexture_h
 #define GUITexture_h
 
@@ -7,12 +14,6 @@
 constexpr int STATIC_WIDTH = 100;
 constexpr int STATIC_HEIGHT = 100;
 
-/*
- * Erweiterung zu GUIConstantQuad
- * - Texturen/Bilder koennen uebergeben werden
- * - KeepImageSize=true uebernimmt die echte groesse des Bildes
- * - FillScreen=true spreizt das Bild ueber das ganze Fenster
- */
 class GUITexture : public GUIConstantQuad
 {
 	Texture* pTex;

@@ -1,26 +1,16 @@
-//
-//  Framebuffer.h
-//  RealtimeRending
-//
-//  Created by Philipp Lensing on 03.12.14.
-//  Copyright (c) 2014 Philipp Lensing. All rights reserved.
-//
+/*
+ * Framebuffereinheit
+ * Nutzen: - ShadowMapper
+ *         - PostProcessingBuffer
+ *
+ * Weiterentwickelt auf Basis vom Praktikum:
+ *      Created by Philipp Lensing on 16.09.16.
+ *      Copyright © 2016 Philipp Lensing. All rights reserved.
+ */
 
-#ifndef __RealtimeRending__Framebuffer__
-#define __RealtimeRending__Framebuffer__
-
-#include <iostream>
-
-#ifdef WIN32
-#include <GL/glew.h>
-#include <glfw/glfw3.h>
-#else
-#define GLFW_INCLUDE_GLCOREARB
-#define GLFW_INCLUDE_GLEXT
-#include <glfw/glfw3.h>
-#endif
-
-class Texture;
+#ifndef FrameBuffer_h
+#define FrameBuffer_h
+#include "Texture.h"
 
 class Framebuffer
 {

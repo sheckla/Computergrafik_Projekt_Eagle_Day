@@ -1,15 +1,10 @@
 #include "ShaderLightMapper.h"
 #include "BaseShader.h"
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cassert>
+
 #include "Globals.h"
 #include "Lights.h"
-
-#ifdef WIN32
-#define ASSET_DIRECTORY "../../assets/"
-#else
-#define ASSET_DIRECTORY "../assets/"
-#endif
 
 ShaderLightMapper* ShaderLightMapper::pMapper = NULL;
 

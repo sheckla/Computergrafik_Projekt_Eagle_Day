@@ -251,7 +251,7 @@ void CloudBox::load(const char* worleyPath, const char* noisePath)
     // Worley DetailTex
     for (int i = 0; i < WORLEY_AMOUNT; i++) {
         std::stringstream ss;
-        ss << "../../assets/worley/" << "worley" << i << ".bmp";
+        ss << "../../assets/img/noise/" << "worley/worley" << i << ".bmp";
         std::string s = ss.str();
         if (!DetailTex[i].load(s.c_str())) {
             std::cout << "load error!" << std::endl;

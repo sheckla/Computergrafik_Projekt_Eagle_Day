@@ -7,7 +7,7 @@ GUIText::GUIText(float startX, float startY, char* string) : string(string)
 	int lineCount = 0;
 
 	std::ifstream file;
-	file.open(ASSETS "arial.fnt");
+	file.open(ASSETS "typgraphy/arial.fnt");
 
 	std::string line;
 	while (std::getline(file, line))

@@ -1,3 +1,11 @@
+/*
+ * GUIText
+ * - Ansammlung von GUIChar
+ * - Erlaubt darstellung von Texten
+ * - font.pnt & font.fnt muss vorhanden sein und reingeladen werden
+ *
+ */
+
 #ifndef GUIText_h
 #define GUIText_h
 #include <vector>

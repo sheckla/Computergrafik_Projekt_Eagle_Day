@@ -1,3 +1,11 @@
+/*
+ * MouseLogger
+ * - statische Instanz
+ * - erlaubt globale Einsicht auf die aktuelle Mausposition pro Frame
+ *	 in normalisierten oder standartmaessigen Bildschirm- bzw Pixelkoordinaten
+ *
+ */
+
 #ifndef MouseLogger_h
 #define MouseLogger_h
 #include  "Globals.h"

@@ -1,3 +1,9 @@
+/*
+ * VolumetricCloudsLoaderImplementation
+ * - Zustaendig fuer das korrekte Laden der volumetrischen Wolken innerhalb des Programmes
+ */
+
+
 #ifndef VolumetricCloudsLoaderImpl_h
 #define VolumetricCloudsLoaderImpl_h
 

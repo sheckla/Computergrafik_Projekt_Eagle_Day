@@ -113,7 +113,6 @@
     <ClCompile Include="..\..\src\GUITexture.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
     <ClCompile Include="..\..\src\IndexBuffer.cpp" />
-    <ClCompile Include="..\..\src\Lights.cpp" />
     <ClCompile Include="..\..\src\LineBoxModel.cpp" />
     <ClCompile Include="..\..\src\LinePlaneModel.cpp" />
     <ClCompile Include="..\..\src\LoadingScreenGUI.cpp" />
