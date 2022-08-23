@@ -268,9 +268,6 @@
     <ClCompile Include="..\..\src\ModelLoader.cpp">
       <Filter>Quelldateien\application\loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\GUILoader.cpp">
-      <Filter>Quelldateien\application\loader</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\PostProcessingBuffer.cpp">
       <Filter>Quelldateien\graphics\post_processing</Filter>
     </ClCompile>
@@ -328,9 +325,6 @@
     <ClCompile Include="..\..\src\ApplicationGUIPrototype.h">
       <Filter>Quelldateien\gui\application\gui_types</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\StartScreenGUI.cpp">
       <Filter>Quelldateien\gui\application\gui_types</Filter>
     </ClCompile>
@@ -345,6 +339,30 @@
     </ClCompile>
     <ClCompile Include="..\..\src\GUIText.cpp">
       <Filter>Quelldateien\gui\elements\components\font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleInstance.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleInstanceBullet.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleInstanceSmoke.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleLoader.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleShader.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleSprite.cpp">
+      <Filter>Quelldateien\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\AudioManager.cpp">
+      <Filter>Quelldateien\util\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,9 +498,6 @@
     <ClInclude Include="..\..\src\ModelLoader.h">
       <Filter>Quelldateien\application\loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\GUILoader.h">
-      <Filter>Quelldateien\application\loader</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\PostProcessingBuffer.h">
       <Filter>Quelldateien\graphics\post_processing</Filter>
     </ClInclude>
@@ -551,6 +566,30 @@
     </ClInclude>
     <ClInclude Include="..\..\src\GUIText.h">
       <Filter>Quelldateien\gui\elements\components\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleInstance.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleInstanceBullet.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleInstanceSmoke.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleLoader.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleShader.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ParticleSprite.h">
+      <Filter>Quelldateien\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\AudioManager.h">
+      <Filter>Quelldateien\util\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\OceanShader.h">
+      <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

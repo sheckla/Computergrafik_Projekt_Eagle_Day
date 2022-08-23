@@ -231,6 +231,6 @@ void NetworkConnector::Connection(EnemyPlane& enemy)
 		this->ReadAndSetData(buf,&enemy);
 		//std::cout << "readDone" << std::endl;
 		//delete[] buf;
-		//enemy.Enemy_Position = Vector(rand(), rand(), rand()); //Platzhalter
+		//enemyPlane.Enemy_Position = Vector(rand(), rand(), rand()); //Platzhalter
 	}	
 }

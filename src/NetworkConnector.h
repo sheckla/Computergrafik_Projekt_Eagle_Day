@@ -8,7 +8,7 @@
 #include <Ws2tcpip.h>
 
 
-//class EnemyPlane;
+//class enemyPlane;
 
 class NetworkConnector
 {

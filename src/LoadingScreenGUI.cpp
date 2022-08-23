@@ -23,6 +23,7 @@ void LoadingScreenGUI::update(float delta)
 
 	switch (task)
 	{
+		// GUI
 	case GUI_LOADING:
 		init();
 		break;
@@ -45,27 +46,40 @@ void LoadingScreenGUI::update(float delta)
 		text->text("Finalizing GUI");
 		ApplicationGUI::AppGUI->attachPostProcessingBuffer(new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT));
 		break;
+
+		// MODELS
 	case MODELS_LIGHT:
 		print("DIR", "");
 		text->text("Loading DirLight");
-		ModelLoader::loadDirLight();
+		ModelLoader::dirLight();
 		break;
 	case MODELS_SKYBOX:
 		text->text("Loading SkyBox");
-		ModelLoader::loadSkyBox();
+		ModelLoader::skyBox();
+		text->text("Loading Ocean");
 		break;
-	case MODELS_SIMPLEWATER:
+	case MODELS_WATER:
 		text->text("Loading Water");
-		ModelLoader::loadSimpleWater();
+		//ModelLoader::simpleWater();
+		ModelLoader::ocean();
 		break;
 	case MODELS_PLANEPARTS:
 		text->text("Loading PlayerPlane");
-		ModelLoader::loadPlaneParts();
+		ModelLoader::planeParts();
 		break;
 	case MODELS_CLOUDS:
 		text->text("Loading Clouds");
 		ModelLoader::clouds();
 		break;
+	case MODELS_ONLINE:
+		if (APPLICATION_ONLINE_MODE)
+		{
+			ModelLoader::planePartsOnline("127.0.0.1", 19411);
+			Application::enemyPlane = ModelLoader::enemyPlane("127.0.0.1", 19413);
+		}
+		break;
+
+		// FINALIZE
 	case MODELS_GUI_FINALIZE:
 		text->text("Preparing Start...");
 		Application::Cam = new Camera(ApplicationGUI::AppGUI->Window);

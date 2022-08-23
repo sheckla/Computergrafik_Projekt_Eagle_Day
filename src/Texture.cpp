@@ -213,7 +213,7 @@ bool Texture::load(const char* Filename)
 {
     release();
     checkFileFormat(Filename);
-    unsigned char* data = new unsigned char[Width * Height * 4];
+    unsigned char* data = nullptr;
     if (!(data = loadDataPtr(Filename)))
     {
         print("Texture::load | couldn't be loaded", Filename, true);

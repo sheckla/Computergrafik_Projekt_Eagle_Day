@@ -6,6 +6,7 @@
 #include "BaseModel.h"
 #include "Plane.h"
 #include "EnemyPlane.h"
+#include "WaterLoader.h"
 
 class ModelLoader
 {
@@ -13,24 +14,25 @@ class ModelLoader
     static ModelLoader* pModelLoader;
 public:
     static Plane* pPlayerPlane;
+    static EnemyPlane* pEnemyPlane;
+    static BaseModel* pSkyBox;
 
     static std::list<BaseModel*>* Models;
     static std::vector<BaseModel*>* CloudVector;
+    static std::list<BaseModel*>* Ocean;
+    static WaterLoader* pWaterLoader;
 
     static ModelLoader& instance();
-    static bool init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* Cloud_Box);
+    static bool init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* Cloud_Box, std::list<BaseModel*>* Ocean);
 
-    static bool loadDirLight();
-    static bool loadTestScene();
-    static bool loadLinePlane();
-    static bool loadSkyBox();
-    static bool loadPlaneParts();
-    static bool loadPlanePartsOnline(std::string ip, int port);
-    static bool loadClouds();
-    static bool loadSphere();
-    static bool loadSimpleWater();
-    static EnemyPlane* loadEnemyPlane(std::string ip, int port);
+    static bool dirLight();
+    static bool skyBox();
+    static bool planeParts();
+    static bool planePartsOnline(std::string ip, int port);
+    static bool simpleWater();
+    static EnemyPlane* enemyPlane(std::string ip, int port);
     static bool clouds();
+    static bool ocean();
 
 };
 

@@ -17,11 +17,13 @@
 #include "PlayerPlaneControls.h"
 #include "PostProcessingBuffer.h"
 #include "ApplicationGUI.h"
+#include "CloudBox.h"
 #include "GUIBaseComponent.h"
 #include "ScreenQuadModel.h"
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
 #include "vector.h"
+#define APPLICATION_ONLINE_MODE false
 
 class Application
 {
@@ -34,17 +36,23 @@ public:
     void draw();
     void end();
     void glErrorHandler(GLenum err);
+
+
+    // Public fuer Loader-Klassen!
     static PlayerPlaneControls* planeControls;
     static Camera* Cam;
+    static EnemyPlane* enemyPlane;
 protected:
     ModelList Models;
+    std::vector<BaseModel*> Cloud_Box;
+    std::list<BaseModel*> Ocean;
     GUIList guis;
     GLFWwindow* pWindow;
 
     double last=0;
     double xPosTmp = 0;
     double yPosTmp = 0;
-
+    WaterLoader* pWaterLoader;
     ShadowMapGenerator ShadowGenerator;
     ApplicationGUI* AppGUI;
 };

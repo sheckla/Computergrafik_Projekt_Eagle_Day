@@ -7,7 +7,7 @@
 #include "GUILoadingMeter.h"
 #include "GUIText.h"
 
-constexpr int tasks = 11;
+constexpr int tasks = 12;
 
 const enum LOADING_TASKS
 {
@@ -16,11 +16,14 @@ const enum LOADING_TASKS
 	GUI_GAMEPLAY,
 	GUI_ESCAPEMENU,
 	GUI_FINALIZE,
+
 	MODELS_LIGHT,
 	MODELS_SKYBOX,
-	MODELS_SIMPLEWATER,
+	MODELS_WATER,
 	MODELS_PLANEPARTS,
 	MODELS_CLOUDS,
+	MODELS_ONLINE,
+
 	MODELS_GUI_FINALIZE,
 };
 

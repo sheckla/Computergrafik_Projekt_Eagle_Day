@@ -16,11 +16,11 @@ Scaling(1, 1, 1), MixTex(NULL)
     MixTexLoc = initUniformParameter("MixTex");
     ScalingLoc = initUniformParameter("Scaling");
 
-    PerlinNoiseLoc = getParameterID("Perlin");
+    PerlinNoiseLoc = initUniformParameter("Perlin");
 
-    ResolutionLoc = getParameterID("Resolution");
-    ViewMatrixLoc = getParameterID("InvViewMatrix");
-    ProjMatrixLoc = getParameterID("InvProjMatrix");
+    ResolutionLoc = initUniformParameter("Resolution");
+    ViewMatrixLoc = initUniformParameter("InvViewMatrix");
+    ProjMatrixLoc = initUniformParameter("InvProjMatrix");
     
 
     for (int i = 0; i < DETAILTEX_COUNT; i++)
@@ -48,15 +48,15 @@ void OceanShader::activate(const BaseCamera& Cam) const
         activateTex(DetailTex[i], DetailTexLoc[i], slot++);
 
 
-    setParameter(ScalingLoc, Scaling);
-    setParameter(ResolutionLoc, Resolution);
+    setUniformParameter(ScalingLoc, Scaling);
+    setUniformParameter(ResolutionLoc, Resolution);
 
     Matrix iv = Cam.getViewMatrix();
     iv.invert();
     Matrix ip = Cam.getProjectionMatrix();
     ip.invert();
-    setParameter(ViewMatrixLoc, iv);
-    setParameter(ProjMatrixLoc, ip);
+    setUniformParameter(ViewMatrixLoc, iv);
+    setUniformParameter(ProjMatrixLoc, ip);
 }
 
 void OceanShader::deactivate() const

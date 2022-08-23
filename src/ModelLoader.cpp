@@ -14,11 +14,16 @@
 #include "VolumetricCloudsLoader.h"
 #include "VolumetricCloudsLoaderImpl.h"
 #include "EnemyPlane.h"
+#include "WaterLoaderImpl.h"
 
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
+EnemyPlane* ModelLoader::pEnemyPlane = nullptr;
+BaseModel* ModelLoader::pSkyBox = nullptr;
 std::list<BaseModel*>* ModelLoader::Models;
 std::vector<BaseModel*>* ModelLoader::CloudVector;
+std::list<BaseModel*>* ModelLoader::Ocean;
+WaterLoader* ModelLoader::pWaterLoader = nullptr;
 
 ModelLoader& ModelLoader::instance()
 {
@@ -26,15 +31,16 @@ ModelLoader& ModelLoader::instance()
     return *pModelLoader;
 }
 
-bool ModelLoader::init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* Cloud_Box)
+bool ModelLoader::init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* Cloud_Box, std::list<BaseModel*>* Ocean)
 {
     instance().Models = Models;
     instance().CloudVector = Cloud_Box;
+    instance().Ocean = Ocean;
     return true;
 }
 
 // via ShaderLightMapper also kein return-typ
-bool ModelLoader::loadDirLight()
+bool ModelLoader::dirLight()
 {
     print("loading light", "Directional");
 
@@ -49,32 +55,19 @@ bool ModelLoader::loadDirLight()
     return true;
 }
 
-bool ModelLoader::loadLinePlane()
-{
-    print("loading lineplane", "constantShader");
-
-    LinePlaneModel* pModel = new LinePlaneModel(100, 100, 100, 100);
-    ConstantShader* pConstShader = new ConstantShader();
-    pModel->shader(pConstShader, true);
-    pModel->shadowCaster(true);
-    Models->push_back(pModel);
-
-    print("loading lineplane", "finished");
-    printDivider();
-
-    return true;
-}
-
-bool ModelLoader::loadSkyBox()
+bool ModelLoader::skyBox()
 {
     print("loading skybox", "skybox.obj");
 
-    BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", true);
+    BaseModel* pModel1 = new Model(ASSETS "/models/skybox/skybox.obj", false);
     TextureShader* tShader = new TextureShader();
     pModel1->shader(tShader);
     pModel1->shadowCaster(false);
     Models->push_back(pModel1);
 
+    instance().pSkyBox = pModel1;
+    Matrix m = Matrix().scale(10);
+    pModel1->transform(pModel1->transform() * m);
 
     print("loading skybox", "finished");
     printDivider();
@@ -82,7 +75,7 @@ bool ModelLoader::loadSkyBox()
     return true;
 }
 
-bool ModelLoader::loadPlanePartsOnline(std::string ip, int port)
+bool ModelLoader::planePartsOnline(std::string ip, int port)
 {
     print("loading plane", "player plane");
 
@@ -100,7 +93,7 @@ bool ModelLoader::loadPlanePartsOnline(std::string ip, int port)
     return true;
 }
 
-bool ModelLoader::loadPlaneParts()
+bool ModelLoader::planeParts()
 {
     print("loading plane", "player plane");
 
@@ -120,46 +113,7 @@ bool ModelLoader::loadPlaneParts()
     return true;
 }
 
-bool ModelLoader::loadClouds()
-{
-    // TODO
-    return true;
-}
-
-bool ModelLoader::loadSphere()
-{
-    print("loading sphere", "phongshader");
-
-    TriangleSphereModel* p = new TriangleSphereModel(10, 1000, 1000);
-    PhongShader* ps = new PhongShader();
-    p->shader(ps);
-    Models->push_back(p);
-
-    print("loading sphere", "finished");
-    printDivider();
-    return true;
-}
-
-bool ModelLoader::loadTestScene()
-{
-    Model* pModel = new Model(ASSETS "models/shadowcube/shadowcube.obj", false);
-    pModel->shader(new PhongShader(), true);
-    Models->push_back(pModel);
-
-    pModel = new Model(ASSETS "models/bunny.dae", false);
-    pModel->shader(new PhongShader(), true);
-    Models->push_back(pModel);
-    pModel->transform(Matrix().translation(Vector(0, -0.01, 0)));
-
-    pModel = new Model(ASSETS "models/bunny.dae", false);
-    pModel->shader(new PhongShader(), true);
-    Models->push_back(pModel);
-    pModel->transform(Matrix().translation(Vector(0.25, 1, 1)));
-
-    return true;
-}
-
-bool ModelLoader::loadSimpleWater()
+bool ModelLoader::simpleWater()
 {
     TrianglePlaneModel* lpm = new TrianglePlaneModel(200, 200, 1, 1);
     lpm->shader(new PhongShader());
@@ -184,10 +138,18 @@ bool ModelLoader::clouds()
     return true;
 }
 
-EnemyPlane* ModelLoader::loadEnemyPlane(std::string ip, int port)
+EnemyPlane* ModelLoader::enemyPlane(std::string ip, int port)
 {
     EnemyPlane* ep = new EnemyPlane(ip.c_str(), port);
     ep->loadModels(ASSETS "models/messerschmitt");
     Models->push_back(ep);
     return ep;
+}
+
+bool ModelLoader::ocean()
+{
+    WaterLoader* pWaterLoader = new WaterLoaderImpl();
+    instance().pWaterLoader = pWaterLoader;
+    pWaterLoader->createWater(Ocean);
+    return true;
 }

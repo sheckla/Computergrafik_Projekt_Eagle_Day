@@ -117,10 +117,10 @@ void PlayerPlaneControls::update(float delta)
         leftTilt = normY * normX;
         rightTilt = -normY * normX;
     }
-
-	plane->tiltRudder(delta * normX);
-    plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
-    plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
+    // Mouse Controls
+	//plane->tiltRudder(delta * normX);
+    //plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
+    //plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
 
 
     plane->update(delta);

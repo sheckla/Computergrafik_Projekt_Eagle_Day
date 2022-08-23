@@ -70,7 +70,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
     setUniformParameter(boundsMinLoc, bounds->Min);
     setUniformParameter(boundsMaxLoc, bounds->Max);
 
-    setParameter(TimeTranslationLoc, CloudShader::TimeTranslation);
+    setUniformParameter(TimeTranslationLoc, CloudShader::TimeTranslation);
 }
 
 void CloudShader::deactivate() const

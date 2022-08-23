@@ -27,8 +27,10 @@
 #include "CloudShader.h"
 #include "TextureShader.h"
 
+
 PlayerPlaneControls* Application::planeControls = nullptr;
 Camera* Application::Cam;
+EnemyPlane* Application::enemyPlane = nullptr;
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
 {
@@ -36,7 +38,7 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024
     std::cout << "[Eagle Day Application] Starting..." << std::endl;
 
     // ----------- MODEL INIT ----------- 
-    ModelLoader::instance().init(&Models);
+    ModelLoader::instance().init(&Models, &Cloud_Box, &Ocean);
 
     // ----------- GUI INIT -----------
     AppGUI->setGUIStatus(LOADING_SCREEN_GUI, true);
@@ -45,19 +47,19 @@ Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024
     // -> CamFollowPlane = true setzen fuer verfolgende Kamera
     //planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
 
-    // ----------- FINISH ----------- 
-    print("Application loading finished", "");
-    printDivider(70);
 
-    ///////////////////////////////////////////////////////////////////////////////TEST//////////
-    Model* ship = new Model("C:/Users/Computer/Desktop/hms_victorious.obj");
+    /// TODO Als asset einfuegen :p
+    /*Model* ship = new Model("C:/Users/Computer/Desktop/hms_victorious.obj");
     ship->shader(new PhongShader, true);
     Matrix sm,ss;
     sm.translation(Vector(0, 10, 0));
     ss.scale(30);
     ship->transform(sm * ss);
-    Models.push_back(ship);
-    ///////////////////////////////////////////////////////////////////////////////TEST//////////
+    Models.push_back(ship)*/;
+
+    // ----------- FINISH ----------- 
+    print("Application loading finished", "");
+    printDivider(70);
 }
 
 void Application::start()
@@ -90,8 +92,16 @@ void Application::update(float dtime)
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(deltaTime);
-        if (online)this->enemy->update(deltaTime);
+        if (APPLICATION_ONLINE_MODE)this->enemyPlane->update(deltaTime);
     }
+
+
+    // ----------- Model Update ----------- 
+    ModelLoader::pWaterLoader->updateOcean(Cam, deltaTime);
+    CloudShader::TimeTranslation = last;
+
+    // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
+    ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, 0, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
 
     Cam->update();
 }
@@ -113,6 +123,20 @@ void Application::draw()
         {
             (*it)->draw(*Cam);
         }
+
+        for (std::list<BaseModel*>::iterator it = Ocean.begin(); it != Ocean.end(); it++)
+        {
+            (*it)->draw(*Cam);
+        }
+
+        ModelLoader::pPlayerPlane->drawParticles(*Cam);
+
+        for (auto cloud : Cloud_Box)
+        {
+            cloud->draw(*Cam);
+        }
+
+
         AppGUI->ppBuffer->postDraw();
 
         // ----------- PostProc. DRAW ----------- 
@@ -120,10 +144,6 @@ void Application::draw()
     }
 
     // ----------- GUI DRAW ----------- 
-    for (GUIList::iterator it = guis.begin(); it != guis.end(); ++it)
-    {
-        (*it)->draw(); // no cam needed
-    }
     AppGUI->draw();
 
 
@@ -139,7 +159,12 @@ void Application::end()
 {
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
         delete* it;
+    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        delete* it;
 
+    for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
+        delete* it;
+    Ocean.clear();
     Models.clear();
 }
 

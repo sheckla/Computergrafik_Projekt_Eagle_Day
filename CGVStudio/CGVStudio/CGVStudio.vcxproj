@@ -106,7 +106,6 @@
     <ClCompile Include="..\..\src\GUIButton.cpp" />
     <ClCompile Include="..\..\src\GUIConstantQuad.cpp" />
     <ClCompile Include="..\..\src\GUIConstantTriangle.cpp" />
-    <ClCompile Include="..\..\src\GUILoader.cpp" />
     <ClCompile Include="..\..\src\GUILoadingMeter.cpp" />
     <ClCompile Include="..\..\src\GUIShader.cpp" />
     <ClCompile Include="..\..\src\GUIChar.cpp" />
@@ -142,8 +141,6 @@
     <ClCompile Include="..\..\src\ShaderLightMapper.cpp" />
     <ClCompile Include="..\..\src\ShadowMapGenerator.cpp" />
     <ClCompile Include="..\..\src\StartScreenGUI.cpp" />
-    <ClCompile Include="..\..\src\Terrain.cpp" />
-    <ClCompile Include="..\..\src\TerrainShader.cpp" />
     <ClCompile Include="..\..\src\OceanSegment.cpp" />
     <ClCompile Include="..\..\src\OceanShader.cpp" />
     <ClCompile Include="..\..\src\Texture.cpp" />
@@ -179,7 +176,6 @@
     <ClInclude Include="..\..\src\GUIButton.h" />
     <ClInclude Include="..\..\src\GUIConstantQuad.h" />
     <ClInclude Include="..\..\src\GUIConstantTriangle.h" />
-    <ClInclude Include="..\..\src\GUILoader.h" />
     <ClInclude Include="..\..\src\GUILoadingMeter.h" />
     <ClInclude Include="..\..\src\GUIShader.h" />
     <ClInclude Include="..\..\src\GUIChar.h" />

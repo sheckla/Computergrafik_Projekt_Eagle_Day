@@ -29,7 +29,7 @@ constexpr float PI = 3.14159265359f;
 // Konkrete Rotationswerte
 constexpr int DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
 constexpr float ACCELERATION_GAIN = 0.002f;
-constexpr float ROTATION_SPEED = .0015f;
+constexpr float ROTATION_SPEED = .0115f;
 constexpr float MAX_TILT = 1.0f; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
 constexpr int MAX_SPEED = 556;
 
