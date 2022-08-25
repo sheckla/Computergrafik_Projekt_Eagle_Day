@@ -101,6 +101,8 @@ public:
 	TriangleSphereModel* dot;
 	TriangleBoxModel* horizon;
 
+	bool isShooting = false;
+
 	/* Plane wird per spitfire.obj geladen
 	*  -> oeffne .mtl per Editor und Pfade für die Texturen ändern
 	*/
@@ -142,6 +144,8 @@ public:
 	ParticleLoader* Smoke_System;
 	ParticleLoader* Gun_Left;
 	ParticleLoader* Gun_Right;
+
+	float hp=100;
 };
 
 #endif

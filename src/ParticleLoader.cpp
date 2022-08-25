@@ -16,7 +16,7 @@ ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl, Particl
 	if(pType == ParticleType::Smoke)
 		ps->diffuseTexture(new Texture((Path +"/particles/smokeparticle.png").c_str())); // SMOKE-TEXTURE
 
-	if (pType == ParticleType::Bullet)
+	if (pType == ParticleType::Bullet || pType == ParticleType::BulletDummy)
 		ps->diffuseTexture(new Texture((Path + "/particles/smokeparticle.png").c_str())); // GUN-TEXTURE
 
 	Particle_Shader = ps;
@@ -34,7 +34,11 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
 			if (pType == ParticleType::Bullet) {
-				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin);
+				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin,true);
+				ParticleList.push_back((ParticleInstance*)instance);
+			}
+			if (pType == ParticleType::BulletDummy) {
+				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin, false);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
 			Threshold = 0;

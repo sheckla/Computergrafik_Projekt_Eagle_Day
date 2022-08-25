@@ -72,6 +72,7 @@ void PlayerPlaneControls::update(float delta)
 
 
     ///////////////////////////////////////////////////////////////////////////////TEST//////////
+    /*
     if (glfwGetKey(this->window, GLFW_KEY_T))
     {
         plane->Smoke_System->StartGenerating();
@@ -83,21 +84,22 @@ void PlayerPlaneControls::update(float delta)
         plane->Smoke_System->StopGenerating();
         std::cout << "[PlayerPlaneControls] Stop Particles" << std::endl;
     }
-
+    */
+    ///////////////////////////////////////////////////////////////////////////////TEST//////////
 
     if (glfwGetKey(this->window, GLFW_KEY_SPACE))
     {
         plane->Gun_Left->StartGenerating();
         plane->Gun_Right->StartGenerating();
-        //std::cout << "[PlayerPlaneControls] Start Gun Particles" << std::endl;
+        plane->isShooting = true;
     }
     else
     {
         plane->Gun_Left->StopGenerating();
         plane->Gun_Right->StopGenerating();
-        //std::cout << "[PlayerPlaneControls] Stop Gun Particles" << std::endl;
+        plane->isShooting = false;
     }
-    ///////////////////////////////////////////////////////////////////////////////TEST//////////
+    
 
     MouseLogger logger = MouseLogger::instance();
     float normX = ((float)logger.x() / ASPECT_WIDTH * 2) - 1;

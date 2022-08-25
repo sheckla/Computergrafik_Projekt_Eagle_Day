@@ -193,6 +193,9 @@ void Plane::update(double delta)
 	print("speed", speedPercentage());
 	print("speedval", this->speed);*/
 
+
+	if(this->hp < 50.0f)this->Smoke_System->StartGenerating();
+
 	Smoke_System->update(delta, this->parts[1]->transform());
 	Gun_Left->update(delta, this->parts[0]->transform()); 
 	Gun_Right->update(delta, this->parts[0]->transform());

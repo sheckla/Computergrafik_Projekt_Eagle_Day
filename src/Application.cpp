@@ -130,6 +130,8 @@ void Application::draw()
         }
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
+        if(ModelLoader::pEnemyPlane != nullptr)
+        ModelLoader::pEnemyPlane->drawParticles(*Cam);
 
         for (auto cloud : Cloud_Box)
         {

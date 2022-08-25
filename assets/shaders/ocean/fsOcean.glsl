@@ -116,13 +116,16 @@ void main()
      float xDist=WorldSpaceTop.x - CameraPosition.x;
      float zDist=WorldSpaceTop.z - CameraPosition.z;
      float fadeStart=500;
-     if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
-        FragColor = vec4(1,1,1,0);
-        }
+     
    // FragColor = vec4(vec3(pixelCol,pixelCol,pixelCol),1);
    // CubeMap SpecularComponent
         vec3 o = normalize(Position - EyePos);
         vec3 p = reflect(o, normalize(Normal));
         vec4 Reflection = texture(CubeMapTexture, p);
         FragColor = mix(FragColor, Reflection, 0.5);
+
+        if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
+        FragColor = vec4(0,0,0,0);
+        discard;
+        }
 }

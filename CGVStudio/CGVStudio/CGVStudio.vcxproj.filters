@@ -364,6 +364,9 @@
     <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp">
       <Filter>Quelldateien\gui\application\gui_types</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\CollisionDetector.cpp">
+      <Filter>Quelldateien\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -590,6 +593,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\OceanShader.h">
       <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CollisionDetector.h">
+      <Filter>Quelldateien\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

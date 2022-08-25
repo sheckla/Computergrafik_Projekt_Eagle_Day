@@ -23,7 +23,7 @@
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
 #include "vector.h"
-#define APPLICATION_ONLINE_MODE false
+#define APPLICATION_ONLINE_MODE true
 
 class Application
 {
