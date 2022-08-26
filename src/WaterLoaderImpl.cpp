@@ -1,8 +1,9 @@
 #include "WaterLoaderImpl.h"
 
+#include <thread>
+
 WaterLoaderImpl::WaterLoaderImpl()
 {
-    std::cout << "loading Ocean" << std::endl;
 }
 
 WaterLoaderImpl::~WaterLoaderImpl()
@@ -12,9 +13,10 @@ WaterLoaderImpl::~WaterLoaderImpl()
 
 OceanSegment* WaterLoaderImpl::createWater(std::list<BaseModel*>* models)
 {
+    print("HeightMapStorage", "loading");
 	heightMaps = new HeightMapStorage(ASSETS "img/noise/waves/");
+    print("HeightMapStorage", "finished");
 	pTerrainShader = new OceanShader(ASSETS);
-
     createOceanSegments();
 
     for(int i=0;i<80;i++)
@@ -78,6 +80,7 @@ void WaterLoaderImpl::createOceanSegments()
         }
     }
 
+    print("Ocean", "creating Threads...");
     std::thread t1(&WaterLoaderImpl::OceanLoaderThread, this, 0);
     std::thread t2(&WaterLoaderImpl::OceanLoaderThread, this, 10);
     std::thread t3(&WaterLoaderImpl::OceanLoaderThread, this, 20);
@@ -91,7 +94,6 @@ void WaterLoaderImpl::createOceanSegments()
     t6.join();
     t7.join();
     t8.join();
-    std::cout << "[Ocean-LOD] loading done..." << std::endl;
 
     std::thread t30(&WaterLoaderImpl::OceanLoaderThread, this, 30);    //SLOW, further seperation needed
     std::thread t35(&WaterLoaderImpl::OceanLoaderThread, this, 35);
@@ -103,7 +105,7 @@ void WaterLoaderImpl::createOceanSegments()
     t40.join();
     t45.join();
 
-    std::cout << "loading done, initializing buffers..." << std::endl;
+    std::cout << "Threads loading done, initializing buffers..." << std::endl;
 
     for (int i = 0; i < SegmXSegm; i++) {
         for (int j = 0; j < SegmXSegm; j++) {
@@ -128,8 +130,8 @@ void WaterLoaderImpl::createOceanSegments()
 void WaterLoaderImpl::OceanLoaderThread(int num) { // bad alloc
     std::string s = "Thread ";
     s += std::to_string(num);
-    s += "\n";
-    std::cout << s;
+    s += " begin";
+    //print("OceanSegmentThread", s);
 
     if (!(num >= 30 && num < 50)) {
 
@@ -152,8 +154,8 @@ void WaterLoaderImpl::OceanLoaderThread(int num) { // bad alloc
 
     std::string sEnd = "Thread ";
     sEnd += std::to_string(num);
-    sEnd += " end\n";
-    std::cout << sEnd;
+    s += " end";
+    //print("OceanSegmentThread", sEnd);
 }
 
 void WaterLoaderImpl::updateOcean(Camera* Cam, double deltaTime) 

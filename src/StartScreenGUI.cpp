@@ -4,6 +4,8 @@
 #include "GUITexture.h"
 #include <sstream>
 #include "ApplicationGUI.h"
+#include "ApplicationSettings.h"
+#include "GUISlider.h"
 
 #include "MathUtil.h"
 #include "ModelLoader.h"
@@ -56,6 +58,8 @@ void StartScreenGUI::update(float delta)
 		// Cloud wieder von links anfangen lassen
 		if (cloud->startPixel().X > ASPECT_WIDTH) cloud->startPixel(Vector(-cloud->width() - 20, cloud->startPixel().Y, 0));
 	}
+
+	ApplicationSettings::AUDIO_VALUE = slider->sliderPercentage();
 }
 
 void StartScreenGUI::init()
@@ -78,6 +82,13 @@ void StartScreenGUI::init()
 	gTex->centred(true);
 	gTex->scale(Vector(0.3, 0.3, 0));
 	gTex->mouseoverHighlight(true);
+
+	GUISlider* sl = new GUISlider(500, 500, 500, 75, 10);
+	Components.push_back(sl);
+	slider = sl;
+
+	GUIText* text = new GUIText(0, 500, "The Quick Brown Fox Jumps Over The Lazy Dog");
+	Components.push_back(text);
 
 	startButton = new GUIButton(Window, gTex);
 	Components.push_back(startButton);

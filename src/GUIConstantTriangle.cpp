@@ -8,23 +8,30 @@ void GUIConstantTriangle::updateBuffers()
 	Vector B = Vector(UpperBound.X, UpperBound.Y, 0);
 	Vector C = Vector(UpperBound.X, LowerBound.Y , 0);
 
+    if (Flip)
+    {
+        rotate180();
+        return;
+    }
+
     /*
     *     / B
     *   A   |
     *     \ C
     */
-
     if (VB->vertices().size() >= 3)
     {
         VB->vertices().at(0) = A;
         VB->vertices().at(1) = B;
         VB->vertices().at(2) = C;
 
-        VB->update();
-        return;
+        IB->indices().at(0) = 0;
+        IB->indices().at(1) = 2;
+        IB->indices().at(2) = 1;
+        IB->end();
+        //return;
     }
-
-
+    // TODO FIX small Memory LEAK
     VB->unload();
     VB->deactivate();
     IB->deactivate();
@@ -57,10 +64,11 @@ void GUIConstantTriangle::updateBounds()
     UpperBound = Vector(normEndX, normEndY, 0);
 }
 
-GUIConstantTriangle::GUIConstantTriangle(int startPixelX, int startPixelY, int width, int height) : GUIConstantQuad(startPixelX, startPixelY, width, height)
+GUIConstantTriangle::GUIConstantTriangle(int startPixelX, int startPixelY, int width, int height, bool flip) : GUIConstantQuad(startPixelX, startPixelY, width, height)
 {
-    updateBounds();
-    updateBuffers();
+    Flip = flip;
+    GUIConstantTriangle::updateBounds();
+    GUIConstantTriangle::updateBuffers();
 }
 
 GUIConstantTriangle::~GUIConstantTriangle()
@@ -83,7 +91,7 @@ void GUIConstantTriangle::draw()
     VB->activate();
     IB->activate();
     glDisable(GL_DEPTH_TEST);
-    glRotatef(90, 1, 1, 1);
+    //glRotatef(90, 1, 1, 1);
     glDrawElements(GL_TRIANGLES, IB->indexCount(), IB->indexFormat(), 0);
     glEnable(GL_DEPTH_TEST);
     IB->deactivate();
@@ -101,6 +109,17 @@ void GUIConstantTriangle::rotate180()
     *   A   |
     *     \ C
     */
+
+    if (VB->vertices().size() >= 3)
+    {
+        VB->vertices().at(0) = A;
+        VB->vertices().at(1) = B;
+        VB->vertices().at(2) = C;
+
+        VB->update();
+        return;
+    }
+    VB->unload();
     VB->deactivate();
     IB->deactivate();
       

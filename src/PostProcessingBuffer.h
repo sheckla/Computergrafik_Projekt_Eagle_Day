@@ -15,7 +15,7 @@ class PostProcessingBuffer
 {
 	Texture screenTex;
 	Framebuffer buffer;
-	ScreenQuadModel screenQuad;
+	ScreenQuadModel* screenQuad;
 public:
 	PostProcessingBuffer();
 	PostProcessingBuffer(int width, int height);

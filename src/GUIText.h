@@ -15,14 +15,16 @@
 
 class GUIText : public GUIBaseComponent
 {
-	char* string;
+	const char* string;
 	std::vector<GUIChar*> chars;
-	std::vector<FontData> data;
+	std::vector<CharData> data;
+
+	float startX, startY;
 public:
-	GUIText(float startX, float startY, char* string);
+	GUIText(float startX, float startY, const char* string);
 	~GUIText() override;
 	void draw() override;
-	void text(char* string);
+	void text(const char* string);
 };
 
 #endif

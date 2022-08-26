@@ -1,36 +1,26 @@
-
 /*
  * GUIChar
  * - einzelnes Zeichen
- * - FontData muss mittels einer entsprechenden .fnt Datei uebergeben werden
+ * - CharData muss mittels einer entsprechenden .fnt Datei uebergeben werden
  */
 #ifndef GUIChar_h
 #define GUIChar_h
 #include <vector>
 
+#include "FNTManager.h"
 #include "GUIBaseComponent.h"
 #include "GUIConstantQuad.h"
 #include "GUITexture.h"
 
-struct FontData
-{
-	FontData(int id, int x, int y, int width, int height) : id(id), x(x), y(y), width(width), height(height){}
-	FontData(){}
-	int id;
-	int x;
-	int y;
-	int width;
-	int height;
-};
 
 class GUIChar : public GUITexture
 {
-	FontData data;
-	std::vector<GUIChar*> chars;
-public:
+	CharData data;
 	void updateBuffers() override;
-	GUIChar(int startX, int startY, int width, int height, FontData data);
-	virtual ~GUIChar();
+public:
+	GUIChar(float startX, float startY, CharData data);
+	virtual ~GUIChar() override;
+	void updateFont(float startX, float startY, CharData d);
 };
 
 #endif

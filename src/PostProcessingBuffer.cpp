@@ -11,12 +11,12 @@ PostProcessingBuffer::PostProcessingBuffer(int width = ASPECT_WIDTH, int height 
         GL_CLAMP_TO_EDGE, false);
     this->buffer.create(true, width, height);
     this->buffer.attachColorTarget(screenTex);
-    this->screenQuad = ScreenQuadModel();
+    this->screenQuad = new ScreenQuadModel();
 }
 
 void PostProcessingBuffer::draw(Camera cam)
 {
-    screenQuad.draw(cam, &screenTex);
+    screenQuad->draw(cam, &screenTex);
 }
 
 void PostProcessingBuffer::postDraw()
@@ -34,10 +34,10 @@ void PostProcessingBuffer::preDraw()
 
 void PostProcessingBuffer::gaussianBlur(bool b)
 {
-    screenQuad.shader()->gaussianBlur(b);
+    screenQuad->shader()->gaussianBlur(b);
 }
 
 void PostProcessingBuffer::elapseTime(float delta)
 {
-    screenQuad.shader()->elapsedTime(delta);
+    screenQuad->shader()->elapsedTime(delta);
 }

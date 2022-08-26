@@ -1,5 +1,7 @@
 #include "LoadingScreenGUI.h"
 
+#include <sstream>
+
 #include "Application.h"
 #include "ApplicationGUI.h"
 #include "GUIChar.h"
@@ -7,6 +9,24 @@
 #include "GUIText.h"
 #include "GUITexture.h"
 #include "ModelLoader.h"
+
+std::string LoadingScreenGUI::stringifyTask(const char* taskText)
+{
+	std::stringstream ss;
+	ss << "[" << currentTask << "/" << tasks << "] " << taskText;
+	return ss.str();
+}
+
+void LoadingScreenGUI::printLoadStartText(const char* text)
+{
+	print(text, "Loading start.");
+}
+
+void LoadingScreenGUI::printLoadFinishText(const char* text)
+{
+	print(text, "Loading finished!");
+	printDivider();
+}
 
 LoadingScreenGUI::LoadingScreenGUI(GLFWwindow* window) : ApplicationGUIPrototype(window)
 {
@@ -25,67 +45,116 @@ void LoadingScreenGUI::update(float delta)
 	{
 		// GUI
 	case GUI_LOADING:
+		printLoadStartText("LOADING_SCREEN_GUI");
+
+		loadingProgressText->text(stringifyTask("Loading LoadingScreenGUI").c_str());
 		init();
+
+		printLoadFinishText("LOADING_SCREEN_GUI");
 		break;
+		// ----
 	case GUI_STARTSCREEN:
-		print("STARTSCREEN", "");
-		text->text("Loading StartscreenMenu");
+		printLoadStartText("STARTSCREEN_GUI");
+
+		loadingProgressText->text(stringifyTask("Loading StartScreenGUI").c_str());
 		ApplicationGUI::AppGUI->startScreenGUI->init();
+
+		printLoadFinishText("STARTSCREEN_GUI");
 		break;
+		// ----
 	case GUI_GAMEPLAY:
-		print("GUI", "");
-		text->text("Loading GameplayMenu");
+		printLoadStartText("GAMEPLAY_GUI");
+
+		loadingProgressText->text(stringifyTask("Loading GameplayGUI").c_str());
 		ApplicationGUI::AppGUI->gameplayGUI->init();
+
+		printLoadFinishText("GAMEPLAY_GUI");
 		break;
+		// ----
 	case GUI_ESCAPEMENU:
-		print("ESCAPE", "");
-		text->text("Loading EscapeMenu");
+		printLoadStartText("ESCAPEMENU_GUI");
+
+		loadingProgressText->text(stringifyTask("Loading EscapeMenuGUI").c_str());
 		ApplicationGUI::AppGUI->escapeMenuGUI->init();
+
+		printLoadFinishText("ESCAPEMENU_GUI");
 		break;
+		// ----
 	case GUI_FINALIZE:
-		text->text("Finalizing GUI");
+		printLoadStartText("GUI_FINALIZE");
+
+		loadingProgressText->text(stringifyTask("Finalizing GUI").c_str());
 		ApplicationGUI::AppGUI->attachPostProcessingBuffer(new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT));
+
+		printLoadFinishText("GUI_FINALIZE");
 		break;
 
 		// MODELS
 	case MODELS_LIGHT:
-		print("DIR", "");
-		text->text("Loading DirLight");
+		printLoadStartText("DIR_LIGHT");
+
+		loadingProgressText->text(stringifyTask("Loading DirLight").c_str());
 		ModelLoader::dirLight();
+
+		printLoadFinishText("DIR_LIGHT");
 		break;
+		// ----
 	case MODELS_SKYBOX:
-		text->text("Loading SkyBox");
+		printLoadStartText("SKYBOX");
+
+		loadingProgressText->text(stringifyTask("Loading SkyBox").c_str());
 		ModelLoader::skyBox();
-		text->text("Loading Ocean");
+
+		printLoadFinishText("SKYBOX");
 		break;
-	case MODELS_WATER:
-		text->text("Loading Water");
-		//ModelLoader::simpleWater();
-		ModelLoader::ocean();
-		break;
+		// ----
 	case MODELS_PLANEPARTS:
-		text->text("Loading PlayerPlane");
+		printLoadStartText("PLANE_PARTS");
+
+		loadingProgressText->text(stringifyTask("Loading PlayerPlane").c_str());
 		ModelLoader::planeParts();
-		break;
-	case MODELS_CLOUDS:
-		text->text("Loading Clouds");
-		ModelLoader::clouds();
-		break;
-	case MODELS_ONLINE:
 		if (APPLICATION_ONLINE_MODE)
 		{
 			ModelLoader::planePartsOnline("127.0.0.1", 19411);
 			Application::enemyPlane = ModelLoader::enemyPlane("127.0.0.1", 19413);
 		}
+		ModelLoader::planePartsShadowArea();
+
+		printLoadFinishText("PLANE_PARTS");
+		break;
+		// ----
+	case MODELS_CLOUDS:
+		printLoadStartText("VOLUMETRIC_CLOUDS");
+
+		loadingProgressText->text(stringifyTask("Loading Clouds").c_str());
+		ModelLoader::clouds();
+
+		printLoadFinishText("VOLUMETRIC_CLOUDS");
+
+		// Hier schon aufrufen da Ocean ueber Threads laeuft
+		loadingProgressText->text(stringifyTask("Loading Ocean").c_str());
+
+		break;
+		// ----
+	case MODELS_WATER:
+		printLoadStartText("OCEAN");
+
+		ModelLoader::ocean();
+
+		printLoadFinishText("OCEAN");
 		break;
 
 		// FINALIZE
 	case MODELS_GUI_FINALIZE:
-		text->text("Preparing Start...");
+		printLoadStartText("MODELS_GUI_FINALIZE");
+
+		loadingProgressText->text(stringifyTask("Preparing Application start...").c_str());
 		Application::Cam = new Camera(ApplicationGUI::AppGUI->Window);
 		Application::planeControls = new PlayerPlaneControls(ApplicationGUI::AppGUI->Window, ModelLoader::pPlayerPlane, Application::Cam , true);
 		ApplicationGUI::AppGUI->startScreenGUI->active(true);
 		active(false);
+
+		printLoadFinishText("MODELS_GUI_FINALIZE");
 		break;
 	}
 	currentTask++;
@@ -95,18 +164,22 @@ void LoadingScreenGUI::update(float delta)
 
 void LoadingScreenGUI::init()
 {
-	print("Loading Unit", "start");
-	GUITexture* bg = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_color.png"), true, true);
-	Components.push_back(bg);
+	// Hintergrundbild
+	GUITexture* backgroundImageGUI = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_loading.png"), true, true);
+	Components.push_back(backgroundImageGUI);
 
-	loadingMeter = new GUILoadingMeter(ASPECT_WIDTH/2 - 400, 20, 55, 800);
+	// Lademeter
+	loadingMeter = new GUILoadingMeter(20, 20, ASPECT_WIDTH - 40, 55, 10);
 	Components.push_back(loadingMeter);
 
-	GUIText* text = new GUIText(ASPECT_WIDTH/2- 400, 90, "Hello World!!! IT WOOORKS");
-	this->text = text;
-	Components.push_back(text);
+	GUIText* pLoadingProgressText = new GUIText(20, 85, "Preparing to Load Application...");
+	this->loadingProgressText = pLoadingProgressText;
+	Components.push_back(pLoadingProgressText);
 
-	active(true);
+	GUIText* topLeftTextInfo = new GUIText(20, ASPECT_HEIGHT-50, "[EAGLE DAY - UNRELEASED ]");
+	Components.push_back(topLeftTextInfo);
+
+	active(true); // GUI wird gezeichnet
 }
 
 void LoadingScreenGUI::draw()

@@ -24,7 +24,6 @@
 class Application
 {
 protected:
-    GLFWwindow* pWindow;
     ShadowMapGenerator ShadowGenerator;
 
     // Models
@@ -53,6 +52,7 @@ public:
     static PlayerPlaneControls* planeControls;
     static Camera* Cam;
     static EnemyPlane* enemyPlane;
+    static GLFWwindow* pWindow;
 };
 
 #endif /* Application_hpp */

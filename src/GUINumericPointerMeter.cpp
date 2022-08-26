@@ -64,11 +64,11 @@ GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool left
 	// Pointer
 	if (leftBound) {
 		MeterQuad = new GUIConstantQuad(startX + bigWidth + 30, startY, smallWidth, bigHeight);
-		MeterTriangle = new GUIConstantTriangle(startX + bigWidth + 20, startY, 10, bigHeight);
+		MeterTriangle = new GUIConstantTriangle(startX + bigWidth + 20, startY, 10, bigHeight, false);
 	} else
 	{
 		MeterQuad = new GUIConstantQuad(ASPECT_WIDTH - startX - bigWidth - 90, startY, smallWidth, bigHeight);
-		MeterTriangle = new GUIConstantTriangle(ASPECT_WIDTH - startX - bigWidth - 20 - 20, startY, 10, bigHeight);
+		MeterTriangle = new GUIConstantTriangle(ASPECT_WIDTH - startX - bigWidth - 20 - 20, startY, 10, bigHeight, true);
 		MeterTriangle->rotate180();
 		bigXOffset = ASPECT_WIDTH - bigXOffset - bigWidth;
 		mediumXOffset = ASPECT_WIDTH - mediumXOffset - mediumWidth;

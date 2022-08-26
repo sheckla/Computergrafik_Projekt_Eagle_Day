@@ -14,7 +14,7 @@
 #include "GUILoadingMeter.h"
 #include "GUIText.h"
 
-constexpr int tasks = 12;
+constexpr int tasks = 11;
 
 const enum LOADING_TASKS
 {
@@ -26,19 +26,24 @@ const enum LOADING_TASKS
 
 	MODELS_LIGHT,
 	MODELS_SKYBOX,
-	MODELS_WATER,
 	MODELS_PLANEPARTS,
 	MODELS_CLOUDS,
-	MODELS_ONLINE,
+	MODELS_WATER,
 
 	MODELS_GUI_FINALIZE,
 };
 
 class LoadingScreenGUI : public ApplicationGUIPrototype
 {
+private:
 	int currentTask = 0;
 	GUILoadingMeter* loadingMeter;
-	GUIText* text;
+	GUIText* loadingProgressText;
+
+	std::string stringifyTask(const char* taskText);
+
+	void printLoadStartText(const char* text);
+	void printLoadFinishText(const char* text);
 public:
 	LoadingScreenGUI(GLFWwindow* window);
 	~LoadingScreenGUI() override;

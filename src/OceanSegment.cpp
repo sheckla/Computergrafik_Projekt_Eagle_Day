@@ -11,6 +11,7 @@ OceanSegment::OceanSegment(HeightMapStorage* hms,int resolution, const char* Hei
 		//if (!loaded)
 		//	throw std::exception();
 	}
+	shadowCaster(true);
 	this->IB = new IndexBuffer;
 	this->VB = new VertexBuffer;
 }

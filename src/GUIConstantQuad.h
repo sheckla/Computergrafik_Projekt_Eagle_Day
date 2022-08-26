@@ -36,7 +36,7 @@ protected:
 
 	// Mouseover
 	bool MouseoverHighlight = false; bool ForceMouseoverHighlight = false;
-	Color MouseoverHighlightColor = Color(0.6, 0.6, 0.6);
+	Color MouseoverHighlightColor = Color(0.6f, 0.6f, 0.6f);
 
 	// Mousepress
 	bool MousePress = false;

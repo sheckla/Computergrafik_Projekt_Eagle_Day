@@ -4,12 +4,11 @@
 #include "MathUtil.h"
 #include "MouseLogger.h"
 
-GUILoadingMeter::GUILoadingMeter(float startX, float startY, float height, float width)
+GUILoadingMeter::GUILoadingMeter(float startX, float startY, float width, float height, float padding)
 {
 	outlineArea = new GUIConstantQuad(startX, startY, width, height);
 	outlineArea->color(Color(0.38, 0.18, 0.12));
 
-	float padding = 10;
 	meterMin = startX + padding;
 	meterMax = width - padding * 2;
 	meterMaxWidth = meterMax;
@@ -31,6 +30,7 @@ void GUILoadingMeter::draw()
 
 void GUILoadingMeter::percentage(float percentage)
 {
+	Percentage = percentage;
 	float meterXPos = MathUtil::remapBounds(percentage, 0, 1, 0, meterMaxWidth);
 	meter->width(meterXPos);
 }

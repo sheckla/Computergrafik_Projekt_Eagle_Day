@@ -1,12 +1,6 @@
-//
-//  Application.cpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 16.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
-
 #include "Application.h"
+
+#include "ApplicationSettings.h"
 #include "CloudShader.h"
 #include "GUILoader.h"
 #include "PlaneLoader.h"
@@ -21,37 +15,26 @@
 PlayerPlaneControls* Application::planeControls = nullptr;
 Camera* Application::Cam;
 EnemyPlane* Application::enemyPlane = nullptr;
+GLFWwindow* Application::pWindow = nullptr;
 
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
+Application::Application(GLFWwindow* pWin) : ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
 {
     // ----------- START ----------- 
-    std::cout << "[Eagle Day Application] Starting..." << std::endl;
+    print("APPLICATION", "initialisation.");
 
-    // ----------- MODEL INIT ----------- 
+    // ----------- STATIC INSTANCE INIT -----------
+    ApplicationSettings::instance();
     ModelLoader::instance().init(&Models, &Cloud_Box, &Ocean);
-
+    pWindow = pWin;
 
     // ----------- GUI INIT -----------
     AppGUI->setGUIStatus(LOADING_SCREEN_GUI, true);
 
-    // ----------- CONTROLS INIT ----------- 
-    // -> CamFollowPlane = true setzen fuer verfolgende Kamera
-    //planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
-
-
-    /// TODO Als asset einfuegen :p
-    /*Model* ship = new Model("C:/Users/Computer/Desktop/hms_victorious.obj");
-    ship->shader(new PhongShader, true);
-    Matrix sm,ss;
-    sm.translation(Vector(0, 10, 0));
-    ss.scale(30);
-    ship->transform(sm * ss);
-    Models.push_back(ship)*/;
 
     // ----------- FINISH ----------- 
-    print("Application loading finished", "");
-    printDivider(70);
+    print("APPLICATION", "initialisation finish!");
+    printDivider();
 }
 
 void Application::start()
@@ -77,7 +60,7 @@ void Application::update(float dtime)
     MouseLogger::instance().update(x, y);
 
     // ----------- GUI Keyboard Input update ----------- 
-    AppGUI->updateInputs(deltaTime);
+    AppGUI->updateInputs((float)deltaTime);
     if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu) return;
 
     // ----------- (GAME) Plane Control handler ----------- 
@@ -89,8 +72,13 @@ void Application::update(float dtime)
 
 
     // ----------- Model Update ----------- 
-    ModelLoader::pWaterLoader->updateOcean(Cam, deltaTime);
+    if (ModelLoader::pWaterLoader) ModelLoader::pWaterLoader->updateOcean(Cam, deltaTime);
     CloudShader::TimeTranslation = last;
+    if (ModelLoader::instance().PlayerPlaneShadowArea)
+    {
+        ModelLoader::instance().PlayerPlaneShadowArea->transform(Matrix().translation(
+            Vector(ModelLoader::pPlayerPlane->getPosition().X, 1.5, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
+    }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
     ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, 0, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
@@ -103,13 +91,22 @@ void Application::draw()
     // ----------- FRAME START ----------- 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (!AppGUI->status().startscreenGUI && !AppGUI->status().loadingScreen) {
-        // ----------- SHADOW MAPPPING ----------- 
-        ShadowGenerator.generate(Models);
+        // ----------- SHADOW MAPPPING -----------
+        std::list<BaseModel*> shadows;
+        shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
+        for (auto a : Models)
+            shadows.push_back(a);
+
+        // Frisst viel Leistung! Gut entscheiden was ShadowMaps erhalten soll
+        ShadowGenerator.generate(shadows);
         ShaderLightMapper::instance().activate();
 
         // ----------- PostProc. Init & 3D SCENE ----------- 
         AppGUI->ppBuffer->preDraw();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Vor Models drawen fuer damit die ShadowPlane angezeigt wird
+
         for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
         {
             (*it)->draw(*Cam);
@@ -119,6 +116,8 @@ void Application::draw()
         {
             (*it)->draw(*Cam);
         }
+
+        ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
 

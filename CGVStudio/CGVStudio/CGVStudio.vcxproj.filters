@@ -137,9 +137,6 @@
     <Filter Include="Quelldateien\gui\application\gui_types">
       <UniqueIdentifier>{d37e535c-602f-4327-a0a5-82d3a02e942e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\gui\elements\components\font">
-      <UniqueIdentifier>{1edb62a6-4e0b-4a04-8f75-b6f60911daf6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\particles">
       <UniqueIdentifier>{1207bace-d29c-4d3a-9481-9b6b60b9d54c}</UniqueIdentifier>
     </Filter>
@@ -148,6 +145,12 @@
     </Filter>
     <Filter Include="Quelldateien\network">
       <UniqueIdentifier>{8f8e4e74-64a6-4e0d-b8b3-91ada7f2c86c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\application\ApplicationSettings">
+      <UniqueIdentifier>{11bae68c-e6c7-4499-98a8-72640112b495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\gui\elements\core\font">
+      <UniqueIdentifier>{1edb62a6-4e0b-4a04-8f75-b6f60911daf6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -332,10 +335,10 @@
       <Filter>Quelldateien\gui\elements\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\GUIChar.cpp">
-      <Filter>Quelldateien\gui\elements\components\font</Filter>
+      <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\GUIText.cpp">
-      <Filter>Quelldateien\gui\elements\components\font</Filter>
+      <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ParticleInstance.cpp">
       <Filter>Quelldateien\particles</Filter>
@@ -360,6 +363,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp">
       <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GUISlider.cpp">
+      <Filter>Quelldateien\gui\elements\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ApplicationSettings.cpp">
+      <Filter>Quelldateien\application\ApplicationSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OptionsGUI.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FNTManager.cpp">
+      <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -559,10 +574,10 @@
       <Filter>Quelldateien\gui\elements\components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\GUIChar.h">
-      <Filter>Quelldateien\gui\elements\components\font</Filter>
+      <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\GUIText.h">
-      <Filter>Quelldateien\gui\elements\components\font</Filter>
+      <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\ParticleInstance.h">
       <Filter>Quelldateien\particles</Filter>
@@ -587,6 +602,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\OceanShader.h">
       <Filter>Quelldateien\graphics\models_complex\water\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUISlider.h">
+      <Filter>Quelldateien\gui\elements\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ApplicationSettings.h">
+      <Filter>Quelldateien\application\ApplicationSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\OptionsGUI.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\FNTManager.h">
+      <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

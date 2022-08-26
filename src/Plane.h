@@ -28,15 +28,15 @@ constexpr int PLANE_PARTS = 7;
 constexpr float PI = 3.14159265359f;
 
 // Konkrete Rotationswerte
-constexpr int DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
+constexpr float DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
 constexpr float ACCELERATION_GAIN = 0.002f;
-constexpr float ROTATION_SPEED = .0315f;
+constexpr float ROTATION_SPEED = .0455f;
 constexpr float MAX_TILT = 1.0f; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
 constexpr int MAX_SPEED = 556;
 
 // Visuelle Rotationswerte
 constexpr float RUDDER_ROTATION = 1.0f; // visueller Neigungsfaktor
-constexpr float FLAP_ROTATION = 1.3f; // visueller Neigungsfaktor 
+constexpr float FLAP_ROTATION = 1.6f; // visueller Neigungsfaktor 
 constexpr float WINGFLAP_OFFSET_ROTATION = 0.35f; // fuer korrekte Rotation der Seiten-flaps
 
 struct PartsIndex 

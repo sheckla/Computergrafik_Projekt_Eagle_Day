@@ -83,9 +83,7 @@ int main () {
 
 void PrintOpenGLVersion()
 {
-    // get version info
-    const GLubyte* renderer = glGetString (GL_RENDERER); // get renderer string
-    const GLubyte* version = glGetString (GL_VERSION); // version as a string
-    printf ("Renderer: %s\n", renderer);
-    printf ("OpenGL version supported %s\n", version);
+    print("Graphics Render Unit:", glGetString(GL_RENDERER));
+    print("Supported OpenGL version:", glGetString(GL_VERSION));
+    printDivider();
 }

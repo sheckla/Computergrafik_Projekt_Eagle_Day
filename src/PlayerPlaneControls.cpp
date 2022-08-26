@@ -1,5 +1,6 @@
 #include "PlayerPlaneControls.h"
 
+#include "ApplicationSettings.h"
 #include "MathUtil.h"
 #include "MouseLogger.h"
 
@@ -91,7 +92,7 @@ void PlayerPlaneControls::update(float delta)
         plane->Gun_Left->StartGenerating();
         plane->Gun_Right->StartGenerating();
         //std::cout << "[PlayerPlaneControls] Start Gun Particles" << std::endl;
-        SoundEngine->setSoundVolume(0.8);
+        SoundEngine->setSoundVolume(ApplicationSettings::AUDIO_VALUE);
         if (i++ % 7 == 0 || i == 0)
         {
 
