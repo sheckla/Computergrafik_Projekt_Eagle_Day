@@ -21,7 +21,7 @@ class VertexBuffer
 public:
     struct Texcoord
     {
-        Texcoord() {}
+        Texcoord() : s(0), t(0), u(0) {}
         Texcoord(float _s, float _t, float _u=0) : s(_s), t(_t), u(_u) {}
         float s;
         float t;

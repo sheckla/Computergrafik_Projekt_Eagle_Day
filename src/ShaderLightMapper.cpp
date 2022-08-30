@@ -21,7 +21,7 @@ ShaderLightMapper& ShaderLightMapper::instance()
 	return *pMapper;
 }
 
-ShaderLightMapper::ShaderLightMapper()
+ShaderLightMapper::ShaderLightMapper() : UBO(0)
 {
 
 	BaseShader Shader;

@@ -1,13 +1,12 @@
 #version 400
+const int MAX_LIGHTS=14;
+uniform vec3 LightPos;
+uniform vec3 LightColor;
 
+// in from vs
 in vec3 Position;
 in vec3 Normal;
 in vec2 Texcoord;
-
-const int MAX_LIGHTS=14;
-
-uniform vec3 LightPos;
-uniform vec3 LightColor;
 
 uniform vec3 EyePos;
 uniform vec3 DiffuseColor;
@@ -19,6 +18,7 @@ uniform sampler2D DiffuseTexture;
 uniform samplerCube CubeMapTexture;
 uniform sampler2D ShadowMapTexture[MAX_LIGHTS];
 uniform mat4 ShadowMapMat[MAX_LIGHTS];
+uniform int ShadowOnly;
 
 out vec4 FragColor;
 
@@ -61,7 +61,7 @@ float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 												
 	// reducing blockiness of shadows by interpolating edges using PCF (percentage closer filtering)
 	// source: https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
-	int smoothingDiameter = 1, i = LightIndex;						// defines the size of the area around the pixel to be interpolated
+	int smoothingDiameter = 5, i = LightIndex;						// defines the size of the area around the pixel to be interpolated
 	vec2 texelSize = 1.0 / textureSize(ShadowMapTexture[i], 0);		// calculate the size of a single texel
 	for(int x = -smoothingDiameter; x <= smoothingDiameter; x++){	// iterate over texels in area vertically and horizontally
 		for(int y = -smoothingDiameter; y <= smoothingDiameter; y++) {	
@@ -154,4 +154,14 @@ void main()
     SpecularFactor = sat(SpecularFactor);
     vec3 mixed = mix(Reflection, phongColor, SpecularFactor);
     FragColor = vec4(mixed, DiffTex.a);
+
+    // Shadow Only Display
+    if (ShadowOnly == 1 && visibility < 1) {
+        FragColor = vec4(phongColor, (1 - visibility) * 0.1);
+    } else if (ShadowOnly == 1) 
+    {
+        FragColor = vec4(1,0,0,0);
+    }
+
+    
 }

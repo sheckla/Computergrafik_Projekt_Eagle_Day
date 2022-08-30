@@ -35,6 +35,7 @@ void main()
     vec2 globalUV = vec2(VertexPos.x / 3000,VertexPos.z / 3000);
 
     _vertex.y = texture(MixTex, Texcoord).r * heightMultip /* (texture(Perlin,globalUV).r)*/;
+    _vertex.y *= 1; // Scale Ocean Height
 
     float height_N = _vertex.y;
 

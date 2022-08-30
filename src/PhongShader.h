@@ -38,6 +38,7 @@ public:
     void lightPos(const Vector& pos);
     void lightColor(const Color& c);
     void shadowMap(unsigned int slot, const Texture* pTex, const Matrix& Mtx);
+    void shadowOnly(bool b);
     //getter
     const Color& diffuseColor() const { return DiffuseColor; }
     const Color& ambientColor() const { return AmbientColor; }
@@ -63,6 +64,7 @@ private:
     const Texture* CubeMapTexture;
     const Texture* ShadowMapTexture[MaxLightCount];
     Matrix ShadowMapMat[MaxLightCount];
+    bool ShadowOnly;
 
     GLint DiffuseColorLoc;
     GLint SpecularColorLoc;
@@ -78,6 +80,7 @@ private:
     GLint CubeMapTextureLoc;
     GLint ShadowMapTextureLoc[MaxLightCount];
     GLint ShadowMapMatLoc[MaxLightCount];
+    GLint ShadowOnlyLoc;
 
     mutable unsigned int UpdateState;
 

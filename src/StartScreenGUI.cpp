@@ -4,6 +4,8 @@
 #include "GUITexture.h"
 #include <sstream>
 #include "ApplicationGUI.h"
+#include "ApplicationSettings.h"
+#include "GUISlider.h"
 
 #include "MathUtil.h"
 #include "ModelLoader.h"
@@ -19,19 +21,6 @@ StartScreenGUI::~StartScreenGUI()
 
 void StartScreenGUI::draw()
 {
-	if (startButton->mouseInside())
-	{
-		PRESS_STATE state = startButton->listen();
-		switch (state)
-		{
-		case RELEASE:
-			active(false);
-			ApplicationGUI::AppGUI->gameplayGUI->active(true);
-			ModelLoader::pPlayerPlane->startEngine();
-			break;
-		}
-	}
-
 	int layer = 0;
 	for (auto component : Components) {
 		component->draw();
@@ -56,6 +45,24 @@ void StartScreenGUI::update(float delta)
 		// Cloud wieder von links anfangen lassen
 		if (cloud->startPixel().X > ASPECT_WIDTH) cloud->startPixel(Vector(-cloud->width() - 20, cloud->startPixel().Y, 0));
 	}
+
+	if (startButton->mouseInside())
+	{
+		PRESS_STATE state = startButton->listen();
+		switch (state)
+		{
+		case RELEASE:
+			active(false);
+			ApplicationGUI::AppGUI->gameplayGUI->active(true);
+			ModelLoader::pPlayerPlane->startEngine();
+			break;
+		}
+	}
+
+	for (auto component : Components)
+	{
+		component->update(delta);
+	}
 }
 
 void StartScreenGUI::init()
@@ -74,12 +81,11 @@ void StartScreenGUI::init()
 	Components.push_back(logoBG);
 
 	int offsetHeight = gap + buttonHeight;
-	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2 - offsetHeight * 4, new Texture(ASSETS "img/button_start.png"), true);
-	gTex->centred(true);
+	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2 - offsetHeight * 4, new Texture(ASSETS "img/button_simple.png"), true);
 	gTex->scale(Vector(0.3, 0.3, 0));
+	gTex->startPixel(Vector(gTex->startPixel().X - gTex->width() / 2, gTex->startPixel().Y, 0));
 	gTex->mouseoverHighlight(true);
-
-	startButton = new GUIButton(Window, gTex);
+	startButton = new GUIButton(Window, gTex, "Start");
 	Components.push_back(startButton);
 
 	for (int i = 0; i <= 10; i++)

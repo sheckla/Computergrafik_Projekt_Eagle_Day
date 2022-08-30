@@ -13,6 +13,7 @@
 #include "Globals.h"
 #include "ApplicationGUIPrototype.h"
 #include "GUIButton.h"
+#include "GUISlider.h"
 #include "PressListener.h"
 
 struct CloudParams

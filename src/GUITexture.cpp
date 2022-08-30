@@ -14,8 +14,6 @@ void GUITexture::updateBounds()
 
     if (FillScreen)
     {
-        print("Witdh", Width);
-        print("Height", Height);
         Width = MathUtil::remapBounds(Width, 0, Width, 0, ASPECT_WIDTH);
         Height = MathUtil::remapBounds(Height, 0, Height, 0, ASPECT_HEIGHT);
     }
@@ -45,7 +43,7 @@ GUITexture::GUITexture(int startX, int startY, Texture* tex, bool keepImageSize,
 
 GUITexture::~GUITexture()
 {
-    
+    //deactivateTex();
 }
 
 void GUITexture::texture(Texture* tex)

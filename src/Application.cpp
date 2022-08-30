@@ -1,12 +1,6 @@
-//
-//  Application.cpp
-//  ogl4
-//
-//  Created by Philipp Lensing on 16.09.16.
-//  Copyright © 2016 Philipp Lensing. All rights reserved.
-//
-
 #include "Application.h"
+
+#include "ApplicationSettings.h"
 #include "CloudShader.h"
 #include "GUILoader.h"
 #include "PlaneLoader.h"
@@ -16,42 +10,36 @@
 #include "TextureShader.h"
 #include "MouseLogger.h"
 #include "AudioManager.h"
-#include "WaterLoaderImpl.h"
 
 PlayerPlaneControls* Application::planeControls = nullptr;
+AIPlaneController* Application::aiControls = nullptr;
 Camera* Application::Cam;
 EnemyPlane* Application::enemyPlane = nullptr;
+GLFWwindow* Application::pWindow = nullptr;
+PostProcessingBuffer* Application::testBuffer = nullptr;
 
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
+Application::Application(GLFWwindow* pWin) : ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
 {
+    aiControls = new AIPlaneController();
+
     // ----------- START ----------- 
-    std::cout << "[Eagle Day Application] Starting..." << std::endl;
+    print("APPLICATION", "initialisation.");
+    testBuffer = new PostProcessingBuffer(1920, 1080);
 
-    // ----------- MODEL INIT ----------- 
+    // ----------- STATIC INSTANCE INIT -----------
+    ApplicationSettings::instance();
     ModelLoader::instance().init(&Models, &Cloud_Box, &Ocean);
-
+    Cam = new Camera(pWin);
+    pWindow = pWin;
 
     // ----------- GUI INIT -----------
     AppGUI->setGUIStatus(LOADING_SCREEN_GUI, true);
 
-    // ----------- CONTROLS INIT ----------- 
-    // -> CamFollowPlane = true setzen fuer verfolgende Kamera
-    //planeControls = new PlayerPlaneControls(pWindow, ModelLoader::pPlayerPlane, &Cam, true);
-
-
-    /// TODO Als asset einfuegen :p
-    /*Model* ship = new Model("C:/Users/Computer/Desktop/hms_victorious.obj");
-    ship->shader(new PhongShader, true);
-    Matrix sm,ss;
-    sm.translation(Vector(0, 10, 0));
-    ss.scale(30);
-    ship->transform(sm * ss);
-    Models.push_back(ship)*/;
 
     // ----------- FINISH ----------- 
-    print("Application loading finished", "");
-    printDivider(70);
+    print("APPLICATION", "initialisation finish!");
+    printDivider();
 }
 
 void Application::start()
@@ -68,7 +56,7 @@ void Application::start()
 void Application::update(float dtime)
 {
     // ----------- DELTA TIME -----------
-    double deltaTime = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
+    double delta = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
 
     // ----------- 'Singleton' MouseLogger update ----------- 
@@ -76,21 +64,34 @@ void Application::update(float dtime)
     glfwGetCursorPos(pWindow, &x, &y);
     MouseLogger::instance().update(x, y);
 
-    // ----------- GUI Keyboard Input update ----------- 
-    AppGUI->updateInputs(deltaTime);
-    if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu) return;
+    // ----------- ppBuffer Elapsed Time update ----------- 
+    testBuffer->update(delta);
+    if(ApplicationGUI::AppGUI->ppBuffer) ApplicationGUI::AppGUI->ppBuffer->update(delta);
 
-    // ----------- (GAME) Plane Control handler ----------- 
+    // ----------- GUI Keyboard/Mouse Input update ----------- 
+    AppGUI->updateInputs((float)delta);
+    if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu|| AppGUI->status().startscreenGUI) return;
+
+    // ----------- Plane Control handler ----------- 
     if (ModelLoader::pPlayerPlane)
     {
-        this->planeControls->update(deltaTime);
-        if (APPLICATION_ONLINE_MODE)this->enemyPlane->update(deltaTime);
+        this->planeControls->update(delta);
+        if (APPLICATION_ONLINE_MODE)this->enemyPlane->update(delta);
     }
 
+    if (ModelLoader::pAIPlane && ModelLoader::pPlayerPlane)
+    {
+        aiControls->update(delta);
+    }
 
     // ----------- Model Update ----------- 
-    ModelLoader::pWaterLoader->updateOcean(Cam, deltaTime);
+    if (ModelLoader::pWaterLoader) ModelLoader::pWaterLoader->updateOcean(Cam, delta);
     CloudShader::TimeTranslation = last;
+    if (ModelLoader::instance().PlayerPlaneShadowArea)
+    {
+        ModelLoader::instance().PlayerPlaneShadowArea->transform(Matrix().translation(
+            Vector(ModelLoader::pPlayerPlane->getPosition().X, 1.5, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
+    }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
     ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, 0, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
@@ -103,13 +104,21 @@ void Application::draw()
     // ----------- FRAME START ----------- 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (!AppGUI->status().startscreenGUI && !AppGUI->status().loadingScreen) {
-        // ----------- SHADOW MAPPPING ----------- 
-        ShadowGenerator.generate(Models);
+
+        // ----------- SHADOW MAPPPING -----------
+        // Frisst viel Leistung! Gut entscheiden was ShadowMaps erhalten soll
+        std::list<BaseModel*> shadows;
+        shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
+        for (auto shadowMapModel : Models)
+            shadows.push_back(shadowMapModel);
+
+        ShadowGenerator.generate(shadows);
         ShaderLightMapper::instance().activate();
 
         // ----------- PostProc. Init & 3D SCENE ----------- 
         AppGUI->ppBuffer->preDraw();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
         {
             (*it)->draw(*Cam);
@@ -119,6 +128,8 @@ void Application::draw()
         {
             (*it)->draw(*Cam);
         }
+
+        ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
 
@@ -131,11 +142,18 @@ void Application::draw()
         AppGUI->ppBuffer->postDraw();
 
         // ----------- PostProc. DRAW ----------- 
+		testBuffer->preDraw();
         AppGUI->ppBuffer->draw(*Cam);
     }
 
-    // ----------- GUI DRAW ----------- 
+    // ----------- GUI DRAW -----------
+    testBuffer->preDraw();
+
     AppGUI->draw();
+    testBuffer->postDraw();
+    testBuffer->draw(*Cam);
+
+    if (ApplicationGUI::AppGUI->status().startscreenGUI || ApplicationGUI::AppGUI->status().escapeMenu) ApplicationGUI::AppGUI->optionsGUI->draw();
 
 
     // ----------- ERROR HANDLING ----------- 
@@ -148,15 +166,11 @@ void Application::draw()
 }
 void Application::end()
 {
-    for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
-        delete* it;
-    for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
-        delete* it;
+    //for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
+    //   delete (* it);
 
-    for (std::list<BaseModel*>::iterator it = this->Ocean.begin(); it != this->Ocean.end(); ++it)
-        delete* it;
-    Ocean.clear();
-    Models.clear();
+    //Ocean.clear();
+    //Models.clear();
 }
 
 void Application::glErrorHandler(GLenum err)

@@ -19,6 +19,7 @@ PhongShader::PhongShader(bool loadPhongShaderCode) :
     LightColor(1, 1, 1),
     DiffuseTexture(Texture::defaultTex()),
     NormalTexture(Texture::defaultNormalTex()),
+    ShadowOnly(false),
     UpdateState(0xFFFFFFFF)
 {
     if (!loadPhongShaderCode) return;
@@ -51,6 +52,7 @@ void PhongShader::assignLocations()
     ModelMatLoc = glGetUniformLocation(ShaderProgram, "ModelMat");
     ModelViewProjLoc = glGetUniformLocation(ShaderProgram, "ModelViewProjMat");
     CubeMapTextureLoc = glGetUniformLocation(ShaderProgram, "CubeMapTexture");
+    ShadowOnlyLoc = glGetUniformLocation(ShaderProgram, "ShadowOnly");
 
     for (int i = 0; i < MaxLightCount; ++i)
     {
@@ -104,6 +106,8 @@ void PhongShader::activate(const BaseCamera& Cam) const
     Vector EyePos = Cam.position();
     glUniform3f(EyePosLoc, EyePos.X, EyePos.Y, EyePos.Z);
 
+    glUniform1i(ShadowOnlyLoc, ShadowOnly);
+
     for (int i = 0; i < MaxLightCount; ++i)
     {
         if (ShadowMapTexture[i] && (ShadowMapMatLoc[i] != -1))
@@ -123,6 +127,10 @@ void PhongShader::shadowMap(unsigned int slot, const Texture* pTex, const Matrix
 
     ShadowMapTexture[slot] = pTex;
     ShadowMapMat[slot] = Mtx;
+}
+void PhongShader::shadowOnly(bool b)
+{
+    ShadowOnly = b;
 }
 void PhongShader::diffuseColor(const Color& c)
 {

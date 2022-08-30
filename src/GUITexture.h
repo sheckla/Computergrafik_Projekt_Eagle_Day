@@ -16,6 +16,7 @@ constexpr int STATIC_HEIGHT = 100;
 
 class GUITexture : public GUIConstantQuad
 {
+protected:
 	Texture* pTex;
 	bool KeepImageSize = false;
 	bool FillScreen = false;

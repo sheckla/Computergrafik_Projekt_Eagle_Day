@@ -2,7 +2,11 @@
 #include "PhongShader.h"
 #include "NetworkConnector.h"
 
-EnemyPlane::EnemyPlane(const char* srv_Adr,int port) 
+EnemyPlane::EnemyPlane()
+{
+}
+
+EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 {
 	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
 

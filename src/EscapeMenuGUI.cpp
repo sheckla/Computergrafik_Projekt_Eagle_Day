@@ -5,15 +5,14 @@
 
 EscapeMenuGUI::EscapeMenuGUI(GLFWwindow* window) : ApplicationGUIPrototype(window)
 {
-
-
+	escapeButtonPressListener = new PressListener(window, GLFW_KEY_ESCAPE, KEYBOARD);
 }
 
 EscapeMenuGUI::~EscapeMenuGUI()
 {
 }
 
-void EscapeMenuGUI::attachPostProcessingBuffer(PostProcessingBuffer* ppBuffer)
+void EscapeMenuGUI::attachPostProcessingBuffer(PostProcessingBuffer* ppBusffer)
 {
 	this->ppBuffer = ppBuffer;
 }
@@ -21,16 +20,9 @@ void EscapeMenuGUI::attachPostProcessingBuffer(PostProcessingBuffer* ppBuffer)
 void EscapeMenuGUI::postProcessingEffects(bool b)
 {
 	PostProcessingInit = b;
-	ppBuffer->gaussianBlur(true);
+	ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(true);
+	ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 	//if (!b) ElapsedTime = 0;
-}
-
-void EscapeMenuGUI::elapseTime(float delta)
-{
-	ElapsedTime += delta;
-	if (ElapsedTime > TIME_MAX_POST_PROCESSING_EFFECTS) ElapsedTime = TIME_MAX_POST_PROCESSING_EFFECTS;
-	if (ElapsedTime < 0) ElapsedTime = 0;
-	ppBuffer->elapseTime(ElapsedTime);
 }
 
 bool EscapeMenuGUI::postProcessingInit()
@@ -40,39 +32,60 @@ bool EscapeMenuGUI::postProcessingInit()
 
 void EscapeMenuGUI::update(float delta)
 {
-
 	if (returnStartButton->listen() == RELEASE)
 	{
 		active(false);
 		ApplicationGUI::AppGUI->setGUIStatus(STARTSCREEN_GUI, true);
 	}
+
+	if (leaveEscapeMenuButton->listen() == RELEASE)
+	{
+		postProcessingEffects(false);
+		active(false);
+	}
+	for (auto component : Components) component->update(delta);
 }
 
 void EscapeMenuGUI::init()
 {
-	int buttonWidth = 300;
-	int buttonHeight = 70;
-	int gap = 10;
-
-	int offsetHeight = gap + buttonHeight + 50;
-	GUITexture* tab3 = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - offsetHeight * 4, new Texture(ASSETS "img/button_return.png"), true);
-	tab3->centred(true);
-	tab3->scale(Vector(0.3, 0.3, 0));
-	tab3->mouseoverHighlight(true);
-	returnStartButton = new GUIButton(Window, tab3);
-	Components.push_back(returnStartButton);
-
-	offsetHeight += gap + buttonHeight + 50;
-	GUITexture* leaveEscapeMenuTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - offsetHeight * 1, new Texture(ASSETS "img/button_return.png"), true);
-	leaveEscapeMenuTex->centred(true);
-	leaveEscapeMenuTex->scale(Vector(0.3, 0.3, 0));
-	leaveEscapeMenuTex->mouseoverHighlight(true);
-	leaveEscapeMenuButton = new GUIButton(Window, leaveEscapeMenuTex);
-	//Components.push_back(leaveEscapeMenuButton);
-
-	GUITexture* logo = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT- 200, new Texture(ASSETS "img/logo.png"), true, false);
+	GUITexture* logo = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT- 300, new Texture(ASSETS "img/logo.png"), true, false);
 	logo->centred(true);
 	logo->scale(Vector(0.3, 0.3, 0));
 	Components.push_back(logo);
+
+	GUITexture* returnButtonTexture = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - 600, new Texture(ASSETS "img/button_simple.png"), true);
+	returnButtonTexture->scale(Vector(0.3, 0.3, 0));
+	returnButtonTexture->startPixel(Vector(returnButtonTexture->startPixel().X - returnButtonTexture->width() / 2, returnButtonTexture->startPixel().Y, 0));
+	returnButtonTexture->mouseoverHighlight(true);
+	returnStartButton = new GUIButton(Window, returnButtonTexture, "Main Menu");
+	Components.push_back(returnStartButton);
+
+	GUITexture* leaveEscapeMenuTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - 750, new Texture(ASSETS "img/button_simple.png"), true);
+	leaveEscapeMenuTex->scale(Vector(0.3, 0.3, 0));
+	leaveEscapeMenuTex->startPixel(Vector(leaveEscapeMenuTex->startPixel().X - leaveEscapeMenuTex->width() / 2, leaveEscapeMenuTex->startPixel().Y, 0));
+	leaveEscapeMenuTex->mouseoverHighlight(true);
+	leaveEscapeMenuButton = new GUIButton(Window, leaveEscapeMenuTex, "Leave");
+	Components.push_back(leaveEscapeMenuButton);
+
+}
+
+void EscapeMenuGUI::listen()
+{
+	if (escapeButtonPressListener->listen() == PRESS)
+	{
+		if (Active)
+			// turn off
+		{
+			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
+			active(false);
+		}
+		else
+			// turn on
+		{
+			ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(true);
+			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(true);
+			active(true);
+		}
+	}
 }
 

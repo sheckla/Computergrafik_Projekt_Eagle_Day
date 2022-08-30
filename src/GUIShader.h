@@ -14,8 +14,9 @@
 class GUIShader : public BaseShader
 {
 public:
+
     GUIShader();
-    ~GUIShader() override;
+    ~GUIShader();
     void activate() const override;
     void texture(Texture* tex);
     void color(Color c);

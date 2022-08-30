@@ -6,8 +6,6 @@
 #ifndef VolumetricCloudsLoader_h
 #define VolumetricCloudsLoader_h
 
-#include "TriangleBoxModel.h"
-#include "BaseModel.h"
 #include "CloudBox.h";
 
 class VolumetricCloudsLoader {

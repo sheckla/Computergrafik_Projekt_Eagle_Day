@@ -86,7 +86,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Aabb.cpp" />
+    <ClCompile Include="..\..\src\AIPlaneController.cpp" />
     <ClCompile Include="..\..\src\Application.cpp" />
+    <ClCompile Include="..\..\src\ApplicationSettings.cpp" />
     <ClCompile Include="..\..\src\AudioManager.cpp" />
     <ClCompile Include="..\..\src\ApplicationGUIPrototype.cpp" />
     <ClCompile Include="..\..\src\ApplicationGUIPrototype.h" />
@@ -99,6 +101,7 @@
     <ClCompile Include="..\..\src\ConstantShader.cpp" />
     <ClCompile Include="..\..\src\EnemyPlane.cpp" />
     <ClCompile Include="..\..\src\EscapeMenuGUI.cpp" />
+    <ClCompile Include="..\..\src\FNTManager.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
     <ClCompile Include="..\..\src\ApplicationGUI.cpp" />
     <ClCompile Include="..\..\src\GameplayGUI.cpp" />
@@ -109,6 +112,7 @@
     <ClCompile Include="..\..\src\GUILoadingMeter.cpp" />
     <ClCompile Include="..\..\src\GUIShader.cpp" />
     <ClCompile Include="..\..\src\GUIChar.cpp" />
+    <ClCompile Include="..\..\src\GUISlider.cpp" />
     <ClCompile Include="..\..\src\GUIText.cpp" />
     <ClCompile Include="..\..\src\GUITexture.cpp" />
     <ClCompile Include="..\..\src\HeightMapStorage.cpp" />
@@ -123,6 +127,7 @@
     <ClCompile Include="..\..\src\MouseLogger.cpp" />
     <ClCompile Include="..\..\src\NetworkConnector.cpp" />
     <ClCompile Include="..\..\src\NetworkSender.cpp" />
+    <ClCompile Include="..\..\src\OptionsGUI.cpp" />
     <ClCompile Include="..\..\src\ParticleInstance.cpp" />
     <ClCompile Include="..\..\src\ParticleInstanceBullet.cpp" />
     <ClCompile Include="..\..\src\ParticleInstanceSmoke.cpp" />
@@ -156,7 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Aabb.h" />
+    <ClInclude Include="..\..\src\AIPlaneController.h" />
     <ClInclude Include="..\..\src\Application.h" />
+    <ClInclude Include="..\..\src\ApplicationSettings.h" />
     <ClInclude Include="..\..\src\AudioManager.h" />
     <ClInclude Include="..\..\src\BaseModel.h" />
     <ClInclude Include="..\..\src\BaseShader.h" />
@@ -167,6 +174,7 @@
     <ClInclude Include="..\..\src\ConstantShader.h" />
     <ClInclude Include="..\..\src\EnemyPlane.h" />
     <ClInclude Include="..\..\src\EscapeMenuGUI.h" />
+    <ClInclude Include="..\..\src\FNTManager.h" />
     <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\ApplicationGUI.h" />
     <ClInclude Include="..\..\src\GameplayGUI.h" />
@@ -178,6 +186,7 @@
     <ClInclude Include="..\..\src\GUILoadingMeter.h" />
     <ClInclude Include="..\..\src\GUIShader.h" />
     <ClInclude Include="..\..\src\GUIChar.h" />
+    <ClInclude Include="..\..\src\GUISlider.h" />
     <ClInclude Include="..\..\src\GUIText.h" />
     <ClInclude Include="..\..\src\GUITexture.h" />
     <ClInclude Include="..\..\src\HeightMapStorage.h" />
@@ -193,6 +202,7 @@
     <ClInclude Include="..\..\src\MouseLogger.h" />
     <ClInclude Include="..\..\src\NetworkConnector.h" />
     <ClInclude Include="..\..\src\NetworkSender.h" />
+    <ClInclude Include="..\..\src\OptionsGUI.h" />
     <ClInclude Include="..\..\src\ParticleInstance.h" />
     <ClInclude Include="..\..\src\ParticleInstanceBullet.h" />
     <ClInclude Include="..\..\src\ParticleInstanceSmoke.h" />

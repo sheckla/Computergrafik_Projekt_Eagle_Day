@@ -73,7 +73,7 @@ Texture* Texture::defaultFontMap()
     {
         return pDefaultFontMap;
     }
-    Texture* fontMap = new Texture(ASSETS "arial.png");
+    Texture* fontMap = new Texture(ASSETS "typography/arial/arial.png");
     pDefaultFontMap = fontMap;
     return pDefaultFontMap;
 }

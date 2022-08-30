@@ -102,7 +102,7 @@ void main()
     vec3 v = vec3(Xm/Wm,Ym/Wm,Zm/Wm);
 
     float Vec3x3_X = InvViewMatrix[0][0] * v.x + InvViewMatrix[1][0] + v.y + InvViewMatrix[2][0] + v.z;
-    float Vec3x3_Y = InvViewMatrix[0][1] * v.x + InvViewMatrix[1][1] + v.y + InvViewMatrix[2][1] + v.z + 3;
+    float Vec3x3_Y = InvViewMatrix[0][1] * v.x + InvViewMatrix[1][1] + v.y + InvViewMatrix[2][1] + v.z;
     float Vec3x3_Z = InvViewMatrix[0][2] * v.x + InvViewMatrix[1][2] + v.y + InvViewMatrix[2][2] + v.z;
 
     vec3 PixelStrahl = (InvViewMatrix * vec4(v,0)).xyz;  
@@ -115,14 +115,15 @@ void main()
     
      float xDist=WorldSpaceTop.x - CameraPosition.x;
      float zDist=WorldSpaceTop.z - CameraPosition.z;
-     float fadeStart=500;
-     if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
-        FragColor = vec4(1,1,1,0);
-        }
    // FragColor = vec4(vec3(pixelCol,pixelCol,pixelCol),1);
    // CubeMap SpecularComponent
         vec3 o = normalize(Position - EyePos);
         vec3 p = reflect(o, normalize(Normal));
         vec4 Reflection = texture(CubeMapTexture, p);
-        FragColor = mix(FragColor, Reflection, 0.5);
+        FragColor = mix(FragColor, Reflection, 0.3);
+     float fadeStart=500;
+     
+     if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
+        FragColor = vec4(1,1,1,0);
+        }
 }

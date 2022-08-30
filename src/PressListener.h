@@ -25,7 +25,7 @@ public:
 	{
 		switch (PressType)
 		{
-			case KEYBOARD:
+		case KEYBOARD:
 				if (!isPressed && glfwGetKey(Window, GLFW_KEY_ID) == GLFW_PRESS)
 				{
 					isPressed = true;
@@ -35,8 +35,9 @@ public:
 					isPressed = false;
 					return PRESS_STATE::RELEASE;
 				}
+				return PRESS_STATE::HOLD;
 				break;
-			case MOUSE:
+		case MOUSE:
 				if (!isPressed && glfwGetMouseButton(Window, GLFW_KEY_ID) == GLFW_PRESS)
 				{
 					isPressed = true;
@@ -47,9 +48,11 @@ public:
 					isPressed = false;
 					return PRESS_STATE::RELEASE;
 				}
+				return PRESS_STATE::HOLD;
 				break;
 			}
 	}
+	bool pressed() { return isPressed; }
 };
 
 #endif

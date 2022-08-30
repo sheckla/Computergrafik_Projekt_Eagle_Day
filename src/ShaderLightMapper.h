@@ -37,7 +37,9 @@ protected:
 	{
 		int LightCount; Vector padding0;
 		ShaderLight lights[MaxLightCount];
-
+		ShaderLightBlock() : LightCount(0), padding0(Vector(0, 0, 0)), lights{}
+		{
+		}
 	};
 
 	ShaderLightMapper();
@@ -45,7 +47,7 @@ protected:
 	~ShaderLightMapper();
 	LightList Lights;
 	ShaderLightBlock ShaderLights;
-	GLuint UBO;
+	GLuint UBO = 0;
 	static ShaderLightMapper* pMapper;
 public:
 

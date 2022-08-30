@@ -39,7 +39,7 @@ public:
     
     GLenum indexFormat() const { return IndexFormat; }
     unsigned int indexCount() const { return IndexCount; }
-    const std::vector<unsigned int>& indices() const { return Indices; }
+    std::vector<unsigned int>& indices() { return Indices; }
     
 };
 

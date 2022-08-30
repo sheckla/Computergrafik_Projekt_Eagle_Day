@@ -1,9 +1,5 @@
 #include "PostProcessingBuffer.h"
 
-PostProcessingBuffer::PostProcessingBuffer()
-{
-}
-
 PostProcessingBuffer::PostProcessingBuffer(int width = ASPECT_WIDTH, int height = ASPECT_HEIGHT)
 {
     this->screenTex.create(width, height,
@@ -11,12 +7,12 @@ PostProcessingBuffer::PostProcessingBuffer(int width = ASPECT_WIDTH, int height 
         GL_CLAMP_TO_EDGE, false);
     this->buffer.create(true, width, height);
     this->buffer.attachColorTarget(screenTex);
-    this->screenQuad = ScreenQuadModel();
+    this->screenQuad = new ScreenQuadModel();
 }
 
 void PostProcessingBuffer::draw(Camera cam)
 {
-    screenQuad.draw(cam, &screenTex);
+    screenQuad->draw(cam, &screenTex);
 }
 
 void PostProcessingBuffer::postDraw()
@@ -34,10 +30,20 @@ void PostProcessingBuffer::preDraw()
 
 void PostProcessingBuffer::gaussianBlur(bool b)
 {
-    screenQuad.shader()->gaussianBlur(b);
+    screenQuad->shader()->gaussianBlur(b);
 }
 
-void PostProcessingBuffer::elapseTime(float delta)
+void PostProcessingBuffer::update(float delta)
 {
-    screenQuad.shader()->elapsedTime(delta);
+    if (!PostProcessingActive) delta = -delta;
+
+    elapsedTime += delta;
+    if (elapsedTime < 0) elapsedTime = 0;
+    if (elapsedTime > TIME_MAX_POST_PROCESSING_EFFECTS) elapsedTime = TIME_MAX_POST_PROCESSING_EFFECTS;
+    screenQuad->shader()->elapsedTime(elapsedTime);
+}
+
+void PostProcessingBuffer::postProcessingActive(bool b)
+{
+    PostProcessingActive = b;
 }

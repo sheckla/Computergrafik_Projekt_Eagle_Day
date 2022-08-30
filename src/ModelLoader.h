@@ -18,13 +18,16 @@ class ModelLoader
 {
     static ModelLoader* pModelLoader;
 public:
-    static Plane* pPlayerPlane;
-    static EnemyPlane* pEnemyPlane;
-    static BaseModel* pSkyBox;
-
+    // Muessen initialisiert werden!
     static std::list<BaseModel*>* Models;
     static std::vector<BaseModel*>* CloudVector;
     static std::list<BaseModel*>* Ocean;
+
+    static Plane* pPlayerPlane;
+    static Plane* pAIPlane;
+    static EnemyPlane* pEnemyPlane;
+    static BaseModel* pSkyBox;
+    static BaseModel* PlayerPlaneShadowArea;
     static WaterLoader* pWaterLoader;
 
     static ModelLoader& instance();
@@ -34,7 +37,8 @@ public:
     static bool skyBox();
     static bool planeParts();
     static bool planePartsOnline(std::string ip, int port);
-    static bool simpleWater();
+    static bool planePartsShadowArea();
+    static bool aiPlaneParts();
     static EnemyPlane* enemyPlane(std::string ip, int port);
     static bool clouds();
     static bool ocean();

@@ -1,12 +1,18 @@
 #include "GUIButton.h"
 
 #include "GUITexture.h"
+#include "MouseLogger.h"
 
-GUIButton::GUIButton(GLFWwindow* window, GUIConstantQuad* quad) : 
+GUIButton::GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text) : 
 mousePressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), area(quad)
 {
 	this->window = window;
+	GUIText* test = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, WW2);
+	buttonText = new GUIText(quad->startPixel().X + quad->width() / 2 - test->totalWidth() / 2, quad->startPixel().Y + quad->height() / 2 , text, WW2);
+	buttonText->centred(true);
+	buttonText->charSpace(1.2);
 
+	quad->mousePressColor(COL_VERY_LIGHT);
 }
 
 
@@ -19,20 +25,25 @@ GUIButton::~GUIButton()
 
 void GUIButton::draw()
 {
-	// first press
+	area->draw();
+	buttonText->draw();
+}
+
+void GUIButton::update(float delta)
+{
 	PRESS_STATE state = mousePressListener.listen();
 
 	switch (state)
 	{
-		case PRESS:
-			area->mousePress(true);
-			break;
-		case RELEASE:
-			area->mousePress(false);
-			break;
+	case PRESS:
+		area->mousePress(true);
+		break;
+	case RELEASE:
+		area->mousePress(false);
+		break;
 	}
 
-	area->draw();
+	area->update(delta);
 }
 
 bool GUIButton::pressed()

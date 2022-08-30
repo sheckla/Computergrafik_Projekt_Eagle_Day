@@ -11,10 +11,15 @@
 #define GameplayGUI_h
 
 #include "ApplicationGUIPrototype.h"
+#include "GUILoadingMeter.h"
+#include "GUIText.h"
+#include "GUITexture.h"
 
 class GameplayGUI : public ApplicationGUIPrototype
 {
-	bool b;
+	GUILoadingMeter* lifeMeter;
+	GUIText* speedMeterText;
+	GUIText* altitudeMeterText;
 public:
 	GameplayGUI(GLFWwindow* window);
 	virtual ~GameplayGUI();

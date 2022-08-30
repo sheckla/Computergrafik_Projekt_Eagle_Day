@@ -32,6 +32,7 @@ public:
 	bool Enemy_Tranformation_Validation = false;
 	float Enemy_Speed=0;
 
+	EnemyPlane();
 	EnemyPlane::EnemyPlane(const char* srv_Adr,int port);
 	virtual void draw(const BaseCamera& cam);
 	void update(double delta);

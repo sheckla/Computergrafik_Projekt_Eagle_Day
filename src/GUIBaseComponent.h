@@ -11,6 +11,7 @@ class GUIBaseComponent
 public:
 	virtual ~GUIBaseComponent();
 	virtual void draw();
+	virtual void update(float delta) = 0;
 };
 
 #endif

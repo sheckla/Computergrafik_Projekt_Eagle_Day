@@ -1,5 +1,6 @@
 #include <irrKlang.h>
 
+#include "ApplicationSettings.h"
 #include "constantshader.h"
 #include "MathUtil.h"
 #include "PlaneLoader.h"
@@ -218,10 +219,10 @@ void Plane::update(double delta)
 		float steady =  1 - speedPercentage();
 		float high = speedPercentage();
 
-		SoundEngine->setSoundVolume(0.3 + speedPercentage() * 0.5);
+		SoundEngine->setSoundVolume((0.3 + speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
 		if (speedPercentage() > 0.55)
 		{
-			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * 0.5);
+			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * ApplicationSettings::AUDIO_VALUE);
 			
 		} else
 		{

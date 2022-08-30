@@ -15,5 +15,4 @@ HeightMapStorage::HeightMapStorage(char* fname) {
 		//std::cout << charBuf << std::endl;
 		Water_Frames[i].load(charBuf);
 	}
-	std::cout << "ALL LOADED" << std::endl;
 }

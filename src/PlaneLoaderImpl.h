@@ -6,6 +6,7 @@
 #ifndef PlaneLoaderImpl_h
 #define PlaneLoaderImpl_h
 
+#include "EnemyPlane.h"
 #include "Plane.h"
 #include "PlaneLoader.h"
 #include "Model.h"
@@ -17,6 +18,7 @@ public:
 	virtual ~PlaneLoaderImpl();
 	Plane* loadPlayerPlaneOnline(const char* path, Model**& planeParts, const char* srv_Adr, int port) override;
 	Plane* loadPlayerPlane(const char* path, Model**& planeParts) override;
+	Plane* loadAIPlane(const char* path, Model**& planeParts) override;
 };
 
 #endif

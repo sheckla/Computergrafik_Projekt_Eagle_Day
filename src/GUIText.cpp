@@ -1,87 +1,120 @@
 #include "GUIText.h"
 
+
 #include <sstream>
 
-GUIText::GUIText(float startX, float startY, char* string) : string(string)
+
+void GUIText::applyCharParameter()
 {
-	int lineCount = 0;
-
-	std::ifstream file;
-	file.open(ASSETS "typgraphy/arial.fnt");
-
-	std::string line;
-	while (std::getline(file, line))
+	for (auto gChar : textChars)
 	{
-		if (lineCount++ >= 4)
-		{
-			FontData fontData;
-
-			std::stringstream ss;
-			ss << line;
-			std::string word;
-			ss >> word; // char
-			ss >> word; // id;
-			word = word.substr(word.find('=') + 1, word.size());
-			fontData.id = std::stoi(word);
-
-			ss >> word; // x;
-			word = word.substr(word.find('=') + 1, word.size());
-			fontData.x = std::stoi(word);
-
-			ss >> word; // y;
-			word = word.substr(word.find('=') + 1, word.size());
-			fontData.y = std::stoi(word);
-
-			ss >> word; // width;
-			word = word.substr(word.find('=') + 1, word.size());
-			fontData.width = std::stoi(word);
-
-			ss >> word; // height;
-			word = word.substr(word.find('=') + 1, word.size());
-			fontData.height = std::stoi(word);
-			data.push_back(fontData);
-		}
+		gChar->scale(Scale);
+		gChar->width(Width);
+		gChar->height(Height);
+		gChar->centred(Centred);
 	}
-	file.close();
+}
+
+GUIText::GUIText(float startX, float startY, const char* string, FONT_NAMES font) : font(font), textString(string), startX(startX), startY(startY)
+{
 	text(string);
 }
 
 GUIText::~GUIText()
 {
+	for (GUIChar* gChar : textChars) delete gChar;
+	//delete textString;
 }
 
 void GUIText::draw()
 {
-	for (GUIChar* gChar : chars) gChar->draw();
+	for (int i = 0; i < textChars.size(); i++)
+	{
+		textChars[i]->draw();
+	}
 }
 
-void GUIText::text(char* string)
+void GUIText::update(float delta)
 {
-	if (chars.size() > 0) {
-		for (auto ch : chars) delete ch;
-		chars.clear();
-	}
-	for (auto c : data)
-	{
-		//print("x", c.x);
-	}
+}
 
-	std::string charText{ string };
+void GUIText::text(const char* string)
+{
+	std::string textString{ string };
+	float xOffset = 0;
 
-	for (int i = 0; i < charText.size(); i++)
-	{
-		//print("i", (int)charText.at(i));
-
-		for (auto d : data)
+	// Replace/Update existing chars
+	if (!textChars.empty()) {
+		// Iterate through textString
+		for (unsigned int i = 0; i < textString.size(); i++)
 		{
-			if (d.id == (int)charText.at(i))
-			{
-				GUIChar* gChar = new GUIChar(66 * i, 100, 22, 66, d);
-				chars.push_back(gChar);
-				break;
-			}
+			CHAR_DATA charData = FNTManager::charData(font, textString[i]);
+			if (i < textChars.size()) textChars.at(i)->updateFont(startX + xOffset, startY, charData);
+
+			xOffset += charData.xAdvance * CharSpace - charData.xOffset;
+			TotalWidth = xOffset;
 		}
 
+		for (unsigned int j = textString.size(); j < textChars.size(); j++)
+		{
+			CHAR_DATA charData = FNTManager::charData(font, ' ');
+			textChars.at(j)->updateFont(0, 0, charData);
+		}
+		applyCharParameter();
+		return;
 	}
 
+
+	// Load new chars
+	for (int i = 0; i < textString.size(); i++)
+	{
+		CHAR_DATA charData = FNTManager::charData(font, textString[i]);
+		GUIChar* gChar = new GUIChar(startX + xOffset, startY, charData);
+		textChars.push_back(gChar);
+
+		xOffset += charData.xAdvance * CharSpace;
+		TotalWidth = xOffset;
+	}
+	applyCharParameter();
+}
+
+void GUIText::scale(Vector scale)
+{
+	Scale = scale;
+	CharSpace = scale.X;
+	for (auto gChar : textChars) gChar->scale(scale);
+}
+
+void GUIText::centred(bool b)
+{
+	Centred = b;
+	//for (auto gChar : textChars) gChar->centred(b);
+}
+
+void GUIText::charSpace(float f)
+{
+	CharSpace = f;
+	text(textString);
+}
+
+void GUIText::width(float w)
+{
+	Width = w;
+	//for (auto gChar : textChars) gChar->width(w);
+}
+
+void GUIText::height(float h)
+{
+	Height = h;
+	//for (auto gChar : textChars) gChar->height(h);
+}
+
+float GUIText::height()
+{
+	return Height;
+}
+
+float GUIText::totalWidth()
+{
+	return TotalWidth;
 }
