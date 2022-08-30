@@ -23,3 +23,10 @@ Plane* PlaneLoaderImpl::loadPlayerPlane(const char* path, Model**& planeParts)
 	return plane;
 }
 
+Plane* PlaneLoaderImpl::loadAIPlane(const char* path, Model**& planeParts)
+{
+	Plane* p = new Plane(path);
+	planeParts = p->getParts();
+	return p;
+}
+

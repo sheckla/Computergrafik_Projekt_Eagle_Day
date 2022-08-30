@@ -16,6 +16,7 @@
 
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
+Plane* ModelLoader::pAIPlane = nullptr;
 EnemyPlane* ModelLoader::pEnemyPlane = nullptr;
 BaseModel* ModelLoader::pSkyBox = nullptr;
 BaseModel* ModelLoader::PlayerPlaneShadowArea = nullptr;
@@ -103,6 +104,22 @@ bool ModelLoader::planePartsShadowArea()
     lpm->transform(Matrix().translation(Vector(0, -1, 0)));
     instance().PlayerPlaneShadowArea = lpm;
     //Models->push_back(PlayerPlaneShadowArea);
+    return true;
+}
+
+bool ModelLoader::aiPlaneParts()
+{
+    PlaneLoader* pl = new PlaneLoaderImpl();
+    Model** planeParts = new Model * [PLANE_PARTS];
+    Plane* p = pl->loadAIPlane(ASSETS "models/spitfire", planeParts);
+
+    for (int i = 0; i < PLANE_PARTS; i++)
+    {
+        Models->push_back(planeParts[i]);
+    }
+
+    instance().pAIPlane = p;
+
     return true;
 }
 

@@ -54,6 +54,7 @@ public:
 	~GUIConstantQuad() override;
 	void draw() override;
 	virtual void shader(GUIShader* shader);
+	void update(float delta) override;
 
 	// Maus innerhalb des Elementes
 	bool mouseInside();

@@ -29,6 +29,11 @@ void GUIConstantQuadWrapper::draw()
 	}
 }
 
+void GUIConstantQuadWrapper::update(float delta)
+{
+	for (auto component : Components) component->update(delta);
+}
+
 void GUIConstantQuadWrapper::add(GUIConstantQuad* component)
 {
 	Components.push_back(component);

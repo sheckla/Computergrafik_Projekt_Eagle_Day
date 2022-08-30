@@ -24,6 +24,7 @@ public:
     static std::list<BaseModel*>* Ocean;
 
     static Plane* pPlayerPlane;
+    static Plane* pAIPlane;
     static EnemyPlane* pEnemyPlane;
     static BaseModel* pSkyBox;
     static BaseModel* PlayerPlaneShadowArea;
@@ -37,6 +38,7 @@ public:
     static bool planeParts();
     static bool planePartsOnline(std::string ip, int port);
     static bool planePartsShadowArea();
+    static bool aiPlaneParts();
     static EnemyPlane* enemyPlane(std::string ip, int port);
     static bool clouds();
     static bool ocean();

@@ -52,6 +52,7 @@ public:
 				break;
 			}
 	}
+	bool pressed() { return isPressed; }
 };
 
 #endif

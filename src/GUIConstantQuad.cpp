@@ -113,8 +113,6 @@ GUIConstantQuad::~GUIConstantQuad()
 
 void GUIConstantQuad::draw()
 {
-    handleMouseEvents();
-
 	Shader->activate();
     VB->activate();
     IB->activate();
@@ -128,6 +126,11 @@ void GUIConstantQuad::draw()
 void GUIConstantQuad::shader(GUIShader* shader)
 {
     this->Shader = shader;
+}
+
+void GUIConstantQuad::update(float delta)
+{
+    handleMouseEvents();
 }
 
 void GUIConstantQuad::scale(Vector scale)

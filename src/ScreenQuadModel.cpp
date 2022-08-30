@@ -65,14 +65,6 @@ void ScreenQuadModel::draw(Camera& cam, Texture* tex)
     glEnable(GL_DEPTH_TEST);
     IB.deactivate();
     VB.deactivate();
-
-    /*glBindVertexArray(this->VAO);
-    glDisable(GL_DEPTH_TEST);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glEnable(GL_DEPTH_TEST);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-
 }
 
 PostProcessingShader* ScreenQuadModel::shader()

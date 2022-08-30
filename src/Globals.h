@@ -29,6 +29,10 @@
 #define WORLEY_AMOUNT 30
 #define MAX_TEXTURE_ARR_SIZE 50
 
+// Eagle Day Color Scheme
+#define COL_DARK Color(0.38, 0.18, 0.12)
+#define COL_LIGHT Color(0.6,0.5,0.3)
+#define COL_VERY_LIGHT Color(0.6*1.3,0.5*1.3,0.3*1.3)
 
 // Bildschirminformationen
 #define ASPECT_RATIO 16.0f/9.0f

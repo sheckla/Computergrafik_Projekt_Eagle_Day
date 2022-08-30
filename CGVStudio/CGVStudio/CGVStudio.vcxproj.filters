@@ -376,6 +376,9 @@
     <ClCompile Include="..\..\src\FNTManager.cpp">
       <Filter>Quelldateien\gui\elements\core\font</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\AIPlaneController.cpp">
+      <Filter>Quelldateien\controls\plane</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -614,6 +617,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\FNTManager.h">
       <Filter>Quelldateien\gui\elements\core\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\AIPlaneController.h">
+      <Filter>Quelldateien\controls\plane</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

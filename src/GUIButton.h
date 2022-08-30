@@ -8,6 +8,7 @@
 #define GUIButton_h
 #include "GUIBaseComponent.h"
 #include "GUIConstantQuad.h"
+#include "GUIText.h"
 #include "GUITexture.h"
 #include "PressListener.h"
 
@@ -15,14 +16,16 @@ class GUIButton : public GUIBaseComponent
 {
 	GLFWwindow* window;
 	GUIConstantQuad* area;
+	GUIText* buttonText;
 	Vector StartPixel;
 	PressListener mousePressListener;
 	int Width, Height;
 
 public:
-	GUIButton(GLFWwindow* window, GUIConstantQuad* quad);
+	GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text);
 	~GUIButton() override;
 	void draw() override;
+	void update(float delta);
 	void texture(Texture* tex);
 	bool pressed();
 	bool mouseInside();

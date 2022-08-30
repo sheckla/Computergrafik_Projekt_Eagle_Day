@@ -14,6 +14,7 @@ public:
 	GUIConstantQuadWrapper();
 	~GUIConstantQuadWrapper() override;
 	void draw() override;
+	void update(float delta);
 
 	void add(GUIConstantQuad* component);
 

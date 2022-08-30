@@ -1,7 +1,7 @@
 #include "ApplicationSettings.h"
 
 ApplicationSettings* ApplicationSettings::pApplicationSettings = nullptr;
-float ApplicationSettings::AUDIO_VALUE = 0.0;
+float ApplicationSettings::AUDIO_VALUE = 0.2;
 
 ApplicationSettings& ApplicationSettings::instance()
 {

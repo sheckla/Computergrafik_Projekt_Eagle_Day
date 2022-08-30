@@ -28,26 +28,13 @@ void GameplayGUI::draw()
 			meter->plane = ModelLoader::pPlayerPlane;
 			if (!meter->plane) print("GUINumericPointerMeter", "no plane!", true, 0);
 		}
-		std::stringstream ss;
-		ss << "Speed: ";
-
-		if (ModelLoader::pPlayerPlane)
-		{
-			ss << ModelLoader::pPlayerPlane->getSpeed();
-		}
-
-		std::string speedString{ ss.str() };
-		speedMeterText->text(speedString.c_str());
-
-		//delete speedMeterText;
-		//speedMeterText->text(speedString.c_str());
 		component->draw();
 	}
 }
 
 void GameplayGUI::update(float delta)
 {
-
+	for (auto component : Components) component->update(delta);
 }
 
 void GameplayGUI::init()
@@ -67,16 +54,13 @@ void GameplayGUI::init()
 	Vector barWidths = Vector(110, 80, 60);
 	Vector barHeights = Vector(13, 9, 4);
 	Vector cornerSize = Vector(2, 3, 0);
-	Vector numberScale(0.05, 0.05, 0);
+	Vector numberScale(0.45, 0.45, 0);
 
 	// Geschwindigkeitsmeter
 	GUINumericPointerMeter* speedMeterLeft = new GUINumericPointerMeter(50, 20, true, 5,
 		barWidths, barHeights,
 		cornerSize, numberScale);
-
-	speedMeterText = new GUIText(0, 600, "dsadasd");
 	Components.push_back(speedMeterLeft);
-	Components.push_back(speedMeterText);
 
 	// Hoehenemeter
 	GUINumericPointerMeter* altitudeMeterRight = new GUINumericPointerMeter(50, 20, false, 5,

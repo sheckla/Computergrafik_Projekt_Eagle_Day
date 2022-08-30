@@ -5,11 +5,10 @@
 ApplicationGUI* ApplicationGUI::AppGUI = nullptr;
 
 ApplicationGUI::ApplicationGUI(GLFWwindow* window) :
-Window(window), loadingScreenGUI(window), startScreenGUI(new StartScreenGUI(window)), 
+Window(window), loadingScreenGUI(window), startScreenGUI(new StartScreenGUI(window)), optionsGUI(new OptionsGUI(window)), ppBuffer(nullptr),
 	gameplayGUI(new GameplayGUI(window)), escapeMenuGUI(new EscapeMenuGUI(window)), escapeMenuPressListener(window, GLFW_KEY_ESCAPE, KEYBOARD)
 {
 	AppGUI = this;
-	loadingScreenGUI.init();
 }
 
 ApplicationGUI::~ApplicationGUI()
@@ -18,57 +17,57 @@ ApplicationGUI::~ApplicationGUI()
 
 void ApplicationGUI::draw()
 {
+
+	// Only LoadingScreen if active
 	if (loadingScreenGUI.active())
 	{
 		loadingScreenGUI.draw();
 		return;
 	}
 
+	// Only StartScreen if active
 	if (startScreenGUI->active())
 	{
 		startScreenGUI->draw();
 		return;
 	}
 
+	// Draw everything else
+
 	if (gameplayGUI->active())
-	{
 		gameplayGUI->draw();
-	}
 
 	if (escapeMenuGUI->active())
-	{
 		escapeMenuGUI->draw();
-	}
 }
 
 void ApplicationGUI::updateInputs(float delta)
 {
+	// Only update LoadingScreen if active
 	if (loadingScreenGUI.active()) {
 		loadingScreenGUI.update(delta);
 		return;
-	} else
-	{
-		
 	}
+
+	escapeMenuGUI->listen();
+	optionsGUI->update(delta);
+
+	if (optionsGUI->active()) return;
+
+	// Update everything else
 	if (startScreenGUI->active()) startScreenGUI->update(delta);
 	if (gameplayGUI->active()) gameplayGUI->update(delta);
 	if (escapeMenuGUI->active()) escapeMenuGUI->update(delta);
-	PRESS_STATE state = escapeMenuPressListener.listen();
-	switch (state)
-	{
-	case PRESS:
-		(status().escapeMenu) ? escapeMenuGUI->active(false) : escapeMenuGUI->active(true);
-		break;
-	}
-
-	(status().escapeMenu) ? escapeMenuGUI->postProcessingEffects(true) : escapeMenuGUI->postProcessingEffects(false);
-	if (escapeMenuGUI->postProcessingInit()) escapeMenuGUI->elapseTime(delta);
-	if (!escapeMenuGUI->postProcessingInit()) escapeMenuGUI->elapseTime(-delta);
 }
 
 ApplicationGUIStatus ApplicationGUI::status()
 {
-	return { gameplayGUI->active(), escapeMenuGUI->active(), startScreenGUI->active(), loadingScreenGUI.active()};
+	return { gameplayGUI->active(), escapeMenuGUI->active(), startScreenGUI->active(), loadingScreenGUI.active(), optionsGUI->active()};
+}
+
+void ApplicationGUI::drawOptions()
+{
+	optionsGUI->draw();
 }
 
 void ApplicationGUI::setGUIStatus(APPLICATION_GUI_TYPES guiState, bool active)

@@ -36,7 +36,7 @@ void main()
         }
         if (MouseoverHighlight == 1 && MouseInside == 1) {
             vec4 darkness = vec4(0,0,0,1);
-            FragColor = mix(FragColor, darkness, 0.3);
+            FragColor = vec4(mix(FragColor.xyz, darkness.xyz, 0.3), FragColor.w);
         }
     }
 }

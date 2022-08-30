@@ -6,7 +6,7 @@
 #include "ApplicationGUI.h"
 #include "GUIChar.h"
 #include "GUILoadingMeter.h"
-#include "GUIText.h"
+#include "GUITexture.h"
 #include "GUITexture.h"
 #include "ModelLoader.h"
 
@@ -47,8 +47,17 @@ void LoadingScreenGUI::update(float delta)
 	case GUI_LOADING:
 		printLoadStartText("LOADING_SCREEN_GUI");
 
-		loadingProgressText->text(stringifyTask("Loading LoadingScreenGUI").c_str());
+		FNTManager::instance().loadFont(ASSETS "typography/arial/arial.fnt",
+			ASSETS "typography/arial/arial.png", FONT_NAMES::ARIAL);
+		FNTManager::instance().loadFont(ASSETS "typography/ww2/ww2.fnt",
+			ASSETS "typography/ww2/ww2.png", FONT_NAMES::WW2);
+		FNTManager::instance().loadFont(ASSETS "typography/typewriter/typewriter.fnt",
+			ASSETS "typography/typewriter/typewriter.png", FONT_NAMES::TYPEWRITER);
+		FNTManager::instance().loadFont(ASSETS "typography/arial_black/black.fnt",
+			ASSETS "typography/arial_black/black.png", FONT_NAMES::ARIAL_BLACK);
+
 		init();
+		loadingProgressText->text(stringifyTask("Loading LoadingScreenGUI").c_str());
 
 		printLoadFinishText("LOADING_SCREEN_GUI");
 		break;
@@ -78,6 +87,14 @@ void LoadingScreenGUI::update(float delta)
 		ApplicationGUI::AppGUI->escapeMenuGUI->init();
 
 		printLoadFinishText("ESCAPEMENU_GUI");
+		break;
+		// ----
+	case GUI_OPTIONS:
+		printLoadStartText("OPTIONS_GUI");
+
+		ApplicationGUI::AppGUI->optionsGUI->init();
+
+		printLoadFinishText("OPTIONS_GUI");
 		break;
 		// ----
 	case GUI_FINALIZE:
@@ -119,6 +136,7 @@ void LoadingScreenGUI::update(float delta)
 			Application::enemyPlane = ModelLoader::enemyPlane("127.0.0.1", 19413);
 		}
 		ModelLoader::planePartsShadowArea();
+//		ModelLoader::aiPlaneParts();
 
 		printLoadFinishText("PLANE_PARTS");
 		break;
@@ -160,6 +178,7 @@ void LoadingScreenGUI::update(float delta)
 	currentTask++;
 	float taskPercentage = (float)currentTask / tasks;
 	loadingMeter->percentage(taskPercentage);
+	loadingMeter->update(delta);
 }
 
 void LoadingScreenGUI::init()
@@ -172,11 +191,11 @@ void LoadingScreenGUI::init()
 	loadingMeter = new GUILoadingMeter(20, 20, ASPECT_WIDTH - 40, 55, 10);
 	Components.push_back(loadingMeter);
 
-	GUIText* pLoadingProgressText = new GUIText(20, 85, "Preparing to Load Application...");
+	GUIText* pLoadingProgressText = new GUIText(20, 85, "Preparing to Load Application...       ");
 	this->loadingProgressText = pLoadingProgressText;
 	Components.push_back(pLoadingProgressText);
 
-	GUIText* topLeftTextInfo = new GUIText(20, ASPECT_HEIGHT-50, "[EAGLE DAY - UNRELEASED ]");
+	GUIText* topLeftTextInfo = new GUIText(20, ASPECT_HEIGHT-70, "[EAGLE DAY - UNRELEASED ]");
 	Components.push_back(topLeftTextInfo);
 
 	active(true); // GUI wird gezeichnet

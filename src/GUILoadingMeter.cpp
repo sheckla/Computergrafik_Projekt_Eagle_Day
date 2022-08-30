@@ -28,9 +28,20 @@ void GUILoadingMeter::draw()
 	meter->draw();
 }
 
+void GUILoadingMeter::update(float delta)
+{
+	outlineArea->update(delta);
+	meter->update(delta);
+}
+
 void GUILoadingMeter::percentage(float percentage)
 {
 	Percentage = percentage;
 	float meterXPos = MathUtil::remapBounds(percentage, 0, 1, 0, meterMaxWidth);
 	meter->width(meterXPos);
+}
+
+float GUILoadingMeter::percentage()
+{
+	return Percentage;
 }

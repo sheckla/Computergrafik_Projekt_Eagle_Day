@@ -1,7 +1,7 @@
 /*
  * GUIChar
  * - einzelnes Zeichen
- * - CharData muss mittels einer entsprechenden .fnt Datei uebergeben werden
+ * - CHAR_DATA muss mittels einer entsprechenden .fnt Datei uebergeben werden
  */
 #ifndef GUIChar_h
 #define GUIChar_h
@@ -15,12 +15,13 @@
 
 class GUIChar : public GUITexture
 {
-	CharData data;
+	CHAR_DATA data;
 	void updateBuffers() override;
+	void updateBounds() override;
 public:
-	GUIChar(float startX, float startY, CharData data);
+	GUIChar(float startX, float startY, CHAR_DATA data);
 	virtual ~GUIChar() override;
-	void updateFont(float startX, float startY, CharData d);
+	void updateFont(float startX, float startY, CHAR_DATA d);
 };
 
 #endif

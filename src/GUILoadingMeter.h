@@ -21,7 +21,9 @@ public:
 	GUILoadingMeter(float startX, float startY, float width, float height, float padding);
 	~GUILoadingMeter() override;
 	void draw() override;
+	void update(float delta) override;
 	void percentage(float percentage);
+	float percentage();
 };
 
 #endif

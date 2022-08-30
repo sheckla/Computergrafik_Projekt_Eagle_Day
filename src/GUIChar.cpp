@@ -9,12 +9,16 @@
 #include "MouseLogger.h"
 
 
-GUIChar::GUIChar(float startX, float startY, CharData data) : GUITexture(startX, startY, Texture::defaultFontMap(), true, false),
+GUIChar::GUIChar(float startX, float startY, CHAR_DATA data) : GUITexture(startX, startY, FNTManager::fontTexture(data.font), true, false),
 data(data)
 {
-    GUIConstantQuad::width(data.width);
-    GUIConstantQuad::height(data.height);
     Shader->isFont(true);
+    this->startPixelX = startX - data.xOffset;
+    this->startPixelY = startY - data.yOffset;
+    startPixel(Vector(startPixelX, startPixelY, 0));
+
+    this->updateBounds();
+    this->updateBuffers();
 
 }
 GUIChar::~GUIChar()
@@ -24,13 +28,16 @@ GUIChar::~GUIChar()
     delete IB;*/
 }
 
-void GUIChar::updateFont(float startX, float startY, CharData d)
+void GUIChar::updateFont(float startX, float startY, CHAR_DATA d)
 {
     this->data = d;
-    this->startPixelX = startX;
-    this->startPixelY = startY;
-    width(d.width);
-    height(d.height);
+    texture(FNTManager::fontTexture(d.font));
+    this->startPixelX = startX - data.xOffset;
+    this->startPixelY = startY - data.yOffset;
+    startPixel(Vector(startPixelX, startPixelY, 0));
+    char c = 'i';
+    char p = '/';
+    //char d = 'D';
     updateBounds();
     updateBuffers();
 }
@@ -42,6 +49,16 @@ void GUIChar::updateBuffers()
     Vector C = Vector(LowerBound.X, UpperBound.Y, 0);
     Vector D = UpperBound;
 
+    if (Centred)
+    {
+        float diffW = (UpperBound.X - LowerBound.X) / 2;
+        float diffH = (UpperBound.Y - LowerBound.Y) / 2;
+        A = Vector(LowerBound.X - diffW, LowerBound.Y - diffH, 0);
+        B = Vector(UpperBound.X - diffW, LowerBound.Y - diffH, 0);
+        C = Vector(LowerBound.X - diffW, UpperBound.Y - diffH, 0);
+        D = Vector(UpperBound.X - diffW, UpperBound.Y - diffH, 0);
+    }
+
     /*
     *            C - D UpperBound
     *            |   |
@@ -52,10 +69,16 @@ void GUIChar::updateBuffers()
     float widthRemap = MathUtil::remapBounds(data.width, 0, 512, 0, 1);
     float heightRemap = MathUtil::remapBounds(data.height, 0, 512, 0, 1);
 
+    float xRemap = MathUtil::remapBounds(data.xOffset, 0, 512, 0, 1);
+    float yRemap = MathUtil::remapBounds(data.yOffset, 0, 512, 0, 1);
+
     float xStart = -xOffsetRemap ;
     float xEnd = -widthRemap - xOffsetRemap ;
-    float yEnd = -heightRemap - yOffsetRemap;
+    float yEnd = -heightRemap - yOffsetRemap ;
     float yStart = -yOffsetRemap ;
+
+    char a = 'b';
+    char b = 'B';
 
     // VB schon initialisiert
     if (VB->vertices().size() >= 4)
@@ -98,5 +121,17 @@ void GUIChar::updateBuffers()
     IB->addIndex(3);
     IB->addIndex(2);
     IB->end();
+}
+
+void GUIChar::updateBounds()
+{
+    float normStartX = ((float)startPixelX / ASPECT_WIDTH * 2) - 1;
+    float normStartY = ((float)startPixelY / ASPECT_HEIGHT * 2) - 1;
+
+    float normEndX = ((startPixelX + data.width * Scale.X) / ASPECT_WIDTH * 2) - 1;
+    float normEndY = ((startPixelY + data.height * Scale.Y) / ASPECT_HEIGHT * 2) - 1;
+
+    LowerBound = Vector(normStartX, normStartY, 0);
+    UpperBound = Vector(normEndX, normEndY, 0);
 }
 

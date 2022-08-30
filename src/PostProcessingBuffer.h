@@ -11,20 +11,25 @@
 #include "Framebuffer.h"
 #include "ScreenQuadModel.h"
 
+constexpr float TIME_MAX_POST_PROCESSING_EFFECTS = 0.3;
+
 class PostProcessingBuffer
 {
 	Texture screenTex;
 	Framebuffer buffer;
 	ScreenQuadModel* screenQuad;
+	float elapsedTime = 0;
+	bool PostProcessingActive = false;
 public:
-	PostProcessingBuffer();
 	PostProcessingBuffer(int width, int height);
 	void draw(Camera cam);
 	void postDraw();
 	void preDraw();
 
 	void gaussianBlur(bool b);
-	void elapseTime(float delta);
+	void update(float delta);
+
+	void postProcessingActive(bool b);
 };
 
 #endif

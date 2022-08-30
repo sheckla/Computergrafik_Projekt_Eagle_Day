@@ -1,7 +1,10 @@
 #include "GUINumericPointerMeter.h"
 
+#include <sstream>
+
 #include "GUIConstantQuadWrapper.h"
 #include "GUIConstantTriangle.h"
+#include "GUIText.h"
 #include "GUITexture.h"
 #include "MathUtil.h"
 #include "MouseLogger.h"
@@ -27,18 +30,80 @@ GUIBaseComponent* GUINumericPointerMeter::bar(int startX, int startY, int width,
 	return new GUIConstantQuad(startX, startY, width, height);
 }
 
-GUITexture* GUINumericPointerMeter::number(int startX, int startY, const char* numberPath, Vector scale)
+GUIText* GUINumericPointerMeter::number(int startX, int startY, int i, Vector scale)
 {
-	GUITexture* number = new GUITexture(startX, startY, new Texture(numberPath), true);
-	number->constantColorMode(true);
-	number->color(Color(1, 1, 1));
-	number->scale(scale);
-	//number->centred(true);
-	return number;
+	GUIText* numberText;
+	float y = 13;
+	// Speed Text (left)
+	if (speedMeterMode)
+	{
+		numberText = new GUIText(5 + startX, startY+y, speedTexts[i], ARIAL_BLACK);
+	}
+	// Altitude text (right)
+	else
+	{
+		numberText = new GUIText(ASPECT_WIDTH - 40, startY+y, altitudeTexts[i], ARIAL_BLACK);
+	}
+
+
+	numberText->scale(scale);
+	numberText->charSpace(0.5);
+	return numberText;
 }
 
-GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool leftBound, int gap, Vector barWidths, 
-	Vector barHeights, Vector cornerSize, Vector numberScale) : leftBound(leftBound)
+void GUINumericPointerMeter::initMeterQuads(int startX, int startY, Vector& barWidths, Vector& barHeights,
+	int& bigXOffset, int& mediumXOffset, int& smallXOffset)
+{
+	int bigHeight = barHeights.X;
+	int mediumHeight = barHeights.Y;
+	int smallHeight = barHeights.Z;
+
+
+	int bigWidth = barWidths.X;
+	int mediumWidth = barWidths.Y;
+	int smallWidth = barWidths.Z;
+
+	// Track Speed
+	if (speedMeterMode) {
+		MeterQuad = new GUIConstantQuad(startX + bigWidth + 30, startY, smallWidth, bigHeight);
+		MeterTriangle = new GUIConstantTriangle(startX + bigWidth + 20, startY, 10, bigHeight, false);
+	}
+	else
+		// Track Altitude
+	{
+		MeterQuad = new GUIConstantQuad(ASPECT_WIDTH - startX - bigWidth - 90, startY, smallWidth, bigHeight);
+		MeterTriangle = new GUIConstantTriangle(ASPECT_WIDTH - startX - bigWidth - 20 - 20, startY, 10, bigHeight, true);
+		MeterTriangle->rotate180();
+		bigXOffset = ASPECT_WIDTH - bigXOffset - bigWidth;
+		mediumXOffset = ASPECT_WIDTH - mediumXOffset - mediumWidth;
+		smallXOffset = ASPECT_WIDTH - smallXOffset - smallWidth;
+	}
+
+	MeterQuad->constantColorMode(true);
+	MeterQuad->color(COL_DARK);
+
+	MeterTriangle->constantColorMode(true);
+	MeterTriangle->color(COL_DARK);
+}
+
+void GUINumericPointerMeter::initMeterText(int startY)
+{
+	GUIText* text;
+	if (speedMeterMode)
+	{
+		text = new GUIText(10, startY + 32, "             ", ARIAL);
+	} else
+	{
+		text = new GUIText(ASPECT_WIDTH - 220, startY + 32, "                     ", ARIAL);
+	}
+	meterText = text;
+	meterText->width(30);
+	meterText->height(30);
+	meterText->charSpace(0.7);
+}
+
+GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool speedMeterMode, int gap, Vector barWidths, 
+	Vector barHeights, Vector cornerSize, Vector numberScale) : speedMeterMode(speedMeterMode)
 {
 	// Gap zwischen allen Bars
 
@@ -62,18 +127,7 @@ GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool left
 	int cornerWidth = cornerSize.Y;
 
 	// Pointer
-	if (leftBound) {
-		MeterQuad = new GUIConstantQuad(startX + bigWidth + 30, startY, smallWidth, bigHeight);
-		MeterTriangle = new GUIConstantTriangle(startX + bigWidth + 20, startY, 10, bigHeight, false);
-	} else
-	{
-		MeterQuad = new GUIConstantQuad(ASPECT_WIDTH - startX - bigWidth - 90, startY, smallWidth, bigHeight);
-		MeterTriangle = new GUIConstantTriangle(ASPECT_WIDTH - startX - bigWidth - 20 - 20, startY, 10, bigHeight, true);
-		MeterTriangle->rotate180();
-		bigXOffset = ASPECT_WIDTH - bigXOffset - bigWidth;
-		mediumXOffset = ASPECT_WIDTH - mediumXOffset - mediumWidth;
-		smallXOffset = ASPECT_WIDTH - smallXOffset - smallWidth;
-	}
+	initMeterQuads(startX, startY, barWidths, barHeights, bigXOffset, mediumXOffset, smallXOffset);
 
 	// Pro Loop werden 2 BigBars, 1 MediumBar & 4 SmallBars sowie 2 Numbers
 
@@ -83,15 +137,7 @@ GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool left
 
 		// 0 - Big & Number
 		Components.push_back(cornerBar(bigXOffset, startY, bigWidth, bigHeight, cornerWidth, cornerHeight));
-		if (leftBound)
-		{
-			Numbers.push_back(number(bigXOffset / 2, startY - bigHeight / 2, numberPaths[i], numberScale));
-		} else
-		{
-			GUITexture* tex = number(ASPECT_WIDTH - startX, startY, numberPaths[i], numberScale);
-			Numbers.push_back(number(ASPECT_WIDTH - startX/2 - tex->width(), startY - bigHeight / 2, numberPaths[i], numberScale));
-			delete tex;
-		}
+		Numbers.push_back(number(0, startY - bigHeight/2, i, numberScale));
 		startY += gap + bigHeight;
 
 		// 1 - small
@@ -115,28 +161,22 @@ GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool left
 		startY += gap + smallHeight;
 
 		// 6 - Big & Number
-		if (leftBound)
-		{
-			Numbers.push_back(number(bigXOffset / 2, startY - bigHeight / 2, numberPaths[i+1], numberScale));
-		}
-		else
-		{
-			GUITexture* tex = number(ASPECT_WIDTH - startX, startY, numberPaths[i], numberScale);
-			Numbers.push_back(number(ASPECT_WIDTH - startX / 2 - tex->width(), startY - bigHeight / 2, numberPaths[i+1], numberScale));
-			delete tex;
-		}
+		if (i == 5) Numbers.push_back(number(0, startY - bigHeight/2, 6, numberScale));
 		Components.push_back(cornerBar(bigXOffset, startY, bigWidth, bigHeight, cornerWidth, cornerHeight));
 
 		// Init MeterMaxHeight for barPointer
 		MeterMaxHeight = startY;
 	}
 
+	// Text
+	initMeterText(startY);
+
 	// Init Params fuer alle Quads
 	for (auto quad : GUIConstantQuadWrapper::extractQuadsFromComponentList(Components))
 	{
 		quad->constantColorMode(true);
-		quad->color(Color(1, 1, 1));
-		quad->mouseoverHighlightColor(Color(0.8, 0.8, 0.8));
+		quad->color(COL_LIGHT);
+		quad->mouseoverHighlightColor(COL_DARK);
 	}
 	ComponentAmount = Components.size();
 }
@@ -152,14 +192,16 @@ GUINumericPointerMeter::~GUINumericPointerMeter()
 
 void GUINumericPointerMeter::draw()
 {
-	// Quads
-	float hitBarsMax = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 0, ComponentAmount);
-	if (!leftBound) hitBarsMax = MathUtil::remapBounds(plane->getParts()[0]->transform().translation().Y, 0, 500, 0, ComponentAmount);
+	// Quads faerben
+	float speedToComponentAmountRemap = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 0, ComponentAmount); // speed
+	if (!speedMeterMode) 
+		speedToComponentAmountRemap = MathUtil::remapBounds(plane->getParts()[0]->transform().translation().Y, 0, 300, 0, ComponentAmount); // altitude
+
 	int hitBars = 0;
 	for (auto component : Components)
 	{
 		for (auto quad : GUIConstantQuadWrapper::extractQuadsFromComponent(component)) 
-			(hitBars < hitBarsMax) ? quad->forceMouseoverHighlight(true) : quad->forceMouseoverHighlight(false);
+			(hitBars < speedToComponentAmountRemap) ? quad->forceMouseoverHighlight(true) : quad->forceMouseoverHighlight(false);
 		hitBars++;
 		component->draw();
 	}
@@ -168,14 +210,36 @@ void GUINumericPointerMeter::draw()
 	for (auto number : Numbers) number->draw();
 
 	// Pointer
-	float pointerMaxHeight = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 20, MeterMaxHeight);
-	float y = plane->getParts()[0]->transform().translation().Y;
-	if (y > 200) y = 200;
-	if (!leftBound) pointerMaxHeight = MathUtil::remapBounds(y, 0, 200, 20, MeterMaxHeight);
-	MeterQuad->startPixel(Vector(MeterQuad->startPixel().X, pointerMaxHeight, 0));
-	MeterTriangle->startPixel(Vector(MeterTriangle->startPixel().X, pointerMaxHeight, 0));
-	if (!leftBound) MeterTriangle->rotate180();
+	float speedToMeterMaxHeightRemap = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 20, MeterMaxHeight); // speed
+	// Altitude
+	if (!speedMeterMode)
+	{
+		float y = plane->getParts()[0]->transform().translation().Y;
+		if (y > 300) y = 300;
+		if (y < 0) y = 0;
+		speedToMeterMaxHeightRemap = MathUtil::remapBounds(y, 0, 300, 20, MeterMaxHeight);
+	}
+	MeterQuad->startPixel(Vector(MeterQuad->startPixel().X, speedToMeterMaxHeightRemap, 0));
+	MeterTriangle->startPixel(Vector(MeterTriangle->startPixel().X, speedToMeterMaxHeightRemap, 0));
+
+	if (!speedMeterMode) MeterTriangle->rotate180();
+
 	MeterQuad->draw();
 	MeterTriangle->draw();
 
+	// Text
+	std::stringstream ss;
+	(speedMeterMode) ? ss << "Speed:" << std::fixed << std::setprecision(1) << plane->getSpeed() :
+						ss << "Altitude:" << std::fixed << std::setprecision(1)  << plane->getParts()[0]->transform().translation().Y;
+	std::string textString{ ss.str() };
+	meterText->text(textString.c_str());
+	meterText->draw();
+
+}
+
+void GUINumericPointerMeter::update(float delta)
+{
+	for (auto component : Components) component->update(delta);
+	MeterTriangle->update(delta);
+	MeterQuad->update(delta);
 }

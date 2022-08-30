@@ -9,6 +9,8 @@
 #define Application_hpp
 
 #include <list>
+
+#include "AIPlaneController.h"
 #include "Camera.h"
 #include "PhongShader.h"
 #include "BaseModel.h"
@@ -50,9 +52,12 @@ public:
 
     // Static-Public fuer Loader-Klassen!
     static PlayerPlaneControls* planeControls;
+    static AIPlaneController* aiControls;
     static Camera* Cam;
     static EnemyPlane* enemyPlane;
     static GLFWwindow* pWindow;
+
+    static PostProcessingBuffer* testBuffer;
 };
 
 #endif /* Application_hpp */
