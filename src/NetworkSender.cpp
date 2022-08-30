@@ -5,6 +5,7 @@
 #include "Matrix.h"
 #include <string>
 #include "Plane.h"
+#include "ModelLoader.h"
 
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 
@@ -44,6 +45,11 @@ NetworkSender::NetworkSender(const char* srv_Adr, int port)
 void NetworkSender::SendData(Plane* plane)
 {
 	Model* model = plane->getParts()[0];
+
+	float enemyHP = 100.0f;
+	if(ModelLoader::instance().pEnemyPlane != nullptr)
+	enemyHP = ModelLoader::instance().pEnemyPlane->hp;
+
 	//std::cout << "[Network-Sender] SENDING..." << std::endl;
 
 		Matrix PlaneTranform;
@@ -87,9 +93,14 @@ void NetworkSender::SendData(Plane* plane)
 		incompleteMessage += std::to_string(PlaneTranform.m33);
 		incompleteMessage += ",";
 
-		incompleteMessage += "1,";
+		if (plane->isShooting == true)incompleteMessage += "1";
+		else incompleteMessage += "0";
+		incompleteMessage += ",";
 
 		incompleteMessage += std::to_string(plane->getSpeed());// SPEED
+		incompleteMessage += ",";
+
+		incompleteMessage += std::to_string(enemyHP);
 		incompleteMessage += ",";
 
 		//std::cout << "[Network-Sender] <inc_mess> " << incompleteMessage << std::endl;

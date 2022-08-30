@@ -134,7 +134,6 @@ bool ModelLoader::clouds()
         Matrix m;
         m.translation(Vector(0, 100, 0));
         cloud->transform(m);
-
     }
     return true;
 }
@@ -144,6 +143,8 @@ EnemyPlane* ModelLoader::enemyPlane(std::string ip, int port)
     EnemyPlane* ep = new EnemyPlane(ip.c_str(), port);
     ep->loadModels(ASSETS "models/messerschmitt");
     Models->push_back(ep);
+
+    ModelLoader::instance().pEnemyPlane = ep;
     return ep;
 }
 

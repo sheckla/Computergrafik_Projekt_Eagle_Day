@@ -102,6 +102,8 @@ public:
 	TriangleSphereModel* dot;
 	TriangleBoxModel* horizon;
 
+	bool isShooting = false;
+
 	/* Plane wird per spitfire.obj geladen
 	*  -> oeffne .mtl per Editor und Pfade für die Texturen ändern
 	*/
@@ -129,6 +131,29 @@ public:
 		this->Smoke_System->draw(Cam);
 		this->Gun_Left->draw(Cam);
 		this->Gun_Right->draw(Cam);
+
+		this->Muzzleflash_Right->draw(Cam);
+		this->Muzzleflash_Left->draw(Cam);
+	}
+
+	void startShooting() {
+		this->Gun_Left->StartGenerating();
+		this->Muzzleflash_Left->StartGenerating();
+
+		this->Gun_Right->StartGenerating();
+		this->Muzzleflash_Right->StartGenerating();
+
+		this->isShooting = true;	
+	}
+
+	void stopShooting() {
+		this->Gun_Left->StopGenerating();
+		this->Muzzleflash_Left->StopGenerating();
+
+		this->Gun_Right->StopGenerating();
+		this->Muzzleflash_Right->StopGenerating();
+
+		this->isShooting = false;
 	}
 
 	/*
@@ -143,6 +168,11 @@ public:
 	ParticleLoader* Smoke_System;
 	ParticleLoader* Gun_Left;
 	ParticleLoader* Gun_Right;
+
+	ParticleLoader* Muzzleflash_Right;
+	ParticleLoader* Muzzleflash_Left;
+
+	float hp=100;
 	irrklang::ISoundEngine* SoundEngine = nullptr;
 	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
 	void startEngine();

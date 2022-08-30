@@ -2,6 +2,7 @@
 #include <iostream>
 #include <thread>
 #include <winsock2.h>
+#include "ModelLoader.h"
 
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 
@@ -70,6 +71,7 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 	float m_30 = 1, m_31 = 1, m_32 = 1, m_33 = 1;
 
 	float speed=0;
+	float thisPlayerHp=100.0;
 
 	bool shooting = false;
 
@@ -142,6 +144,9 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 		case 17:
 			speed = std::stof(token);
 			break;
+		case 18:
+			thisPlayerHp = std::stof(token);
+			break;
 		default:
 			break;
 		}
@@ -165,13 +170,13 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 	}
 	//std::cout <<"[Input - Thread] "<< "x=" << x << " y=" << y << " z=" << z << " rx=" << rx << " ry=" << ry << " rz=" << rz << " shooting=" << std::boolalpha << shooting << std::endl;
 
-	bool isAnUpdate = false;
+	bool isAnUpdate = true;
 	if (enemy->Enemy_Tranformation.m00 == m_00 && enemy->Enemy_Tranformation.m01 == m_01 && enemy->Enemy_Tranformation.m02 == m_02 && enemy->Enemy_Tranformation.m03 == m_03 && 
 		enemy->Enemy_Tranformation.m10 == m_10 && enemy->Enemy_Tranformation.m11 == m_11 && enemy->Enemy_Tranformation.m12 == m_12 && enemy->Enemy_Tranformation.m13 == m_13 &&
 		enemy->Enemy_Tranformation.m20 == m_20 && enemy->Enemy_Tranformation.m21 == m_21 && enemy->Enemy_Tranformation.m22 == m_22 && enemy->Enemy_Tranformation.m23 == m_23 &&
 		enemy->Enemy_Tranformation.m30 == m_30 && enemy->Enemy_Tranformation.m31 == m_31 && enemy->Enemy_Tranformation.m32 == m_32 && enemy->Enemy_Tranformation.m33 == m_33 &&
 		speed != 0)
-		isAnUpdate = true;
+		isAnUpdate = false;
 
 	enemy->Enemy_Tranformation.m00 = m_00;
 	enemy->Enemy_Tranformation.m01 = m_01;
@@ -196,6 +201,11 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 
 	if(isAnUpdate)
 	enemy->Enemy_Tranformation_Validation = true;
+
+	enemy->isShooting = shooting;
+
+	if(ModelLoader::instance().pPlayerPlane != nullptr)
+	ModelLoader::instance().pPlayerPlane->hp = thisPlayerHp;
 }
 
 void NetworkConnector::Connection(EnemyPlane& enemy) 

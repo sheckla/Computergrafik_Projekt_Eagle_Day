@@ -1,10 +1,12 @@
 #include "ParticleInstanceBullet.h"
 #include "Matrix.h"
 #include "vector.h"
+#include "CollisionDetector.h"
 
-ParticleInstanceBullet::ParticleInstanceBullet(double ttl_, ParticleSprite* model_, BaseShader* shader_,Vector offset, Matrix transf) : ParticleInstance(ttl_,model_,shader_,offset)
+ParticleInstanceBullet::ParticleInstanceBullet(double ttl_, ParticleSprite* model_, BaseShader* shader_,Vector offset, Matrix transf, bool hitDetection) : ParticleInstance(ttl_,model_,shader_,offset)
 {
 	this->CurrentTransform = transf;
+	this->hasHitDetection = hitDetection;
 
 	Matrix offsetLeftRight,random_yaw,random_pitch,random_roll,offsetFrontBack;
 	offsetLeftRight.translation(offset);
@@ -32,4 +34,11 @@ void ParticleInstanceBullet::update(double deltaTime)
 	this->CurrentTransform = forward_movement * gravitational_pull * this->CurrentTransform;
 
 	ParticleModel->transform(this->CurrentTransform);
+
+	if (this->hasHitDetection) {
+		if (this->hasHitSomething == false) // Can only hit once!
+			if (CollisionDetector::IsColliding(Vector(this->CurrentTransform.m03, this->CurrentTransform.m13, this->CurrentTransform.m23))) {
+				this->hasHitSomething = true;
+			}
+	}
 }

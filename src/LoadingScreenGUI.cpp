@@ -9,6 +9,7 @@
 #include "GUITexture.h"
 #include "GUITexture.h"
 #include "ModelLoader.h"
+#include "CollisionDetector.h"
 
 std::string LoadingScreenGUI::stringifyTask(const char* taskText)
 {
@@ -132,8 +133,11 @@ void LoadingScreenGUI::update(float delta)
 		ModelLoader::planeParts();
 		if (APPLICATION_ONLINE_MODE)
 		{
+			std::cout << "Loading Online Components" << std::endl;
 			ModelLoader::planePartsOnline("127.0.0.1", 19411);
 			Application::enemyPlane = ModelLoader::enemyPlane("127.0.0.1", 19413);
+
+			CollisionDetector::setCollisionTarget(Application::enemyPlane); // Set as collision-target
 		}
 		ModelLoader::planePartsShadowArea();
 //		ModelLoader::aiPlaneParts();

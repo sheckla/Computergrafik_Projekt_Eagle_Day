@@ -20,8 +20,8 @@
 #include "GUIBaseComponent.h"
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
-
-#define APPLICATION_ONLINE_MODE false
+#include "vector.h"
+#define APPLICATION_ONLINE_MODE true
 
 class Application
 {

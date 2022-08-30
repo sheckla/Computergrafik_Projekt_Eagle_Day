@@ -8,7 +8,7 @@
 #include <list>
 #include "Matrix.h"
 
-enum ParticleType { Smoke, Bullet }; //Ableitungstypen von ParticleInstance, für weitere Partikelarten hinzufügen...
+enum ParticleType { Smoke, Bullet,BulletDummy,MuzzleFlash }; //Ableitungstypen von ParticleInstance, für weitere Partikelarten hinzufügen...
 
 class ParticleLoader
 {
