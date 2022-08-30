@@ -22,11 +22,16 @@ public:
     virtual ~ParticleShader();
     void activate(const BaseCamera& Cam) const override;
     void diffuseTexture(const Texture* pTex);
+
+    void setTransparency(float transparency) { this->transparency_value = transparency; }
 private:
     GLuint ShaderProgram;
     GLint ModelViewProjLoc;
     GLint DiffuseTextureLoc;
+    GLint Transparency;
     const Texture* DiffuseTexture;
+
+    float transparency_value = 1.0f;
 
     mutable bool diffTexChanged = false;
 };

@@ -61,9 +61,14 @@ Plane::Plane(const char* path)
 
 	Gun_Left = new ParticleLoader(.01, 2, ParticleType::Bullet);
 	Gun_Left->setOffset(-2.5f);
+	Muzzleflash_Left = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Left->setOffset(-2.5f);
+
 
 	Gun_Right = new ParticleLoader(.01, 2, ParticleType::Bullet);
 	Gun_Right->setOffset(2.5f);
+	Muzzleflash_Right = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Right->setOffset(2.5f);
 }
 
 Plane::Plane(const char* path, const char* srv_Adr, int port) : Plane(path) // <- Calls normal constructor
@@ -199,6 +204,9 @@ void Plane::update(double delta)
 	Smoke_System->update(delta, this->parts[1]->transform());
 	Gun_Left->update(delta, this->parts[0]->transform()); 
 	Gun_Right->update(delta, this->parts[0]->transform());
+
+	Muzzleflash_Right->update(delta, this->parts[0]->transform());
+	Muzzleflash_Left->update(delta, this->parts[0]->transform());
 
 	if (Online_Mode)Sender->SendData(this);
 }

@@ -13,12 +13,17 @@ ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl, Particl
 
 	const std::string Path = ASSETS "models/spitfire";
 
-	if(pType == ParticleType::Smoke)
-		ps->diffuseTexture(new Texture((Path +"/particles/smokeparticle.png").c_str())); // SMOKE-TEXTURE
-
-	if (pType == ParticleType::Bullet || pType == ParticleType::BulletDummy)
+	if (pType == ParticleType::Smoke) {
+		ps->diffuseTexture(new Texture((Path + "/particles/smokeparticle.png").c_str())); // SMOKE-TEXTURE
+		ps->setTransparency(.4f);
+	}
+	if (pType == ParticleType::Bullet || pType == ParticleType::BulletDummy) {
 		ps->diffuseTexture(new Texture((Path + "/particles/smokeparticle.png").c_str())); // GUN-TEXTURE
-
+		ps->setTransparency(.2f);
+	}
+	if (pType == ParticleType::MuzzleFlash) {
+		ps->diffuseTexture(new Texture((Path + "/particles/muzzle_flash.png").c_str())); // MUZZLE_FLASH-TEXTURE
+	}
 	Particle_Shader = ps;
 }
 
@@ -33,7 +38,7 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 				ParticleInstanceSmoke* instance = new ParticleInstanceSmoke(Particle_TTL, new ParticleSprite(), Particle_Shader, Vector(origin.m03, origin.m13, origin.m23));
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
-			if (pType == ParticleType::Bullet) {
+			if (pType == ParticleType::Bullet || pType == ParticleType::MuzzleFlash) {
 				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin,true);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}

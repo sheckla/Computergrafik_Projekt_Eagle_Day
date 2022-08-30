@@ -89,15 +89,11 @@ void PlayerPlaneControls::update(float delta)
 
     if (glfwGetKey(this->window, GLFW_KEY_SPACE))
     {
-        plane->Gun_Left->StartGenerating();
-        plane->Gun_Right->StartGenerating();
-        plane->isShooting = true;
+        plane->startShooting();
     }
     else
     {
-        plane->Gun_Left->StopGenerating();
-        plane->Gun_Right->StopGenerating();
-        plane->isShooting = false;
+        plane->stopShooting();
     }
     
 

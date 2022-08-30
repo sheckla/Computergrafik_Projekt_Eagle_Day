@@ -25,7 +25,6 @@ public:
 	void aabb(AABB* bounds);
 	void noise(const Texture* n);
 
-	//static float TimeTranslation;
 private:
 	// Views
 	GLint ViewMatrixLoc;
@@ -41,6 +40,7 @@ private:
 	GLint TimeTranslationLoc;
 
 	AABB* bounds;
+
 	const Texture* DetailTex[WORLEY_AMOUNT];
 	const Texture* Noise;
 };

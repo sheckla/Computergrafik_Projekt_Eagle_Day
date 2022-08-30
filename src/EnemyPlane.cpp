@@ -28,6 +28,12 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	Gun_Right->setOffset(2.5f);
 
 	Smoke_System = new ParticleLoader(.02, .5, ParticleType::Smoke);
+
+	Muzzleflash_Right = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Right->setOffset(2.5f);
+
+	Muzzleflash_Left = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Left->setOffset(-2.5f);
 }
 
 const AABB& EnemyPlane::boundingBox() const
@@ -83,11 +89,17 @@ void EnemyPlane::update(double delta)
 	{
 		this->Gun_Left->StartGenerating();
 		this->Gun_Right->StartGenerating();
+
+		this->Muzzleflash_Left->StartGenerating();
+		this->Muzzleflash_Right->StartGenerating();
 	}
 	else 
 	{
 		this->Gun_Left->StopGenerating();
 		this->Gun_Right->StopGenerating();
+
+		this->Muzzleflash_Left->StopGenerating();
+		this->Muzzleflash_Right->StopGenerating();
 	}
 
 	this->Gun_Left->update(delta, this->model->transform());
@@ -97,6 +109,9 @@ void EnemyPlane::update(double delta)
 	else Smoke_System->StopGenerating();
 
 	Smoke_System->update(delta, this->propeller->transform());
+
+	Muzzleflash_Right->update(delta, this->model->transform());
+	Muzzleflash_Left->update(delta, this->model->transform());
 }
 
 void EnemyPlane::loadModels(const char* path)

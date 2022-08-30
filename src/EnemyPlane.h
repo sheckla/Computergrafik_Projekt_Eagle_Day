@@ -29,7 +29,6 @@ public:
 
 	void EnemyPlane::hit() { 
 		this->hp = this->hp - 2.2f;
-		//std::cout << "ENEMY-HP: "<<hp << std::endl;
 	}
 
 	bool isShooting = false;
@@ -38,6 +37,9 @@ public:
 		this->Gun_Left->draw(Cam);
 		this->Gun_Right->draw(Cam);
 		this->Smoke_System->draw(Cam);
+
+		this->Muzzleflash_Right->draw(Cam);
+		this->Muzzleflash_Left->draw(Cam);
 	}
 	float hp=100.0f;
 
@@ -46,6 +48,9 @@ private:
 	Matrix previousRotorRotation = Matrix().rotationZ(0);
 	ParticleLoader* Gun_Left;
 	ParticleLoader* Gun_Right;
+
+	ParticleLoader* Muzzleflash_Right;
+	ParticleLoader* Muzzleflash_Left;
 
 	ParticleLoader* Smoke_System;
 

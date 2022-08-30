@@ -18,6 +18,8 @@ ParticleShader::ParticleShader() : BaseShader()
     ShaderProgram = createShaderProgram(vs, fs);
     ModelViewProjLoc = glGetUniformLocation(ShaderProgram, "ModelViewProjMat");
     DiffuseTextureLoc = glGetUniformLocation(ShaderProgram, "DiffuseTexture");
+
+    this->Transparency = glGetUniformLocation(ShaderProgram, "transparency_value");
 }
 ParticleShader::~ParticleShader()
 {
@@ -36,6 +38,8 @@ void ParticleShader::activate(const BaseCamera& Cam) const
     {
 		glUniform1i(DiffuseTextureLoc, 0);
     }
+
+    setUniformParameter(this->Transparency, this->transparency_value);
 
     diffTexChanged = false;
 }
