@@ -33,8 +33,10 @@ public:
     bool load(const char* ModelFile, bool FitSize = true);
     virtual void draw(const BaseCamera& Cam);
     const AABB& boundingBox() const override { return BoundingBox; }
+    void active(bool b);
 
 protected: // protected types
+    bool Active = true;
     struct Mesh
     {
         Mesh() {}

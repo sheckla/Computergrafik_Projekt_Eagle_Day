@@ -90,7 +90,7 @@ void Application::update(float dtime)
     if (ModelLoader::instance().PlayerPlaneShadowArea)
     {
         ModelLoader::instance().PlayerPlaneShadowArea->transform(Matrix().translation(
-            Vector(ModelLoader::pPlayerPlane->getPosition().X, 1, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
+            Vector(ModelLoader::pPlayerPlane->getPosition().X, 2.0, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
     }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)

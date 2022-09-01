@@ -6,6 +6,7 @@
 #include "PlaneLoader.h"
 #include "Printer.h"
 #include "NetworkSender.h"
+#include "TextureShader.h"
 #include "TriangleSphereModel.h"
 
 float Plane::speedPercentage() const
@@ -81,7 +82,7 @@ Plane::Plane(const char* path)
 		throw "err";
 	}
 
-	Smoke_System = new ParticleLoader(.02, .5, ParticleType::Smoke);
+	Smoke_System = new ParticleLoader(.002, .05, ParticleType::Smoke);
 
 	Gun_Left = new ParticleLoader(.01, 2, ParticleType::Bullet);
 	Gun_Left->setOffset(-2.5f);
@@ -112,7 +113,7 @@ Plane::~Plane()
 bool Plane::loadModels(const char* path)
 {
 	const std::string planePath = path;
-	bool fitToSize = false;
+	bool fitToSize = true;
 	PhongShader* shader = new PhongShader();
 
 
@@ -138,11 +139,20 @@ bool Plane::loadModels(const char* path)
 	parts[PartsIndex::wingRight] = new Model(&(planePath + "/wingflaps_right.obj")[0], fitToSize);
 	parts[PartsIndex::wingRight]->shader(shader, true);
 
+	parts[PartsIndex::rotorBlur] = new Model(&(planePath + "/rotor_blur.obj")[0], fitToSize);
+	TextureShader* t = new TextureShader();
+	t->diffuseTexture(new Texture(ASSETS "models/spitfire/rotor_blur.png"));
+	parts[PartsIndex::rotorBlur]->shader(shader, true);
+	parts[PartsIndex::rotorBlur]->shadowCaster(false);
+
 	// Offsets anwenden
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
 		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,0)));
 	}
+	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
+
+
 	dot = new TriangleSphereModel(0.1, 20, 20);
 	dot->shader(new ConstantShader());
 	dot->shadowCaster(false);
@@ -153,7 +163,7 @@ bool Plane::loadModels(const char* path)
 	horizon->shadowCaster(false);
 	//horizon->transform(Matrix().translation(horizonOffset));
 
-	speed = 200;
+	speed = 100;
 	return true;
 }
 
@@ -189,9 +199,21 @@ void Plane::update(double delta)
 	// Visuelle Transformationen
 	// rotor
 	Matrix rotorRotation;
-	rotorRotation.rotationZ(PI * delta * speed * 5);
+	rotorRotation.rotationZ(PI * delta * speed * 2);
 	updateModelPos(PartsIndex::rotor, rotorRotation * previousRotorRotation);
+	updateModelPos(PartsIndex::rotorBlur, rotorRotation * previousRotorRotation);
 	previousRotorRotation = rotorRotation * previousRotorRotation;
+	parts[7]->transform(parts[7]->transform() * Matrix().scale(3, 3, 3));
+
+	if (speedPercentage() > 0.2)
+	{
+		parts[PartsIndex::rotor]->active(false);
+		parts[PartsIndex::rotorBlur]->active(true);
+	} else
+	{
+		parts[PartsIndex::rotor]->active(true);
+		parts[PartsIndex::rotorBlur]->active(false);
+	}
 
 	// rudder
 	Matrix rudderRotation;
@@ -229,6 +251,8 @@ void Plane::update(double delta)
 
 
 	if(this->hp < 50.0f)this->Smoke_System->StartGenerating();
+
+
 
 	Smoke_System->update(delta, this->parts[1]->transform());
 	Gun_Left->update(delta, this->parts[0]->transform()); 

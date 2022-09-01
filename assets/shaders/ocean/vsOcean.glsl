@@ -45,7 +45,6 @@ void main()
 
 
     _vertex.y = texture(MixTex, Texcoord).r * heightMultip /* (texture(Perlin,globalUV).r)*/;
-    _vertex.y *= 1; // Scale Ocean Height
 
     _vertex.y *= 1 + texture(Perlin,wsUV).r * PerlinInfluenceStrength;
 

@@ -24,6 +24,11 @@ in vec2 Texcoord;
 in vec4 PositionWS;
 out vec4 FragColor;
 
+float remapBounds(in float i, in float fromMin, in float fromMax, in float toMin, in float toMax)
+{
+    return (i - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
+}
+
 float sat( in float a)
 {
     return clamp(a, 0.0, 1.0);
@@ -55,8 +60,9 @@ void main()
     //vec3 DiffuseComponent = LightColor * DiffuseColorRGB * sat(dot(N,L));
 
     vec3 DiffuseComponent = LightColor * DiffuseColorRGB * sat(dot(N,L));
+    DiffuseComponent = mix(DiffuseComponent, DiffuseColorRGB, 0.875);
 
-    vec3 SpecularComponent = LightColor * SpecularColorRGB * pow( sat(dot(R,E)), SpecularExp);
+    vec3 SpecularComponent = LightColor * SpecularColorRGB * pow( sat(dot(R,E)) * 1.2, SpecularExp) / 5;
     
     // Exercise 3
     // TODO: Add texture blending code here..
@@ -78,7 +84,8 @@ void main()
     pCol = vec3(.5f,.5f,0) * pixelCol;
     */
     //FragColor = vec4(((DiffuseComponent + AmbientColor) + SpecularComponent),1);
-     FragColor = vec4(/*((DiffuseComponent + AmbientColor) + SpecularComponent)*/DiffuseComponent * (.4f +Normal.y),1);
+     FragColor = vec4(/*((DiffuseComponent + AmbientColor) + SpecularComponent)*/SpecularComponent + DiffuseComponent * (.4f +Normal.y),1);
+     //FragColor = vec4(DiffuseComponent + SpecularComponent, 1);
 
      //FragColor = vec4(PositionWS.r,1,PositionWS.b,1);
      //FragColor = vec4(texture(Perlin,Texcoord).r,0,0,1);
@@ -109,44 +116,22 @@ void main()
 
     vec3 CameraPosition = vec3(InvViewMatrix[3][0],InvViewMatrix[3][1],InvViewMatrix[3][2]);  
 
-
-    //vec3 fragPos = CameraPosition + normalize(PixelStrahl) * gl_FragCoord.z;
-    //vec3 normPlusFragPos = fragPos + Normal;
-
-    float refl = dot(normalize(Normal),normalize(vec3(3,1,2)));
-
-
-
-
-
-
     float StrahlLaenge = (CameraPosition.y) / PixelStrahl.y;
 
     vec3 WorldSpaceTop = CameraPosition + (PixelStrahl * StrahlLaenge);
     
      float xDist=WorldSpaceTop.x - CameraPosition.x;
      float zDist=WorldSpaceTop.z - CameraPosition.z;
-     float fadeStart=500;
-     
    // FragColor = vec4(vec3(pixelCol,pixelCol,pixelCol),1);
    // CubeMap SpecularComponent
     vec3 o = normalize(Position - EyePos);
     vec3 p = reflect(o, normalize(Normal));
     vec4 Reflection = texture(CubeMapTexture, p);
-    FragColor = mix(FragColor, Reflection, 0.5); 
+    FragColor = mix(FragColor, Reflection, 0.05);
 
-
-
-
-        //if(refl > .3f)FragColor = vec4(1,1,1,1); // technicaly working...
-
-
-
-        if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
-        FragColor = vec4(0,0,0,0);
-        discard;
-        }
-
-
-        //FragColor = vec4(PositionWS.xyz / 1000,1);
+    float fadeStart=500;
+    
+    if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
+    FragColor = vec4(1,1,1,0);
+    }
 }
