@@ -12,12 +12,13 @@
 
 #include "ApplicationGUIPrototype.h"
 #include "GUILoadingMeter.h"
+#include "GUISlider.h"
 #include "GUIText.h"
 #include "GUITexture.h"
 
 class GameplayGUI : public ApplicationGUIPrototype
 {
-	GUILoadingMeter* lifeMeter;
+	GUISlider* lifeMeter;
 	GUIText* speedMeterText;
 	GUIText* altitudeMeterText;
 public:

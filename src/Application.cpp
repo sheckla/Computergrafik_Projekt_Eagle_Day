@@ -90,11 +90,11 @@ void Application::update(float dtime)
     if (ModelLoader::instance().PlayerPlaneShadowArea)
     {
         ModelLoader::instance().PlayerPlaneShadowArea->transform(Matrix().translation(
-            Vector(ModelLoader::pPlayerPlane->getPosition().X, 1.5, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
+            Vector(ModelLoader::pPlayerPlane->getPosition().X, 1, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
     }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
-    ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, 0, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
+    ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, -40, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
 
     Cam->update();
 }
@@ -108,12 +108,21 @@ void Application::draw()
         // ----------- SHADOW MAPPPING -----------
         // Frisst viel Leistung! Gut entscheiden was ShadowMaps erhalten soll
         std::list<BaseModel*> shadows;
-        shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
-        for (auto shadowMapModel : Models)
-            shadows.push_back(shadowMapModel);
 
+        // ShadowPlane Offset
+        float prevY = ModelLoader::PlayerPlaneShadowArea->transform().translation().Y;
+        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(Vector(ModelLoader::PlayerPlaneShadowArea->transform().translation().X,
+            13,
+            ModelLoader::PlayerPlaneShadowArea->transform().translation().Z)));
+        shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
+        for (int i = 0; i < PLANE_PARTS; i++) shadows.push_back(ModelLoader::pPlayerPlane->getParts()[i]);
         ShadowGenerator.generate(shadows);
         ShaderLightMapper::instance().activate();
+
+        // ShadowPlane zuruecksetzen
+        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(Vector(ModelLoader::PlayerPlaneShadowArea->transform().translation().X,
+            prevY,
+            ModelLoader::PlayerPlaneShadowArea->transform().translation().Z)));
 
         // ----------- PostProc. Init & 3D SCENE ----------- 
         AppGUI->ppBuffer->preDraw();

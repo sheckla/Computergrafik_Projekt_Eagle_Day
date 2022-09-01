@@ -7,6 +7,7 @@
 OptionsGUI::OptionsGUI(GLFWwindow* window) : ApplicationGUIPrototype(window)
 {
 	cogwheelPressListener = new PressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE);
+	escapeButtonPressListener = new PressListener(window, GLFW_KEY_ESCAPE, KEYBOARD);
 }
 
 OptionsGUI::~OptionsGUI()
@@ -43,10 +44,18 @@ void OptionsGUI::update(float delta)
 			active(true);
 		}
 	}
-
 	(cogwheelPressListener->pressed()) ? cogwheelTexture->mousePress(true) : cogwheelTexture->mousePress(false);
-
 	cogwheelTexture->update(delta);
+
+
+	if (escapeButtonPressListener->listen() == RELEASE) {
+		Application::testBuffer->postProcessingActive(false);
+		active(false);
+	}
+	if (!Active) return;
+
+
+
 	for (auto component : Components) component->update(delta);
 	audioSlider->update(delta);
 
@@ -74,7 +83,7 @@ void OptionsGUI::init()
 	Components.push_back(applyButton);
 
 	// Audio Slider
-	GUISlider* audioSlider = new GUISlider(50, 300, applyTexture->width(), 75, 10);
+	GUISlider* audioSlider = new GUISlider(50, 300, applyTexture->width(), 75, 10, "Audio");
 	this->audioSlider = audioSlider;
 	audioSlider->percentage(ApplicationSettings::AUDIO_VALUE);
 	Components.push_back(audioSlider);

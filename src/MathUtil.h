@@ -30,6 +30,20 @@ public:
 		return false;
 	}
 
+	static float clamp(float x, float min, float max)
+	{
+		if (x > max) x = max;
+		if (x < min) x = min;
+		return x;
+	}
+
+	static double clamp(double x, double min, double max)
+	{
+		if (x > max) x = max;
+		if (x < min) x = min;
+		return x;
+	}
+
 };
 
 #endif

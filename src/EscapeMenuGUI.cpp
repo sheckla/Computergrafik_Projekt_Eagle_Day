@@ -2,6 +2,7 @@
 
 #include "ApplicationGUI.h"
 #include "GUIButton.h"
+#include "ModelLoader.h"
 
 EscapeMenuGUI::EscapeMenuGUI(GLFWwindow* window) : ApplicationGUIPrototype(window)
 {
@@ -35,12 +36,14 @@ void EscapeMenuGUI::update(float delta)
 	if (returnStartButton->listen() == RELEASE)
 	{
 		active(false);
+		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 		ApplicationGUI::AppGUI->setGUIStatus(STARTSCREEN_GUI, true);
 	}
 
 	if (leaveEscapeMenuButton->listen() == RELEASE)
 	{
-		postProcessingEffects(false);
+		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
+		ModelLoader::pPlayerPlane->startEngine();
 		active(false);
 	}
 	for (auto component : Components) component->update(delta);
@@ -77,6 +80,8 @@ void EscapeMenuGUI::listen()
 			// turn off
 		{
 			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
+			ModelLoader::pPlayerPlane->startEngine();
+			print("off", "");
 			active(false);
 		}
 		else
@@ -84,6 +89,7 @@ void EscapeMenuGUI::listen()
 		{
 			ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(true);
 			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(true);
+			ModelLoader::pPlayerPlane->stopEngine();
 			active(true);
 		}
 	}

@@ -18,8 +18,8 @@ ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl, Particl
 		ps->setTransparency(.4f);
 	}
 	if (pType == ParticleType::Bullet || pType == ParticleType::BulletDummy) {
-		ps->diffuseTexture(new Texture((Path + "/particles/smokeparticle.png").c_str())); // GUN-TEXTURE
-		ps->setTransparency(.2f);
+		ps->diffuseTexture(new Texture((Path + "/particles/bullet.png").c_str())); // GUN-TEXTURE
+		ps->setTransparency(.6f);
 	}
 	if (pType == ParticleType::MuzzleFlash) {
 		ps->diffuseTexture(new Texture((Path + "/particles/muzzle_flash.png").c_str())); // MUZZLE_FLASH-TEXTURE

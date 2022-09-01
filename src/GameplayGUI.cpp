@@ -5,6 +5,7 @@
 #include "GUIButton.h"
 #include "GUILoadingMeter.h"
 #include "GUINumericPointerMeter.h"
+#include "GUISlider.h"
 #include "GUITexture.h"
 
 GameplayGUI::GameplayGUI(GLFWwindow* window) :   ApplicationGUIPrototype(window)
@@ -35,6 +36,7 @@ void GameplayGUI::draw()
 void GameplayGUI::update(float delta)
 {
 	for (auto component : Components) component->update(delta);
+	lifeMeter->percentage(ModelLoader::pPlayerPlane->hp / 100);
 }
 
 void GameplayGUI::init()
@@ -69,8 +71,13 @@ void GameplayGUI::init()
 	Components.push_back(altitudeMeterRight);
 
 	// Lebensanzeige
-	lifeMeter = new GUILoadingMeter(ASPECT_WIDTH / 2 - 100, ASPECT_HEIGHT - 50, 200, 50, 10);
+	GUIConstantQuad* lifeQuad = new GUIConstantQuad(ASPECT_WIDTH - 355, ASPECT_HEIGHT - 100, 400, 75);
+	lifeQuad->constantColorMode(true);
+	lifeQuad->color(COL_DARK);
+	Components.push_back(lifeQuad);
+	lifeMeter = new GUISlider(ASPECT_WIDTH - 355, ASPECT_HEIGHT - 100, 250, 75, 10, "HP");
 	Components.push_back(lifeMeter);
-	lifeMeter->percentage(0.5);
+	lifeMeter->percentage(1);
+	lifeMeter->enableSliding(false);
 }
 

@@ -119,13 +119,13 @@ void main()
      
    // FragColor = vec4(vec3(pixelCol,pixelCol,pixelCol),1);
    // CubeMap SpecularComponent
-        vec3 o = normalize(Position - EyePos);
-        vec3 p = reflect(o, normalize(Normal));
-        vec4 Reflection = texture(CubeMapTexture, p);
-        FragColor = mix(FragColor, Reflection, 0.5);
+    vec3 o = normalize(Position - EyePos);
+    vec3 p = reflect(o, normalize(Normal));
+    vec4 Reflection = texture(CubeMapTexture, p);
+    FragColor = mix(FragColor, Reflection, 0.5); 
 
-        if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
-        FragColor = vec4(0,0,0,0);
-        discard;
-        }
+    if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
+    FragColor = vec4(0,0,0,0);
+    discard;
+    }
 }

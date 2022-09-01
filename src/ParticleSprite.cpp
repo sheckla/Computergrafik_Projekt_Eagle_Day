@@ -58,9 +58,9 @@ void ParticleSprite::draw(const BaseCamera& Cam)
     
     VB.activate();
     IB.activate();
-    
+    glEnable(GL_DEPTH_TEST);
     glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
-    
+    glDisable(GL_DEPTH_TEST);
     IB.deactivate();
     VB.deactivate();
     

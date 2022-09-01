@@ -140,7 +140,7 @@ void LoadingScreenGUI::update(float delta)
 			CollisionDetector::setCollisionTarget(Application::enemyPlane); // Set as collision-target
 		}
 		ModelLoader::planePartsShadowArea();
-//		ModelLoader::aiPlaneParts();
+		//ModelLoader::aiPlaneParts();
 
 		printLoadFinishText("PLANE_PARTS");
 		break;

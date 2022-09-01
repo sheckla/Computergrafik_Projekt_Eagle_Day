@@ -32,7 +32,7 @@ constexpr float DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschw
 constexpr float ACCELERATION_GAIN = 0.002f;
 constexpr float ROTATION_SPEED = .0455f;
 constexpr float MAX_TILT = 1.0f; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
-constexpr int MAX_SPEED = 556;
+constexpr int MAX_SPEED = 600;
 
 // Visuelle Rotationswerte
 constexpr float RUDDER_ROTATION = 1.0f; // visueller Neigungsfaktor
@@ -176,6 +176,12 @@ public:
 	irrklang::ISoundEngine* SoundEngine = nullptr;
 	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
 	void startEngine();
+
+	float totalRudderRotation = 0;
+	float totalLeftWingflapRotation = 0;
+	float totalRightWingflapRotation = 0;
+
+	void stopEngine();
 };
 
 #endif

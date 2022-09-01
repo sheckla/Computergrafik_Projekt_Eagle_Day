@@ -6,7 +6,7 @@
 #include "MathUtil.h"
 #include "MouseLogger.h"
 
-GUISlider::GUISlider(float startX, float startY, float width, float height, float padding) :
+GUISlider::GUISlider(float startX, float startY, float width, float height, float padding, const char* text) :
 	GUILoadingMeter(startX, startY, width, height, padding),
 	meterMouseListener(Application::pWindow, GLFW_MOUSE_BUTTON_LEFT, PRESS_TYPE::MOUSE)
 {
@@ -18,7 +18,7 @@ GUISlider::GUISlider(float startX, float startY, float width, float height, floa
 	percentageText = new GUIText(startX + padding*2, startY + padding, "00.000%");
 
 	// Description Text
-	descriptionText = new GUIText(startX + outlineArea->width() + padding * 2, startY + padding, "Audio");
+	descriptionText = new GUIText(startX + outlineArea->width() + padding * 2, startY + padding, text);
 
 	
 }
@@ -39,7 +39,7 @@ void GUISlider::update(float delta)
 {
 	meterMouseListener.listen();
 	float remapMax = 0;
-	if (meterClickArea->mouseInside() && meterMouseListener.pressed())
+	if (EnableSliding && meterClickArea->mouseInside() && meterMouseListener.pressed())
 	{
 		meter->mousePress(true);
 		remapMax = MathUtil::remapBounds(MouseLogger::x(), meterMin, meterMin + meterMax, 0, 1);
@@ -59,4 +59,9 @@ void GUISlider::update(float delta)
 	percentageText->update(delta);
 	descriptionText->update(delta);
 	GUILoadingMeter::update(delta);
+}
+
+void GUISlider::enableSliding(bool b)
+{
+	EnableSliding = b;
 }

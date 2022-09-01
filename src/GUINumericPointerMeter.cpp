@@ -33,7 +33,7 @@ GUIBaseComponent* GUINumericPointerMeter::bar(int startX, int startY, int width,
 GUIText* GUINumericPointerMeter::number(int startX, int startY, int i, Vector scale)
 {
 	GUIText* numberText;
-	float y = 13;
+	float y = 8;
 	// Speed Text (left)
 	if (speedMeterMode)
 	{

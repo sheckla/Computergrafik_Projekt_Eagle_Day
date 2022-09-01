@@ -51,7 +51,7 @@ void GUIText::text(const char* string)
 			CHAR_DATA charData = FNTManager::charData(font, textString[i]);
 			if (i < textChars.size()) textChars.at(i)->updateFont(startX + xOffset, startY, charData);
 
-			xOffset += charData.xAdvance * CharSpace - charData.xOffset;
+			xOffset += charData.xAdvance * CharSpace;
 			TotalWidth = xOffset;
 		}
 

@@ -11,6 +11,8 @@ private:
 	GUITexture* cogwheelTexture = nullptr;
 	PressListener* cogwheelPressListener;
 
+	PressListener* escapeButtonPressListener;
+
 	GUISlider* audioSlider;
 public:
 	OptionsGUI(GLFWwindow* window);

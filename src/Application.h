@@ -21,7 +21,7 @@
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
 #include "vector.h"
-#define APPLICATION_ONLINE_MODE true
+constexpr auto APPLICATION_ONLINE_MODE = false;
 
 class Application
 {

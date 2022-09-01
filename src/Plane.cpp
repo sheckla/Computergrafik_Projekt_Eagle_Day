@@ -15,6 +15,7 @@ float Plane::speedPercentage() const
 
 void Plane::startEngine()
 {
+	if (SoundEngine && HighPitchSoundEngine) return;
 	SoundEngine = irrklang::createIrrKlangDevice();
 	SoundEngine->setSoundVolume(0);
 	SoundEngine->play2D(ASSETS "audio/steady.wav", true);
@@ -22,6 +23,14 @@ void Plane::startEngine()
 	HighPitchSoundEngine = irrklang::createIrrKlangDevice();
 	HighPitchSoundEngine->setSoundVolume(0);
 	HighPitchSoundEngine->play2D(ASSETS "audio/steady_high_pitch.wav", true);
+}
+
+void Plane::stopEngine()
+{
+	if (SoundEngine) delete SoundEngine;
+	if (HighPitchSoundEngine) delete HighPitchSoundEngine;
+	SoundEngine = nullptr;
+	HighPitchSoundEngine = nullptr;
 }
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const
@@ -132,7 +141,7 @@ bool Plane::loadModels(const char* path)
 	// Offsets anwenden
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
-		parts[i]->transform(Matrix().translation(OFFSETS[i]));
+		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,0)));
 	}
 	dot = new TriangleSphereModel(0.1, 20, 20);
 	dot->shader(new ConstantShader());
@@ -143,6 +152,8 @@ bool Plane::loadModels(const char* path)
 	horizon->shader(new ConstantShader());
 	horizon->shadowCaster(false);
 	//horizon->transform(Matrix().translation(horizonOffset));
+
+	speed = 200;
 	return true;
 }
 
@@ -158,10 +169,13 @@ void Plane::update(double delta)
 	const float speedMultiplier = speedPercentage();
 
 	forward.translation(Vector(0, 0, ACCELERATION_GAIN * speed));
+	totalRudderRotation += ROTATION_SPEED * -Tilt.rudder * speedMultiplier;
 	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * speedMultiplier);
 	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * speedMultiplier);
 	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier);
 	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier);
+	totalRightWingflapRotation += ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier;
+	totalLeftWingflapRotation += ROTATION_SPEED * Tilt.leftFlapsTilt * speedMultiplier;
 
 	// main-model
 	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight);
@@ -230,7 +244,7 @@ void Plane::update(double delta)
 		float steady =  1 - speedPercentage();
 		float high = speedPercentage();
 
-		SoundEngine->setSoundVolume((0.3 + speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
+		SoundEngine->setSoundVolume(0.1 + (speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
 		if (speedPercentage() > 0.55)
 		{
 			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * ApplicationSettings::AUDIO_VALUE);
@@ -245,7 +259,7 @@ void Plane::update(double delta)
 // Spitfire max km/h = 594
 void Plane::accelerate(float i)
 {
-	this->speed += i * DELTA_TIME_MULTIPLICATOR * 80;
+	this->speed += i * DELTA_TIME_MULTIPLICATOR * 40;
 
 	if (this->speed >= MAX_SPEED)
 	{

@@ -7,9 +7,9 @@ GUIButton::GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text
 mousePressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), area(quad)
 {
 	this->window = window;
-	GUIText* test = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, WW2);
-	buttonText = new GUIText(quad->startPixel().X + quad->width() / 2 - test->totalWidth() / 2, quad->startPixel().Y + quad->height() / 2 , text, WW2);
-	buttonText->centred(true);
+	GUIText* test = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, ARIAL_BLACK);
+	test->charSpace(1.2);
+	buttonText = new GUIText(quad->startPixel().X + quad->width() / 2 - test->totalWidth() / 2, quad->startPixel().Y + quad->height() / 2 - test->height() / 3, text, ARIAL_BLACK);
 	buttonText->charSpace(1.2);
 
 	quad->mousePressColor(COL_VERY_LIGHT);
