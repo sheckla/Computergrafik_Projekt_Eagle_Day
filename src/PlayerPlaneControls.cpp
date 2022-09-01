@@ -93,6 +93,10 @@ void PlayerPlaneControls::update(float delta)
     {
         plane->Gun_Left->StartGenerating();
         plane->Gun_Right->StartGenerating();
+        plane->Muzzleflash_Left->StartGenerating();
+        plane->Muzzleflash_Right->StartGenerating();
+
+
         //std::cout << "[PlayerPlaneControls] Start Gun Particles" << std::endl;
         SoundEngine->setSoundVolume(ApplicationSettings::AUDIO_VALUE);
         if (i++ % 7 == 0 || i == 0)
@@ -126,6 +130,8 @@ void PlayerPlaneControls::update(float delta)
     {
         plane->Gun_Left->StopGenerating();
         plane->Gun_Right->StopGenerating();
+        plane->Muzzleflash_Left->StopGenerating();
+        plane->Muzzleflash_Right->StopGenerating();
         i = 0;
         //std::cout << "[PlayerPlaneControls] Stop Gun Particles" << std::endl;
     }
