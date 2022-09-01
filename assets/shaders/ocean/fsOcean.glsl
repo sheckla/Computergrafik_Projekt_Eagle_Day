@@ -109,6 +109,17 @@ void main()
 
     vec3 CameraPosition = vec3(InvViewMatrix[3][0],InvViewMatrix[3][1],InvViewMatrix[3][2]);  
 
+
+    //vec3 fragPos = CameraPosition + normalize(PixelStrahl) * gl_FragCoord.z;
+    //vec3 normPlusFragPos = fragPos + Normal;
+
+    float refl = dot(normalize(Normal),normalize(vec3(3,1,2)));
+
+
+
+
+
+
     float StrahlLaenge = (CameraPosition.y) / PixelStrahl.y;
 
     vec3 WorldSpaceTop = CameraPosition + (PixelStrahl * StrahlLaenge);
@@ -124,8 +135,18 @@ void main()
     vec4 Reflection = texture(CubeMapTexture, p);
     FragColor = mix(FragColor, Reflection, 0.5); 
 
-    if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
-    FragColor = vec4(0,0,0,0);
-    discard;
-    }
+
+
+
+        //if(refl > .3f)FragColor = vec4(1,1,1,1); // technicaly working...
+
+
+
+        if((xDist*xDist + zDist*zDist > fadeStart*fadeStart || xDist*xDist + zDist*zDist < -(fadeStart*fadeStart))){
+        FragColor = vec4(0,0,0,0);
+        discard;
+        }
+
+
+        //FragColor = vec4(PositionWS.xyz / 1000,1);
 }
