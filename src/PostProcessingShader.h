@@ -20,6 +20,9 @@ public:
     void screenTexture(Texture* tex);
     void gaussianBlur(bool b);
     void elapsedTime(float t);
+    void shake(bool b);
+    void shakeTime(float f);
+    void hp(float hp);
 private:
     GLint EyePosLoc;
     GLint ModelMatLoc;
@@ -28,10 +31,16 @@ private:
     GLint GaussianBlurLoc;
     GLint ElapsedTimeLoc;
     GLint TimeMaxPostProcessingLoc;
+    GLint ShakeLoc;
+    GLint ShakeTimeLoc;
+    GLint HPLoc;
 
     Texture* ScreenTexture;
     bool GaussianBlur;
     float ElapsedTime;
+    bool Shake = false;
+    float ShakeTime = 0;
+    float HP = -1;
 };
 
 #endif

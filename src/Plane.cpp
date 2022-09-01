@@ -82,18 +82,21 @@ Plane::Plane(const char* path)
 		throw "err";
 	}
 
-	Smoke_System = new ParticleLoader(.002, .05, ParticleType::Smoke);
+	Smoke_System = new ParticleLoader(.0002, .14, ParticleType::Smoke);
+	//Smoke_System->setScale(1.32);
 
-	Gun_Left = new ParticleLoader(.01, 2, ParticleType::Bullet);
+	Gun_Left = new ParticleLoader(.01, 4, ParticleType::Bullet);
 	Gun_Left->setOffset(-2.5f);
-	Muzzleflash_Left = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Left = new ParticleLoader(.01, .019, ParticleType::MuzzleFlash);
 	Muzzleflash_Left->setOffset(-2.5f);
+	Muzzleflash_Left->setScale(0.5);
 
 
-	Gun_Right = new ParticleLoader(.01, 2, ParticleType::Bullet);
+	Gun_Right = new ParticleLoader(.01, 4, ParticleType::Bullet);
 	Gun_Right->setOffset(2.5f);
-	Muzzleflash_Right = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Right = new ParticleLoader(.01, .019, ParticleType::MuzzleFlash);
 	Muzzleflash_Right->setOffset(2.5f);
+	Muzzleflash_Right->setScale(0.5);
 }
 
 Plane::Plane(const char* path, const char* srv_Adr, int port) : Plane(path) // <- Calls normal constructor
@@ -151,7 +154,6 @@ bool Plane::loadModels(const char* path)
 		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,0)));
 	}
 	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
-
 
 	dot = new TriangleSphereModel(0.1, 20, 20);
 	dot->shader(new ConstantShader());
@@ -250,16 +252,16 @@ void Plane::update(double delta)
 	print("speedval", this->speed);*/
 
 
-	if(this->hp < 50.0f)this->Smoke_System->StartGenerating();
+	(this->hp < 30.0f) ? Smoke_System->StartGenerating() : Smoke_System->StopGenerating();
 
 
 
 	Smoke_System->update(delta, this->parts[1]->transform());
-	Gun_Left->update(delta, this->parts[0]->transform()); 
-	Gun_Right->update(delta, this->parts[0]->transform());
+	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-4)); 
+	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
 
-	Muzzleflash_Right->update(delta, this->parts[0]->transform());
-	Muzzleflash_Left->update(delta, this->parts[0]->transform());
+	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
+	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
 
 	if (Online_Mode)Sender->SendData(this);
 

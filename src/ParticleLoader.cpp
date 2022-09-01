@@ -14,7 +14,7 @@ ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl, Particl
 	const std::string Path = ASSETS "models/spitfire";
 
 	if (pType == ParticleType::Smoke) {
-		ps->diffuseTexture(new Texture((Path + "/particles/smokeparticle.png").c_str())); // SMOKE-TEXTURE
+		ps->diffuseTexture(new Texture((Path + "/particles/smoke_light.png").c_str())); // SMOKE-TEXTURE
 		ps->setTransparency(.4f);
 	}
 	if (pType == ParticleType::Bullet || pType == ParticleType::BulletDummy) {
@@ -36,10 +36,12 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 			//For new ParticleTypes: new if-Block here! Update will be automatically called for new instance to define specific behaviour
 			if (pType == ParticleType::Smoke) {
 				ParticleInstanceSmoke* instance = new ParticleInstanceSmoke(Particle_TTL, new ParticleSprite(), Particle_Shader, Vector(origin.m03, origin.m13, origin.m23));
+				//instance->startScale(Scale);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
 			if (pType == ParticleType::Bullet || pType == ParticleType::MuzzleFlash) {
 				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin,true);
+				instance->scale(Scale);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
 			if (pType == ParticleType::BulletDummy) {
@@ -51,7 +53,9 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 	}
 	
 	for (auto const& it : ParticleList)
+	{
 		it->update(deltaTime);
+	}
 
 	std::list<ParticleInstance*>::iterator it = ParticleList.begin();
 	std::list<ParticleInstance*>::iterator end = ParticleList.end();
@@ -80,4 +84,9 @@ void ParticleLoader::draw(const BaseCamera& Cam)
 		(*it)->draw(Cam);
 		it++;
 	}
+}
+
+void ParticleLoader::setScale(float scale)
+{
+	Scale = scale;
 }

@@ -87,10 +87,11 @@ void Application::update(float dtime)
     // ----------- Model Update ----------- 
     if (ModelLoader::pWaterLoader) ModelLoader::pWaterLoader->updateOcean(Cam, delta);
     CloudShader::TimeTranslation = last;
+
+    // ShadowPlaneArea adjust
     if (ModelLoader::instance().PlayerPlaneShadowArea)
     {
-        ModelLoader::instance().PlayerPlaneShadowArea->transform(Matrix().translation(
-            Vector(ModelLoader::pPlayerPlane->getPosition().X, 2.0, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
+        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(ModelLoader::pPlayerPlane->getPosition()) * Matrix().translation(0, -10, 0));
     }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
@@ -110,19 +111,12 @@ void Application::draw()
         std::list<BaseModel*> shadows;
 
         // ShadowPlane Offset
-        float prevY = ModelLoader::PlayerPlaneShadowArea->transform().translation().Y;
-        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(Vector(ModelLoader::PlayerPlaneShadowArea->transform().translation().X,
-            13,
-            ModelLoader::PlayerPlaneShadowArea->transform().translation().Z)));
+        Vector prec = ModelLoader::PlayerPlaneShadowArea->transform().translation();
         shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
         for (int i = 0; i < PLANE_PARTS; i++) shadows.push_back(ModelLoader::pPlayerPlane->getParts()[i]);
         ShadowGenerator.generate(shadows);
         ShaderLightMapper::instance().activate();
 
-        // ShadowPlane zuruecksetzen
-        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(Vector(ModelLoader::PlayerPlaneShadowArea->transform().translation().X,
-            prevY,
-            ModelLoader::PlayerPlaneShadowArea->transform().translation().Z)));
 
         // ----------- PostProc. Init & 3D SCENE ----------- 
         AppGUI->ppBuffer->preDraw();
@@ -138,7 +132,6 @@ void Application::draw()
             (*it)->draw(*Cam);
         }
 
-        ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
         if(ModelLoader::pEnemyPlane != nullptr)
@@ -148,6 +141,7 @@ void Application::draw()
         {
             cloud->draw(*Cam);
         }
+        ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
 
 
         AppGUI->ppBuffer->postDraw();

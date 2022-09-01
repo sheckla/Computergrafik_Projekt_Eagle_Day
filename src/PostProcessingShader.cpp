@@ -36,6 +36,9 @@ PostProcessingShader::PostProcessingShader() : GaussianBlur(false), ElapsedTime(
 	GaussianBlurLoc = initUniformParameter("GaussianBlur");
 	ElapsedTimeLoc = initUniformParameter("ElapsedTime");
 	TimeMaxPostProcessingLoc = initUniformParameter("TimeMaxPostProcessing");
+	ShakeLoc = initUniformParameter("Shake");
+	ShakeTimeLoc = initUniformParameter("ShakeTime");
+	HPLoc = initUniformParameter("HP");
 }
 
 void PostProcessingShader::activate(const BaseCamera& Cam) const
@@ -50,8 +53,11 @@ void PostProcessingShader::activate(const BaseCamera& Cam) const
 	ScreenTexture->activate();
 	glUniform1i(ScreenTextureLoc, 0);
 	glUniform1i(GaussianBlurLoc, GaussianBlur);
+	glUniform1i(ShakeLoc, Shake);
+	glUniform1f(ShakeTimeLoc, ShakeTime);
 	setUniformParameter(ElapsedTimeLoc, ElapsedTime);
 	setUniformParameter(TimeMaxPostProcessingLoc, TIME_MAX_POST_PROCESSING_EFFECTS);
+	glUniform1f(HPLoc, HP);
 }
 
 void PostProcessingShader::screenTexture(Texture* tex)
@@ -67,4 +73,19 @@ void PostProcessingShader::gaussianBlur(bool b)
 void PostProcessingShader::elapsedTime(float t)
 {
 	ElapsedTime = t;
+}
+
+void PostProcessingShader::shake(bool b)
+{
+	Shake = b;
+}
+
+void PostProcessingShader::shakeTime(float f)
+{
+	ShakeTime = f;
+}
+
+void PostProcessingShader::hp(float hp)
+{
+	HP = hp;
 }

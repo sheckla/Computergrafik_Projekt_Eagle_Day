@@ -20,9 +20,10 @@ class GUIButton : public GUIBaseComponent
 	Vector StartPixel;
 	PressListener mousePressListener;
 	int Width, Height;
+	PRESS_STATE State;
 
 public:
-	GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text);
+	GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text, FONT_NAMES font = ARIAL_BLACK);
 	~GUIButton() override;
 	void draw() override;
 	void update(float delta);
@@ -30,6 +31,7 @@ public:
 	bool pressed();
 	bool mouseInside();
 	PRESS_STATE listen();
+	PRESS_STATE state();
 };
 
 #endif

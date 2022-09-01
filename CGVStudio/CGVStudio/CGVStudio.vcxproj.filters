@@ -382,6 +382,9 @@
     <ClCompile Include="..\..\src\AIPlaneController.cpp">
       <Filter>Quelldateien\controls\plane</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GUIButtonSwitch.cpp">
+      <Filter>Quelldateien\gui\elements\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -626,6 +629,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\CollisionDetector.h">
       <Filter>Quelldateien\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUIButtonSwitch.h">
+      <Filter>Quelldateien\gui\elements\components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -59,6 +59,7 @@ private:
     GLint PerlinNoiseLoc;
     GLint ViewMatrixLoc;
     GLint ProjMatrixLoc;
+    GLint ValLoc;
 };
 
 #endif /* OceanShader_hpp */

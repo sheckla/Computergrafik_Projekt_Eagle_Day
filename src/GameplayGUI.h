@@ -21,6 +21,7 @@ class GameplayGUI : public ApplicationGUIPrototype
 	GUISlider* lifeMeter;
 	GUIText* speedMeterText;
 	GUIText* altitudeMeterText;
+	GUITexture* mouseCircle;
 public:
 	GameplayGUI(GLFWwindow* window);
 	virtual ~GameplayGUI();

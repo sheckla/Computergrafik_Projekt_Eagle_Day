@@ -1,6 +1,7 @@
 #ifndef OptionsGUI_h
 #define OptionsGUI_h
 #include "ApplicationGUIPrototype.h"
+#include "GUIButtonSwitch.h"
 #include "GUISlider.h"
 #include "GUITexture.h"
 #include "PressListener.h"
@@ -14,6 +15,7 @@ private:
 	PressListener* escapeButtonPressListener;
 
 	GUISlider* audioSlider;
+	GUIButtonSwitch* mouseControlSwitch;
 public:
 	OptionsGUI(GLFWwindow* window);
 	~OptionsGUI() override;

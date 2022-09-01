@@ -7,6 +7,8 @@ uniform vec3 SpecularColor;
 uniform vec3 AmbientColor;
 uniform float SpecularExp;
 
+uniform float Val;
+
 uniform sampler2D MixTex; // for exercise 3
 uniform sampler2D DetailTex[2]; // for exercise 3
 uniform vec3 Scaling;
@@ -60,9 +62,9 @@ void main()
     //vec3 DiffuseComponent = LightColor * DiffuseColorRGB * sat(dot(N,L));
 
     vec3 DiffuseComponent = LightColor * DiffuseColorRGB * sat(dot(N,L));
-    DiffuseComponent = mix(DiffuseComponent, DiffuseColorRGB, 0.875);
+    DiffuseComponent = mix(DiffuseComponent, DiffuseColorRGB, 0.5);
 
-    vec3 SpecularComponent = LightColor * SpecularColorRGB * pow( sat(dot(R,E)) * 1.2, SpecularExp) / 5;
+    vec3 SpecularComponent = LightColor * SpecularColorRGB * pow( sat(dot(R,E)) * 3, SpecularExp) * 3;
     
     // Exercise 3
     // TODO: Add texture blending code here..
@@ -84,7 +86,7 @@ void main()
     pCol = vec3(.5f,.5f,0) * pixelCol;
     */
     //FragColor = vec4(((DiffuseComponent + AmbientColor) + SpecularComponent),1);
-     FragColor = vec4(/*((DiffuseComponent + AmbientColor) + SpecularComponent)*/SpecularComponent + DiffuseComponent * (.4f +Normal.y),1);
+     FragColor = vec4(/*((DiffuseComponent + AmbientColor) + SpecularComponent)*/DiffuseComponent * (.4f +Normal.y),1);
      //FragColor = vec4(DiffuseComponent + SpecularComponent, 1);
 
      //FragColor = vec4(PositionWS.r,1,PositionWS.b,1);
@@ -127,7 +129,7 @@ void main()
     vec3 o = normalize(Position - EyePos);
     vec3 p = reflect(o, normalize(Normal));
     vec4 Reflection = texture(CubeMapTexture, p);
-    FragColor = mix(FragColor, Reflection, 0.05);
+    //FragColor = mix(FragColor, Reflection, Val);
 
     float fadeStart=500;
     

@@ -25,3 +25,13 @@ bool ParticleInstance::isAlive()
 {
 	return TimeAlive < TTL;
 }
+
+void ParticleInstance::scale(float f)
+{
+	ParticleModel->setScale(f);
+}
+
+void ParticleInstance::startScale(float f)
+{
+	ParticleModel->setStartScale(f);
+}

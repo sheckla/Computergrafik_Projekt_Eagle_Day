@@ -20,7 +20,7 @@ protected:
 	Texture* pTex;
 	bool KeepImageSize = false;
 	bool FillScreen = false;
-
+	bool Active = true;
 	// bei KeepImageSize=false
 	void updateBounds() override;
 	void deactivateTex();
@@ -28,8 +28,10 @@ public:
 	GUITexture(int startX, int startY, Texture* tex, bool keepImageSize, bool fillScreen = false);
 	~GUITexture() override;
 
+	void draw() override;
 	void texture(Texture* tex);
 	void handleMouseEvents() override;
+	void active(bool b);
 };
 
 #endif

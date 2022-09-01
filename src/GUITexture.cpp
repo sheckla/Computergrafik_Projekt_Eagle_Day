@@ -46,6 +46,12 @@ GUITexture::~GUITexture()
     //deactivateTex();
 }
 
+void GUITexture::draw()
+{
+    if (!Active) return;
+    GUIConstantQuad::draw();
+}
+
 void GUITexture::texture(Texture* tex)
 {
     this->pTex = tex;
@@ -69,5 +75,10 @@ void GUITexture::handleMouseEvents()
 {
     (mouseInside()) ? Shader->mouseInside(true) : Shader->mouseInside(false);
     GUIConstantQuad::handleMouseEvents();
+}
+
+void GUITexture::active(bool b)
+{
+    Active = b;
 }
 

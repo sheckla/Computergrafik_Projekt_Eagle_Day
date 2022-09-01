@@ -11,6 +11,7 @@ class ApplicationSettings
 public:
 	static ApplicationSettings* pApplicationSettings;
 	static float AUDIO_VALUE;
+	static bool MOUSE_CONTROLS;
 
 	static ApplicationSettings& instance();
 };

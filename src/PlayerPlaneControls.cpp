@@ -1,5 +1,6 @@
 #include "PlayerPlaneControls.h"
 
+#include "ApplicationGUI.h"
 #include "ApplicationSettings.h"
 #include "MathUtil.h"
 #include "MouseLogger.h"
@@ -91,18 +92,20 @@ void PlayerPlaneControls::update(float delta)
 
     if (glfwGetKey(this->window, GLFW_KEY_SPACE))
     {
-        plane->Gun_Left->StartGenerating();
-        plane->Gun_Right->StartGenerating();
-        plane->Muzzleflash_Left->StartGenerating();
-        plane->Muzzleflash_Right->StartGenerating();
-        //std::cout << "[PlayerPlaneControls] Start Gun Particles" << std::endl;
+        plane->startShooting();
+
+        ApplicationGUI::AppGUI->ppBuffer->shake(true);
+        ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(true);
+        ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(false);
+
+        // Audio effects
         SoundEngine->setSoundVolume(ApplicationSettings::AUDIO_VALUE);
         if (i++ % 7 == 0 || i == 0)
         {
 
             if (i == 0)
             {
-                SoundEngine->play2D(ASSETS "audio/shoow.wav", false);
+                SoundEngine->play2D(ASSETS "audio/shoot.wav", false);
                 return;
             }
 
@@ -126,38 +129,38 @@ void PlayerPlaneControls::update(float delta)
     }
     else
     {
-        plane->Gun_Left->StopGenerating();
-        plane->Gun_Right->StopGenerating();
-        plane->Muzzleflash_Left->StopGenerating();
-        plane->Muzzleflash_Right->StopGenerating();
+        ApplicationGUI::AppGUI->ppBuffer->shake(false);
+        ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
+        plane->stopShooting();
         i = 0;
-        //std::cout << "[PlayerPlaneControls] Stop Gun Particles" << std::endl;
     }
     
+    if (ApplicationSettings::MOUSE_CONTROLS)
+    {
+        MouseLogger logger = MouseLogger::instance();
+        float normX = ((float)logger.x() / ASPECT_WIDTH * 2) - 1;
+        float normY = ((float)logger.y() / ASPECT_HEIGHT * 2) - 1;
+        float up = -normY / 2;
+        float leftTilt, rightTilt;
+        leftTilt = 0;
+        rightTilt = 0;
 
-    MouseLogger logger = MouseLogger::instance();
-    float normX = ((float)logger.x() / ASPECT_WIDTH * 2) - 1;
-    float normY = ((float)logger.y() / ASPECT_HEIGHT * 2) - 1;
-    float up = -normY / 2;
-    float leftTilt, rightTilt;
-    leftTilt = 0;
-    rightTilt = 0;
+        // Rolle Rechts
+        if (normX > 0) { // right quad
+            leftTilt = -abs(normY) * normX; // 
+            rightTilt = abs(normY) * normX;
+        }
+        // Rolle links
+        if (normX < 0) { // left quad
+            leftTilt = -abs(normY) * normX; // -
+            rightTilt = abs(normY) * normX; // +
+        }
 
-    // Rolle Rechts
-    if (normX > 0) {
-        leftTilt = normY * normX;
-        rightTilt = -normY * normX;
+            plane->tiltLeftWingflaps(delta *(up + leftTilt) / 2);
+            plane->tiltRightWingflaps(delta *(up + rightTilt) / 2);
+        // Mouse Controls
+        plane->tiltRudder(delta * normX);
     }
-    // Rolle links
-    if (normX < 0) {
-        leftTilt = normY * normX;
-        rightTilt = -normY * normX;
-    }
-    // Mouse Controls
-	//plane->tiltRudder(delta * normX);
-    //plane->tiltLeftWingflaps(delta*2 * (up + leftTilt));
-    //plane->tiltRightWingflaps(delta*2 * (up + rightTilt));
-
 
     plane->update(delta);
 
@@ -165,5 +168,7 @@ void PlayerPlaneControls::update(float delta)
     // camera follows plane
     cam->setTarget(plane->getParts()[0]->transform().translation());
     cam->setPosition(cameraPos.translation());
-    cam->zoom(-plane->getSpeed() / 200);
+    cam->zoom(-plane->getSpeed() / 500);
+
+    ApplicationGUI::AppGUI->ppBuffer->hp(plane->hp);
 }

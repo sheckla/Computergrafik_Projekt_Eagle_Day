@@ -81,7 +81,7 @@ void StartScreenGUI::init()
 	Components.push_back(logoBG);
 
 	int offsetHeight = gap + buttonHeight;
-	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2 - offsetHeight * 4, new Texture(ASSETS "img/button_simple.png"), true);
+	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, 150, new Texture(ASSETS "img/button_simple.png"), true);
 	gTex->scale(Vector(0.3, 0.3, 0));
 	gTex->startPixel(Vector(gTex->startPixel().X - gTex->width() / 2, gTex->startPixel().Y, 0));
 	gTex->mouseoverHighlight(true);

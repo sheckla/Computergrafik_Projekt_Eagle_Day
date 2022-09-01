@@ -71,13 +71,19 @@ float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 		}    
 	} 
 	shadow /= (smoothingDiameter * smoothingDiameter);				// normalize the shadow value
-	return shadow;
+	return shadow / (1.5);
 }
 
 
 // https://learnopengl.com/Lighting/Light-casters
 void main()
 {
+    if (ShadowOnly == 1) 
+    {
+        FragColor = vec4(0,0,0,0);
+        return;
+    }
+
     vec4 DiffTex = texture( DiffuseTexture, Texcoord); // texture
     if(DiffTex.a <0.3f) {
         FragColor = vec4(1,0,0,1);
@@ -142,7 +148,6 @@ void main()
         SpecularComponent += LightColor * SpecularColor * pow(sat(dot(H,N)), SpecularExp); 
     }
 
-    //visibility = sat(visibility);
     vec3 diff = DiffuseComponent * visibility;
     vec3 spec = SpecularComponent * visibility;
     vec3 ambient = AmbientColor * DiffTex.rgb;
@@ -157,10 +162,11 @@ void main()
 
     // Shadow Only Display
     if (ShadowOnly == 1 && visibility < 1) {
-        FragColor = vec4(phongColor, (1 - visibility) * 0.1);
+        //FragColor = vec4(phongColor, (1 - visibility) * 0.1);
+        FragColor = vec4(0,0,0,0);
     } else if (ShadowOnly == 1) 
     {
-        FragColor = vec4(1,0,0,0);
+        FragColor = vec4(0,0,0,0);
     }
 
     

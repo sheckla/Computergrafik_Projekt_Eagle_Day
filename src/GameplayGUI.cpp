@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "ApplicationSettings.h"
 #include "GUIButton.h"
 #include "GUILoadingMeter.h"
 #include "GUINumericPointerMeter.h"
@@ -36,7 +37,9 @@ void GameplayGUI::draw()
 void GameplayGUI::update(float delta)
 {
 	for (auto component : Components) component->update(delta);
-	lifeMeter->percentage(ModelLoader::pPlayerPlane->hp / 100);
+	//lifeMeter->percentage(ModelLoader::pPlayerPlane->hp / 100);
+	ModelLoader::pPlayerPlane->hp = 100 * lifeMeter->percentage();
+	(!ApplicationSettings::MOUSE_CONTROLS) ? mouseCircle->active(false) : mouseCircle->active(true);
 }
 
 void GameplayGUI::init()
@@ -50,6 +53,7 @@ void GameplayGUI::init()
 	mouseCircle->followMouse(true);
 	mouseCircle->constantColorMode(true);
 	mouseCircle->color(Color(1, 1, 1));
+	this->mouseCircle = mouseCircle;
 	Components.push_back(mouseCircle);
 
 
@@ -78,6 +82,6 @@ void GameplayGUI::init()
 	lifeMeter = new GUISlider(ASPECT_WIDTH - 355, ASPECT_HEIGHT - 100, 250, 75, 10, "HP");
 	Components.push_back(lifeMeter);
 	lifeMeter->percentage(1);
-	lifeMeter->enableSliding(false);
+	//lifeMeter->enableSliding(false);
 }
 

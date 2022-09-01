@@ -22,14 +22,9 @@ void OptionsGUI::draw()
 
 void OptionsGUI::update(float delta)
 {
-	//if (cogwheelTexture && cogwheelTexture->mouseInside() && cogwheelPressListener->listen() == PRESS)
-	//{
-	//	//cogwheelTexture->mousePress(true);
-	//} 
 
 	if (cogwheelTexture && cogwheelTexture->mouseInside() && cogwheelPressListener->listen() == RELEASE)
 	{
-		//cogwheelTexture->mousePress(false);
 		if (Active)
 			// turn off
 		{
@@ -61,6 +56,7 @@ void OptionsGUI::update(float delta)
 
 
 	ApplicationSettings::AUDIO_VALUE = audioSlider->percentage();
+	ApplicationSettings::MOUSE_CONTROLS = mouseControlSwitch->on();
 }
 
 void OptionsGUI::init()
@@ -80,11 +76,14 @@ void OptionsGUI::init()
 	applyTexture->mouseoverHighlight(true);
 	applyTexture->scale(Vector(0.3, 0.3, 0));
 	GUIButton* applyButton = new GUIButton(ApplicationGUI::AppGUI->Window, applyTexture, "Apply");
-	Components.push_back(applyButton);
+	//Components.push_back(applyButton);
 
 	// Audio Slider
 	GUISlider* audioSlider = new GUISlider(50, 300, applyTexture->width(), 75, 10, "Audio");
 	this->audioSlider = audioSlider;
 	audioSlider->percentage(ApplicationSettings::AUDIO_VALUE);
 	Components.push_back(audioSlider);
+
+	mouseControlSwitch = new GUIButtonSwitch(50, 400, applyTexture->width(), 75);
+	Components.push_back(mouseControlSwitch);
 }
