@@ -14,6 +14,8 @@
 #include "EscapeMenuGUI.h"
 #include <sstream>
 
+#include "ApplicationSettings.h"
+
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
 #else
@@ -39,6 +41,9 @@ PostProcessingShader::PostProcessingShader() : GaussianBlur(false), ElapsedTime(
 	ShakeLoc = initUniformParameter("Shake");
 	ShakeTimeLoc = initUniformParameter("ShakeTime");
 	HPLoc = initUniformParameter("HP");
+	AspectHeightLoc = glGetUniformLocation(ShaderProgram, "AspectHeight");
+	AspectWidthLoc = glGetUniformLocation(ShaderProgram, "AspectWidth");
+	SepiaEnabledLoc = glGetUniformLocation(ShaderProgram, "SepiaEnabled");
 }
 
 void PostProcessingShader::activate(const BaseCamera& Cam) const
@@ -58,6 +63,9 @@ void PostProcessingShader::activate(const BaseCamera& Cam) const
 	setUniformParameter(ElapsedTimeLoc, ElapsedTime);
 	setUniformParameter(TimeMaxPostProcessingLoc, TIME_MAX_POST_PROCESSING_EFFECTS);
 	glUniform1f(HPLoc, HP);
+	setUniformParameter(AspectHeightLoc, ApplicationSettings::HEIGHT);
+	setUniformParameter(AspectWidthLoc, ApplicationSettings::WIDTH);
+	glUniform1i(SepiaEnabledLoc, ApplicationSettings::SEPIA_POST_PROCESSING);
 }
 
 void PostProcessingShader::screenTexture(Texture* tex)

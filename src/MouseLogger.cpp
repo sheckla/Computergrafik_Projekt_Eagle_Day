@@ -1,5 +1,7 @@
 #include "MouseLogger.h"
 
+#include "ApplicationSettings.h"
+
 MouseLogger* MouseLogger::pMouseLogger = nullptr;
 double MouseLogger::X = 0;
 double MouseLogger::Y = 0;
@@ -28,10 +30,10 @@ double MouseLogger::y()
 
 double MouseLogger::normY()
 {
-	return -(((float)MouseLogger::Y / ASPECT_HEIGHT * 2) - 1);
+	return -(((float)MouseLogger::Y / ApplicationSettings::HEIGHT * 2) - 1);
 }
 
 double MouseLogger::normX()
 {
-	return ((float)MouseLogger::X / ASPECT_WIDTH * 2) - 1;
+	return ((float)MouseLogger::X / ApplicationSettings::WIDTH * 2) - 1;
 }

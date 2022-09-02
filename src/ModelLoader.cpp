@@ -82,6 +82,7 @@ bool ModelLoader::planePartsOnline(std::string ip, int port)
         Models->push_back(planeParts[i]);
     }
 
+    Models->push_back(p->dot);
     return true;
 }
 

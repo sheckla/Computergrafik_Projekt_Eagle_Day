@@ -36,8 +36,8 @@
 
 // Bildschirminformationen
 #define ASPECT_RATIO 16.0f/9.0f
-#define ASPECT_WIDTH 1920
-#define ASPECT_HEIGHT 1080
+static float ASPECT_WIDTH = 1920;
+static float ASPECT_HEIGHT = 1080;
 
 // Debug-print Farben
 #define DEBUG_MESSAGES true

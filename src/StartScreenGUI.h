@@ -29,6 +29,9 @@ class StartScreenGUI : public ApplicationGUIPrototype
 	std::vector<CloudParams> cloudParams;
 	GUIButton* startButton;
 	PressListener startButtonListener;
+
+	GUIButton* exitButton;
+	PressListener exitButtonListener;
 public:
 	StartScreenGUI(GLFWwindow* window);
 	~StartScreenGUI() override;

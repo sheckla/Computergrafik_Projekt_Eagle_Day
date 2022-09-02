@@ -138,8 +138,8 @@ void PlayerPlaneControls::update(float delta)
     if (ApplicationSettings::MOUSE_CONTROLS)
     {
         MouseLogger logger = MouseLogger::instance();
-        float normX = ((float)logger.x() / ASPECT_WIDTH * 2) - 1;
-        float normY = ((float)logger.y() / ASPECT_HEIGHT * 2) - 1;
+        float normX = ((float)logger.x() / ApplicationSettings::WIDTH * 2) - 1;
+        float normY = ((float)logger.y() / ApplicationSettings::HEIGHT * 2) - 1;
         float up = -normY / 2;
         float leftTilt, rightTilt;
         leftTilt = 0;

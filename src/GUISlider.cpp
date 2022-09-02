@@ -12,6 +12,8 @@ GUISlider::GUISlider(float startX, float startY, float width, float height, floa
 {
 	meterClickArea = new GUIConstantQuad(startX + padding, startY + padding, width - padding*2, height - padding*2);
 
+	meter->mouseoverHighlight(true);
+	meter->mouseoverHighlightColor(COL_LIGHT*0.9);
 	meter->mousePressColor(COL_VERY_LIGHT);
 
 	// Percentage Text
@@ -55,7 +57,7 @@ void GUISlider::update(float delta)
 	std::string percentageString{ ss.str() };
 	percentageText->text(percentageString.c_str());
 
-	meterClickArea->update(delta);
+	//meterClickArea->update(delta);
 	percentageText->update(delta);
 	descriptionText->update(delta);
 	GUILoadingMeter::update(delta);

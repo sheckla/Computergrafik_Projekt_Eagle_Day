@@ -11,6 +11,10 @@ uniform float TimeMaxPostProcessing;
 uniform int Shake;
 uniform float ShakeTime;
 uniform float HP; // [0,100]
+uniform int SepiaEnabled;
+
+uniform float AspectWidth;
+uniform float AspectHeight;
 
 const float offset = 1.0 / 700.0;  
 
@@ -21,8 +25,8 @@ float remapBounds(in float i, in float fromMin, in float fromMax, in float toMin
 
 void main()
 {
-    float normX = (gl_FragCoord.x / 1920.0f * 2);
-    float normY = (gl_FragCoord.y / 1080.0f * 2);
+    float normX = (gl_FragCoord.x / AspectWidth * 2);
+    float normY = (gl_FragCoord.y / AspectHeight * 2);
     if (Shake == 1)
     {
         normX += cos(ShakeTime*45) / 800;
@@ -69,11 +73,14 @@ void main()
     }
 
     // Sepia Color Adjust
-    float sepiaRed = (FragColor.r * .393) + (FragColor.g *.769) + (FragColor.b * .189);
-    float sepiaGreen = (FragColor.r * .349) + (FragColor.g *.686) + (FragColor.b * .168);
-    float sepiaBlue = (FragColor.r * .272) + (FragColor.g *.534) + (FragColor.b * .131);
-    vec4 SepiaColor = vec4(sepiaRed,sepiaGreen,sepiaBlue, 1);
-    FragColor = mix(FragColor, SepiaColor, 0.3);
+    if (SepiaEnabled == 1)
+    {
+        float sepiaRed = (FragColor.r * .393) + (FragColor.g *.769) + (FragColor.b * .189);
+        float sepiaGreen = (FragColor.r * .349) + (FragColor.g *.686) + (FragColor.b * .168);
+        float sepiaBlue = (FragColor.r * .272) + (FragColor.g *.534) + (FragColor.b * .131);
+        vec4 SepiaColor = vec4(sepiaRed,sepiaGreen,sepiaBlue, 1);
+        FragColor = mix(FragColor, SepiaColor, 0.3);
+    }
 
     // Red Vignette Low HP
     if (HP >= 0 && HP < 50) 

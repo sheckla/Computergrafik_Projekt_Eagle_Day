@@ -1,5 +1,6 @@
 #include "GUIConstantTriangle.h"
 
+#include "ApplicationSettings.h"
 #include "MouseLogger.h"
 
 void GUIConstantTriangle::updateBuffers()
@@ -54,11 +55,11 @@ void GUIConstantTriangle::updateBuffers()
 
 void GUIConstantTriangle::updateBounds()
 {
-    float normStartX = ((float)startPixelX / ASPECT_WIDTH * 2) - 1;
-    float normStartY = ((float)startPixelY / ASPECT_HEIGHT * 2) - 1;
+    float normStartX = ((float)startPixelX / ApplicationSettings::WIDTH * 2) - 1;
+    float normStartY = ((float)startPixelY / ApplicationSettings::HEIGHT * 2) - 1;
 
-    float normEndX = ((startPixelX + Width * Scale.X) / ASPECT_WIDTH * 2) - 1;
-    float normEndY = ((startPixelY + Height * Scale.Y) / ASPECT_HEIGHT * 2) - 1;
+    float normEndX = ((startPixelX + Width * Scale.X) / ApplicationSettings::WIDTH * 2) - 1;
+    float normEndY = ((startPixelY + Height * Scale.Y) / ApplicationSettings::HEIGHT * 2) - 1;
 
     LowerBound = Vector(normStartX, normStartY, 0);
     UpperBound = Vector(normEndX, normEndY, 0);
@@ -80,7 +81,7 @@ void GUIConstantTriangle::draw()
     // Element an Maus binden
     if (FollowMouse) {
         this->startPixelX = MouseLogger::x();
-        this->startPixelY = ASPECT_HEIGHT - MouseLogger::y();
+        this->startPixelY = ApplicationSettings::HEIGHT - MouseLogger::y();
         updateBounds();
         updateBuffers();
     }

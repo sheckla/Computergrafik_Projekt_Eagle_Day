@@ -10,11 +10,12 @@ class GUIButtonSwitch : public GUIBaseComponent
 	GUIText* onOffText;
 	bool On = false;
 public:
-	GUIButtonSwitch(float startX, float startY, float width, float height);
+	GUIButtonSwitch(float startX, float startY, float width, float height, const char* text);
 	~GUIButtonSwitch() override;
 	void draw() override;
 	void update(float delta) override;
 	bool on();
+	void on(bool b);
 };
 
 #endif

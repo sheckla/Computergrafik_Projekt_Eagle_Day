@@ -5,6 +5,8 @@
  *
  */
 
+constexpr double PI = 3.14159265359;
+
 #ifndef MathUtil_h
 #define MathUitl_h
 

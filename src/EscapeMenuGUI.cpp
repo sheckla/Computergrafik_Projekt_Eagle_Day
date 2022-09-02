@@ -1,6 +1,7 @@
 #include "EscapeMenuGUI.h"
 
 #include "ApplicationGUI.h"
+#include "ApplicationSettings.h"
 #include "GUIButton.h"
 #include "ModelLoader.h"
 
@@ -51,19 +52,19 @@ void EscapeMenuGUI::update(float delta)
 
 void EscapeMenuGUI::init()
 {
-	GUITexture* logo = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT- 300, new Texture(ASSETS "img/logo.png"), true, false);
+	GUITexture* logo = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 200, new Texture(ASSETS "img/logo.png"), true, false);
 	logo->centred(true);
 	logo->scale(Vector(0.3, 0.3, 0));
 	Components.push_back(logo);
 
-	GUITexture* returnButtonTexture = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - 600, new Texture(ASSETS "img/button_simple.png"), true);
+	GUITexture* returnButtonTexture = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 500, new Texture(ASSETS "img/button_simple.png"), true);
 	returnButtonTexture->scale(Vector(0.3, 0.3, 0));
 	returnButtonTexture->startPixel(Vector(returnButtonTexture->startPixel().X - returnButtonTexture->width() / 2, returnButtonTexture->startPixel().Y, 0));
 	returnButtonTexture->mouseoverHighlight(true);
 	returnStartButton = new GUIButton(Window, returnButtonTexture, "Main Menu");
 	Components.push_back(returnStartButton);
 
-	GUITexture* leaveEscapeMenuTex = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT - 750, new Texture(ASSETS "img/button_simple.png"), true);
+	GUITexture* leaveEscapeMenuTex = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 650, new Texture(ASSETS "img/button_simple.png"), true);
 	leaveEscapeMenuTex->scale(Vector(0.3, 0.3, 0));
 	leaveEscapeMenuTex->startPixel(Vector(leaveEscapeMenuTex->startPixel().X - leaveEscapeMenuTex->width() / 2, leaveEscapeMenuTex->startPixel().Y, 0));
 	leaveEscapeMenuTex->mouseoverHighlight(true);

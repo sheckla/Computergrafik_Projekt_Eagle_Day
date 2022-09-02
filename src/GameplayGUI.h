@@ -22,6 +22,10 @@ class GameplayGUI : public ApplicationGUIPrototype
 	GUIText* speedMeterText;
 	GUIText* altitudeMeterText;
 	GUITexture* mouseCircle;
+
+
+	GUIConstantQuad* compass;
+	GUIText* compassText;
 public:
 	GameplayGUI(GLFWwindow* window);
 	virtual ~GameplayGUI();

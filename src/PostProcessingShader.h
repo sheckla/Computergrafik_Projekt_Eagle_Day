@@ -34,6 +34,9 @@ private:
     GLint ShakeLoc;
     GLint ShakeTimeLoc;
     GLint HPLoc;
+    GLint AspectWidthLoc;
+    GLint AspectHeightLoc;
+    GLint SepiaEnabledLoc;
 
     Texture* ScreenTexture;
     bool GaussianBlur;

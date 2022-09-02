@@ -118,3 +118,14 @@ float GUIText::totalWidth()
 {
 	return TotalWidth;
 }
+
+void GUIText::startPixel(Vector v)
+{
+	this->startX = v.X;
+	this->startY = v.Y;
+}
+
+Vector GUIText::startPixel()
+{
+	return Vector(startX, startY, 0);
+}

@@ -10,7 +10,9 @@
 #include "MathUtil.h"
 #include "ModelLoader.h"
 
-StartScreenGUI::StartScreenGUI(GLFWwindow* window) : startButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), ApplicationGUIPrototype(window)
+StartScreenGUI::StartScreenGUI(GLFWwindow* window) : startButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE),
+exitButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE),
+ApplicationGUIPrototype(window)
 {
 
 }
@@ -43,7 +45,7 @@ void StartScreenGUI::update(float delta)
 		cloud->startPixel(Vector((float)cloud->startPixel().X + xOffset, cloud->startPixel().Y + yOffset, 0));
 
 		// Cloud wieder von links anfangen lassen
-		if (cloud->startPixel().X > ASPECT_WIDTH) cloud->startPixel(Vector(-cloud->width() - 20, cloud->startPixel().Y, 0));
+		if (cloud->startPixel().X > ApplicationSettings::WIDTH) cloud->startPixel(Vector(-cloud->width() - 20, cloud->startPixel().Y, 0));
 	}
 
 	if (startButton->mouseInside())
@@ -59,6 +61,13 @@ void StartScreenGUI::update(float delta)
 		}
 	}
 
+	if (exitButton->mouseInside() && exitButton->listen() == RELEASE)
+	{
+		ApplicationSettings::writeSettings();
+		ApplicationSettings::SHUT_DOWN = true;
+		//exit(0);
+	}
+
 	for (auto component : Components)
 	{
 		component->update(delta);
@@ -71,22 +80,31 @@ void StartScreenGUI::init()
 	int buttonHeight = 70;
 	int gap = 10;
 
-	GUITexture* skyBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_color.png"), true, true);
+
+	GUITexture* skyBG = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_color.png"), true, true);
 	Components.push_back(skyBG);
 
-	GUITexture* cloudsBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_clouds.png"), true, true);
+	GUITexture* cloudsBG = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_clouds.png"), true, true);
 	Components.push_back(cloudsBG);
 
-	GUITexture* logoBG = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_logo.png"), true, true);
+	GUITexture* logoBG = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_logo.png"), true, true);
 	Components.push_back(logoBG);
 
 	int offsetHeight = gap + buttonHeight;
-	GUITexture* gTex = new GUITexture(ASPECT_WIDTH / 2, 150, new Texture(ASSETS "img/button_simple.png"), true);
+	GUITexture* gTex = new GUITexture(ApplicationSettings::WIDTH / 2, 150, new Texture(ASSETS "img/button_simple.png"), true);
 	gTex->scale(Vector(0.3, 0.3, 0));
 	gTex->startPixel(Vector(gTex->startPixel().X - gTex->width() / 2, gTex->startPixel().Y, 0));
 	gTex->mouseoverHighlight(true);
-	startButton = new GUIButton(Window, gTex, "Start");
+	startButton = new GUIButton(Window, gTex, "Start", ARIAL_BLACK, true);
 	Components.push_back(startButton);
+
+	offsetHeight += gap + buttonHeight;
+	GUITexture* exitButtonTex = new GUITexture(ApplicationSettings::WIDTH / 2, 20, new Texture(ASSETS "img/button_simple_gray.png"), true);
+	exitButtonTex->scale(Vector(0.3, 0.3, 0));
+	exitButtonTex->startPixel(Vector(exitButtonTex->startPixel().X - exitButtonTex->width() / 2, exitButtonTex->startPixel().Y, 0));
+	exitButtonTex->mouseoverHighlight(true);
+	exitButton = new GUIButton(Window, exitButtonTex, "Exit", ARIAL_BLACK, true);
+	Components.push_back(exitButton);
 
 	for (int i = 0; i <= 10; i++)
 	{
@@ -94,11 +112,11 @@ void StartScreenGUI::init()
 		ss << ASSETS << "clouds/" << i % 11 << ".png";
 		std::string cloudPath = ss.str();
 
-		float startX = MathUtil::randPercentage() * ASPECT_WIDTH;
-		float startY = MathUtil::randPercentage() * ASPECT_HEIGHT;
+		float startX = MathUtil::randPercentage() * ApplicationSettings::HEIGHT;
+		float startY = MathUtil::randPercentage() * ApplicationSettings::HEIGHT;
 
-		startX = MathUtil::remapBounds(startX, 0, ASPECT_WIDTH, -400, ASPECT_WIDTH + 400);
-		startY = MathUtil::remapBounds(startY, 0, ASPECT_HEIGHT, -100, ASPECT_HEIGHT - 100);
+		startX = MathUtil::remapBounds(startX, 0, ApplicationSettings::WIDTH, -400, ApplicationSettings::WIDTH + 400);
+		startY = MathUtil::remapBounds(startY, 0, ApplicationSettings::HEIGHT, -100, ApplicationSettings::HEIGHT - 100);
 
 		GUITexture* cloud = new GUITexture(startX, startY, new Texture(cloudPath.c_str()), true, false);
 		clouds.push_back(cloud);

@@ -2,12 +2,16 @@
 
 #include "ApplicationGUI.h"
 
-GUIButtonSwitch::GUIButtonSwitch(float startX, float startY, float width, float height)
+GUIButtonSwitch::GUIButtonSwitch(float startX, float startY, float width, float height, const char* text)
 {
 	GUIConstantQuad* quad = new GUIConstantQuad(startX, startY, width, height);
 	quad->color(COL_DARK);
 	quad->constantColorMode(true);
-	button = new GUIButton(ApplicationGUI::AppGUI->Window, quad, "MouseSteer", ARIAL_BLACK);
+	quad->mouseoverHighlight(true);
+	quad->mouseoverHighlightColor(COL_LIGHT);
+	button = new GUIButton(ApplicationGUI::AppGUI->Window, quad, text, ARIAL_BLACK, false);
+	button->pText()->scale(Vector(0.8, 0.8, 0));
+	button->pText()->charSpace(0.8);
 
 	onOffText = new GUIText(startX + width + 10, startY, "OFF");
 }
@@ -45,4 +49,17 @@ void GUIButtonSwitch::update(float delta)
 bool GUIButtonSwitch::on()
 {
 	return On;
+}
+
+void GUIButtonSwitch::on(bool b)
+{
+	On = b;
+	if (On)
+	{
+		onOffText->text("On");
+	}
+	else
+	{
+		onOffText->text("Off");
+	}
 }

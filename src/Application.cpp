@@ -25,7 +25,7 @@ Application::Application(GLFWwindow* pWin) : ShadowGenerator(1024, 1024), AppGUI
 
     // ----------- START ----------- 
     print("APPLICATION", "initialisation.");
-    testBuffer = new PostProcessingBuffer(1920, 1080);
+    testBuffer = new PostProcessingBuffer(ApplicationSettings::WIDTH, ApplicationSettings::HEIGHT);
 
     // ----------- STATIC INSTANCE INIT -----------
     ApplicationSettings::instance();
@@ -55,6 +55,8 @@ void Application::start()
 
 void Application::update(float dtime)
 {
+
+    ApplicationSettings::writeSettings();
     // ----------- DELTA TIME -----------
     double delta = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
@@ -76,12 +78,12 @@ void Application::update(float dtime)
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(delta);
-        if (APPLICATION_ONLINE_MODE)this->enemyPlane->update(delta);
+        if (ApplicationSettings::ONLINE_MODE && ModelLoader::pEnemyPlane)this->enemyPlane->update(delta);
     }
 
     if (ModelLoader::pAIPlane && ModelLoader::pPlayerPlane)
     {
-        aiControls->update(delta);
+        //aiControls->update(delta);
     }
 
     // ----------- Model Update ----------- 
@@ -171,11 +173,17 @@ void Application::draw()
 }
 void Application::end()
 {
-    //for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
-    //   delete (* it);
-
+    /*for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
+       delete (* it);*/
+    delete planeControls;
+    delete aiControls;
+    delete Cam;
+    delete enemyPlane;
+    delete testBuffer;
+    delete AppGUI;
     //Ocean.clear();
     //Models.clear();
+    exit(0);
 }
 
 void Application::glErrorHandler(GLenum err)

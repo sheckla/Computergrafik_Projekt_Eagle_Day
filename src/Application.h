@@ -32,11 +32,9 @@ protected:
     std::list<BaseModel*> Models;
     std::vector<BaseModel*> Cloud_Box;
     std::list<BaseModel*> Ocean;
-    WaterLoader* pWaterLoader;
 
     // GUI
     ApplicationGUI* AppGUI; // Steuereinheit
-    std::list<GUIBaseComponent*> guis;
 
     // Delta Time Update
     double last=0;

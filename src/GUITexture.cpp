@@ -1,5 +1,6 @@
 #include "GUITexture.h"
 
+#include "ApplicationSettings.h"
 #include "GUINumericPointerMeter.h"
 #include "MathUtil.h"
 
@@ -14,8 +15,8 @@ void GUITexture::updateBounds()
 
     if (FillScreen)
     {
-        Width = MathUtil::remapBounds(Width, 0, Width, 0, ASPECT_WIDTH);
-        Height = MathUtil::remapBounds(Height, 0, Height, 0, ASPECT_HEIGHT);
+        Width = MathUtil::remapBounds(Width, 0, Width, 0, ApplicationSettings::WIDTH);
+        Height = MathUtil::remapBounds(Height, 0, Height, 0, ApplicationSettings::HEIGHT);
     }
 
     GUIConstantQuad::updateBounds();

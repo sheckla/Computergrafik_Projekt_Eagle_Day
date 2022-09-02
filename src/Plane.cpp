@@ -151,7 +151,7 @@ bool Plane::loadModels(const char* path)
 	// Offsets anwenden
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
-		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,0)));
+		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,-65)));
 	}
 	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 
@@ -165,7 +165,7 @@ bool Plane::loadModels(const char* path)
 	horizon->shadowCaster(false);
 	//horizon->transform(Matrix().translation(horizonOffset));
 
-	speed = 100;
+	speed = 2;
 	return true;
 }
 
@@ -182,6 +182,8 @@ void Plane::update(double delta)
 
 	forward.translation(Vector(0, 0, ACCELERATION_GAIN * speed));
 	totalRudderRotation += ROTATION_SPEED * -Tilt.rudder * speedMultiplier;
+
+
 	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * speedMultiplier);
 	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * speedMultiplier);
 	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier);

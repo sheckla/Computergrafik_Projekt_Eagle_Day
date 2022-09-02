@@ -21,6 +21,9 @@ uniform vec3 boundsMax;
 
 uniform float TimeTranslation;
 
+uniform float AspectWidth;
+uniform float AspectHeight;
+
 float BOTTOM = 80;
 float TOP = 120;
 
@@ -46,8 +49,8 @@ void FadeOut(vec3 CameraPosition, vec3 WorldSpaceBottom,float fadeStart, float f
 
 void main()
 {
-    float NormScreenCoordX =  (gl_FragCoord.x / 1920.0f * 2 - 1);
-    float NormScreenCoordY = (gl_FragCoord.y / 1080.0f * 2 - 1);
+    float NormScreenCoordX =  (gl_FragCoord.x / AspectWidth * 2 - 1);
+    float NormScreenCoordY = (gl_FragCoord.y / AspectHeight * 2 - 1);
     
     // @ proj.transformVec4x4(Vector(xpos, ypos, 0));
     float Xm = InverseProjectionMatrix[0][0] * NormScreenCoordX + InverseProjectionMatrix[1][0] * NormScreenCoordY + InverseProjectionMatrix[2][0] * 0 + InverseProjectionMatrix[3][0];

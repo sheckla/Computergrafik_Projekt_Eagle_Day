@@ -13,6 +13,7 @@ Window(window), loadingScreenGUI(window), startScreenGUI(new StartScreenGUI(wind
 
 ApplicationGUI::~ApplicationGUI()
 {
+	delete ppBuffer;
 }
 
 void ApplicationGUI::draw()

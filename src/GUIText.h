@@ -40,6 +40,9 @@ public:
 	void charSpace(float f);
 	void width(float w);
 	void height(float h);
+	void startPixel(Vector v);
+
+	Vector startPixel();
 
 	float height();
 	float totalWidth();

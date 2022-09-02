@@ -71,7 +71,7 @@ float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 		}    
 	} 
 	shadow /= (smoothingDiameter * smoothingDiameter);				// normalize the shadow value
-	return shadow / (1.5);
+	return shadow / (2);
 }
 
 

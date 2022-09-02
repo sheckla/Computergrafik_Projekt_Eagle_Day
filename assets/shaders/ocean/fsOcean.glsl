@@ -19,6 +19,9 @@ uniform samplerCube CubeMapTexture;
 uniform mat4 InvViewMatrix;
 uniform mat4 InvProjMatrix;
 
+uniform float AspectWidth;
+uniform float AspectHeight;
+
 in vec3 Position;
 in vec3 Pos;
 in vec3 Normal;
@@ -101,8 +104,8 @@ void main()
 
 
      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-     float NormScreenCoordX =  (gl_FragCoord.x / 1920.0f * 2 - 1);
-    float NormScreenCoordY = (gl_FragCoord.y / 1080.0f * 2 - 1);
+     float NormScreenCoordX =  (gl_FragCoord.x / AspectWidth * 2 - 1);
+    float NormScreenCoordY = (gl_FragCoord.y / AspectHeight * 2 - 1);
    
     float Xm = InvProjMatrix[0][0] * NormScreenCoordX + InvProjMatrix[1][0] * NormScreenCoordY + InvProjMatrix[2][0] * 0 + InvProjMatrix[3][0];
     float Ym = InvProjMatrix[0][1] * NormScreenCoordX + InvProjMatrix[1][1] * NormScreenCoordY + InvProjMatrix[2][1] * 0 + InvProjMatrix[3][1];
