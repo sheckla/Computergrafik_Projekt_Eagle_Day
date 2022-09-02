@@ -13,6 +13,7 @@
 #include "VolumetricCloudsLoaderImpl.h"
 #include "EnemyPlane.h"
 #include "WaterLoaderImpl.h"
+#include "CollisionDetector.h"
 
 ModelLoader* ModelLoader::pModelLoader = nullptr;
 Plane* ModelLoader::pPlayerPlane = nullptr;
@@ -61,6 +62,7 @@ bool ModelLoader::skyBox()
     instance().pSkyBox = pModel1;
     Matrix m = Matrix().scale(10);
     pModel1->transform(pModel1->transform() * m);
+
     return true;
 }
 
@@ -135,6 +137,78 @@ bool ModelLoader::clouds()
         m.translation(Vector(0, 100, 0));
         cloud->transform(m);
     }
+
+
+
+
+    /////////////////////////////////////
+    /*
+    Model* ship_B = new Model(ASSETS "models/battleship/battleshipBottom.obj", false);
+    Model* ship_T = new Model(ASSETS "models/battleship/battleshipTop.obj", false);
+
+    PhongShader* pShader = new PhongShader();
+    pShader->specularExp(0);
+
+    ship_B->shader(pShader);
+    ship_B->shadowCaster(false);
+    ship_T->shader(pShader);
+    ship_T->shadowCaster(false);
+    Models->push_back(ship_B);
+    Models->push_back(ship_T);
+
+    AABB aabb = ship_B->boundingBox(); //Correct
+
+    AABB* hitbox1 = new AABB();
+    hitbox1->Max = aabb.Max;
+    hitbox1->Min = aabb.Min;
+
+    CollisionDetector::AddHitbox(hitbox1); 
+
+    AABB aabb2 = ship_T->boundingBox();
+
+    AABB* hitbox2 = new AABB();
+    hitbox2->Max = aabb2.Max;
+    hitbox2->Min = aabb2.Min;
+
+    CollisionDetector::AddHitbox(hitbox2);
+    */
+    /////////////////////////////////////
+
+
+
+    return true;
+}
+
+bool ModelLoader::ship() 
+{
+    Model* ship_B = new Model(ASSETS "models/battleship/battleshipBottom.obj", false);
+    Model* ship_T = new Model(ASSETS "models/battleship/battleshipTop.obj", false);
+
+    PhongShader* pShader = new PhongShader();
+    pShader->specularExp(0);
+
+    ship_B->shader(pShader);
+    ship_B->shadowCaster(false);
+    ship_T->shader(pShader);
+    ship_T->shadowCaster(false);
+    Models->push_back(ship_B);
+    Models->push_back(ship_T);
+
+    AABB aabb = ship_B->boundingBox();
+
+    AABB* hitbox1 = new AABB();
+    hitbox1->Max = aabb.Max;
+    hitbox1->Min = aabb.Min;
+
+    CollisionDetector::AddHitbox(hitbox1);
+
+    AABB aabb2 = ship_T->boundingBox();
+
+    AABB* hitbox2 = new AABB();
+    hitbox2->Max = aabb2.Max;
+    hitbox2->Min = aabb2.Min;
+
+    CollisionDetector::AddHitbox(hitbox2);
     return true;
 }
 

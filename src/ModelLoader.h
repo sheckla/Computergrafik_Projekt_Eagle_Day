@@ -42,6 +42,7 @@ public:
     static EnemyPlane* enemyPlane(std::string ip, int port);
     static bool clouds();
     static bool ocean();
+    static bool ship();
 
 };
 

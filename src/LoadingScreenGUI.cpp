@@ -158,6 +158,15 @@ void LoadingScreenGUI::update(float delta)
 
 		break;
 		// ----
+	case MODELS_SHIP:
+		printLoadStartText("SHIP");
+
+		loadingProgressText->text(stringifyTask("Loading Battleship").c_str());
+		ModelLoader::ship();
+
+		printLoadStartText("SHIP");
+		break;
+		//----
 	case MODELS_WATER:
 		printLoadStartText("OCEAN");
 

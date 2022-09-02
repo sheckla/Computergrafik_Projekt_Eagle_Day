@@ -118,6 +118,18 @@ public:
 	void tiltRightWingflaps(float i);
 	void tiltRudder(float i);
 
+	const AABB& boundingBox() const
+	{
+		float posX = this->parts[0]->transform().m03;
+		float posY = this->parts[0]->transform().m13;
+		float posZ = this->parts[0]->transform().m23;
+
+		AABB aabb;
+		aabb.Min = Vector(-5 + posX, -5 + posY, -5 + posZ);
+		aabb.Max = Vector(5 + posX, 5 + posY, 5 + posZ);
+		return aabb;
+	}
+
 	// Getter
 	Model** getParts();
 	float getSpeed() const;

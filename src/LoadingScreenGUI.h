@@ -15,7 +15,7 @@
 #include "GUIText.h"
 #include "GUITexture.h"
 
-constexpr int tasks = 12;
+constexpr int tasks = 13;
 
 const enum LOADING_TASKS
 {
@@ -29,6 +29,7 @@ const enum LOADING_TASKS
 	MODELS_LIGHT,
 	MODELS_SKYBOX,
 	MODELS_PLANEPARTS,
+	MODELS_SHIP,
 	MODELS_CLOUDS,
 	MODELS_WATER,
 

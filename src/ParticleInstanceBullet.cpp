@@ -37,7 +37,7 @@ void ParticleInstanceBullet::update(double deltaTime)
 
 	if (this->hasHitDetection) {
 		if (this->hasHitSomething == false) // Can only hit once!
-			if (CollisionDetector::IsColliding(Vector(this->CurrentTransform.m03, this->CurrentTransform.m13, this->CurrentTransform.m23))) {
+			if (CollisionDetector::BulletCollision(Vector(this->CurrentTransform.m03, this->CurrentTransform.m13, this->CurrentTransform.m23))) {
 				this->hasHitSomething = true;
 			}
 	}
