@@ -7,6 +7,7 @@
 #include "Printer.h"
 #include "NetworkSender.h"
 #include "TriangleSphereModel.h"
+#include "CollisionDetector.h"
 
 float Plane::speedPercentage() const
 {
@@ -240,6 +241,9 @@ void Plane::update(double delta)
 			HighPitchSoundEngine->setSoundVolume(0);
 		}
 	}
+
+	//Hard Collisions
+	if (CollisionDetector::CheckPlaneCollision(this->boundingBox())) { this->hp = -1; }
 }
 
 // Spitfire max km/h = 594

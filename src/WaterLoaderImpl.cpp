@@ -1,6 +1,7 @@
 #include "WaterLoaderImpl.h"
 
 #include <thread>
+#include "Globals.h"
 
 WaterLoaderImpl::WaterLoaderImpl()
 {
@@ -53,21 +54,71 @@ void WaterLoaderImpl::createOceanSegments()
     int SegmXSegm = 80;
     float abst = 20.0f;
 
+    float res_ring_0 = 256.0f;
+    float res_ring_1 = 128.0f;
+    float res_ring_2 = 64.0f;
+    float res_ring_3 = 64.0f;
+    float res_ring_4 = 32.0f;
+    float res_ring_5 = 16.0f;
+
+
+    int q = QUALITY;
+    std::cout << "Loading Ocean with Qualitysetting: " << q << std::endl;
+
+    if (q == 0) 
+    {
+        res_ring_0 = 8.0f;
+        res_ring_1 = 8.0f;
+        res_ring_2 = 8.0f;
+        res_ring_3 = 8.0f;
+        res_ring_4 = 8.0f;
+        res_ring_5 = 8.0f;
+    }
+
+    if (q == 1)
+    {
+        res_ring_0 = 64.0f;
+        res_ring_1 = 32.0f;
+        res_ring_2 = 16.0f;
+        res_ring_3 = 8.0f;
+        res_ring_4 = 8.0f;
+        res_ring_5 = 8.0f;
+    }
+
+    if (q == 2)
+    {
+        res_ring_0 = 128.0f;
+        res_ring_1 = 64.0f;
+        res_ring_2 = 32.0f;
+        res_ring_3 = 16.0f;
+        res_ring_4 = 8.0f;
+        res_ring_5 = 8.0f;
+    }
+
+    if (q == 3)
+    {
+        res_ring_0 = 128.0f;
+        res_ring_1 = 128.0f;
+        res_ring_2 = 64.0f;
+        res_ring_3 = 32.0f;
+        res_ring_4 = 16.0f;
+        res_ring_5 = 16.0f;
+    }
+
     for (int i = 0; i < SegmXSegm; i++) {
         for (int j = 0; j < SegmXSegm; j++) {
-            //std::cout << i << " " << j << std::endl;
 
-            if ((i > 20 && i < 60) && (j > 20 && j < 60)) { resolution = 16.0f; }
+            if ((i > 20 && i < 60) && (j > 20 && j < 60)) { resolution = res_ring_5; }
 
-            if ((i > 25 && i < 55) && (j > 25 && j < 55)) { resolution = 32.0f; }
+            if ((i > 25 && i < 55) && (j > 25 && j < 55)) { resolution = res_ring_4; }
 
-            if ((i > 28 && i < 52) && (j > 28 && j < 52)) { resolution = 64.0f; }
+            if ((i > 28 && i < 52) && (j > 28 && j < 52)) { resolution = res_ring_3; }
 
-            if ((i > 32 && i < 48) && (j > 32 && j < 48)) { resolution = 64.0f; }//128
+            if ((i > 32 && i < 48) && (j > 32 && j < 48)) { resolution = res_ring_2; }
 
-            if ((i > 35 && i < 45) && (j > 35 && j < 45)) { resolution = 128.0f; }//256
+            if ((i > 36 && i < 44) && (j > 36 && j < 44)) { resolution = res_ring_1; }
 
-            if ((i > 37 && i < 43) && (j > 37 && j < 43)) { resolution = 256.0f; }//512
+            if ((i > 38 && i < 42) && (j > 38 && j < 42)) { resolution = res_ring_0; }// inner ring
 
 
             //if (j < 10 ) { resolution = 128.0f; std::cout << "-------------------------------" << std::endl; }
