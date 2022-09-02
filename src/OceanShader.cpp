@@ -1,5 +1,7 @@
 #include "OceanShader.h"
 #include <string>
+
+#include "ApplicationSettings.h"
 #include "Texture.h"
 #include "Matrix.h"
 #include "MouseLogger.h"
@@ -34,6 +36,8 @@ OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
 
     std::string pNoise = AssetDirectory + "/img/noise/perlin_noise.jpg";
     PerlinTex = new Texture(pNoise.c_str());
+    AspectHeightLoc = initUniformParameter("AspectHeight");
+    AspectWidthLoc = initUniformParameter("AspectWidth");
 }
 
 void OceanShader::activate(const BaseCamera& Cam) const
@@ -59,6 +63,8 @@ void OceanShader::activate(const BaseCamera& Cam) const
     setUniformParameter(ViewMatrixLoc, iv);
     setUniformParameter(ProjMatrixLoc, ip);
     glUniform1f(ValLoc, MouseLogger::normX());
+    setUniformParameter(AspectHeightLoc, ApplicationSettings::HEIGHT);
+    setUniformParameter(AspectWidthLoc, ApplicationSettings::WIDTH);
 }
 
 void OceanShader::deactivate() const

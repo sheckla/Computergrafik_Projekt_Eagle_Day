@@ -56,6 +56,7 @@ public:
         }
 
         if (aabb.Min.Y < 1.3f) {
+                std::cout << "Collision" << std::endl;
             return true;
         }
 

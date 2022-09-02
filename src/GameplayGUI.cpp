@@ -38,7 +38,7 @@ void GameplayGUI::draw()
 void GameplayGUI::update(float delta)
 {
 	for (auto component : Components) component->update(delta);
-	//lifeMeter->percentage(ModelLoader::pPlayerPlane->hp / 100);
+	lifeMeter->percentage(ModelLoader::pPlayerPlane->hp / 100);
 	ModelLoader::pPlayerPlane->hp = 100 * lifeMeter->percentage();
 	(!ApplicationSettings::MOUSE_CONTROLS) ? mouseCircle->active(false) : mouseCircle->active(true);
 
@@ -122,7 +122,7 @@ void GameplayGUI::init()
 	lifeMeter = new GUISlider(ApplicationSettings::WIDTH - 355, ApplicationSettings::HEIGHT - 100, 250, 75, 10, "HP");
 	Components.push_back(lifeMeter);
 	lifeMeter->percentage(1);
-	//lifeMeter->enableSliding(false);
+	lifeMeter->enableSliding(false);
 
 	compassText = new GUIText(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 75, "                              ");
 	compassText->scale(Vector(0.5, 0.5, 0));

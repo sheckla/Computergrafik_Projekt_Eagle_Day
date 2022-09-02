@@ -152,7 +152,7 @@ bool Plane::loadModels(const char* path)
 	// Offsets anwenden
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
-		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,-65)));
+		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,10,-65)));
 	}
 	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 
@@ -285,7 +285,7 @@ void Plane::update(double delta)
 	}
 
 	//Hard Collisions
-	if (CollisionDetector::CheckPlaneCollision(this->boundingBox())) { this->hp = -1; }
+	if (CollisionDetector::CheckPlaneCollision(this->boundingBox())) { this->hp -= 1; }
 }
 
 // Spitfire max km/h = 594

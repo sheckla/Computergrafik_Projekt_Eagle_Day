@@ -60,6 +60,8 @@ private:
     GLint ViewMatrixLoc;
     GLint ProjMatrixLoc;
     GLint ValLoc;
+    GLint AspectWidthLoc;
+    GLint AspectHeightLoc;
 };
 
 #endif /* OceanShader_hpp */
