@@ -48,6 +48,9 @@
 #define BOLD "\033[1m"
 #define NF "\033[0m"
 
+//Quality
+#define QUALITY 3;
+
 #pragma once
 #include <iomanip>
 template<typename T>
