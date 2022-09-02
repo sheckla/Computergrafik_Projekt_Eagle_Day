@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "ApplicationSettings.h"
 #include "GUIConstantQuadWrapper.h"
 #include "GUIConstantTriangle.h"
 #include "GUIText.h"
@@ -33,7 +34,7 @@ GUIBaseComponent* GUINumericPointerMeter::bar(int startX, int startY, int width,
 GUIText* GUINumericPointerMeter::number(int startX, int startY, int i, Vector scale)
 {
 	GUIText* numberText;
-	float y = 13;
+	float y = 8;
 	// Speed Text (left)
 	if (speedMeterMode)
 	{
@@ -42,7 +43,7 @@ GUIText* GUINumericPointerMeter::number(int startX, int startY, int i, Vector sc
 	// Altitude text (right)
 	else
 	{
-		numberText = new GUIText(ASPECT_WIDTH - 40, startY+y, altitudeTexts[i], ARIAL_BLACK);
+		numberText = new GUIText(ApplicationSettings::WIDTH - 40, startY+y, altitudeTexts[i], ARIAL_BLACK);
 	}
 
 
@@ -71,12 +72,12 @@ void GUINumericPointerMeter::initMeterQuads(int startX, int startY, Vector& barW
 	else
 		// Track Altitude
 	{
-		MeterQuad = new GUIConstantQuad(ASPECT_WIDTH - startX - bigWidth - 90, startY, smallWidth, bigHeight);
-		MeterTriangle = new GUIConstantTriangle(ASPECT_WIDTH - startX - bigWidth - 20 - 20, startY, 10, bigHeight, true);
+		MeterQuad = new GUIConstantQuad(ApplicationSettings::WIDTH - startX - bigWidth - 90, startY, smallWidth, bigHeight);
+		MeterTriangle = new GUIConstantTriangle(ApplicationSettings::WIDTH - startX - bigWidth - 20 - 20, startY, 10, bigHeight, true);
 		MeterTriangle->rotate180();
-		bigXOffset = ASPECT_WIDTH - bigXOffset - bigWidth;
-		mediumXOffset = ASPECT_WIDTH - mediumXOffset - mediumWidth;
-		smallXOffset = ASPECT_WIDTH - smallXOffset - smallWidth;
+		bigXOffset = ApplicationSettings::WIDTH - bigXOffset - bigWidth;
+		mediumXOffset = ApplicationSettings::WIDTH - mediumXOffset - mediumWidth;
+		smallXOffset = ApplicationSettings::WIDTH - smallXOffset - smallWidth;
 	}
 
 	MeterQuad->constantColorMode(true);
@@ -94,7 +95,7 @@ void GUINumericPointerMeter::initMeterText(int startY)
 		text = new GUIText(10, startY + 32, "             ", ARIAL);
 	} else
 	{
-		text = new GUIText(ASPECT_WIDTH - 220, startY + 32, "                     ", ARIAL);
+		text = new GUIText(ApplicationSettings::WIDTH - 220, startY + 32, "                     ", ARIAL);
 	}
 	meterText = text;
 	meterText->width(30);

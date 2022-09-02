@@ -5,6 +5,8 @@
  *
  */
 
+constexpr double PI = 3.14159265359;
+
 #ifndef MathUtil_h
 #define MathUitl_h
 
@@ -28,6 +30,20 @@ public:
 	{
 		if (randPercentage() > 0.5) return true;
 		return false;
+	}
+
+	static float clamp(float x, float min, float max)
+	{
+		if (x > max) x = max;
+		if (x < min) x = min;
+		return x;
+	}
+
+	static double clamp(double x, double min, double max)
+	{
+		if (x > max) x = max;
+		if (x < min) x = min;
+		return x;
 	}
 
 };

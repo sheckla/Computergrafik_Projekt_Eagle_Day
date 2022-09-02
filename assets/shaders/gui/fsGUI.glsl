@@ -23,8 +23,8 @@ void main()
 
 
     if (IsGUITex == 1) {
-        float normX = (gl_FragCoord.x / 1920.0f * 2);
-        float normY = (gl_FragCoord.y / 1080.0f * 2);
+        float normX = (gl_FragCoord.x / 2560.0f * 2);
+        float normY = (gl_FragCoord.y / 1440.0f * 2);
         FragColor = texture(Tex, Texcoord);
 
         if (IsFont == 1) {

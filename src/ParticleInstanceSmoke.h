@@ -6,13 +6,13 @@
 #include "ParticleInstance.h"
 
 
-class ParticleInstanceSmoke : ParticleInstance
+class ParticleInstanceSmoke : public ParticleInstance
 {
   
 public:
     ParticleInstanceSmoke::ParticleInstanceSmoke(double ttl_, ParticleSprite* model_, BaseShader* shader_, Vector origin);
 
-    ParticleInstanceSmoke::~ParticleInstanceSmoke() { ParticleInstance::~ParticleInstance(); }
+    ParticleInstanceSmoke::~ParticleInstanceSmoke() {  }
 
     void ParticleInstanceSmoke::update(double deltaTime);
 };

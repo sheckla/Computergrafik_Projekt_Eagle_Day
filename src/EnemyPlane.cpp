@@ -3,18 +3,19 @@
 #include "NetworkConnector.h"
 
 #include "Aabb.h"
+#include "MathUtil.h"
 
 EnemyPlane::EnemyPlane(const char* srv_Adr,int port) 
 {
 	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
 
-	Vector Enemy_Position = Vector(-1, 3, -2.0f);
+	Vector Enemy_Position = Vector(0, 5, 35.0f);
 	
 	Matrix m, r, s;
 
 	m.translation(Enemy_Position);
 	r.rotationY(3.1415f);
-	s.scale(.8f);
+	s.scale(.3f);
 
 	this->transform(m * r * s);
 
@@ -69,7 +70,7 @@ void EnemyPlane::update(double delta)
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
-		this->model->transform(Enemy_Tranformation * forward);
+		this->model->transform(Enemy_Tranformation * forward * Matrix().scale(0.3,0.3,0.3));
 		this->propeller->transform(Enemy_Tranformation * forward * rotor_offset * rotorRotation * previousRotorRotation);
 	}
 	else

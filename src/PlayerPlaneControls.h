@@ -1,7 +1,7 @@
 /*
  * Flugzeugkontrolle
  * - Tastatureingaben fuer die verschiedenen Steuerwinkel des Flugzeuges
- * - 'plane' muss im nachhinein an diese Steuereinheit any
+ * - 'plane' muss im nachhinein an diese Steuereinheit angebunden werden
  */
 
 #ifndef PlayerPlaneControls_h

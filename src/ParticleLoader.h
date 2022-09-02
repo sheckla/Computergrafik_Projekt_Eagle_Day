@@ -22,6 +22,7 @@ public:
     void ParticleLoader::StopGenerating() { this->IsGenerating = false; }
 
     void setOffset(float offset) { this->Offset_Value = offset; }
+    void setScale(float scale);
 private:
     float ParticlesEveryXSeconds;
     double Threshold = 0;
@@ -34,6 +35,8 @@ private:
 
     std::list<ParticleInstance*> ParticleList;
     bool IsGenerating = false;
+
+    float Scale = 1.0f;
 };
 
 #endif

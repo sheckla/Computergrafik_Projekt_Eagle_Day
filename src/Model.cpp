@@ -126,7 +126,7 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 
 		if (FitSize == true) {
 			Matrix m;
-			m.scale(5);
+			m.scale(20);
 			this->transform(m);
 		}
 	}
@@ -247,6 +247,7 @@ void Model::applyMaterial(unsigned int index)
 
 void Model::draw(const BaseCamera& Cam)
 {
+	if (!Active) return;
 	if (!pShader) {
 		print("BaseModel::draw()", "no shader found", true);
 		return;
@@ -284,6 +285,11 @@ void Model::draw(const BaseCamera& Cam)
 
 		DrawNodes.pop_front();
 	}
+}
+
+void Model::active(bool b)
+{
+	Active = b;
 }
 
 Matrix Model::convert(const aiMatrix4x4& m)

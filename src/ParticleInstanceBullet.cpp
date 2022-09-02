@@ -27,7 +27,7 @@ void ParticleInstanceBullet::update(double deltaTime)
 	ParticleInstance::update(deltaTime); //Important, do not change!
 
 	Matrix forward_movement,gravitational_pull;
-	forward_movement.translation(this->CurrentTransform.forward() * deltaTime * 100); //Forward movement
+	forward_movement.translation(this->CurrentTransform.forward() * deltaTime * 400); //Forward movement
 															//    9.81f m/s^2
 	gravitational_pull.translation(Vector(0, -1, 0) * TimeAlive * 9.81f * deltaTime); //Gravitational downwards acceleration
 

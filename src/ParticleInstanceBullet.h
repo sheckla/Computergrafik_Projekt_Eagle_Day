@@ -7,7 +7,7 @@
 #include "Matrix.h"
 
 
-class ParticleInstanceBullet : ParticleInstance
+class ParticleInstanceBullet : public ParticleInstance
 {
   
 public:

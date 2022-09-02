@@ -4,6 +4,7 @@
 
 #include "Application.h"
 #include "ApplicationGUI.h"
+#include "ApplicationSettings.h"
 #include "GUIChar.h"
 #include "GUILoadingMeter.h"
 #include "GUITexture.h"
@@ -102,7 +103,7 @@ void LoadingScreenGUI::update(float delta)
 		printLoadStartText("GUI_FINALIZE");
 
 		loadingProgressText->text(stringifyTask("Finalizing GUI").c_str());
-		ApplicationGUI::AppGUI->attachPostProcessingBuffer(new PostProcessingBuffer(ASPECT_WIDTH, ASPECT_HEIGHT));
+		ApplicationGUI::AppGUI->attachPostProcessingBuffer(new PostProcessingBuffer(ApplicationSettings::WIDTH, ApplicationSettings::HEIGHT));
 
 		printLoadFinishText("GUI_FINALIZE");
 		break;
@@ -130,17 +131,21 @@ void LoadingScreenGUI::update(float delta)
 		printLoadStartText("PLANE_PARTS");
 
 		loadingProgressText->text(stringifyTask("Loading PlayerPlane").c_str());
-		ModelLoader::planeParts();
-		if (APPLICATION_ONLINE_MODE)
+		if (ApplicationSettings::ONLINE_MODE)
 		{
 			std::cout << "Loading Online Components" << std::endl;
-			ModelLoader::planePartsOnline("127.0.0.1", 19411);
-			Application::enemyPlane = ModelLoader::enemyPlane("127.0.0.1", 19413);
+			ModelLoader::planePartsOnline(ApplicationSettings::LOCAL_IP, 
+				std::atoi(ApplicationSettings::LOCAL_PORT.c_str()));
+			Application::enemyPlane = ModelLoader::enemyPlane(ApplicationSettings::ENEMY_IP, 
+				std::atoi(ApplicationSettings::ENEMY_PORT.c_str()));
 
 			CollisionDetector::setCollisionTarget(Application::enemyPlane); // Set as collision-target
+		} else
+		{
+			ModelLoader::planeParts();
 		}
 		ModelLoader::planePartsShadowArea();
-//		ModelLoader::aiPlaneParts();
+		//ModelLoader::aiPlaneParts();
 
 		printLoadFinishText("PLANE_PARTS");
 		break;
@@ -170,7 +175,7 @@ void LoadingScreenGUI::update(float delta)
 	case MODELS_WATER:
 		printLoadStartText("OCEAN");
 
-		ModelLoader::ocean();
+		//ModelLoader::ocean();
 
 		printLoadFinishText("OCEAN");
 		break;
@@ -197,18 +202,18 @@ void LoadingScreenGUI::update(float delta)
 void LoadingScreenGUI::init()
 {
 	// Hintergrundbild
-	GUITexture* backgroundImageGUI = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, new Texture(ASSETS "img/bg_loading.png"), true, true);
+	GUITexture* backgroundImageGUI = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_loading.png"), true, true);
 	Components.push_back(backgroundImageGUI);
 
 	// Lademeter
-	loadingMeter = new GUILoadingMeter(20, 20, ASPECT_WIDTH - 40, 55, 10);
+	loadingMeter = new GUILoadingMeter(20, 20, ApplicationSettings::WIDTH - 40, 55, 10);
 	Components.push_back(loadingMeter);
 
 	GUIText* pLoadingProgressText = new GUIText(20, 85, "Preparing to Load Application...       ");
 	this->loadingProgressText = pLoadingProgressText;
 	Components.push_back(pLoadingProgressText);
 
-	GUIText* topLeftTextInfo = new GUIText(20, ASPECT_HEIGHT-70, "[EAGLE DAY - UNRELEASED ]");
+	GUIText* topLeftTextInfo = new GUIText(20, ApplicationSettings::HEIGHT -70, "[EAGLE DAY - UNRELEASED ]");
 	Components.push_back(topLeftTextInfo);
 
 	active(true); // GUI wird gezeichnet

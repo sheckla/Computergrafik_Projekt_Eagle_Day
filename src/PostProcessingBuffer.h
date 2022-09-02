@@ -19,6 +19,7 @@ class PostProcessingBuffer
 	Framebuffer buffer;
 	ScreenQuadModel* screenQuad;
 	float elapsedTime = 0;
+	float shakeTime = 0;
 	bool PostProcessingActive = false;
 public:
 	PostProcessingBuffer(int width, int height);
@@ -27,6 +28,8 @@ public:
 	void preDraw();
 
 	void gaussianBlur(bool b);
+	void shake(bool b);
+	void hp(float hp);
 	void update(float delta);
 
 	void postProcessingActive(bool b);

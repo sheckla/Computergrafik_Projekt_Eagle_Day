@@ -47,6 +47,9 @@ private:
 
 	GLint TimeTranslationLoc;
 
+	GLint AspectHeightLoc;
+	GLint AspectWidthLoc;
+
 	AABB* bounds;
 
 	const Texture* DetailTex[WORLEY_AMOUNT];

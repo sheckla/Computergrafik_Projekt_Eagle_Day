@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "ApplicationSettings.h"
 #include "Globals.h"
 #include "MathUtil.h"
 #include "MouseLogger.h"
@@ -12,13 +13,7 @@
 GUIChar::GUIChar(float startX, float startY, CHAR_DATA data) : GUITexture(startX, startY, FNTManager::fontTexture(data.font), true, false),
 data(data)
 {
-    Shader->isFont(true);
-    this->startPixelX = startX - data.xOffset;
-    this->startPixelY = startY - data.yOffset;
-    startPixel(Vector(startPixelX, startPixelY, 0));
-
-    this->updateBounds();
-    this->updateBuffers();
+    updateFont(startX, startY, data);
 
 }
 GUIChar::~GUIChar()
@@ -30,14 +25,14 @@ GUIChar::~GUIChar()
 
 void GUIChar::updateFont(float startX, float startY, CHAR_DATA d)
 {
+    Shader->isFont(true);
     this->data = d;
     texture(FNTManager::fontTexture(d.font));
-    this->startPixelX = startX - data.xOffset;
-    this->startPixelY = startY - data.yOffset;
+    this->startPixelX = startX + (float)data.xOffset;
+    //this->startPixelY = startY - data.yOffset;
     startPixel(Vector(startPixelX, startPixelY, 0));
-    char c = 'i';
-    char p = '/';
-    //char d = 'D';
+    char c = 'M';
+    char p = 'a';
     updateBounds();
     updateBuffers();
 }
@@ -125,11 +120,11 @@ void GUIChar::updateBuffers()
 
 void GUIChar::updateBounds()
 {
-    float normStartX = ((float)startPixelX / ASPECT_WIDTH * 2) - 1;
-    float normStartY = ((float)startPixelY / ASPECT_HEIGHT * 2) - 1;
+    float normStartX = ((float)startPixelX / ApplicationSettings::WIDTH * 2) - 1;
+    float normStartY = ((float)startPixelY / ApplicationSettings::HEIGHT * 2) - 1;
 
-    float normEndX = ((startPixelX + data.width * Scale.X) / ASPECT_WIDTH * 2) - 1;
-    float normEndY = ((startPixelY + data.height * Scale.Y) / ASPECT_HEIGHT * 2) - 1;
+    float normEndX = ((startPixelX + data.width * Scale.X) / ApplicationSettings::WIDTH * 2) - 1;
+    float normEndY = ((startPixelY + data.height * Scale.Y) / ApplicationSettings::HEIGHT * 2) - 1;
 
     LowerBound = Vector(normStartX, normStartY, 0);
     UpperBound = Vector(normEndX, normEndY, 0);

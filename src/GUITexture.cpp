@@ -1,5 +1,6 @@
 #include "GUITexture.h"
 
+#include "ApplicationSettings.h"
 #include "GUINumericPointerMeter.h"
 #include "MathUtil.h"
 
@@ -14,8 +15,8 @@ void GUITexture::updateBounds()
 
     if (FillScreen)
     {
-        Width = MathUtil::remapBounds(Width, 0, Width, 0, ASPECT_WIDTH);
-        Height = MathUtil::remapBounds(Height, 0, Height, 0, ASPECT_HEIGHT);
+        Width = MathUtil::remapBounds(Width, 0, Width, 0, ApplicationSettings::WIDTH);
+        Height = MathUtil::remapBounds(Height, 0, Height, 0, ApplicationSettings::HEIGHT);
     }
 
     GUIConstantQuad::updateBounds();
@@ -46,6 +47,12 @@ GUITexture::~GUITexture()
     //deactivateTex();
 }
 
+void GUITexture::draw()
+{
+    if (!Active) return;
+    GUIConstantQuad::draw();
+}
+
 void GUITexture::texture(Texture* tex)
 {
     this->pTex = tex;
@@ -69,5 +76,10 @@ void GUITexture::handleMouseEvents()
 {
     (mouseInside()) ? Shader->mouseInside(true) : Shader->mouseInside(false);
     GUIConstantQuad::handleMouseEvents();
+}
+
+void GUITexture::active(bool b)
+{
+    Active = b;
 }
 

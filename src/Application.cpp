@@ -25,7 +25,7 @@ Application::Application(GLFWwindow* pWin) : ShadowGenerator(1024, 1024), AppGUI
 
     // ----------- START ----------- 
     print("APPLICATION", "initialisation.");
-    testBuffer = new PostProcessingBuffer(1920, 1080);
+    testBuffer = new PostProcessingBuffer(ApplicationSettings::WIDTH, ApplicationSettings::HEIGHT);
 
     // ----------- STATIC INSTANCE INIT -----------
     ApplicationSettings::instance();
@@ -55,6 +55,8 @@ void Application::start()
 
 void Application::update(float dtime)
 {
+
+    ApplicationSettings::writeSettings();
     // ----------- DELTA TIME -----------
     double delta = glfwGetTime() - last; // delta = 1s/hhz, bei 165 = 0.006
     last = glfwGetTime();
@@ -76,25 +78,26 @@ void Application::update(float dtime)
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(delta);
-        if (APPLICATION_ONLINE_MODE)this->enemyPlane->update(delta);
+        if (ApplicationSettings::ONLINE_MODE && ModelLoader::pEnemyPlane)this->enemyPlane->update(delta);
     }
 
     if (ModelLoader::pAIPlane && ModelLoader::pPlayerPlane)
     {
-        aiControls->update(delta);
+        //aiControls->update(delta);
     }
 
     // ----------- Model Update ----------- 
     if (ModelLoader::pWaterLoader) ModelLoader::pWaterLoader->updateOcean(Cam, delta);
     CloudShader::TimeTranslation = last;
+
+    // ShadowPlaneArea adjust
     if (ModelLoader::instance().PlayerPlaneShadowArea)
     {
-        ModelLoader::instance().PlayerPlaneShadowArea->transform(Matrix().translation(
-            Vector(ModelLoader::pPlayerPlane->getPosition().X, 1.5, ModelLoader::pPlayerPlane->getPosition().Z  + ModelLoader::pPlayerPlane->getPosition().Y)));
+        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(ModelLoader::pPlayerPlane->getPosition()) * Matrix().translation(0, -10, 0));
     }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
-    ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, 0, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
+    ModelLoader::pSkyBox->transform(Matrix().translation(Vector(ModelLoader::pPlayerPlane->getPosition().X, -40, ModelLoader::pPlayerPlane->getPosition().Z)) * Matrix().scale(6));
 
     Cam->update();
 }
@@ -108,12 +111,14 @@ void Application::draw()
         // ----------- SHADOW MAPPPING -----------
         // Frisst viel Leistung! Gut entscheiden was ShadowMaps erhalten soll
         std::list<BaseModel*> shadows;
-        shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
-        for (auto shadowMapModel : Models)
-            shadows.push_back(shadowMapModel);
 
+        // ShadowPlane Offset
+        Vector prec = ModelLoader::PlayerPlaneShadowArea->transform().translation();
+        shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
+        for (int i = 0; i < PLANE_PARTS; i++) shadows.push_back(ModelLoader::pPlayerPlane->getParts()[i]);
         ShadowGenerator.generate(shadows);
         ShaderLightMapper::instance().activate();
+
 
         // ----------- PostProc. Init & 3D SCENE ----------- 
         AppGUI->ppBuffer->preDraw();
@@ -129,7 +134,6 @@ void Application::draw()
             (*it)->draw(*Cam);
         }
 
-        ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
         if(ModelLoader::pEnemyPlane != nullptr)
@@ -139,6 +143,7 @@ void Application::draw()
         {
             cloud->draw(*Cam);
         }
+        ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
 
 
         AppGUI->ppBuffer->postDraw();
@@ -168,11 +173,17 @@ void Application::draw()
 }
 void Application::end()
 {
-    //for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
-    //   delete (* it);
-
+    /*for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
+       delete (* it);*/
+    delete planeControls;
+    delete aiControls;
+    delete Cam;
+    delete enemyPlane;
+    delete testBuffer;
+    delete AppGUI;
     //Ocean.clear();
     //Models.clear();
+    exit(0);
 }
 
 void Application::glErrorHandler(GLenum err)

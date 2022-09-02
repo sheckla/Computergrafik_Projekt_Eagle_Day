@@ -188,9 +188,10 @@ void TriangleBoxModel::draw(const BaseCamera& Cam)
     // TODO: Add your code (Exercise 2)
     VB.activate();
     IB.activate();
-
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
-
+    glCullFace(GL_BACK);
     IB.deactivate();
     VB.deactivate();
 }

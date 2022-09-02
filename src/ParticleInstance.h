@@ -18,6 +18,8 @@ public:
     virtual void ParticleInstance::update(double deltaTime);
     void ParticleInstance::draw(const BaseCamera& Cam);
     bool isAlive();
+    void scale(float f);
+    void startScale(float f);
 protected:
     double TimeAlive = 0;
     double TTL;

@@ -2,6 +2,8 @@
 #include "Matrix.h"
 #include <sstream>
 
+#include "ApplicationSettings.h"
+
 float CloudShader::TimeTranslation = 0.0f;
 
 CloudShader::CloudShader() : PhongShader()
@@ -28,6 +30,8 @@ CloudShader::CloudShader() : PhongShader()
     boundsMinLoc = glGetUniformLocation(ShaderProgram, "boundsMin");
     boundsMaxLoc = glGetUniformLocation(ShaderProgram, "boundsMax");
     NoiseLoc = glGetUniformLocation(ShaderProgram, "noise");
+    AspectHeightLoc = glGetUniformLocation(ShaderProgram, "AspectHeight");
+    AspectWidthLoc = glGetUniformLocation(ShaderProgram, "AspectWidth");
 
     TimeTranslationLoc = glGetUniformLocation(ShaderProgram, "TimeTranslation");
 
@@ -69,6 +73,8 @@ void CloudShader::activate(const BaseCamera& Cam) const
     setUniformParameter(ProjectionMatrixLoc, ip);
     setUniformParameter(boundsMinLoc, bounds->Min);
     setUniformParameter(boundsMaxLoc, bounds->Max);
+    setUniformParameter(AspectWidthLoc, ApplicationSettings::WIDTH);
+    setUniformParameter(AspectHeightLoc, ApplicationSettings::HEIGHT);
 
     setUniformParameter(TimeTranslationLoc, CloudShader::TimeTranslation);
 }

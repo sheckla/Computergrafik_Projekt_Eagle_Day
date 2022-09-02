@@ -6,6 +6,7 @@
 #include "PlaneLoader.h"
 #include "Printer.h"
 #include "NetworkSender.h"
+#include "TextureShader.h"
 #include "TriangleSphereModel.h"
 #include "CollisionDetector.h"
 
@@ -16,6 +17,7 @@ float Plane::speedPercentage() const
 
 void Plane::startEngine()
 {
+	if (SoundEngine && HighPitchSoundEngine) return;
 	SoundEngine = irrklang::createIrrKlangDevice();
 	SoundEngine->setSoundVolume(0);
 	SoundEngine->play2D(ASSETS "audio/steady.wav", true);
@@ -23,6 +25,14 @@ void Plane::startEngine()
 	HighPitchSoundEngine = irrklang::createIrrKlangDevice();
 	HighPitchSoundEngine->setSoundVolume(0);
 	HighPitchSoundEngine->play2D(ASSETS "audio/steady_high_pitch.wav", true);
+}
+
+void Plane::stopEngine()
+{
+	if (SoundEngine) delete SoundEngine;
+	if (HighPitchSoundEngine) delete HighPitchSoundEngine;
+	SoundEngine = nullptr;
+	HighPitchSoundEngine = nullptr;
 }
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const
@@ -73,18 +83,21 @@ Plane::Plane(const char* path)
 		throw "err";
 	}
 
-	Smoke_System = new ParticleLoader(.02, .5, ParticleType::Smoke);
+	Smoke_System = new ParticleLoader(.0002, .14, ParticleType::Smoke);
+	//Smoke_System->setScale(1.32);
 
-	Gun_Left = new ParticleLoader(.01, 2, ParticleType::Bullet);
+	Gun_Left = new ParticleLoader(.01, 4, ParticleType::Bullet);
 	Gun_Left->setOffset(-2.5f);
-	Muzzleflash_Left = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Left = new ParticleLoader(.01, .019, ParticleType::MuzzleFlash);
 	Muzzleflash_Left->setOffset(-2.5f);
+	Muzzleflash_Left->setScale(0.5);
 
 
-	Gun_Right = new ParticleLoader(.01, 2, ParticleType::Bullet);
+	Gun_Right = new ParticleLoader(.01, 4, ParticleType::Bullet);
 	Gun_Right->setOffset(2.5f);
-	Muzzleflash_Right = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
+	Muzzleflash_Right = new ParticleLoader(.01, .019, ParticleType::MuzzleFlash);
 	Muzzleflash_Right->setOffset(2.5f);
+	Muzzleflash_Right->setScale(0.5);
 }
 
 Plane::Plane(const char* path, const char* srv_Adr, int port) : Plane(path) // <- Calls normal constructor
@@ -104,7 +117,7 @@ Plane::~Plane()
 bool Plane::loadModels(const char* path)
 {
 	const std::string planePath = path;
-	bool fitToSize = false;
+	bool fitToSize = true;
 	PhongShader* shader = new PhongShader();
 
 
@@ -130,11 +143,19 @@ bool Plane::loadModels(const char* path)
 	parts[PartsIndex::wingRight] = new Model(&(planePath + "/wingflaps_right.obj")[0], fitToSize);
 	parts[PartsIndex::wingRight]->shader(shader, true);
 
+	parts[PartsIndex::rotorBlur] = new Model(&(planePath + "/rotor_blur.obj")[0], fitToSize);
+	TextureShader* t = new TextureShader();
+	t->diffuseTexture(new Texture(ASSETS "models/spitfire/rotor_blur.png"));
+	parts[PartsIndex::rotorBlur]->shader(shader, true);
+	parts[PartsIndex::rotorBlur]->shadowCaster(false);
+
 	// Offsets anwenden
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
-		parts[i]->transform(Matrix().translation(OFFSETS[i]));
+		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,5,-65)));
 	}
+	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
+
 	dot = new TriangleSphereModel(0.1, 20, 20);
 	dot->shader(new ConstantShader());
 	dot->shadowCaster(false);
@@ -144,6 +165,8 @@ bool Plane::loadModels(const char* path)
 	horizon->shader(new ConstantShader());
 	horizon->shadowCaster(false);
 	//horizon->transform(Matrix().translation(horizonOffset));
+
+	speed = 2;
 	return true;
 }
 
@@ -159,10 +182,15 @@ void Plane::update(double delta)
 	const float speedMultiplier = speedPercentage();
 
 	forward.translation(Vector(0, 0, ACCELERATION_GAIN * speed));
+	totalRudderRotation += ROTATION_SPEED * -Tilt.rudder * speedMultiplier;
+
+
 	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * speedMultiplier);
 	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * speedMultiplier);
 	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier);
 	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier);
+	totalRightWingflapRotation += ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier;
+	totalLeftWingflapRotation += ROTATION_SPEED * Tilt.leftFlapsTilt * speedMultiplier;
 
 	// main-model
 	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight);
@@ -176,9 +204,21 @@ void Plane::update(double delta)
 	// Visuelle Transformationen
 	// rotor
 	Matrix rotorRotation;
-	rotorRotation.rotationZ(PI * delta * speed * 5);
+	rotorRotation.rotationZ(PI * delta * speed * 2);
 	updateModelPos(PartsIndex::rotor, rotorRotation * previousRotorRotation);
+	updateModelPos(PartsIndex::rotorBlur, rotorRotation * previousRotorRotation);
 	previousRotorRotation = rotorRotation * previousRotorRotation;
+	parts[7]->transform(parts[7]->transform() * Matrix().scale(3, 3, 3));
+
+	if (speedPercentage() > 0.2)
+	{
+		parts[PartsIndex::rotor]->active(false);
+		parts[PartsIndex::rotorBlur]->active(true);
+	} else
+	{
+		parts[PartsIndex::rotor]->active(true);
+		parts[PartsIndex::rotorBlur]->active(false);
+	}
 
 	// rudder
 	Matrix rudderRotation;
@@ -215,14 +255,16 @@ void Plane::update(double delta)
 	print("speedval", this->speed);*/
 
 
-	if(this->hp < 50.0f)this->Smoke_System->StartGenerating();
+	(this->hp < 30.0f) ? Smoke_System->StartGenerating() : Smoke_System->StopGenerating();
+
+
 
 	Smoke_System->update(delta, this->parts[1]->transform());
-	Gun_Left->update(delta, this->parts[0]->transform()); 
-	Gun_Right->update(delta, this->parts[0]->transform());
+	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-4)); 
+	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
 
-	Muzzleflash_Right->update(delta, this->parts[0]->transform());
-	Muzzleflash_Left->update(delta, this->parts[0]->transform());
+	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
+	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
 
 	if (Online_Mode)Sender->SendData(this);
 
@@ -231,7 +273,7 @@ void Plane::update(double delta)
 		float steady =  1 - speedPercentage();
 		float high = speedPercentage();
 
-		SoundEngine->setSoundVolume((0.3 + speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
+		SoundEngine->setSoundVolume(0.1 + (speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
 		if (speedPercentage() > 0.55)
 		{
 			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * ApplicationSettings::AUDIO_VALUE);
@@ -249,7 +291,7 @@ void Plane::update(double delta)
 // Spitfire max km/h = 594
 void Plane::accelerate(float i)
 {
-	this->speed += i * DELTA_TIME_MULTIPLICATOR * 80;
+	this->speed += i * DELTA_TIME_MULTIPLICATOR * 40;
 
 	if (this->speed >= MAX_SPEED)
 	{

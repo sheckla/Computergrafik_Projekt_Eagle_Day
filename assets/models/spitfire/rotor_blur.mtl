@@ -1,13 +1,13 @@
 # Blender MTL File: 'spitfire.blend'
 # Material Count: 1
 
-newmtl Spitfire_Rotor
+newmtl Material
 Ns 89.197526
 Ka 1.000000 1.000000 1.000000
 Kd 0.249623 0.266760 0.160389
-Ks 0.768519 0.768519 0.768519
+Ks 0.445442 0.445442 0.445442
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 3
-map_Kd spitfireFront.jpg
+map_Kd rotor_blur.png

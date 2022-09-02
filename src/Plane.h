@@ -24,15 +24,14 @@
 
 class TriangleSphereModel;
 constexpr float EPSILON = 1e-7f; 
-constexpr int PLANE_PARTS = 7;
-constexpr float PI = 3.14159265359f;
+constexpr int PLANE_PARTS = 8;
 
 // Konkrete Rotationswerte
 constexpr float DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
-constexpr float ACCELERATION_GAIN = 0.002f;
-constexpr float ROTATION_SPEED = .0455f;
+constexpr float ACCELERATION_GAIN = 0.004f;
+constexpr float ROTATION_SPEED = 0.0455f;
 constexpr float MAX_TILT = 1.0f; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
-constexpr int MAX_SPEED = 556;
+constexpr int MAX_SPEED = 600;
 
 // Visuelle Rotationswerte
 constexpr float RUDDER_ROTATION = 1.0f; // visueller Neigungsfaktor
@@ -48,6 +47,7 @@ struct PartsIndex
 	static constexpr int backWingRight = 4;
 	static constexpr int wingLeft = 5;
 	static constexpr int wingRight = 6;
+	static constexpr int rotorBlur = 7;
 };
 
 struct TiltStatus
@@ -72,7 +72,8 @@ class Plane
 	Vector backWingRight = Vector(0, 0.616756f, -4.62009f);
 	Vector wingLeft = Vector(2.82589f, 0.119194f, -0.946365f);
 	Vector wingRight = Vector(-2.82589f, 0.119194f, -0.946365f);
-	const Vector OFFSETS[PLANE_PARTS]{model, rotor, rudder, backWingLeft, backWingRight, wingLeft, wingRight};
+	Vector rotorBlur = Vector(-0.001616f, 0.41454f, 1.49987f);
+	const Vector OFFSETS[PLANE_PARTS]{model, rotor, rudder, backWingLeft, backWingRight, wingLeft, wingRight, rotorBlur};
 	Model* parts[PLANE_PARTS];
 	Matrix previousRotorRotation = Matrix().rotationZ(0);
 
@@ -139,7 +140,7 @@ public:
 	float speedPercentage() const;
 	Vector getPosition() { return Vector(parts[1]->transform().m03, parts[1]->transform().m13, parts[1]->transform().m23); }
 
-	void drawParticles(const BaseCamera& Cam) { 
+	void drawParticles(const BaseCamera& Cam) {
 		this->Smoke_System->draw(Cam);
 		this->Gun_Left->draw(Cam);
 		this->Gun_Right->draw(Cam);
@@ -188,6 +189,12 @@ public:
 	irrklang::ISoundEngine* SoundEngine = nullptr;
 	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
 	void startEngine();
+
+	float totalRudderRotation = 0;
+	float totalLeftWingflapRotation = 0;
+	float totalRightWingflapRotation = 0;
+
+	void stopEngine();
 };
 
 #endif

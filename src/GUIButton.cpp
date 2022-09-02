@@ -1,17 +1,24 @@
 #include "GUIButton.h"
 
+#include "ApplicationSettings.h"
 #include "GUITexture.h"
 #include "MouseLogger.h"
 
-GUIButton::GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text) : 
+GUIButton::GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text, FONT_NAMES font, bool centred) : 
 mousePressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), area(quad)
 {
 	this->window = window;
-	GUIText* test = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, WW2);
-	buttonText = new GUIText(quad->startPixel().X + quad->width() / 2 - test->totalWidth() / 2, quad->startPixel().Y + quad->height() / 2 , text, WW2);
-	buttonText->centred(true);
-	buttonText->charSpace(1.2);
-
+	GUIText* tmp = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, font);
+	if (centred)
+	{
+		tmp->charSpace(1.2);
+		buttonText = new GUIText(quad->startPixel().X + quad->width() / 2 - tmp->totalWidth() / 2, quad->startPixel().Y + quad->height() / 2 - tmp->height() / 3, text, font);
+		buttonText->charSpace(1.2);
+	} else
+	{
+		buttonText = new GUIText(quad->startPixel().X + 10, quad->startPixel().Y + quad->height() / 2 - tmp->height() / 3, text, font);
+	}
+	delete tmp;
 	quad->mousePressColor(COL_VERY_LIGHT);
 }
 
@@ -32,7 +39,7 @@ void GUIButton::draw()
 void GUIButton::update(float delta)
 {
 	PRESS_STATE state = mousePressListener.listen();
-
+	State = state;
 	switch (state)
 	{
 	case PRESS:
@@ -57,9 +64,19 @@ PRESS_STATE GUIButton::listen()
 	return mousePressListener.listen();
 }
 
+PRESS_STATE GUIButton::state()
+{
+	return State;
+}
+
+GUIText* GUIButton::pText()
+{
+	return buttonText;
+}
+
 void GUIButton::texture(Texture* tex)
 {
-	area = new GUITexture(ASPECT_WIDTH / 2, ASPECT_HEIGHT / 2, tex, true, false);
+	area = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, tex, true, false);
 }
 
 bool GUIButton::mouseInside()

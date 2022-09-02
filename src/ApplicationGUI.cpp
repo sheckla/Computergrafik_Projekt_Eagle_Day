@@ -13,6 +13,7 @@ Window(window), loadingScreenGUI(window), startScreenGUI(new StartScreenGUI(wind
 
 ApplicationGUI::~ApplicationGUI()
 {
+	delete ppBuffer;
 }
 
 void ApplicationGUI::draw()
@@ -49,13 +50,18 @@ void ApplicationGUI::updateInputs(float delta)
 		return;
 	}
 
-	escapeMenuGUI->listen();
 	optionsGUI->update(delta);
-
 	if (optionsGUI->active()) return;
 
+	if (startScreenGUI->active())
+	{
+		startScreenGUI->update(delta);
+		return;
+	}
+
+	escapeMenuGUI->listen();
+
 	// Update everything else
-	if (startScreenGUI->active()) startScreenGUI->update(delta);
 	if (gameplayGUI->active()) gameplayGUI->update(delta);
 	if (escapeMenuGUI->active()) escapeMenuGUI->update(delta);
 }

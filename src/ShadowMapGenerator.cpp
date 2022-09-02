@@ -3,6 +3,8 @@
 #include "ShaderLightMapper.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+
+#include "MouseLogger.h"
 #include "PhongShader.h"
 
 #ifdef WIN32
@@ -152,7 +154,6 @@ AABB ShadowMapGenerator::calcSceneBoundingBox(std::list<BaseModel*>& Models) con
 
 	if (!ShadowCasterFound)
 		return AABB(Vector(-5, -5, -5), Vector(5, 5, 5));
-
 	return OverallBox;
 }
 

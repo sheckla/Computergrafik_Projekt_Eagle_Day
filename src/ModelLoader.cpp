@@ -44,10 +44,16 @@ bool ModelLoader::init(std::list<BaseModel*>* Models, std::vector<BaseModel*>* C
 bool ModelLoader::dirLight()
 {
     DirectionalLight* dl = new DirectionalLight();
-    dl->direction(Vector(0, -1, 1));
+    dl->direction(Vector(0.2f, 1, 1));
     dl->color(Color(1, 1, 1));
     dl->castShadows(true);
     ShaderLightMapper::instance().addLight(dl);
+
+    DirectionalLight* dl2 = new DirectionalLight();
+    dl2->direction(Vector(0, -1, 1));
+    dl2->color(Color(0.9, 0.9, 0.9));
+    dl2->castShadows(true);
+    //ShaderLightMapper::instance().addLight(dl2);
     return true;
 }
 
@@ -78,6 +84,7 @@ bool ModelLoader::planePartsOnline(std::string ip, int port)
         Models->push_back(planeParts[i]);
     }
 
+    Models->push_back(p->dot);
     return true;
 }
 
@@ -99,13 +106,13 @@ bool ModelLoader::planeParts()
 
 bool ModelLoader::planePartsShadowArea()
 {
-    TrianglePlaneModel* lpm = new TrianglePlaneModel(50, 50, 1, 1);
+    TrianglePlaneModel* lpm = new TrianglePlaneModel(22, 22, 10, 10);
     PhongShader* pShader = new PhongShader();
     pShader->shadowOnly(true);
+    lpm->shadowCaster(true);
     lpm->shader(pShader);
-    lpm->transform(Matrix().translation(Vector(0, -1, 0)));
     instance().PlayerPlaneShadowArea = lpm;
-    //Models->push_back(PlayerPlaneShadowArea);
+    lpm->transform(Matrix().translation(0, 0, -30));
     return true;
 }
 

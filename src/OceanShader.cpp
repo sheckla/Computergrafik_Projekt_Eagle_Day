@@ -2,9 +2,10 @@
 #include <string>
 #include "Texture.h"
 #include "Matrix.h"
+#include "MouseLogger.h"
 
 OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
-Scaling(1, 1, 1), MixTex(NULL)
+                                                              Scaling(1, 1, 1), MixTex(NULL)
 {
     if (!load(SHADERS "ocean/vsOcean.glsl", SHADERS "ocean/fsOcean.glsl"))
         throw std::exception();
@@ -19,6 +20,8 @@ Scaling(1, 1, 1), MixTex(NULL)
     ResolutionLoc = initUniformParameter("Resolution");
     ViewMatrixLoc = initUniformParameter("InvViewMatrix");
     ProjMatrixLoc = initUniformParameter("InvProjMatrix");
+
+    ValLoc = initUniformParameter("Val");
     
 
     for (int i = 0; i < DETAILTEX_COUNT; i++)
@@ -55,6 +58,7 @@ void OceanShader::activate(const BaseCamera& Cam) const
     ip.invert();
     setUniformParameter(ViewMatrixLoc, iv);
     setUniformParameter(ProjMatrixLoc, ip);
+    glUniform1f(ValLoc, MouseLogger::normX());
 }
 
 void OceanShader::deactivate() const

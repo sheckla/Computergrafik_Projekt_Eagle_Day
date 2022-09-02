@@ -21,7 +21,7 @@
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
 #include "vector.h"
-#define APPLICATION_ONLINE_MODE true
+constexpr auto APPLICATION_ONLINE_MODE = false;
 
 class Application
 {
@@ -32,11 +32,9 @@ protected:
     std::list<BaseModel*> Models;
     std::vector<BaseModel*> Cloud_Box;
     std::list<BaseModel*> Ocean;
-    WaterLoader* pWaterLoader;
 
     // GUI
     ApplicationGUI* AppGUI; // Steuereinheit
-    std::list<GUIBaseComponent*> guis;
 
     // Delta Time Update
     double last=0;
