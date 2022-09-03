@@ -1,6 +1,7 @@
 /*
  * GUILoadingMeter
- * - Simpler Ladebalken mit Parametrisierung
+ * - Simpler Ladebalken
+ * - Ladezustand kann angepasst werden & wird visuell geandert
  */
 
 #ifndef GUILoadingMeter_h
@@ -22,6 +23,8 @@ public:
 	~GUILoadingMeter() override;
 	void draw() override;
 	void update(float delta) override;
+
+	// [0,1] - LoadingMeter wird visuell angepasst
 	void percentage(float percentage);
 	float percentage();
 };

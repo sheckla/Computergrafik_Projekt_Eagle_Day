@@ -9,8 +9,8 @@
 class GUIBaseComponent
 {
 public:
-	virtual ~GUIBaseComponent();
-	virtual void draw();
+	virtual ~GUIBaseComponent(){};
+	virtual void draw() = 0;
 	virtual void update(float delta) = 0;
 };
 

@@ -56,6 +56,7 @@ void StartScreenGUI::update(float delta)
 		case RELEASE:
 			active(false);
 			ApplicationGUI::AppGUI->gameplayGUI->active(true);
+			ApplicationGUI::AppGUI->escapeMenuGUI->active(false);
 			ModelLoader::pPlayerPlane->startEngine();
 			break;
 		}

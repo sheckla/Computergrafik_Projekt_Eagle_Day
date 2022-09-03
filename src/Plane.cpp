@@ -30,10 +30,8 @@ void Plane::startEngine()
 
 void Plane::stopEngine()
 {
-	if (SoundEngine) delete SoundEngine;
-	if (HighPitchSoundEngine) delete HighPitchSoundEngine;
-	SoundEngine = nullptr;
-	HighPitchSoundEngine = nullptr;
+	if (SoundEngine) SoundEngine->setSoundVolume(0);
+	if (HighPitchSoundEngine) SoundEngine->setSoundVolume(0);
 }
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const

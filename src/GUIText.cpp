@@ -1,8 +1,5 @@
 #include "GUIText.h"
-
-
 #include <sstream>
-
 
 void GUIText::applyCharParameter()
 {
@@ -23,7 +20,6 @@ GUIText::GUIText(float startX, float startY, const char* string, FONT_NAMES font
 GUIText::~GUIText()
 {
 	for (GUIChar* gChar : textChars) delete gChar;
-	//delete textString;
 }
 
 void GUIText::draw()
@@ -45,6 +41,7 @@ void GUIText::text(const char* string)
 
 	// Replace/Update existing chars
 	if (!textChars.empty()) {
+
 		// Iterate through textString
 		for (unsigned int i = 0; i < textString.size(); i++)
 		{
@@ -55,6 +52,7 @@ void GUIText::text(const char* string)
 			TotalWidth = xOffset;
 		}
 
+		// Replace remaining with empty char
 		for (unsigned int j = textString.size(); j < textChars.size(); j++)
 		{
 			CHAR_DATA charData = FNTManager::charData(font, ' ');
@@ -65,7 +63,7 @@ void GUIText::text(const char* string)
 	}
 
 
-	// Load new chars
+	// not empty -> Load new chars
 	for (int i = 0; i < textString.size(); i++)
 	{
 		CHAR_DATA charData = FNTManager::charData(font, textString[i]);
@@ -88,7 +86,6 @@ void GUIText::scale(Vector scale)
 void GUIText::centred(bool b)
 {
 	Centred = b;
-	//for (auto gChar : textChars) gChar->centred(b);
 }
 
 void GUIText::charSpace(float f)
@@ -100,13 +97,11 @@ void GUIText::charSpace(float f)
 void GUIText::width(float w)
 {
 	Width = w;
-	//for (auto gChar : textChars) gChar->width(w);
 }
 
 void GUIText::height(float h)
 {
 	Height = h;
-	//for (auto gChar : textChars) gChar->height(h);
 }
 
 float GUIText::height()

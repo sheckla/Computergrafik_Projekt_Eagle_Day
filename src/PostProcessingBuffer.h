@@ -17,7 +17,7 @@ class PostProcessingBuffer
 {
 	Texture screenTex;
 	Framebuffer buffer;
-	ScreenQuadModel* screenQuad;
+	ScreenQuadModel* screenQuad = nullptr;
 	float elapsedTime = 0;
 	float shakeTime = 0;
 	bool PostProcessingActive = false;

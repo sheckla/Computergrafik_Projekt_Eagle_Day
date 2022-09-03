@@ -13,14 +13,17 @@ class GUIConstantQuadWrapper : public GUIBaseComponent
 public:
 	GUIConstantQuadWrapper();
 	~GUIConstantQuadWrapper() override;
+
 	void draw() override;
 	void update(float delta);
 
 	void add(GUIConstantQuad* component);
-
 	std::vector<GUIConstantQuad*> components();
 
+	// Quads Component von vector extrahieren
 	static std::vector<GUIConstantQuad*> extractQuadsFromComponentList(std::vector<GUIBaseComponent*> list);
+
+	// Quad Components von Wrapper extrahieren
 	static std::vector<GUIConstantQuad*> extractQuadsFromComponent(GUIBaseComponent* component);
 };
 

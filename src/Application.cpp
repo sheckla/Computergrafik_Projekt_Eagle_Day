@@ -181,7 +181,7 @@ void Application::end()
     delete Cam;
     delete enemyPlane;
     delete guiBuffer;
-    delete AppGUI;
+    //delete AppGUI;
 
     //delete ModelLoader::pWaterLoader;
     //Models.clear();

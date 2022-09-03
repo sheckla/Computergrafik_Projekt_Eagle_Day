@@ -178,6 +178,7 @@ GUINumericPointerMeter::GUINumericPointerMeter(int startX, int startY, bool spee
 		quad->constantColorMode(true);
 		quad->color(COL_LIGHT);
 		quad->mouseoverHighlightColor(COL_DARK);
+		quad->mouseoverHighlight(false);
 	}
 	ComponentAmount = Components.size();
 }
@@ -188,16 +189,18 @@ GUINumericPointerMeter::~GUINumericPointerMeter()
 	for (auto number : Numbers) delete number;
 	delete MeterQuad;
 	delete MeterTriangle;
+	delete meterText;
 }
 
 
 void GUINumericPointerMeter::draw()
 {
-	// Quads faerben
+	// ---- Numeric Quad Coloring -----
 	float speedToComponentAmountRemap = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 0, ComponentAmount); // speed
 	if (!speedMeterMode) 
 		speedToComponentAmountRemap = MathUtil::remapBounds(plane->getParts()[0]->transform().translation().Y, 0, 300, 0, ComponentAmount); // altitude
 
+	// [0, Components.size] -> quads werden je nach Auslatung gefaerbt
 	int hitBars = 0;
 	for (auto component : Components)
 	{
@@ -206,13 +209,15 @@ void GUINumericPointerMeter::draw()
 		hitBars++;
 		component->draw();
 	}
+	// ---------
 
 	// Numbers
 	for (auto number : Numbers) number->draw();
 
-	// Pointer
-	float speedToMeterMaxHeightRemap = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 20, MeterMaxHeight); // speed
-	// Altitude
+	// ---- Pointer Y Translation -----
+	float speedToMeterMaxHeightRemap = MathUtil::remapBounds(plane->getSpeed(), 0, MAX_SPEED, 20, MeterMaxHeight); // Speed Mode
+
+	// Altitude Mode
 	if (!speedMeterMode)
 	{
 		float y = plane->getParts()[0]->transform().translation().Y;
@@ -220,15 +225,16 @@ void GUINumericPointerMeter::draw()
 		if (y < 0) y = 0;
 		speedToMeterMaxHeightRemap = MathUtil::remapBounds(y, 0, 300, 20, MeterMaxHeight);
 	}
+	// Pointer movement - Y
 	MeterQuad->startPixel(Vector(MeterQuad->startPixel().X, speedToMeterMaxHeightRemap, 0));
 	MeterTriangle->startPixel(Vector(MeterTriangle->startPixel().X, speedToMeterMaxHeightRemap, 0));
 
-	if (!speedMeterMode) MeterTriangle->rotate180();
 
 	MeterQuad->draw();
 	MeterTriangle->draw();
+	// -------
 
-	// Text
+	// Text (Speed || Altitude)
 	std::stringstream ss;
 	(speedMeterMode) ? ss << "Speed:" << std::fixed << std::setprecision(1) << plane->getSpeed() :
 						ss << "Altitude:" << std::fixed << std::setprecision(1)  << plane->getParts()[0]->transform().translation().Y;

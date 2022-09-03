@@ -13,8 +13,6 @@
 #include "GUIConstantQuad.h"
 #include "GUIConstantTriangle.h"
 #include "GUIText.h"
-#include "GUITexture.h"
-#include "GUITexture.h"
 #include "ModelLoader.h"
 
 constexpr char const* numberPaths[10] = { ASSETS "typography/0.png",
@@ -51,7 +49,6 @@ private:
 	void initMeterQuads(int startX, int startY, Vector& barWidths, Vector& barHeights,
 		int& bigXOffset, int& mediumXOffset, int& smallXOffset);
 	void initMeterText(int startY);
-
 public:
 	Plane* plane = ModelLoader::pPlayerPlane;
 

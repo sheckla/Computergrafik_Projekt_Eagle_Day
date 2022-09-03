@@ -8,7 +8,7 @@
 
 class GUISlider : public GUILoadingMeter
 {
-	GUIConstantQuad* meterClickArea;
+	GUIConstantQuad* meterClickArea; // Mouse Click Area
 	PressListener meterMouseListener;
 	GUIText* percentageText;
 	GUIText* descriptionText;

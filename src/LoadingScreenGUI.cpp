@@ -1,7 +1,5 @@
 #include "LoadingScreenGUI.h"
-
 #include <sstream>
-
 #include "Application.h"
 #include "ApplicationGUI.h"
 #include "ApplicationSettings.h"
@@ -91,20 +89,23 @@ void LoadingScreenGUI::update(float delta)
 		printLoadFinishText("ESCAPEMENU_GUI");
 		break;
 		// ----
-	case GUI_OPTIONS:
-		printLoadStartText("OPTIONS_GUI");
-
-		ApplicationGUI::AppGUI->optionsGUI->init();
-
-		printLoadFinishText("OPTIONS_GUI");
-		break;
-		// ----
 	case GUI_GAMEOVER:
 		printLoadStartText("GAMEOVER_GUI");
 
+		loadingProgressText->text(stringifyTask("Loading GameOverGUI").c_str());
 		ApplicationGUI::AppGUI->gameOverGUI->init();
 
 		printLoadFinishText("GAMEOVER_GUI");
+		break;
+		// ----
+	case GUI_OPTIONS:
+		printLoadStartText("OPTIONS_GUI");
+
+
+		loadingProgressText->text(stringifyTask("Loading OptionsGUI").c_str());
+		ApplicationGUI::AppGUI->optionsGUI->init();
+
+		printLoadFinishText("OPTIONS_GUI");
 		break;
 		// ----
 	case GUI_FINALIZE:
@@ -138,10 +139,10 @@ void LoadingScreenGUI::update(float delta)
 	case MODELS_PLANEPARTS:
 		printLoadStartText("PLANE_PARTS");
 
-		loadingProgressText->text(stringifyTask("Loading PlayerPlane").c_str());
+		loadingProgressText->text(stringifyTask("Loading Plane Models").c_str());
 		if (ApplicationSettings::ONLINE_MODE)
 		{
-			std::cout << "Loading Online Components" << std::endl;
+			print("Online Components", "loading");
 			ModelLoader::planePartsOnline(ApplicationSettings::LOCAL_IP, 
 				std::atoi(ApplicationSettings::LOCAL_PORT.c_str()));
 			Application::enemyPlane = ModelLoader::enemyPlane(ApplicationSettings::ENEMY_IP, 
@@ -150,6 +151,7 @@ void LoadingScreenGUI::update(float delta)
 			CollisionDetector::setCollisionTarget(Application::enemyPlane); // Set as collision-target
 		} else
 		{
+			print("Offline Components", "loading");
 			ModelLoader::planeParts();
 			ModelLoader::aiPlaneParts();
 			CollisionDetector::setCollisionTarget(ModelLoader::pAIPlane);
@@ -167,8 +169,6 @@ void LoadingScreenGUI::update(float delta)
 
 		printLoadFinishText("VOLUMETRIC_CLOUDS");
 
-		// Hier schon aufrufen da Ocean ueber Threads laeuft
-		loadingProgressText->text(stringifyTask("Loading Ocean").c_str());
 
 		break;
 		// ----
@@ -178,13 +178,15 @@ void LoadingScreenGUI::update(float delta)
 		loadingProgressText->text(stringifyTask("Loading Battleship").c_str());
 		ModelLoader::ship();
 
+		// Hier schon aufrufen da Ocean ueber Threads laeuft
+		loadingProgressText->text(stringifyTask("Loading Ocean").c_str());
 		printLoadStartText("SHIP");
 		break;
 		//----
 	case MODELS_WATER:
 		printLoadStartText("OCEAN");
 
-		ModelLoader::ocean();
+		//ModelLoader::ocean();
 
 		printLoadFinishText("OCEAN");
 		break;

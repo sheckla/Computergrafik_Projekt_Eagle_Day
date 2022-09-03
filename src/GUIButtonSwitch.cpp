@@ -1,20 +1,19 @@
 #include "GUIButtonSwitch.h"
-
 #include "ApplicationGUI.h"
 
 GUIButtonSwitch::GUIButtonSwitch(float startX, float startY, float width, float height, const char* text)
 {
-
+	// ON/OFF Texture
 	offTexture = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple_gray.png"), true);
 	offTexture->width(width);
 	offTexture->height(height);
 	offTexture->mouseoverHighlight(true);
-
 	onTexture = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple.png"), true);
 	onTexture->width(width);
 	onTexture->height(height);
 	onTexture->mouseoverHighlight(true);
 
+	// Main Button
 	button = new GUIButton(ApplicationGUI::AppGUI->Window, offTexture, text, ARIAL_BLACK, false);
 	button->pText()->scale(Vector(0.8, 0.8, 0));
 	button->pText()->charSpace(0.8);

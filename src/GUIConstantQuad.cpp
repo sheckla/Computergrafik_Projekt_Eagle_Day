@@ -1,6 +1,4 @@
-
 #include "GUIConstantQuad.h"
-
 #include "ApplicationSettings.h"
 #include "GUIShader.h"
 #include "MouseLogger.h"
@@ -29,6 +27,7 @@ void GUIConstantQuad::updateBuffers()
     * LowerBound A - B
     */
 
+    // Update if already loaded
     if (VB->vertexCount() >= 4)
     {
         VB->vertices().at(0) = A;
@@ -43,10 +42,6 @@ void GUIConstantQuad::updateBuffers()
         VB->update();
         return;
     }
-    /*delete VB;
-    delete IB;
-    VB = new VertexBuffer();
-    IB = new IndexBuffer();*/
       
     VB->deactivate();
     IB->deactivate();

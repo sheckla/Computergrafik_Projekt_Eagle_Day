@@ -34,6 +34,7 @@ void GameOverGUI::init()
 void GameOverGUI::update(float delta)
 {
 	if (ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp <= 0) active(true);
+	if (!Active) return;
 	ApplicationGUI::AppGUI->gameplayGUI->active(false);
 	ModelLoader::pPlayerPlane->stopEngine();
 

@@ -1,3 +1,11 @@
+/*
+* GUIButtonSwitch
+* - Klickbarer Button mit binaerer On/Off Abfrage
+* - Texturen werden je nach Zustand veraendert
+* 
+* - Eingesetzt im OptionsGUI
+*/
+
 #ifndef GUIButtonSwitch_h
 #define GUIButtonSwitch_h
 

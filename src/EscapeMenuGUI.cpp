@@ -39,12 +39,14 @@ void EscapeMenuGUI::update(float delta)
 		active(false);
 		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 		ApplicationGUI::AppGUI->setGUIStatus(STARTSCREEN_GUI, true);
+		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 	}
 
 	if (leaveEscapeMenuButton->listen() == RELEASE)
 	{
 		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 		ModelLoader::pPlayerPlane->startEngine();
+		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 		active(false);
 	}
 
@@ -53,6 +55,7 @@ void EscapeMenuGUI::update(float delta)
 		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 		ModelLoader::pPlayerPlane->initModelTranslation();
 		ModelLoader::pPlayerPlane->startEngine();
+		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 		active(false);
 	}
 	for (auto component : Components) component->update(delta);
@@ -97,7 +100,6 @@ void EscapeMenuGUI::listen()
 		{
 			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 			ModelLoader::pPlayerPlane->startEngine();
-			print("off", "");
 			active(false);
 		}
 		else

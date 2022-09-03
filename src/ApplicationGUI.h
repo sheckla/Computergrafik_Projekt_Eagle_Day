@@ -38,15 +38,16 @@ class ApplicationGUI
 	LoadingScreenGUI loadingScreenGUI;
 	PressListener escapeMenuPressListener;
 public:
-	static ApplicationGUI* AppGUI;
-	PostProcessingBuffer* ppBuffer;
-	GLFWwindow* Window;
+	static ApplicationGUI* AppGUI; // statische Instanz fuer globale Aufrufe
 
+	// Public fuer globale Aufrufe
+	GLFWwindow* Window;
 	StartScreenGUI* startScreenGUI;
 	GameplayGUI* gameplayGUI;
 	EscapeMenuGUI* escapeMenuGUI;
 	OptionsGUI* optionsGUI;
 	GameOverGUI* gameOverGUI;
+	PostProcessingBuffer* ppBuffer;
 
 	ApplicationGUI(GLFWwindow* window);
 	~ApplicationGUI();
@@ -57,6 +58,8 @@ public:
 	void setGUIStatus(APPLICATION_GUI_TYPES guiState, bool active);
 	void attachPostProcessingBuffer(PostProcessingBuffer* ppBuffer);
 	ApplicationGUIStatus status();
+
+	// OptionGUI wird mittels Buffer gezeichnet deshalb ausserhalb als eigene Funktion
 	void drawOptions();
 };
 

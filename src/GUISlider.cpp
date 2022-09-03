@@ -1,7 +1,5 @@
 #include "GUISlider.h"
-
 #include <sstream>
-
 #include "Application.h"
 #include "MathUtil.h"
 #include "MouseLogger.h"
@@ -12,8 +10,8 @@ GUISlider::GUISlider(float startX, float startY, float width, float height, floa
 {
 	meterClickArea = new GUIConstantQuad(startX + padding, startY + padding, width - padding*2, height - padding*2);
 
-
-	outlineArea = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple.png"), true);
+	delete outlineArea; // delete from GUILoadingMeter
+	outlineArea = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple.png"), true); // replace
 	outlineArea->width(width);
 	outlineArea->height(height);
 	meter->mousePressColor(COL_VERY_LIGHT);
@@ -23,12 +21,13 @@ GUISlider::GUISlider(float startX, float startY, float width, float height, floa
 
 	// Description Text
 	descriptionText = new GUIText(startX + outlineArea->width() + padding * 2, startY + padding, text);
-
-	
 }
 
 GUISlider::~GUISlider()
 {
+	delete meterClickArea;
+	delete percentageText;
+	delete descriptionText;
 }
 
 void GUISlider::draw()
@@ -42,26 +41,28 @@ void GUISlider::draw()
 void GUISlider::update(float delta)
 {
 	meterMouseListener.listen();
-	float remapMax = 0;
+	float slidePercentage = 0;
 	if (EnableSliding && meterClickArea->mouseInside() && meterMouseListener.pressed())
 	{
+		// Slide
 		meter->mousePress(true);
-		remapMax = MathUtil::remapBounds(MouseLogger::x(), meterMin, meterMin + meterMax, 0, 1);
-		percentage(remapMax);
+		slidePercentage = MathUtil::remapBounds(MouseLogger::x(), meterMin, meterMin + meterMax, 0, 1);
+		percentage(slidePercentage);
 	} else
 	{
 		meter->mousePress(false);
 	}
 
-	remapMax = percentage() * 100;
+	// Slide Percentage Text
+	slidePercentage = percentage() * 100;
 	std::stringstream ss;
-	ss << std::fixed << std::setprecision(2) << remapMax << "%";
+	ss << std::fixed << std::setprecision(2) << slidePercentage << "%";
 	std::string percentageString{ ss.str() };
 	percentageText->text(percentageString.c_str());
 
-	//meterClickArea->update(delta);
 	percentageText->update(delta);
 	descriptionText->update(delta);
+
 	GUILoadingMeter::update(delta);
 }
 

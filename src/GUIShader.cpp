@@ -5,10 +5,8 @@
 
 GUIShader::GUIShader() : pTex(nullptr), Col(1, 1, 1), ConstantColorMode(false), IsGUITex(false), MouseoverHighlight(false), MouseInside(false), IsFont(false)
 {
-	bool loaded = load(SHADERS "gui/vsgui.glsl",
-		SHADERS "gui/fsgui.glsl");
-	if (!loaded)
-		throw std::exception();
+	bool loaded = load(SHADERS "gui/vsgui.glsl", SHADERS "gui/fsgui.glsl");
+	if (!loaded) throw std::exception();
 
 	TexLoc = initUniformParameter("Tex");
 	ColorLoc = initUniformParameter("Color");
@@ -21,7 +19,7 @@ GUIShader::GUIShader() : pTex(nullptr), Col(1, 1, 1), ConstantColorMode(false), 
 
 GUIShader::~GUIShader()
 {
-	pTex->deactivate();
+	if (pTex) pTex->deactivate();
 }
 
 void GUIShader::activate() const

@@ -1,5 +1,4 @@
 #include "ApplicationGUI.h"
-
 #include "GUIConstantQuad.h"
 #include "ModelLoader.h"
 
@@ -15,6 +14,11 @@ escapeMenuPressListener(window, GLFW_KEY_ESCAPE, KEYBOARD)
 
 ApplicationGUI::~ApplicationGUI()
 {
+	delete startScreenGUI;
+	delete gameplayGUI;
+	delete escapeMenuGUI;
+	delete optionsGUI;
+	delete gameOverGUI;
 	delete ppBuffer;
 }
 
@@ -41,8 +45,6 @@ void ApplicationGUI::draw()
 		return;
 	}
 
-	// Draw everything else
-
 	if (gameplayGUI->active() && ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp > 0)
 		gameplayGUI->draw();
 
@@ -52,14 +54,12 @@ void ApplicationGUI::draw()
 
 void ApplicationGUI::updateInputs(float delta)
 {
-	// Only update LoadingScreen if active
-
 	if (ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp <= 0) {
 		gameplayGUI->active(false);
 		gameOverGUI->active(true);
 	}
-	if (gameOverGUI->active()) gameOverGUI->update(delta);
 
+	// Only update LoadingScreen if active
 	if (loadingScreenGUI.active()) {
 		loadingScreenGUI.update(delta);
 		return;
@@ -67,18 +67,16 @@ void ApplicationGUI::updateInputs(float delta)
 
 	optionsGUI->update(delta);
 	if (optionsGUI->active()) return;
-
 	if (startScreenGUI->active())
 	{
 		startScreenGUI->update(delta);
 		return;
 	}
 
-	escapeMenuGUI->listen();
-
-	// Update everything else
 	if (gameplayGUI->active()) gameplayGUI->update(delta);
+	escapeMenuGUI->listen();
 	if (escapeMenuGUI->active()) escapeMenuGUI->update(delta);
+	if (gameOverGUI->active()) gameOverGUI->update(delta);
 
 }
 

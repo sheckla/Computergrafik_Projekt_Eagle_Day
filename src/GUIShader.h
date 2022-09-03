@@ -18,6 +18,8 @@ public:
     GUIShader();
     ~GUIShader();
     void activate() const override;
+
+    //setter
     void texture(Texture* tex);
     void color(Color c);
     void constantColorMode(bool b);

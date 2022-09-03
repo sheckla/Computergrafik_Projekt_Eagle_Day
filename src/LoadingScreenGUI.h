@@ -45,7 +45,6 @@ private:
 	GUIText* loadingProgressText;
 
 	std::string stringifyTask(const char* taskText);
-
 	void printLoadStartText(const char* text);
 	void printLoadFinishText(const char* text);
 public:

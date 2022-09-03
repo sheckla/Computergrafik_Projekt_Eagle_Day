@@ -1,6 +1,5 @@
 #include "GUIConstantQuadWrapper.h"
 
-
 GUIConstantQuadWrapper::GUIConstantQuadWrapper()
 {
 }

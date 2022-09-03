@@ -1,9 +1,6 @@
 #include "GUIChar.h"
-
-#include <fstream>
 #include <iostream>
 #include <sstream>
-
 #include "ApplicationSettings.h"
 #include "Globals.h"
 #include "MathUtil.h"
@@ -18,9 +15,6 @@ data(data)
 }
 GUIChar::~GUIChar()
 {
-    /*delete Shader;
-    delete VB;
-    delete IB;*/
 }
 
 void GUIChar::updateFont(float startX, float startY, CHAR_DATA d)
@@ -29,10 +23,7 @@ void GUIChar::updateFont(float startX, float startY, CHAR_DATA d)
     this->data = d;
     texture(FNTManager::fontTexture(d.font));
     this->startPixelX = startX + (float)data.xOffset;
-    //this->startPixelY = startY - data.yOffset;
     startPixel(Vector(startPixelX, startPixelY, 0));
-    char c = 'M';
-    char p = 'a';
     updateBounds();
     updateBuffers();
 }
@@ -71,9 +62,6 @@ void GUIChar::updateBuffers()
     float xEnd = -widthRemap - xOffsetRemap ;
     float yEnd = -heightRemap - yOffsetRemap ;
     float yStart = -yOffsetRemap ;
-
-    char a = 'b';
-    char b = 'B';
 
     // VB schon initialisiert
     if (VB->vertices().size() >= 4)

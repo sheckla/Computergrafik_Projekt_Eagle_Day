@@ -10,15 +10,11 @@
 class GUIConstantTriangle : public GUIConstantQuad
 {
 protected:
-
-
-	void updateBuffers() override;
-	void updateBounds() override;
 	bool Flip;
+	void updateBuffers() override;
 public:
 	GUIConstantTriangle(int startPixelX, int startPixelY, int width, int height, bool flip);
 	~GUIConstantTriangle() override;
-	void draw() override;
 	void rotate180();
 };
 
