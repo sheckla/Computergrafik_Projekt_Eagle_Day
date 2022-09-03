@@ -49,7 +49,7 @@ static float ASPECT_HEIGHT = 1080;
 #define NF "\033[0m"
 
 //Quality
-#define QUALITY 1;
+#define QUALITY 2;
 
 #pragma once
 #include <iomanip>

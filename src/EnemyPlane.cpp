@@ -70,7 +70,7 @@ void EnemyPlane::update(double delta)
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
-		this->model->transform(Enemy_Tranformation * forward);
+		this->model->transform(Enemy_Tranformation * forward /* Matrix().scale(0.3,0.3,0.3)*/);
 		this->propeller->transform(Enemy_Tranformation * forward * rotor_offset * rotorRotation * previousRotorRotation);
 	}
 	else
