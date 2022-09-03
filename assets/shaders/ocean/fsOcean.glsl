@@ -43,7 +43,7 @@ float sat( in float a)
 void main()
 {
     vec3 N      = normalize(Normal);
-    vec3 L      = normalize(LightPos); // light is treated as directional source
+    vec3 L      = normalize(vec3(0.2,1,1)); // light is treated as directional source
     vec3 D      = EyePos-Position;
     float Dist  = length(D);
     vec3 E      = D/Dist;
@@ -58,16 +58,16 @@ void main()
     //DiffuseColorRGB.g *= 1+ .1f-(texture(Perlin,Texcoord).r * .2f);
     DiffuseColorRGB.b *= 1+ (texture(Perlin,Texcoord).r * .4f);
 
-    vec3 SpecularColorRGB = vec3(.8f,.8f,.8f);
+    vec3 SpecularColorRGB = vec3(.9f,.5f,.1f);
 
     vec3 Heightlight = vec3(1,1,1);
 
     //vec3 DiffuseComponent = LightColor * DiffuseColorRGB * sat(dot(N,L));
 
     vec3 DiffuseComponent = LightColor * DiffuseColorRGB * sat(dot(N,L));
-    DiffuseComponent = mix(DiffuseComponent, DiffuseColorRGB, 0.5);
+   // DiffuseComponent = mix(DiffuseComponent, DiffuseColorRGB, 0.5);
 
-    vec3 SpecularComponent = LightColor * SpecularColorRGB * pow( sat(dot(R,E)) * 3, SpecularExp) * 3;
+    vec3 SpecularComponent = LightColor * SpecularColorRGB * pow( sat(dot(R,E)), SpecularExp) / 2.5;
     
     // Exercise 3
     // TODO: Add texture blending code here..
@@ -89,7 +89,7 @@ void main()
     pCol = vec3(.5f,.5f,0) * pixelCol;
     */
     //FragColor = vec4(((DiffuseComponent + AmbientColor) + SpecularComponent),1);
-     FragColor = vec4(/*((DiffuseComponent + AmbientColor) + SpecularComponent)*/DiffuseComponent * (.4f +Normal.y),1);
+     FragColor = vec4(/*((DiffuseComponent + AmbientColor) + SpecularComponent)*/SpecularComponent + DiffuseComponent + DiffuseColorRGB,1);
      //FragColor = vec4(DiffuseComponent + SpecularComponent, 1);
 
      //FragColor = vec4(PositionWS.r,1,PositionWS.b,1);
@@ -132,7 +132,8 @@ void main()
     vec3 o = normalize(Position - EyePos);
     vec3 p = reflect(o, normalize(Normal));
     vec4 Reflection = texture(CubeMapTexture, p);
-    //FragColor = mix(FragColor, Reflection, Val);
+    FragColor = mix(FragColor, Reflection, 0.02*SpecularExp);
+    FragColor = mix(FragColor, Reflection, 0.6);
 
     float fadeStart=500;
     

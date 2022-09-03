@@ -23,6 +23,8 @@ uniform sampler2D Perlin;
 
 uniform sampler2D MixTex;
 
+uniform float Val;
+
 void main()
 {
     float PerlinInfluenceStrength = 3.0f;
@@ -45,7 +47,7 @@ void main()
 
 
     _vertex.y = texture(MixTex, Texcoord).r * heightMultip /* (texture(Perlin,globalUV).r)*/;
-    _vertex.y *= 1; // Scale Ocean Height
+    _vertex.y *= 1.6; // Scale Ocean Height
 
     _vertex.y *= 1 + texture(Perlin,wsUV).r * PerlinInfluenceStrength;
 
@@ -76,18 +78,18 @@ void main()
     
 
 
-        float height_A =  texture(MixTex, vec2(Texcoord.x,Texcoord.y + abstTC)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x, wsUV.y + abstTC)).r * PerlinInfluenceStrength);
-        float height_B =  texture(MixTex, vec2(Texcoord.x + abstTC,Texcoord.y)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x + abstTC, wsUV.y)).r * PerlinInfluenceStrength);
-        float height_C =  texture(MixTex, vec2(Texcoord.x,Texcoord.y - abstTC)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x, wsUV.y - abstTC)).r * PerlinInfluenceStrength);
-        float height_D =  texture(MixTex, vec2(Texcoord.x - abstTC,Texcoord.y)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x - abstTC, wsUV.y)).r * PerlinInfluenceStrength);
+    float height_A =  texture(MixTex, vec2(Texcoord.x,Texcoord.y + abstTC)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x, wsUV.y + abstTC)).r * PerlinInfluenceStrength);
+    float height_B =  texture(MixTex, vec2(Texcoord.x + abstTC,Texcoord.y)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x + abstTC, wsUV.y)).r * PerlinInfluenceStrength);
+    float height_C =  texture(MixTex, vec2(Texcoord.x,Texcoord.y - abstTC)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x, wsUV.y - abstTC)).r * PerlinInfluenceStrength);
+    float height_D =  texture(MixTex, vec2(Texcoord.x - abstTC,Texcoord.y)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x - abstTC, wsUV.y)).r * PerlinInfluenceStrength);
 
-        vec3 va = vec3(0,(height_A - height_N),abst);
-        vec3 vb = vec3(abst,(height_B - height_N),0);
-        vec3 vc = vec3(0,(height_C - height_N),-abst);
-        vec3 vd = vec3(-abst,(height_D - height_N),0);
+    vec3 va = vec3(0,(height_A - height_N),abst);
+    vec3 vb = vec3(abst,(height_B - height_N),0);
+    vec3 vc = vec3(0,(height_C - height_N),-abst);
+    vec3 vd = vec3(-abst,(height_D - height_N),0);
 
-        vec3 average_n = normalize( (cross(va,vb) + cross(vb,vc) + cross(vc,vd) + cross(vd,va)) / 4);
-        Normal = average_n;
+    vec3 average_n = normalize( (cross(va,vb) + cross(vb,vc) + cross(vc,vd) + cross(vd,va)) / 4);
+    Normal = average_n;
  
 
     //Normal = (ModelMat * vec4(VertexNormal.xyz,0)).xyz * 1/Scaling; 
@@ -96,7 +98,7 @@ void main()
 
     Texcoord = VertexTexcoord;
     PositionWS = ModelMat * vec4(_vertex.xyz, 1.0); // <--
-
-
+    Normal = mix(average_n, VertexNormal.xyz, 0.7);
+    Position = PositionWS.xyz;
     gl_Position = ModelViewProjMat * vec4(_vertex.xyz, 1.0); // clip-space output position
 }

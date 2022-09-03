@@ -181,7 +181,8 @@ void Application::end()
     delete enemyPlane;
     delete testBuffer;
     delete AppGUI;
-    //Ocean.clear();
+
+    delete ModelLoader::pWaterLoader;
     //Models.clear();
     exit(0);
 }
