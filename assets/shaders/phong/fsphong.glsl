@@ -19,6 +19,8 @@ uniform samplerCube CubeMapTexture;
 uniform sampler2D ShadowMapTexture[MAX_LIGHTS];
 uniform mat4 ShadowMapMat[MAX_LIGHTS];
 uniform int ShadowOnly;
+uniform int Cubemapping;
+uniform float PhongDiff;
 
 out vec4 FragColor;
 
@@ -71,19 +73,13 @@ float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 		}    
 	} 
 	shadow /= (smoothingDiameter * smoothingDiameter);				// normalize the shadow value
-	return shadow / (2);
+	return shadow;
 }
 
 
 // https://learnopengl.com/Lighting/Light-casters
 void main()
 {
-    if (ShadowOnly == 1) 
-    {
-        FragColor = vec4(0,0,0,0);
-        return;
-    }
-
     vec4 DiffTex = texture( DiffuseTexture, Texcoord); // texture
     if(DiffTex.a <0.3f) {
         FragColor = vec4(1,0,0,1);
@@ -144,10 +140,11 @@ void main()
         Reflection = texture(CubeMapTexture, p).xyz;
 
         ReflectComponent += LightColor * texture(CubeMapTexture, p).xyz;
-        DiffuseComponent += LightColor * DiffuseColor * sat(dot(N,L)); 
-        SpecularComponent += LightColor * SpecularColor * pow(sat(dot(H,N)), SpecularExp); 
+        DiffuseComponent += LightColor * DiffuseColor * sat(dot(N,L)) / PhongDiff; 
+        SpecularComponent += LightColor * SpecularColor * pow(sat(dot(H,N)), SpecularExp) / PhongDiff; 
     }
 
+    //visibility = sat(visibility);
     vec3 diff = DiffuseComponent * visibility;
     vec3 spec = SpecularComponent * visibility;
     vec3 ambient = AmbientColor * DiffTex.rgb;
@@ -155,18 +152,20 @@ void main()
     FragColor = vec4(phongColor, DiffTex.a);
 
     // CubeMap Reflection mixing
-    float SpecularFactor = (SpecularColor.r + SpecularColor.g + SpecularColor.b) / 3;
-    SpecularFactor = sat(SpecularFactor);
-    vec3 mixed = mix(Reflection, phongColor, SpecularFactor);
-    FragColor = vec4(mixed, DiffTex.a);
+    if (Cubemapping == 1) 
+    {
+        float SpecularFactor = (SpecularColor.r + SpecularColor.g + SpecularColor.b) / 3;
+        SpecularFactor = sat(SpecularFactor);
+        vec3 mixed = mix(Reflection, phongColor, SpecularFactor);
+        FragColor = vec4(mixed, DiffTex.a);
+    }
 
     // Shadow Only Display
     if (ShadowOnly == 1 && visibility < 1) {
-        //FragColor = vec4(phongColor, (1 - visibility) * 0.1);
-        FragColor = vec4(0,0,0,0);
+        FragColor = vec4(phongColor, (1 - visibility) * 0.1);
     } else if (ShadowOnly == 1) 
     {
-        FragColor = vec4(0,0,0,0);
+        FragColor = vec4(1,0,0,0);
     }
 
     

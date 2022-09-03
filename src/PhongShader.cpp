@@ -53,6 +53,8 @@ void PhongShader::assignLocations()
     ModelViewProjLoc = glGetUniformLocation(ShaderProgram, "ModelViewProjMat");
     CubeMapTextureLoc = glGetUniformLocation(ShaderProgram, "CubeMapTexture");
     ShadowOnlyLoc = glGetUniformLocation(ShaderProgram, "ShadowOnly");
+    CubemappingLoc = glGetUniformLocation(ShaderProgram, "Cubemapping");
+    PhongDiffLoc = glGetUniformLocation(ShaderProgram, "PhongDiff");
 
     for (int i = 0; i < MaxLightCount; ++i)
     {
@@ -78,6 +80,8 @@ void PhongShader::activate(const BaseCamera& Cam) const
         glUniform3f(SpecularColorLoc, SpecularColor.R, SpecularColor.G, SpecularColor.B);
     if (UpdateState & SPEC_EXP_CHANGED)
         glUniform1f(SpecularExpLoc, SpecularExp);
+    glUniform1i(CubemappingLoc, Cubemapping);
+    glUniform1f(PhongDiffLoc, PhongDiff);
 
     int TexSlotIdx = 0;
     DiffuseTexture->activate(TexSlotIdx++);
@@ -131,6 +135,14 @@ void PhongShader::shadowMap(unsigned int slot, const Texture* pTex, const Matrix
 void PhongShader::shadowOnly(bool b)
 {
     ShadowOnly = b;
+}
+void PhongShader::cubemapping(bool b)
+{
+    Cubemapping = b;
+}
+void PhongShader::phongDiff(float f)
+{
+    PhongDiff = f;
 }
 void PhongShader::diffuseColor(const Color& c)
 {

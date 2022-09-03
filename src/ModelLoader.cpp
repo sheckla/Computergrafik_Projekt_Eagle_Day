@@ -192,7 +192,10 @@ bool ModelLoader::ship()
     Model* ship_T = new Model(ASSETS "models/battleship/battleshipTop.obj", false);
 
     PhongShader* pShader = new PhongShader();
-    pShader->specularExp(0);
+    pShader->specularExp(2000);
+    pShader->phongDiff(3);
+    pShader->ambientColor(Color(0, 0, 0));
+    pShader->cubemapping(false);
 
     ship_B->shader(pShader);
     ship_B->shadowCaster(false);
