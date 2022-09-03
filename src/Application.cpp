@@ -78,7 +78,7 @@ void Application::update(float dtime)
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(delta);
-        if (ApplicationSettings::ONLINE_MODE && ModelLoader::pEnemyPlane)this->enemyPlane->update(delta);
+        if (ApplicationSettings::ONLINE_MODE && ModelLoader::pEnemyPlane) { this->enemyPlane->update(delta); }
     }
 
     if (ModelLoader::pAIPlane && ModelLoader::pPlayerPlane)
@@ -182,7 +182,7 @@ void Application::end()
     delete testBuffer;
     delete AppGUI;
 
-    delete ModelLoader::pWaterLoader;
+    //delete ModelLoader::pWaterLoader;
     //Models.clear();
     exit(0);
 }

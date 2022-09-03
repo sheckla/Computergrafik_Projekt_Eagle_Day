@@ -22,6 +22,7 @@ void NetworkSender::WinSockSettings() {
 		printf("Failed. Error Code : %d", WSAGetLastError());
 		exit(EXIT_FAILURE);
 	}
+	std::cout << "[Network-Sender] WSAStartup complete" << std::endl;
 }
 
 NetworkSender::NetworkSender(const char* srv_Adr, int port)
@@ -30,6 +31,10 @@ NetworkSender::NetworkSender(const char* srv_Adr, int port)
 	std::cout << "[Network-Sender] Sending to " << srv_Adr << " : " << port << std::endl;
 	this->PORT = port;
 	this->Server_Address = srv_Adr;
+
+	this->PORT = 19411;
+	this->Server_Address = "127.0.0.1";
+
 	this->WinSockSettings();
 
 
@@ -39,6 +44,7 @@ NetworkSender::NetworkSender(const char* srv_Adr, int port)
 	srv_addr.sin_port = htons(this->PORT);   //Player 1 send-port
 	inet_pton(AF_INET, this->Server_Address, &srv_addr.sin_addr.s_addr);
 	int result = bind(sock, (sockaddr*)&srv_addr, sizeof(srv_addr));
+	if(result == SOCKET_ERROR)std::cout << "ERROR (bind)" << std::endl;
 	if (result < 0)std::cout << "ERROR not send (bind)" << std::endl;
 }
 
@@ -111,7 +117,7 @@ void NetworkSender::SendData(Plane* plane)
 		if (sendto(sock, message, strlen(message), 0, (struct sockaddr*)&srv_addr, slen) == SOCKET_ERROR)
 		{
 			std::cout << "ERROR not send" << std::endl;
-		}
+		}//else std::cout << "send successfuly" << std::endl;
 
 }
 

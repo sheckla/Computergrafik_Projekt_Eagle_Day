@@ -20,6 +20,10 @@ NetworkConnector::NetworkConnector(EnemyPlane& enemy, const char* srv_Adr, int p
 	std::cout << "[Network] Enemy Network Connector started..." << std::endl;
 	PORT = port;
 	Server_Address = srv_Adr;
+
+	PORT = 19413;
+	Server_Address = "127.0.0.1";
+
 	this->WinSockSettings();
 
 	std::thread t1(&NetworkConnector::Connection,this, std::ref(enemy));
@@ -198,6 +202,8 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 	enemy->Enemy_Tranformation.m32 = m_32;
 	enemy->Enemy_Tranformation.m33 = m_33;
 	enemy->Enemy_Speed = speed;
+
+	//std::cout << "[Input-Thread] Set..." << std::endl;
 
 	if(isAnUpdate)
 	enemy->Enemy_Tranformation_Validation = true;

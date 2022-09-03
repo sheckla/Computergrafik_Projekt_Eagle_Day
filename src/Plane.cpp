@@ -88,14 +88,14 @@ Plane::Plane(const char* path)
 
 	Gun_Left = new ParticleLoader(.01, 4, ParticleType::Bullet);
 	Gun_Left->setOffset(-2.5f);
-	Muzzleflash_Left = new ParticleLoader(.01, .019, ParticleType::MuzzleFlash);
+	Muzzleflash_Left = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
 	Muzzleflash_Left->setOffset(-2.5f);
 	Muzzleflash_Left->setScale(0.5);
 
 
 	Gun_Right = new ParticleLoader(.01, 4, ParticleType::Bullet);
 	Gun_Right->setOffset(2.5f);
-	Muzzleflash_Right = new ParticleLoader(.01, .019, ParticleType::MuzzleFlash);
+	Muzzleflash_Right = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
 	Muzzleflash_Right->setOffset(2.5f);
 	Muzzleflash_Right->setScale(0.5);
 }
@@ -263,29 +263,34 @@ void Plane::update(double delta)
 	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-4)); 
 	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
 
-	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
-	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
+	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -8.5f));
+	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -8.5f));
 
-	if (Online_Mode)Sender->SendData(this);
+
 
 	if (SoundEngine && HighPitchSoundEngine)
 	{
-		float steady =  1 - speedPercentage();
+		float steady = 1 - speedPercentage();
 		float high = speedPercentage();
 
 		SoundEngine->setSoundVolume(0.1 + (speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
 		if (speedPercentage() > 0.55)
 		{
 			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * ApplicationSettings::AUDIO_VALUE);
-			
-		} else
+
+		}
+		else
 		{
 			HighPitchSoundEngine->setSoundVolume(0);
 		}
 	}
 
+
+
+	if (Online_Mode)Sender->SendData(this);
+	
 	//Hard Collisions
-	if (CollisionDetector::CheckPlaneCollision(this->boundingBox())) { this->hp -= 1; }
+	if (CollisionDetector::CheckPlaneCollision(this->boundingBox())) { this->hp = -1; }
 }
 
 // Spitfire max km/h = 594

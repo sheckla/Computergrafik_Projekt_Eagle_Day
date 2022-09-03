@@ -94,10 +94,10 @@ void ApplicationSettings::readSettings()
 	print("AUDIOVALUE", AUDIO_VALUE);
 	print("SEPIAPOSTPROCESSING", SEPIA_POST_PROCESSING);
 	print("ONLINEMODE", ONLINE_MODE);
-	print("LOCALIP", LOCAL_IP);
-	print("LOCALPORT", LOCAL_PORT);
-	print("ENEMYIP", ENEMY_IP);
-	print("ENEMYPORT", ENEMY_PORT);
+	print("LOCALIP", LOCAL_IP+"|");
+	print("LOCALPORT", LOCAL_PORT + "|");
+	print("ENEMYIP", ENEMY_IP + "|");
+	print("ENEMYPORT", ENEMY_PORT + "|");
 
 	file.close();
 }
