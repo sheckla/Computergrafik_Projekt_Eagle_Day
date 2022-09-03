@@ -1,13 +1,11 @@
 #include "NetworkSender.h"
 #include <iostream>
 #include <thread>
-#include <winsock2.h>
 #include "Matrix.h"
 #include <string>
 #include "Plane.h"
 #include "ModelLoader.h"
 
-#pragma comment(lib,"ws2_32.lib") //Winsock Library
 
 
 NetworkSender::~NetworkSender() 

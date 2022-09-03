@@ -42,9 +42,12 @@ void GameplayGUI::update(float delta)
 	ModelLoader::pPlayerPlane->hp = 100 * lifeMeter->percentage();
 	(!ApplicationSettings::MOUSE_CONTROLS) ? mouseCircle->active(false) : mouseCircle->active(true);
 
+	Vector enemyPos;
+	if (ModelLoader::pAIPlane) enemyPos = ModelLoader::pAIPlane->getPosition();
+	else { enemyPos = ModelLoader::pEnemyPlane->transform().translation(); }
+	print("enemy", enemyPos);
 
 	Vector playerPos = ModelLoader::pPlayerPlane->getParts()[0]->transform().translation();
-	Vector enemyPos = ModelLoader::pEnemyPlane->transform().translation();
 	float dist =(Vector(playerPos.X, 0, playerPos.Z).length() * Vector(enemyPos.X, 0, enemyPos.Z).length());
 
 	float planeCos = ModelLoader::pPlayerPlane->totalRudderRotation;
@@ -64,18 +67,18 @@ void GameplayGUI::update(float delta)
 	float cosRemap;
 	if (xzCos <= 3*PI)
 	{
-		cosRemap = MathUtil::remapBounds(xzCos, 2*PI, 3*PI, 10, 0);
-		cosRemap = -MathUtil::remapBounds(cosRemap, 0, 10, 0, 500);
+		cosRemap = MathUtil::remapBounds(xzCos, 2*PI, 3*PI, 0, 10);
+		cosRemap = MathUtil::remapBounds(cosRemap, 0, 10, 0, 500);
 		
 	} else
 	{
-		cosRemap = MathUtil::remapBounds(3*PI + (xzCos-3*PI), 3*PI , 4*PI, 0, 10);
-		cosRemap = MathUtil::remapBounds(cosRemap, 0, 10, 0, 500);
+		cosRemap = MathUtil::remapBounds(3*PI + (xzCos-3*PI), 3*PI , 4*PI, 10, 00);
+		cosRemap = -MathUtil::remapBounds(cosRemap, 0, 10, 0, 500);
 		
 	}
 	float startX = ApplicationSettings::WIDTH / 2 + cosRemap ;
 	std::stringstream ss;
-	ss << std::fixed << std::setprecision(0) << dist*0.1 << "m";
+	ss << std::fixed << std::setprecision(0) << dist * 0.1 << "m";
 	std::string xzCrossText{ ss.str() };
 	compassText->startPixel(Vector(startX - 15, compass->startPixel().Y + 55, 0));
 	compassText->text(xzCrossText.c_str());

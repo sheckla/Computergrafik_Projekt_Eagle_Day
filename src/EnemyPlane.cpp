@@ -9,7 +9,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 {
 	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
 
-	Vector Enemy_Position = Vector(0, 5, 35.0f);
+	Vector Enemy_Position = Vector(0, 10, -65);
 	
 	Matrix m, r, s;
 
@@ -20,7 +20,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	this->transform(m * r * s);
 
 	Enemy_Tranformation.identity();
-	NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
+	if (ApplicationSettings::ONLINE_MODE) NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
 
 	Gun_Left = new ParticleLoader(.01, 2, ParticleType::BulletDummy);
 	Gun_Left->setOffset(-2.5f);
@@ -70,7 +70,7 @@ void EnemyPlane::update(double delta)
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
-		this->model->transform(Enemy_Tranformation * forward * Matrix().scale(0.3,0.3,0.3));
+		this->model->transform(Enemy_Tranformation * forward);
 		this->propeller->transform(Enemy_Tranformation * forward * rotor_offset * rotorRotation * previousRotorRotation);
 	}
 	else

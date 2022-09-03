@@ -42,14 +42,14 @@ void OptionsGUI::update(float delta)
 		if (Active)
 			// turn off
 		{
-			Application::testBuffer->postProcessingActive(false);
+			Application::guiBuffer->postProcessingActive(false);
 			active(false);
 		}
 		else
 			// turn on
 		{
-			Application::testBuffer->gaussianBlur(true);
-			Application::testBuffer->postProcessingActive(true);
+			Application::guiBuffer->gaussianBlur(true);
+			Application::guiBuffer->postProcessingActive(true);
 			active(true);
 		}
 	}
@@ -58,7 +58,7 @@ void OptionsGUI::update(float delta)
 
 
 	if (escapeButtonPressListener->listen() == RELEASE) {
-		Application::testBuffer->postProcessingActive(false);
+		Application::guiBuffer->postProcessingActive(false);
 		active(false);
 	}
 	if (!Active) return;

@@ -133,7 +133,8 @@ void main()
     vec3 p = reflect(o, normalize(Normal));
     vec4 Reflection = texture(CubeMapTexture, p);
     FragColor = mix(FragColor, Reflection, 0.02*SpecularExp);
-    FragColor = mix(FragColor, Reflection, 0.6);
+    //FragColor = mix(FragColor, Reflection, 0.6);
+    FragColor = mix(FragColor, Reflection, 0.3);
 
     float fadeStart=500;
     

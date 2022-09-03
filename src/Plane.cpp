@@ -273,7 +273,7 @@ void Plane::update(double delta)
 		float steady =  1 - speedPercentage();
 		float high = speedPercentage();
 
-		SoundEngine->setSoundVolume(0.1 + (speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
+		SoundEngine->setSoundVolume((speedPercentage()) * ApplicationSettings::AUDIO_VALUE);
 		if (speedPercentage() > 0.55)
 		{
 			HighPitchSoundEngine->setSoundVolume(MathUtil::remapBounds(speedPercentage(), 0.55, 1, 0, 1) * ApplicationSettings::AUDIO_VALUE);
@@ -297,9 +297,9 @@ void Plane::accelerate(float i)
 	{
 		this->speed = MAX_SPEED;
 	}
-	else if (this->speed < 0)
+	else if (this->speed < 100)
 	{
-		this->speed = 0;
+		this->speed = 100;
 	}
 }
 

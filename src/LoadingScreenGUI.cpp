@@ -143,9 +143,9 @@ void LoadingScreenGUI::update(float delta)
 		} else
 		{
 			ModelLoader::planeParts();
+			ModelLoader::aiPlaneParts();
 		}
 		ModelLoader::planePartsShadowArea();
-		//ModelLoader::aiPlaneParts();
 
 		printLoadFinishText("PLANE_PARTS");
 		break;
@@ -167,7 +167,7 @@ void LoadingScreenGUI::update(float delta)
 		printLoadStartText("SHIP");
 
 		loadingProgressText->text(stringifyTask("Loading Battleship").c_str());
-		ModelLoader::ship();
+		//ModelLoader::ship();
 
 		printLoadStartText("SHIP");
 		break;

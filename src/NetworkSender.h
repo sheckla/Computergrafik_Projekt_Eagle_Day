@@ -2,8 +2,7 @@
 #define NetworkSender_hpp
 
 #include <stdio.h>
-#include <winsock2.h>
-#include <Ws2tcpip.h>
+//#include <Ws2tcpip.h>
 #include "Model.h"
 //#include "Plane.h"
 

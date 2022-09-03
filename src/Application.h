@@ -55,7 +55,7 @@ public:
     static EnemyPlane* enemyPlane;
     static GLFWwindow* pWindow;
 
-    static PostProcessingBuffer* testBuffer;
+    static PostProcessingBuffer* guiBuffer;
 };
 
 #endif /* Application_hpp */

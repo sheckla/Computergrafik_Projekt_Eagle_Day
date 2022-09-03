@@ -16,7 +16,7 @@ AIPlaneController* Application::aiControls = nullptr;
 Camera* Application::Cam;
 EnemyPlane* Application::enemyPlane = nullptr;
 GLFWwindow* Application::pWindow = nullptr;
-PostProcessingBuffer* Application::testBuffer = nullptr;
+PostProcessingBuffer* Application::guiBuffer = nullptr;
 
 
 Application::Application(GLFWwindow* pWin) : ShadowGenerator(1024, 1024), AppGUI(new ApplicationGUI(pWin))
@@ -25,7 +25,7 @@ Application::Application(GLFWwindow* pWin) : ShadowGenerator(1024, 1024), AppGUI
 
     // ----------- START ----------- 
     print("APPLICATION", "initialisation.");
-    testBuffer = new PostProcessingBuffer(ApplicationSettings::WIDTH, ApplicationSettings::HEIGHT);
+    guiBuffer = new PostProcessingBuffer(ApplicationSettings::WIDTH, ApplicationSettings::HEIGHT);
 
     // ----------- STATIC INSTANCE INIT -----------
     ApplicationSettings::instance();
@@ -67,7 +67,7 @@ void Application::update(float dtime)
     MouseLogger::instance().update(x, y);
 
     // ----------- ppBuffer Elapsed Time update ----------- 
-    testBuffer->update(delta);
+    guiBuffer->update(delta);
     if(ApplicationGUI::AppGUI->ppBuffer) ApplicationGUI::AppGUI->ppBuffer->update(delta);
 
     // ----------- GUI Keyboard/Mouse Input update ----------- 
@@ -78,12 +78,12 @@ void Application::update(float dtime)
     if (ModelLoader::pPlayerPlane)
     {
         this->planeControls->update(delta);
-        if (ApplicationSettings::ONLINE_MODE && ModelLoader::pEnemyPlane)this->enemyPlane->update(delta);
-    }
-
-    if (ModelLoader::pAIPlane && ModelLoader::pPlayerPlane)
-    {
-        //aiControls->update(delta);
+        if (ApplicationSettings::ONLINE_MODE && ModelLoader::pEnemyPlane) {
+            ModelLoader::pEnemyPlane->update(delta);
+        } else if (ModelLoader::pAIPlane)
+        {
+            aiControls->update(delta);
+        }
     }
 
     // ----------- Model Update ----------- 
@@ -149,16 +149,16 @@ void Application::draw()
         AppGUI->ppBuffer->postDraw();
 
         // ----------- PostProc. DRAW ----------- 
-		testBuffer->preDraw();
+		guiBuffer->preDraw();
         AppGUI->ppBuffer->draw(*Cam);
     }
 
     // ----------- GUI DRAW -----------
-    testBuffer->preDraw();
+    guiBuffer->preDraw();
 
     AppGUI->draw();
-    testBuffer->postDraw();
-    testBuffer->draw(*Cam);
+    guiBuffer->postDraw();
+    guiBuffer->draw(*Cam);
 
     if (ApplicationGUI::AppGUI->status().startscreenGUI || ApplicationGUI::AppGUI->status().escapeMenu) ApplicationGUI::AppGUI->optionsGUI->draw();
 
@@ -179,10 +179,10 @@ void Application::end()
     delete aiControls;
     delete Cam;
     delete enemyPlane;
-    delete testBuffer;
+    delete guiBuffer;
     delete AppGUI;
 
-    delete ModelLoader::pWaterLoader;
+    //delete ModelLoader::pWaterLoader;
     //Models.clear();
     exit(0);
 }
