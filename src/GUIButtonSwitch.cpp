@@ -4,12 +4,18 @@
 
 GUIButtonSwitch::GUIButtonSwitch(float startX, float startY, float width, float height, const char* text)
 {
-	GUIConstantQuad* quad = new GUIConstantQuad(startX, startY, width, height);
-	quad->color(COL_DARK);
-	quad->constantColorMode(true);
-	quad->mouseoverHighlight(true);
-	quad->mouseoverHighlightColor(COL_LIGHT);
-	button = new GUIButton(ApplicationGUI::AppGUI->Window, quad, text, ARIAL_BLACK, false);
+
+	offTexture = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple_gray.png"), true);
+	offTexture->width(width);
+	offTexture->height(height);
+	offTexture->mouseoverHighlight(true);
+
+	onTexture = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple.png"), true);
+	onTexture->width(width);
+	onTexture->height(height);
+	onTexture->mouseoverHighlight(true);
+
+	button = new GUIButton(ApplicationGUI::AppGUI->Window, offTexture, text, ARIAL_BLACK, false);
 	button->pText()->scale(Vector(0.8, 0.8, 0));
 	button->pText()->charSpace(0.8);
 
@@ -18,6 +24,10 @@ GUIButtonSwitch::GUIButtonSwitch(float startX, float startY, float width, float 
 
 GUIButtonSwitch::~GUIButtonSwitch()
 {
+	delete offTexture;
+	delete onTexture;
+	delete button;
+	delete onOffText;
 }
 
 void GUIButtonSwitch::draw()
@@ -43,7 +53,7 @@ void GUIButtonSwitch::update(float delta)
 			On = true;
 		}
 	}
-
+	on(On);
 }
 
 bool GUIButtonSwitch::on()
@@ -57,9 +67,12 @@ void GUIButtonSwitch::on(bool b)
 	if (On)
 	{
 		onOffText->text("On");
+
+		button->area(onTexture);
 	}
 	else
 	{
+		button->area(offTexture);
 		onOffText->text("Off");
 	}
 }

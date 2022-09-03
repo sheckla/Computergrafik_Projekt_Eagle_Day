@@ -10,6 +10,7 @@
 #define ApplicationGUI_h
 
 #include "EscapeMenuGUI.h"
+#include "GameOverGUI.h"
 #include "GameplayGUI.h"
 #include "LoadingScreenGUI.h"
 #include "OptionsGUI.h"
@@ -21,13 +22,15 @@ const enum APPLICATION_GUI_TYPES { LOADING_SCREEN_GUI, STARTSCREEN_GUI, GAMEPLAY
 
 struct ApplicationGUIStatus
 {
-	ApplicationGUIStatus(bool active, bool active1, bool active2, bool active3, bool active4) :
-	gameplay(active), escapeMenu(active1), startscreenGUI(active2), loadingScreen(active3), optionsGUI(active4) {}
+	ApplicationGUIStatus(bool active, bool active1, bool active2, bool active3, bool active4, bool active5) :
+	gameplay(active), escapeMenu(active1), startscreenGUI(active2),
+	loadingScreen(active3), optionsGUI(active4), gameoverGUI(active5) {}
 	bool gameplay;
 	bool escapeMenu;
 	bool startscreenGUI;
 	bool loadingScreen;
 	bool optionsGUI;
+	bool gameoverGUI;
 };
 
 class ApplicationGUI
@@ -43,6 +46,7 @@ public:
 	GameplayGUI* gameplayGUI;
 	EscapeMenuGUI* escapeMenuGUI;
 	OptionsGUI* optionsGUI;
+	GameOverGUI* gameOverGUI;
 
 	ApplicationGUI(GLFWwindow* window);
 	~ApplicationGUI();

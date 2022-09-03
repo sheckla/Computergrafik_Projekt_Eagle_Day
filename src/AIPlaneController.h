@@ -1,11 +1,12 @@
 #ifndef AIPlaneController_h
 #define AIPlaneController_h
+#include "EnemyPlane.h"
 #include "Plane.h"
 
 class AIPlaneController
 {
 public:
-	Plane* aiPlane;
+	EnemyPlane* aiPlane;
 	Plane* playerPlane;
 
 	bool stop = false;

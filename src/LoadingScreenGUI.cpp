@@ -99,6 +99,14 @@ void LoadingScreenGUI::update(float delta)
 		printLoadFinishText("OPTIONS_GUI");
 		break;
 		// ----
+	case GUI_GAMEOVER:
+		printLoadStartText("GAMEOVER_GUI");
+
+		ApplicationGUI::AppGUI->gameOverGUI->init();
+
+		printLoadFinishText("GAMEOVER_GUI");
+		break;
+		// ----
 	case GUI_FINALIZE:
 		printLoadStartText("GUI_FINALIZE");
 
@@ -144,6 +152,7 @@ void LoadingScreenGUI::update(float delta)
 		{
 			ModelLoader::planeParts();
 			ModelLoader::aiPlaneParts();
+			CollisionDetector::setCollisionTarget(ModelLoader::pAIPlane);
 		}
 		ModelLoader::planePartsShadowArea();
 
@@ -167,7 +176,7 @@ void LoadingScreenGUI::update(float delta)
 		printLoadStartText("SHIP");
 
 		loadingProgressText->text(stringifyTask("Loading Battleship").c_str());
-		//ModelLoader::ship();
+		ModelLoader::ship();
 
 		printLoadStartText("SHIP");
 		break;

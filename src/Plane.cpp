@@ -1,5 +1,6 @@
 #include <irrKlang.h>
 
+#include "Application.h"
 #include "ApplicationSettings.h"
 #include "constantshader.h"
 #include "MathUtil.h"
@@ -149,12 +150,7 @@ bool Plane::loadModels(const char* path)
 	parts[PartsIndex::rotorBlur]->shader(shader, true);
 	parts[PartsIndex::rotorBlur]->shadowCaster(false);
 
-	// Offsets anwenden
-	for (size_t i = 0; i < PLANE_PARTS; i++)
-	{
-		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(Vector(0,10,-65)));
-	}
-	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
+	initModelTranslation();
 
 	dot = new TriangleSphereModel(0.1, 20, 20);
 	dot->shader(new ConstantShader());
@@ -166,8 +162,19 @@ bool Plane::loadModels(const char* path)
 	horizon->shadowCaster(false);
 	//horizon->transform(Matrix().translation(horizonOffset));
 
-	speed = 2;
+	speed = 100;
 	return true;
+}
+
+void Plane::initModelTranslation()
+{
+	// Offsets anwenden
+	Vector offset = Vector(MathUtil::randPercentage() * 100, MathUtil::randPercentage() * 100 + 40, MathUtil::randPercentage() * 100);
+	for (size_t i = 0; i < PLANE_PARTS; i++)
+	{
+		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(offset));
+	}
+	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 }
 
 /* 
@@ -180,20 +187,22 @@ void Plane::update(double delta)
 	// Translations/Rotations Transformationen bezueglich Flugzeug- & Kameraposition
 	Matrix forward, yaw, rollLeft, rollRight, pitch;
 	const float speedMultiplier = speedPercentage();
+	Matrix gravitational_pull;
+	Matrix gravAntiPitch;
+	gravitational_pull.translation(Vector(0, -1, 0) * 9.81f * delta * (1/100));
+	gravAntiPitch.rotationX(delta / 20);
 
 	forward.translation(Vector(0, 0, ACCELERATION_GAIN * speed));
-	totalRudderRotation += ROTATION_SPEED * -Tilt.rudder * speedMultiplier;
-
-
 	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * speedMultiplier);
 	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * speedMultiplier);
 	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier);
 	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier);
-	totalRightWingflapRotation += ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier;
+	totalRightWingflapRotation += ROTATION_SPEED * -Tilt.rightFlapsTilt * speedMultiplier;
 	totalLeftWingflapRotation += ROTATION_SPEED * Tilt.leftFlapsTilt * speedMultiplier;
+	totalRudderRotation += ROTATION_SPEED * -Tilt.rudder * speedMultiplier;
 
 	// main-model
-	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight);
+	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight * gravitational_pull * gravAntiPitch);
 	dot->transform(parts[0]->transform() * Matrix().translation(dotOffset));
 
 	Matrix rollLeftInvert, rollRightInvert;
@@ -263,8 +272,8 @@ void Plane::update(double delta)
 	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-4)); 
 	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
 
-	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -8.5f));
-	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -8.5f));
+	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4.5f));
+	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4.5f));
 
 
 
@@ -290,7 +299,10 @@ void Plane::update(double delta)
 	if (Online_Mode)Sender->SendData(this);
 	
 	//Hard Collisions
-	if (CollisionDetector::CheckPlaneCollision(this->boundingBox())) { this->hp = -1; }
+	if (CollisionDetector::CheckPlaneCollision(this->boundingBox()))
+	{
+		this->hp = 0;
+	} 
 }
 
 // Spitfire max km/h = 594

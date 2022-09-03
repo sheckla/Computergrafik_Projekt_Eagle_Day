@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\src\FNTManager.cpp" />
     <ClCompile Include="..\..\src\Framebuffer.cpp" />
     <ClCompile Include="..\..\src\ApplicationGUI.cpp" />
+    <ClCompile Include="..\..\src\GameOverGUI.cpp" />
     <ClCompile Include="..\..\src\GameplayGUI.cpp" />
     <ClCompile Include="..\..\src\GUIButtonSwitch.cpp" />
     <ClCompile Include="..\..\src\GUIConstantQuadWrapper.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="..\..\src\FNTManager.h" />
     <ClInclude Include="..\..\src\Framebuffer.h" />
     <ClInclude Include="..\..\src\ApplicationGUI.h" />
+    <ClInclude Include="..\..\src\GameOverGUI.h" />
     <ClInclude Include="..\..\src\GameplayGUI.h" />
     <ClInclude Include="..\..\src\Globals.h" />
     <ClInclude Include="..\..\src\GUIButtonSwitch.h" />

@@ -12,7 +12,6 @@ class GUISlider : public GUILoadingMeter
 	PressListener meterMouseListener;
 	GUIText* percentageText;
 	GUIText* descriptionText;
-
 	bool EnableSliding = true;
 public:
 	GUISlider(float startX, float startY, float width, float height, float padding, const char* text);

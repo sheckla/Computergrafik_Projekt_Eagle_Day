@@ -100,6 +100,11 @@ void ApplicationSettings::readSettings()
 	print("ENEMYPORT", ENEMY_PORT + "|");
 
 	file.close();
+
+	if (LOCAL_IP.size() < 1) LOCAL_IP = "127.0.0.1";
+	if (LOCAL_PORT.size() < 1) LOCAL_PORT = "14911";
+	if (ENEMY_IP.size() < 1) ENEMY_IP = "127.0.0.1";
+	if (ENEMY_PORT.size() < 1) ENEMY_PORT = "19413";
 }
 
 void ApplicationSettings::writeSettings()

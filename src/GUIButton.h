@@ -15,14 +15,15 @@
 class GUIButton : public GUIBaseComponent
 {
 	GLFWwindow* window;
-	GUIConstantQuad* area;
-	GUIText* buttonText;
-	Vector StartPixel;
-	PressListener mousePressListener;
+	GUIConstantQuad* Area;
 	int Width, Height;
+	GUIText* buttonText;
+	PressListener mousePressListener;
 	PRESS_STATE State;
+	Vector StartPixel;
 
 public:
+
 	GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text, FONT_NAMES font = ARIAL_BLACK, bool centred = true);
 	~GUIButton() override;
 	void draw() override;
@@ -33,6 +34,7 @@ public:
 	PRESS_STATE listen();
 	PRESS_STATE state();
 	GUIText* pText();
+	void area(GUIConstantQuad* area);
 };
 
 #endif

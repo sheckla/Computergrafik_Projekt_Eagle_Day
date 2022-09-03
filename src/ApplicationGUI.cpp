@@ -1,12 +1,14 @@
 #include "ApplicationGUI.h"
 
 #include "GUIConstantQuad.h"
+#include "ModelLoader.h"
 
 ApplicationGUI* ApplicationGUI::AppGUI = nullptr;
 
 ApplicationGUI::ApplicationGUI(GLFWwindow* window) :
 Window(window), loadingScreenGUI(window), startScreenGUI(new StartScreenGUI(window)), optionsGUI(new OptionsGUI(window)), ppBuffer(nullptr),
-	gameplayGUI(new GameplayGUI(window)), escapeMenuGUI(new EscapeMenuGUI(window)), escapeMenuPressListener(window, GLFW_KEY_ESCAPE, KEYBOARD)
+	gameplayGUI(new GameplayGUI(window)), escapeMenuGUI(new EscapeMenuGUI(window)), gameOverGUI(new GameOverGUI(window)),
+escapeMenuPressListener(window, GLFW_KEY_ESCAPE, KEYBOARD)
 {
 	AppGUI = this;
 }
@@ -18,6 +20,12 @@ ApplicationGUI::~ApplicationGUI()
 
 void ApplicationGUI::draw()
 {
+	// Only Gameover screen if active
+	if (gameOverGUI->active())
+	{
+		gameOverGUI->draw();
+		return;
+	}
 
 	// Only LoadingScreen if active
 	if (loadingScreenGUI.active())
@@ -35,7 +43,7 @@ void ApplicationGUI::draw()
 
 	// Draw everything else
 
-	if (gameplayGUI->active())
+	if (gameplayGUI->active() && ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp > 0)
 		gameplayGUI->draw();
 
 	if (escapeMenuGUI->active())
@@ -45,6 +53,13 @@ void ApplicationGUI::draw()
 void ApplicationGUI::updateInputs(float delta)
 {
 	// Only update LoadingScreen if active
+
+	if (ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp <= 0) {
+		gameplayGUI->active(false);
+		gameOverGUI->active(true);
+	}
+	if (gameOverGUI->active()) gameOverGUI->update(delta);
+
 	if (loadingScreenGUI.active()) {
 		loadingScreenGUI.update(delta);
 		return;
@@ -64,11 +79,13 @@ void ApplicationGUI::updateInputs(float delta)
 	// Update everything else
 	if (gameplayGUI->active()) gameplayGUI->update(delta);
 	if (escapeMenuGUI->active()) escapeMenuGUI->update(delta);
+
 }
 
 ApplicationGUIStatus ApplicationGUI::status()
 {
-	return { gameplayGUI->active(), escapeMenuGUI->active(), startScreenGUI->active(), loadingScreenGUI.active(), optionsGUI->active()};
+	return { gameplayGUI->active(), escapeMenuGUI->active(), startScreenGUI->active(),
+		loadingScreenGUI.active(), optionsGUI->active(), gameOverGUI->active()};
 }
 
 void ApplicationGUI::drawOptions()

@@ -137,7 +137,7 @@ void main()
         // CubeMap SpecularComponent
         vec3 o = normalize(Position - EyePos);
         vec3 p = reflect(o, normalize(Normal));
-        Reflection = texture(CubeMapTexture, p).xyz;
+        Reflection = texture(CubeMapTexture, p).xyz / PhongDiff;
 
         ReflectComponent += LightColor * texture(CubeMapTexture, p).xyz;
         DiffuseComponent += LightColor * DiffuseColor * sat(dot(N,L)) / PhongDiff; 

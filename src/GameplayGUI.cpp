@@ -43,28 +43,57 @@ void GameplayGUI::update(float delta)
 	(!ApplicationSettings::MOUSE_CONTROLS) ? mouseCircle->active(false) : mouseCircle->active(true);
 
 	Vector enemyPos;
-	if (ModelLoader::pAIPlane) enemyPos = ModelLoader::pAIPlane->getPosition();
+	if (ModelLoader::pAIPlane) enemyPos = ModelLoader::pAIPlane->transform().translation();
 	else { enemyPos = ModelLoader::pEnemyPlane->transform().translation(); }
-	print("enemy", enemyPos);
-
 	Vector playerPos = ModelLoader::pPlayerPlane->getParts()[0]->transform().translation();
-	float dist =(Vector(playerPos.X, 0, playerPos.Z).length() * Vector(enemyPos.X, 0, enemyPos.Z).length());
+
+	Matrix m = Matrix().rotationY(ModelLoader::pPlayerPlane->totalRudderRotation);
+	Matrix d = ModelLoader::pPlayerPlane->getParts()[0]->transform() * m;
+	playerPos = d.translation();
+
+	float dist = (enemyPos - playerPos).length() * 30;
 
 	float planeCos = ModelLoader::pPlayerPlane->totalRudderRotation;
-	float xyDot = playerPos.X * enemyPos.X + playerPos.Z * enemyPos.Z;
+	float xzDot = playerPos.X * enemyPos.X + playerPos.Z * enemyPos.Z;
 	float xzDet = playerPos.X * enemyPos.Z + playerPos.Z * enemyPos.X;
-	float signedXYAngle = atan2(xzDet, xyDot);
+	float signedXYAngle = atan2(xzDet, xzDot);
 	float xzCos = planeCos - signedXYAngle;
 
-	while (planeCos < PI) planeCos += PI;
+
 	while (planeCos > PI) planeCos -= PI;
+	while (planeCos < PI) planeCos += PI;
 	while (xzCos > PI*2) xzCos -= PI*2;
 	while (xzCos < PI*2) xzCos += PI*2;
 
-	/*if (xzCos > 2*PI && xzCos < 3*PI) ss << "LEFT";
-	if (xzCos <= 4*PI && xzCos >= 3*PI) ss << "RIGHT";*/
+	Vector xzPlayer = Vector(playerPos.X, playerPos.Z, 0).normalize();
+	Vector xzEnemy = Vector(enemyPos.X, playerPos.Z,0).normalize();
+
+	float angle = acos(xzPlayer.dot(xzEnemy));
+	Vector rotAxis = xzEnemy.cross(xzPlayer);
+	rotAxis.normalize();
+
+	Vector diff(0, 0, (enemyPos - playerPos).length());
+	Vector rotDiff = Camera::rotateAxisAngle(diff, rotAxis, angle);
+
+	Vector cdir = enemyPos - playerPos;
+	cdir.normalize();
+	Vector cup = ModelLoader::pPlayerPlane->getParts()[0]->transform().up().normalize();
+	Vector cright = cdir.cross(cup);
+	cright.normalize();
+	cup = cright.cross(cdir);
+
+	Vector rotDiffW;
+	rotDiffW.X = cright.X * rotDiff.X + cup.X * rotDiff.Y + -cdir.X * rotDiff.Z;
+	rotDiffW.Y = cright.Y * rotDiff.X + cup.Y * rotDiff.Y + -cdir.Y * rotDiff.Z;
+	rotDiffW.Z = cright.Z * rotDiff.X + cup.Z * rotDiff.Y + -cdir.Z * rotDiff.Z;
+	rotDiffW.normalize();
+	//print("rotDiff", rotDiffW.normalize());
 
 	float cosRemap;
+	float xCosRemap;
+	cosRemap = MathUtil::remapBounds(rotDiffW.Z, -1, 1, -500, 500);
+	xCosRemap = MathUtil::remapBounds(rotDiffW.X, -1, 1, -500, 500);
+	/*float cosRemap;
 	if (xzCos <= 3*PI)
 	{
 		cosRemap = MathUtil::remapBounds(xzCos, 2*PI, 3*PI, 0, 10);
@@ -75,8 +104,8 @@ void GameplayGUI::update(float delta)
 		cosRemap = MathUtil::remapBounds(3*PI + (xzCos-3*PI), 3*PI , 4*PI, 10, 00);
 		cosRemap = -MathUtil::remapBounds(cosRemap, 0, 10, 0, 500);
 		
-	}
-	float startX = ApplicationSettings::WIDTH / 2 + cosRemap ;
+	}*/
+	float startX = ApplicationSettings::WIDTH / 2 + xCosRemap;
 	std::stringstream ss;
 	ss << std::fixed << std::setprecision(0) << dist * 0.1 << "m";
 	std::string xzCrossText{ ss.str() };

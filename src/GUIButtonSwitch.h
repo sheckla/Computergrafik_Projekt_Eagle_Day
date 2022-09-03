@@ -7,6 +7,8 @@
 class GUIButtonSwitch : public GUIBaseComponent
 {
 	GUIButton* button;
+	GUITexture* onTexture;
+	GUITexture* offTexture;
 	GUIText* onOffText;
 	bool On = false;
 public:

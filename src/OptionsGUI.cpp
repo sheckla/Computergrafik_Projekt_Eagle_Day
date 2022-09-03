@@ -89,7 +89,7 @@ void OptionsGUI::update(float delta)
 
 void OptionsGUI::init()
 {
-	// Cogwheel clickable
+	// Cogwheel clickable - top left
 	GUITexture* cogwheelTexture = new GUITexture(20, ApplicationSettings::HEIGHT - 70, new Texture(ASSETS "img/cogwheel.png"), true);
 	cogwheelTexture->constantColorMode(true);
 	cogwheelTexture->mouseoverHighlight(true);
@@ -99,15 +99,11 @@ void OptionsGUI::init()
 	cogwheelTexture->height(50);
 	this->cogwheelTexture = cogwheelTexture;
 
-	// Apply button
+	// Button Width
 	GUITexture* applyTexture = new GUITexture(50, 100, new Texture(ASSETS "img/button_simple.png"), true);
-	applyTexture->mouseoverHighlight(true);
 	applyTexture->scale(Vector(0.3, 0.3, 0));
-	GUIButton* applyButton = new GUIButton(ApplicationGUI::AppGUI->Window, applyTexture, "Apply");
-	//Components.push_back(applyButton);
 
-	// Left Side
-
+	// --- Left Side --- 
 	// PostProcessingSwitch
 	sepiaPostProcessingSwitch = new GUIButtonSwitch(50, 500, applyTexture->width(), 75, "Color Filter");
 	sepiaPostProcessingSwitch->on(ApplicationSettings::SEPIA_POST_PROCESSING);
@@ -124,9 +120,7 @@ void OptionsGUI::init()
 	audioSlider->percentage(ApplicationSettings::AUDIO_VALUE);
 	Components.push_back(audioSlider);
 
-
-
-	// Right Side
+	// --- Right Side --- 
 	// Online Info Text
 	std::string locIP{ "Local IP:" + ApplicationSettings::LOCAL_IP };
 	std::string locPort{ "Local Port:" + ApplicationSettings::LOCAL_PORT };
@@ -149,4 +143,7 @@ void OptionsGUI::init()
 
 	// Need to restart Text
 	restartChangeRequiredText = new GUIText(ApplicationSettings::WIDTH - 450, 300, "(Restart required)");
+
+	// clear
+	delete applyTexture;
 }

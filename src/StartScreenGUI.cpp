@@ -68,6 +68,8 @@ void StartScreenGUI::update(float delta)
 		//exit(0);
 	}
 
+
+
 	for (auto component : Components)
 	{
 		component->update(delta);
@@ -105,6 +107,9 @@ void StartScreenGUI::init()
 	exitButtonTex->mouseoverHighlight(true);
 	exitButton = new GUIButton(Window, exitButtonTex, "Exit", ARIAL_BLACK, true);
 	Components.push_back(exitButton);
+
+
+
 
 	for (int i = 0; i <= 10; i++)
 	{

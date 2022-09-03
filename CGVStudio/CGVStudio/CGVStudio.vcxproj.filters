@@ -385,6 +385,9 @@
     <ClCompile Include="..\..\src\GUIButtonSwitch.cpp">
       <Filter>Quelldateien\gui\elements\components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GameOverGUI.cpp">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application.h">
@@ -632,6 +635,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\GUIButtonSwitch.h">
       <Filter>Quelldateien\gui\elements\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GameOverGUI.h">
+      <Filter>Quelldateien\gui\application\gui_types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

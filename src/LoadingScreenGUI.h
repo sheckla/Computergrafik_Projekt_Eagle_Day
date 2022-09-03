@@ -15,7 +15,7 @@
 #include "GUIText.h"
 #include "GUITexture.h"
 
-constexpr int tasks = 13;
+constexpr int tasks = 14;
 
 const enum LOADING_TASKS
 {
@@ -24,6 +24,7 @@ const enum LOADING_TASKS
 	GUI_GAMEPLAY,
 	GUI_ESCAPEMENU,
 	GUI_OPTIONS,
+	GUI_GAMEOVER,
 	GUI_FINALIZE,
 
 	MODELS_LIGHT,

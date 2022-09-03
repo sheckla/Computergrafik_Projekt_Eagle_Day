@@ -16,10 +16,10 @@ const int ENEMY_MODEL_AMOUNT = 2;
 class EnemyPlane : public BaseModel
 {
 	Model* models[ENEMY_MODEL_AMOUNT];
-	Model* model;
 	Model* propeller;
 
 public:
+	Model* model;
 
 	Matrix Enemy_Tranformation;
 	bool Enemy_Tranformation_Validation = false;

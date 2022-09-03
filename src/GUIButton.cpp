@@ -5,10 +5,10 @@
 #include "MouseLogger.h"
 
 GUIButton::GUIButton(GLFWwindow* window, GUIConstantQuad* quad, const char* text, FONT_NAMES font, bool centred) : 
-mousePressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), area(quad)
+mousePressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), Area(quad)
 {
 	this->window = window;
-	GUIText* tmp = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, font);
+	GUIText* tmp = new GUIText(quad->startPixel().X + quad->width() / 2, quad->startPixel().Y + quad->height() / 2, text, font); // needed for width/height adjusts
 	if (centred)
 	{
 		tmp->charSpace(1.2);
@@ -22,17 +22,15 @@ mousePressListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE), area(quad)
 	quad->mousePressColor(COL_VERY_LIGHT);
 }
 
-
-
 GUIButton::~GUIButton()
 {
-	
+	delete buttonText;
+	delete Area;
 }
-
 
 void GUIButton::draw()
 {
-	area->draw();
+	Area->draw();
 	buttonText->draw();
 }
 
@@ -43,19 +41,19 @@ void GUIButton::update(float delta)
 	switch (state)
 	{
 	case PRESS:
-		area->mousePress(true);
+		Area->mousePress(true);
 		break;
 	case RELEASE:
-		area->mousePress(false);
+		Area->mousePress(false);
 		break;
 	}
 
-	area->update(delta);
+	Area->update(delta);
 }
 
 bool GUIButton::pressed()
 {
-	return area->mousePress();
+	return Area->mousePress();
 }
 
 PRESS_STATE GUIButton::listen()
@@ -74,12 +72,17 @@ GUIText* GUIButton::pText()
 	return buttonText;
 }
 
+void GUIButton::area(GUIConstantQuad* area)
+{
+	Area = area;
+}
+
 void GUIButton::texture(Texture* tex)
 {
-	area = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, tex, true, false);
+	Area = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, tex, true, false);
 }
 
 bool GUIButton::mouseInside()
 {
-	return area->mouseInside();
+	return Area->mouseInside();
 }

@@ -16,6 +16,7 @@ class EscapeMenuGUI : public ApplicationGUIPrototype
 	GUIButton* returnStartButton;
 	GUIButton* leaveEscapeMenuButton;
 	PressListener* escapeButtonPressListener;
+	GUIButton* restartButton;
 	bool PostProcessingInit = false;
 public:
 	EscapeMenuGUI(GLFWwindow* window);

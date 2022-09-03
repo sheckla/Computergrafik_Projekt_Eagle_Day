@@ -9,7 +9,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 {
 	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
 
-	Vector Enemy_Position = Vector(0, 10, -65);
+	Vector Enemy_Position = Vector(0, 10, 65);
 	
 	Matrix m, r, s;
 
@@ -28,7 +28,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	Gun_Right = new ParticleLoader(.01, 2, ParticleType::BulletDummy);
 	Gun_Right->setOffset(2.5f);
 
-	Smoke_System = new ParticleLoader(.02, .5, ParticleType::Smoke);
+	Smoke_System = new ParticleLoader(.0002, .14, ParticleType::Smoke);
 
 	Muzzleflash_Right = new ParticleLoader(.01, .03, ParticleType::MuzzleFlash);
 	Muzzleflash_Right->setOffset(2.5f);
@@ -42,10 +42,11 @@ const AABB& EnemyPlane::boundingBox() const
 	float posX = this->model->transform().m03;
 	float posY = this->model->transform().m13;
 	float posZ = this->model->transform().m23;
+	Vector pos = model->transform().translation();
 	
 	AABB aabb;
-	aabb.Min = Vector(-4 + posX, -4 + posY, -4 + posZ);
-	aabb.Max = Vector(4 + posX, 4 + posY, 4 + posZ);
+	aabb.Min = Vector(-4 + pos.X, -4 + pos.Y, -4 + pos.Z);
+	aabb.Max = Vector(4 + pos.X, 4 + pos.Y, 4 + pos.Z);
 	return aabb;
 }
 
@@ -70,8 +71,9 @@ void EnemyPlane::update(double delta)
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
-		this->model->transform(Enemy_Tranformation * forward /* Matrix().scale(0.3,0.3,0.3)*/);
+		this->model->transform(Enemy_Tranformation * forward);
 		this->propeller->transform(Enemy_Tranformation * forward * rotor_offset * rotorRotation * previousRotorRotation);
+		this->transform(model->transform());
 	}
 	else
 	{
@@ -81,6 +83,7 @@ void EnemyPlane::update(double delta)
 
 		this->model->transform(this->model->transform() * forward);
 		this->propeller->transform(this->model->transform() * forward * rotor_offset * rotorRotation * previousRotorRotation);
+		this->transform(model->transform());
 		//std::cout << "[Enemy] Last update one frame behind: <Motion Estimate>" << std::endl;
 	}
 	
@@ -108,7 +111,7 @@ void EnemyPlane::update(double delta)
 
 	if (this->hp < 50.0f)Smoke_System->StartGenerating();
 	else Smoke_System->StopGenerating();
-
+	Smoke_System->StartGenerating();
 	Smoke_System->update(delta, this->propeller->transform());
 
 	Muzzleflash_Right->update(delta, this->model->transform());
@@ -122,14 +125,19 @@ void EnemyPlane::loadModels(const char* path)
 
 	this->model = new Model(&(planePath + "/messerschmitt.obj")[0], fitToSize);
 	PhongShader* shader = new PhongShader();
+	//shader->specularExp(2000);
+	shader->phongDiff(2.1);
+	shader->ambientColor(Color(0, 0, 0));
 	this->model->shader(shader, true);
 
 	models[0] = this->model;
+	models[0]->transform(models[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 
 	
 	this->propeller = new Model(&(planePath + "/propeller.obj")[0], fitToSize);
 	this->propeller->shader(shader, true);
 	models[1] = this->propeller;
+	models[1]->transform(models[1]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 	
 }
 

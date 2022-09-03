@@ -48,7 +48,6 @@ protected:
     void pan(float dx, float dy);
     void rotate(float x, float y);
     Vector getVSpherePos(float x, float y);
-    Vector rotateAxisAngle(Vector v, Vector n, float a);
 
     Matrix m_ViewMatrix;
     Matrix m_ProjMatrix;
@@ -72,6 +71,7 @@ public:
     Vector target() const;
     Vector up() const;
 
+    static Vector rotateAxisAngle(Vector v, Vector n, float a);
     void setPosition(const Vector& Pos);
     void setTarget(const Vector& Target);
     void setUp(const Vector& Up);

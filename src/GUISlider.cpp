@@ -12,8 +12,10 @@ GUISlider::GUISlider(float startX, float startY, float width, float height, floa
 {
 	meterClickArea = new GUIConstantQuad(startX + padding, startY + padding, width - padding*2, height - padding*2);
 
-	meter->mouseoverHighlight(true);
-	meter->mouseoverHighlightColor(COL_LIGHT*0.9);
+
+	outlineArea = new GUITexture(startX, startY, new Texture(ASSETS "img/button_simple.png"), true);
+	outlineArea->width(width);
+	outlineArea->height(height);
 	meter->mousePressColor(COL_VERY_LIGHT);
 
 	// Percentage Text

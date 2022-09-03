@@ -24,7 +24,7 @@ public:
     static std::list<BaseModel*>* Ocean;
 
     static Plane* pPlayerPlane;
-    static Plane* pAIPlane;
+    static EnemyPlane* pAIPlane;
     static EnemyPlane* pEnemyPlane;
     static BaseModel* pSkyBox;
     static BaseModel* PlayerPlaneShadowArea;

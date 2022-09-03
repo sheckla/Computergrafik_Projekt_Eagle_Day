@@ -72,7 +72,7 @@ void Application::update(float dtime)
 
     // ----------- GUI Keyboard/Mouse Input update ----------- 
     AppGUI->updateInputs((float)delta);
-    if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu|| AppGUI->status().startscreenGUI) return;
+    if (AppGUI->status().loadingScreen ||AppGUI->status().escapeMenu|| AppGUI->status().startscreenGUI || AppGUI->status().gameoverGUI) return;
 
     // ----------- Plane Control handler ----------- 
     if (ModelLoader::pPlayerPlane)
@@ -106,7 +106,7 @@ void Application::draw()
 {
     // ----------- FRAME START ----------- 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (!AppGUI->status().startscreenGUI && !AppGUI->status().loadingScreen) {
+    if (!AppGUI->status().startscreenGUI && !AppGUI->status().loadingScreen && !AppGUI->status().gameoverGUI) {
 
         // ----------- SHADOW MAPPPING -----------
         // Frisst viel Leistung! Gut entscheiden was ShadowMaps erhalten soll
@@ -144,6 +144,7 @@ void Application::draw()
             cloud->draw(*Cam);
         }
         ModelLoader::PlayerPlaneShadowArea->draw(*Cam);
+        ModelLoader::pPlayerPlane->dot->draw(*Cam);
 
 
         AppGUI->ppBuffer->postDraw();

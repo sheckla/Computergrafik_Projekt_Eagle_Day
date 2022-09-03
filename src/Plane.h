@@ -21,8 +21,8 @@
 #include "TriangleBoxModel.h"
 #include "ParticleLoader.h"
 #include "irrKlang.h"
+#include "TriangleSphereModel.h"
 
-class TriangleSphereModel;
 constexpr float EPSILON = 1e-7f; 
 constexpr int PLANE_PARTS = 8;
 
@@ -103,6 +103,7 @@ public:
 	TriangleSphereModel* dot;
 	TriangleBoxModel* horizon;
 
+	void initModelTranslation();
 	bool isShooting = false;
 
 	/* Plane wird per spitfire.obj geladen
