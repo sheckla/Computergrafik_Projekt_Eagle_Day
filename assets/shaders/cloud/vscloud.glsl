@@ -20,6 +20,8 @@ uniform mat4 InverseViewMatrix;
 
 uniform sampler2D MixTex;
 
+
+
 void main()
 {
     Position = (ModelMat * VertexPos).xyz; // Apply Scaling to World-Space Position

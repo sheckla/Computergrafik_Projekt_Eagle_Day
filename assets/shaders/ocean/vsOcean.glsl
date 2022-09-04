@@ -17,9 +17,7 @@ uniform mat4 ModelMat; // BaseShader::modelTransform Matrix -> Position (World S
 uniform mat4 ModelViewProjMat; // CamProjMatrix * CamViewMatrix * TransformMat -> normalised Viewspace
 uniform vec3 Scaling; // global Scaling Vector
 
-uniform sampler2D Perlin;
-
-//uniform vec3 Resolution;
+uniform sampler2D Perlin; // This noise is added on top and is a different scale ratio than the MixTex noise. This drastically reduces optical repetition!
 
 uniform sampler2D MixTex;
 
@@ -46,7 +44,7 @@ void main()
 
 
 
-    _vertex.y = texture(MixTex, Texcoord).r * heightMultip /* (texture(Perlin,globalUV).r)*/;
+    _vertex.y = texture(MixTex, Texcoord).r * heightMultip;
     _vertex.y *= 1.6; // Scale Ocean Height
 
     _vertex.y *= 1 + texture(Perlin,wsUV).r * PerlinInfluenceStrength;
@@ -76,7 +74,9 @@ void main()
     //abst*=2;
     //float abst=0.01953125f /* 2.0f * 2.0f*/;
     
-
+    /**
+    * Calculating the new normal from displacement texture and additional noise
+    */
 
     float height_A =  texture(MixTex, vec2(Texcoord.x,Texcoord.y + abstTC)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x, wsUV.y + abstTC)).r * PerlinInfluenceStrength);
     float height_B =  texture(MixTex, vec2(Texcoord.x + abstTC,Texcoord.y)).r * heightMultip            * (1 + texture(Perlin,vec2(wsUV.x + abstTC, wsUV.y)).r * PerlinInfluenceStrength);

@@ -13,6 +13,7 @@ ParticleLoader::ParticleLoader(float particlesEveryXSeconds_,double ttl, Particl
 
 	const std::string Path = ASSETS "models/spitfire";
 
+	//Set Texture for ParticleType
 	if (pType == ParticleType::Smoke) {
 		ps->diffuseTexture(new Texture((Path + "/particles/smoke_light.png").c_str())); // SMOKE-TEXTURE
 		ps->setTransparency(.4f);
@@ -36,7 +37,6 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 			//For new ParticleTypes: new if-Block here! Update will be automatically called for new instance to define specific behaviour
 			if (pType == ParticleType::Smoke) {
 				ParticleInstanceSmoke* instance = new ParticleInstanceSmoke(Particle_TTL, new ParticleSprite(), Particle_Shader, Vector(origin.m03, origin.m13, origin.m23));
-				//instance->startScale(Scale);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
 			if (pType == ParticleType::Bullet || pType == ParticleType::MuzzleFlash) {
@@ -52,6 +52,7 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 		}
 	}
 	
+	//Update all particles of this particlesystem
 	for (auto const& it : ParticleList)
 	{
 		it->update(deltaTime);
@@ -67,6 +68,7 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 
 		it++;
 
+		//Particles with no time to live are deleted
 		if (!alive) {
 			ParticleInstance* instance = ParticleList.front();
 			ParticleList.erase(previous);

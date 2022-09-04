@@ -186,7 +186,7 @@ void LoadingScreenGUI::update(float delta)
 	case MODELS_WATER:
 		printLoadStartText("OCEAN");
 
-		//ModelLoader::ocean();
+		ModelLoader::ocean();
 
 		printLoadFinishText("OCEAN");
 		break;

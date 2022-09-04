@@ -1,3 +1,10 @@
+/*
+ * ParticleInstanceBullet
+ * - Child of ParticleInstance
+ * - Moves in predestined direction with partial deviation
+ */
+
+
 #ifndef ParticleInstanceBullet_h
 #define ParticleInstanceBullet_h
 

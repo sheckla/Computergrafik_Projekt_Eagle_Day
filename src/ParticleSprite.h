@@ -1,3 +1,9 @@
+/*
+ * ParticleSprite
+ * - 3D Plane that will always look towards the camera
+ * - Required for particles
+ */
+
 #ifndef ParticleSprite_hpp
 #define ParticleSprite_hpp
 

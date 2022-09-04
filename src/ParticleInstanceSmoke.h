@@ -1,3 +1,9 @@
+/*
+ * ParticleInstanceSmoke
+ * - Child of ParticleInstance
+ * - Shrinks particle over the course of its live
+ */
+
 #ifndef ParticleInstanceSmoke_h
 #define ParticleInstanceSmoke_h
 

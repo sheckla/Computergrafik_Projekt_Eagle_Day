@@ -22,10 +22,11 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	Enemy_Tranformation.identity();
 	if (ApplicationSettings::ONLINE_MODE) NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
 
-	Gun_Left = new ParticleLoader(.01, 2, ParticleType::BulletDummy);
+	//Instanciating all particle systems
+	Gun_Left = new ParticleLoader(.01, 2, ParticleType::BulletDummy); //dummy bullets are not connected to the collision detector and are just visual
 	Gun_Left->setOffset(-2.5f);
 
-	Gun_Right = new ParticleLoader(.01, 2, ParticleType::BulletDummy);
+	Gun_Right = new ParticleLoader(.01, 2, ParticleType::BulletDummy); //dummy bullets are not connected to the collision detector and are just visual
 	Gun_Right->setOffset(2.5f);
 
 	Smoke_System = new ParticleLoader(.0002, .14, ParticleType::Smoke);
@@ -39,6 +40,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 
 const AABB& EnemyPlane::boundingBox() const
 {
+	//Creates 8x8 Hitbox that moves with the plane-body-position
 	float posX = this->model->transform().m03;
 	float posY = this->model->transform().m13;
 	float posZ = this->model->transform().m23;
@@ -60,6 +62,7 @@ void EnemyPlane::draw(const BaseCamera& cam)
 void EnemyPlane::update(double delta)
 {
 	Matrix rotorRotation,rotor_offset;
+	//simply rotates rotor at constant speed, as it is difficult to see anyway
 	rotorRotation.rotationZ(PI * delta * 100 * 5);
 	previousRotorRotation = rotorRotation * previousRotorRotation;
 
@@ -77,7 +80,8 @@ void EnemyPlane::update(double delta)
 	}
 	else
 	{
-		//Motion Estimate!
+		//Motion Estimate! If the last update is older than one frame, the future position is estimated from the last plane transform an speed. 
+		//Inaccuracies will be overriden by next (server)update
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
@@ -111,7 +115,7 @@ void EnemyPlane::update(double delta)
 
 	if (this->hp < 50.0f)Smoke_System->StartGenerating();
 	else Smoke_System->StopGenerating();
-	Smoke_System->StartGenerating();
+	//Smoke_System->StartGenerating();
 	Smoke_System->update(delta, this->propeller->transform());
 
 	Muzzleflash_Right->update(delta, this->model->transform());
@@ -123,9 +127,10 @@ void EnemyPlane::loadModels(const char* path)
 	std::string planePath = path;
 	bool fitToSize = false;
 
+	//As details cant really be seen, the enemy plane is much simpler than the player plane.
+	//The enemy plane is only made out of its body and its rotor
 	this->model = new Model(&(planePath + "/messerschmitt.obj")[0], fitToSize);
 	PhongShader* shader = new PhongShader();
-	//shader->specularExp(2000);
 	shader->phongDiff(2.1);
 	shader->ambientColor(Color(0, 0, 0));
 	this->model->shader(shader, true);

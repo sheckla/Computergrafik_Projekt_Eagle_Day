@@ -1,7 +1,6 @@
 /*
- * Volumetrische Wolken
- * - TODO TEXT
- *
+ * CloudBox
+ * - Creates a container in which the CloudShader draws the volumetric clouds
  */
 
 #ifndef CloudBox_h

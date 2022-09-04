@@ -1,3 +1,12 @@
+/*
+ * ParticleLoader
+ * - Creates a ParticleSystem for a ParticleType
+ * - Downtime between particles can be set
+ * - The time to live of a ParticleInstance can be set
+ * - Once a particle is dead, it gets deleted
+ */
+
+
 #ifndef ParticleLoader_h
 #define ParticleLoader_h
 

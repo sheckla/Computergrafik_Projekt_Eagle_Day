@@ -1,5 +1,11 @@
 #include "CloudBox.h"
 
+
+/**
+* 
+* Box in which clouds are rendered: Triangles are facing inward + additional face pointing down. Top face will be dynamically removed by vertex-shader to prevent seethrough from double rendering
+* 
+*/
 CloudBox::CloudBox(float Width, float Height, float Depth, bool bottomOff, bool topOff, bool frontOff, bool backOff, bool rightOff, bool leftOff)
 {
     float x = Width / 2;

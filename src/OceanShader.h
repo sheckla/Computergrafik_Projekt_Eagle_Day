@@ -1,7 +1,7 @@
 /*
  * OceanShader:
- * - TODO  TEXT
- *
+ * - Responsible for dynamic displacement
+ * - Loads in the active displacement texture along with an additional perlin-noise for reducing repetition
  */
 
 

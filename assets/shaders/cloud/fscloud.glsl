@@ -69,23 +69,22 @@ void main()
     vec3 CameraPosition = vec3(InverseViewMatrix[3][0],InverseViewMatrix[3][1],InverseViewMatrix[3][2]);  
 
     float StrahlLaenge = (TOP - CameraPosition.y) / PixelStrahl.y;     // CameraPosition.y + PixelStrahl.y * StrahlLaenge = 120.0f;
-
-    vec3 WorldSpaceTop = CameraPosition + (PixelStrahl * StrahlLaenge);
+    vec3 WorldSpaceTop = CameraPosition + (PixelStrahl * StrahlLaenge); //The Position in World Space at the Top position of the cloudbox
 
     float StrahlLaengeBottom = (BOTTOM - CameraPosition.y) / PixelStrahl.y;     
-    vec3 WorldSpaceBottom = CameraPosition + (PixelStrahl * StrahlLaengeBottom);
+    vec3 WorldSpaceBottom = CameraPosition + (PixelStrahl * StrahlLaengeBottom); //The Position in World Space at the Bottom position of the cloudbox
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////Essential Calculation Complete/////////////////////////////////////////////////
                             
     vec2 co=vec2(WorldSpaceBottom.x,WorldSpaceBottom.y);
-    float rand = fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+    float rand = fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453); //Pseudo random function for generating static noise
     float static_noise = 1 + ((rand * 0.2)-.1) / 2;
-
 
     float div=100;
 
 
     float AlfaIntensity=0;
+    //Ray marching through cloudbox adding the noise of each step, adding static noise for fuzzyness, than normalizing (This is for when the camera is under or over the cloudbox)
     for(int i=0;i<128;i++){
 
         vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/128)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/128)*i);
@@ -101,7 +100,7 @@ void main()
     FragColor = vec4(1,1,1,AlfaIntensity);
 
 
-    //INSIDE
+    //INSIDE This part is for when the camera is inside the cloudbox
     int level = int(((CameraPosition.y-BOTTOM) / (TOP-BOTTOM)) * 128);
     float AlfaIntensityInside=0;
     float e = 2.718f;

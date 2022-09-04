@@ -16,9 +16,7 @@ OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
 
     MixTexLoc = initUniformParameter("MixTex");
     ScalingLoc = initUniformParameter("Scaling");
-
     PerlinNoiseLoc = initUniformParameter("Perlin");
-
     ResolutionLoc = initUniformParameter("Resolution");
     ViewMatrixLoc = initUniformParameter("InvViewMatrix");
     ProjMatrixLoc = initUniformParameter("InvProjMatrix");
@@ -43,10 +41,9 @@ OceanShader::OceanShader(const std::string& AssetDirectory) : PhongShader(),
 void OceanShader::activate(const BaseCamera& Cam) const
 {
     PhongShader::activate(Cam);
-    //std::cout << "Scaling of shader: " << this->Scaling << "\n";
+
     int slot = 0;
     activateTex(MixTex, MixTexLoc, slot++);
-
     activateTex(PerlinTex, PerlinNoiseLoc, slot++);
 
     for (int i = 0; i < DETAILTEX_COUNT; i++)
