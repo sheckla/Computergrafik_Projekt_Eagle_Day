@@ -177,7 +177,6 @@ void Application::end()
     delete Cam;
     delete enemyPlane;
     delete guiBuffer;
-    //exit(0);
 }
 
 void Application::glErrorHandler(GLenum err)
