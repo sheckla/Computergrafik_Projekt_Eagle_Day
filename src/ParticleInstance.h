@@ -1,3 +1,9 @@
+/*
+ * ParticleInstance
+ * - Parent class of a particle
+ * - Only manages time alive, subclasses can add custom behaviour
+ */
+
 #ifndef ParticleInstance_h
 #define ParticleInstance_h
 

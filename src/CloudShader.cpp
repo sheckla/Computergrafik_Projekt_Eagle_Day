@@ -33,8 +33,10 @@ CloudShader::CloudShader() : PhongShader()
     AspectHeightLoc = glGetUniformLocation(ShaderProgram, "AspectHeight");
     AspectWidthLoc = glGetUniformLocation(ShaderProgram, "AspectWidth");
 
+    //Time translation for cloud movement
     TimeTranslationLoc = glGetUniformLocation(ShaderProgram, "TimeTranslation");
 
+    //Loading of noise-textures
     for (int i = 0; i < WORLEY_AMOUNT; i++) {
         DetailTex[i] = NULL;
         std::string s;
@@ -43,7 +45,7 @@ CloudShader::CloudShader() : PhongShader()
         DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
         DetailTexLoc[i] = initUniformParameter(s.c_str());
     }
-    //TimeTranslation = 0;
+   
     std::cout << "[Clouds] Loading done..." << std::endl;
 }
 
@@ -69,13 +71,13 @@ void CloudShader::activate(const BaseCamera& Cam) const
     Matrix ip = Cam.getProjectionMatrix();
     ip.invert();
 
+    //Matrices for ray- and position-calculations
     setUniformParameter(ViewMatrixLoc, iv);
     setUniformParameter(ProjectionMatrixLoc, ip);
     setUniformParameter(boundsMinLoc, bounds->Min);
     setUniformParameter(boundsMaxLoc, bounds->Max);
     setUniformParameter(AspectWidthLoc, ApplicationSettings::WIDTH);
     setUniformParameter(AspectHeightLoc, ApplicationSettings::HEIGHT);
-
     setUniformParameter(TimeTranslationLoc, CloudShader::TimeTranslation);
 }
 

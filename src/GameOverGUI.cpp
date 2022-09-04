@@ -40,6 +40,7 @@ void GameOverGUI::update(float delta)
 	{
 		// Reset game state
 		ModelLoader::pPlayerPlane->hp = 100;
+		if(ModelLoader::pEnemyPlane)ModelLoader::pEnemyPlane->hp = 100;
 		if (ModelLoader::pAIPlane) ModelLoader::pAIPlane->hp = 100;
 		ModelLoader::pPlayerPlane->initModelTranslation();
 		ApplicationGUI::AppGUI->escapeMenuGUI->active(false);

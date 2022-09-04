@@ -1,11 +1,15 @@
+/*
+ * NetworkSender
+ * - Network Component that is only instantiated in online mode, as it is part of the enemy plane
+ * - Opens a socket connection, that translates and sends data through the internet
+ * - Sends a udp-package every frame
+ */
+
 #ifndef NetworkSender_hpp
 #define NetworkSender_hpp
 
 #include <stdio.h>
-//#include <winsock2.h>
-//#include <Ws2tcpip.h>
 #include "Model.h"
-//#include "Plane.h"
 
 class Plane;
 

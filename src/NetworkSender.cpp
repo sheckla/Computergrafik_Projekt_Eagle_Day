@@ -7,7 +7,6 @@
 #include "ModelLoader.h"
 
 
-
 NetworkSender::~NetworkSender() 
 {
 	closesocket(sock);
@@ -30,12 +29,13 @@ NetworkSender::NetworkSender(const char* srv_Adr, int port)
 	this->PORT = port;
 	this->Server_Address = srv_Adr;
 
+	//Unknown translation error -> Not enought time so hardcoded...
 	this->PORT = 19411;
 	this->Server_Address = "127.0.0.1";
 
 	this->WinSockSettings();
 
-
+	//Default UDP-Socket Code (From Distributed Systems Course)
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
 	memset((void*)&srv_addr, '\0', sizeof(srv_addr));
 	srv_addr.sin_family = AF_INET;
@@ -54,11 +54,11 @@ void NetworkSender::SendData(Plane* plane)
 	if(ModelLoader::instance().pEnemyPlane != nullptr)
 	enemyHP = ModelLoader::instance().pEnemyPlane->hp;
 
-	//std::cout << "[Network-Sender] SENDING..." << std::endl;
-
 		Matrix PlaneTranform;
 
 		PlaneTranform = model->transform();
+
+		//Translate Matrix into udp-sendable data
 
 		std::string incompleteMessage = "";
 		incompleteMessage += std::to_string(PlaneTranform.m00);
@@ -111,6 +111,7 @@ void NetworkSender::SendData(Plane* plane)
 
 		const char* message = incompleteMessage.c_str();
 
+		//Send udp-package
 		int slen = sizeof(srv_addr);
 		if (sendto(sock, message, strlen(message), 0, (struct sockaddr*)&srv_addr, slen) == SOCKET_ERROR)
 		{

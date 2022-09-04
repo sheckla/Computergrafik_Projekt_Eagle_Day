@@ -21,6 +21,7 @@ NetworkConnector::NetworkConnector(EnemyPlane& enemy, const char* srv_Adr, int p
 	PORT = port;
 	Server_Address = srv_Adr;
 
+	//Unknown translation error -> Not enought time so hardcoded...
 	PORT = 19413;
 	Server_Address = "127.0.0.1";
 
@@ -30,7 +31,7 @@ NetworkConnector::NetworkConnector(EnemyPlane& enemy, const char* srv_Adr, int p
 	t1.detach();
 }
 
-void test() // used to simulate initial sending of info from client 1
+void test() // used to simulate initial sending of info from client 1  < < < IGNORE > > >
 {
 	std::cout << "[Input - Thread] TEST" << std::endl;
 
@@ -63,12 +64,6 @@ void test() // used to simulate initial sending of info from client 1
 
 void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 {
-	/*
-	float x = 1, y = 1, z = 1;
-	float rx = 1, ry = 1, rz = 1;
-	float rx2 = 1, ry2 = 1, rz2 = 1;
-	float rx3 = 1, ry3 = 1, rz3 = 1;
-	*/
 	float m_00 = 1, m_01 = 1, m_02 = 1, m_03 = 1;
 	float m_10 = 1, m_11 = 1, m_12 = 1, m_13 = 1;
 	float m_20 = 1, m_21 = 1, m_22 = 1, m_23 = 1;
@@ -83,13 +78,12 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 
 	std::string delimiter = ",";
 
+	//read data into correct vars
 	int pos = 0;
 	int item = 0;
 	std::string token;
 	while ((pos = DataAsString.find(delimiter)) != std::string::npos) {
 		token = DataAsString.substr(0, pos);
-
-		//std::cout << "TOKEN: " << token << " ITEM: " << item << std::endl;
 
 		switch (item)
 		{
@@ -159,6 +153,7 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 		item++;
 	}
 
+	//for Server use only
 	if (m_00 == -99999999 && m_01 == -99999999 && m_02 == -99999999 && m_03 == -99999999 && m_10 == -99999999 && m_11 == -99999999 && m_12 == -99999999 && m_13 == -99999999) {
 		if (this->hasRecievedDummyData == false) {
 			std::cout << "[Input-Thread] Connected to Server! Waiting for Player 2" << std::endl;
@@ -172,9 +167,9 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 			std::cout << "[Input-Thread] Player 2 Connected!" << std::endl;
 		}
 	}
-	//std::cout <<"[Input - Thread] "<< "x=" << x << " y=" << y << " z=" << z << " rx=" << rx << " ry=" << ry << " rz=" << rz << " shooting=" << std::boolalpha << shooting << std::endl;
 
-	bool isAnUpdate = true;
+	//Motion estimate only
+	bool isAnUpdate = true; 
 	if (enemy->Enemy_Tranformation.m00 == m_00 && enemy->Enemy_Tranformation.m01 == m_01 && enemy->Enemy_Tranformation.m02 == m_02 && enemy->Enemy_Tranformation.m03 == m_03 && 
 		enemy->Enemy_Tranformation.m10 == m_10 && enemy->Enemy_Tranformation.m11 == m_11 && enemy->Enemy_Tranformation.m12 == m_12 && enemy->Enemy_Tranformation.m13 == m_13 &&
 		enemy->Enemy_Tranformation.m20 == m_20 && enemy->Enemy_Tranformation.m21 == m_21 && enemy->Enemy_Tranformation.m22 == m_22 && enemy->Enemy_Tranformation.m23 == m_23 &&
@@ -182,6 +177,7 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 		speed != 0)
 		isAnUpdate = false;
 
+	//Set the translation matrix of enemy plane
 	enemy->Enemy_Tranformation.m00 = m_00;
 	enemy->Enemy_Tranformation.m01 = m_01;
 	enemy->Enemy_Tranformation.m02 = m_02;
@@ -203,8 +199,8 @@ void NetworkConnector::ReadAndSetData(char* buf , EnemyPlane* enemy)
 	enemy->Enemy_Tranformation.m33 = m_33;
 	enemy->Enemy_Speed = speed;
 
-	//std::cout << "[Input-Thread] Set..." << std::endl;
 
+	//Motion estimate only
 	if(isAnUpdate)
 	enemy->Enemy_Tranformation_Validation = true;
 
@@ -243,10 +239,6 @@ void NetworkConnector::Connection(EnemyPlane& enemy)
 	{
 		char buf[200];
 		recvfrom(sock, buf, 200, 0, (SOCKADDR*)&srv_addr, &slen);
-		//std::cout << "[Input - Thread] " << buf << std::endl;
 		this->ReadAndSetData(buf,&enemy);
-		//std::cout << "readDone" << std::endl;
-		//delete[] buf;
-		//enemyPlane.Enemy_Position = Vector(rand(), rand(), rand()); //Platzhalter
 	}	
 }

@@ -1,3 +1,8 @@
+/*
+ * ParticleShader
+ * - Simple Shader for Sprites, similar to TextureShader but with transparency
+ */
+
 
 #ifndef ParticleShader_h
 #define ParticleShader_h

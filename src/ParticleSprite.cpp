@@ -1,7 +1,7 @@
 #include "ParticleSprite.h"
 #include "Matrix.h"
 
-
+//Creates a simple plane
 ParticleSprite::ParticleSprite()
 {
     VB.begin();
@@ -41,6 +41,7 @@ ParticleSprite::ParticleSprite()
 
 void ParticleSprite::draw(const BaseCamera& Cam)
 {
+    //Before draw, plane has to always face the camera
     Matrix lookAtCam,invView, M_Scale;
     invView = Cam.getViewMatrix();
     invView.invert();
@@ -48,12 +49,11 @@ void ParticleSprite::draw(const BaseCamera& Cam)
     lookAtCam.invert();
 
     M_Scale.scale(PS_scale);
-    //std::cout <<"Scale: " << PS_scale << " Start: "<<PS_scale_begin << std::endl;
 
     this->transform( lookAtCam * M_Scale);
     
 
-
+    //Normal OpenGL-Draw
     BaseModel::draw(Cam);
     
     VB.activate();

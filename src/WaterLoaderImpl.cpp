@@ -15,11 +15,13 @@ WaterLoaderImpl::~WaterLoaderImpl()
 OceanSegment* WaterLoaderImpl::createWater(std::list<BaseModel*>* models)
 {
     print("HeightMapStorage", "loading");
+    //Loading all displacement textures
 	heightMaps = new HeightMapStorage(ASSETS "img/noise/waves/");
     print("HeightMapStorage", "finished");
 	pTerrainShader = new OceanShader(ASSETS);
     createOceanSegments();
 
+    //creating 80x80 ocean segments
     for(int i=0;i<80;i++)
         for (int j = 0; j < 80; j++)
             models->push_back(this->water[i][j]);
@@ -33,9 +35,8 @@ void WaterLoaderImpl::generateSegment(int i, int j, int resolution) {
     pTerrain->width(20);
     pTerrain->depth(20);
     pTerrain->height(20);
-    //pTerrain->load();
+    
     this->water[i][j] = pTerrain;
-    //Models.push_back(pTerrain);
 
     if (i == 0 && j == 0)
         OceanCenter = pTerrain;
@@ -43,8 +44,6 @@ void WaterLoaderImpl::generateSegment(int i, int j, int resolution) {
     Matrix tr;
     tr.translation(Vector(20.0f * i, 0, 20.0f * j));
     pTerrain->transform(tr);
-
-    //std::cout << pTerrain->getTransform().m03 << " " << pTerrain->getTransform().m13 << " " << pTerrain->getTransform().m23 << std::endl;
 }
 
 void WaterLoaderImpl::createOceanSegments()
@@ -54,6 +53,9 @@ void WaterLoaderImpl::createOceanSegments()
     int SegmXSegm = 80;
     float abst = 20.0f;
 
+    //VertexBuffer has different sizes on different devices, if Buffer is too big, Program crashes
+
+    //Setting 4 and above, crashes every time after gui was added
     float res_ring_0 = 256.0f;
     float res_ring_1 = 128.0f;
     float res_ring_2 = 64.0f;
@@ -65,6 +67,7 @@ void WaterLoaderImpl::createOceanSegments()
     int q = QUALITY;
     std::cout << "Loading Ocean with Qualitysetting: " << q << std::endl;
 
+    //lowest quality setting, low vertex amount
     if (q == 0) 
     {
         res_ring_0 = 8.0f;
@@ -98,7 +101,7 @@ void WaterLoaderImpl::createOceanSegments()
     if (q == 3)
     {
         res_ring_0 = 128.0f;
-        res_ring_1 = 128.0f;
+        res_ring_1 = 64.0f;
         res_ring_2 = 64.0f;
         res_ring_3 = 32.0f;
         res_ring_4 = 16.0f;
@@ -121,17 +124,17 @@ void WaterLoaderImpl::createOceanSegments()
             if ((i > 38 && i < 42) && (j > 38 && j < 42)) { resolution = res_ring_0; }// inner ring
 
 
-            //if (j < 10 ) { resolution = 128.0f; std::cout << "-------------------------------" << std::endl; }
-
             generateSegment(i, j, resolution);
-            //std::cout <<"RES: " << resolution << std::endl;
 
-            //std::cout << pTerrain->getTransform().m03 << " " << pTerrain->getTransform().m13 << " " << pTerrain->getTransform().m23 << " " << std::endl;
             resolution = lowestResolution;
         }
     }
 
     print("Ocean", "creating Threads...");
+
+    //High vertex amounts can take very long to load, speeding up with threads. Less important if program is in release mode
+    //Due too vertex buffer limitation, quality is decreased and load time isnt as impacted anymore...
+
     std::thread t1(&WaterLoaderImpl::OceanLoaderThread, this, 0);
     std::thread t2(&WaterLoaderImpl::OceanLoaderThread, this, 10);
     std::thread t3(&WaterLoaderImpl::OceanLoaderThread, this, 20);
@@ -157,7 +160,7 @@ void WaterLoaderImpl::createOceanSegments()
     t45.join();
 
     std::cout << "Threads loading done, initializing buffers..." << std::endl;
-
+    //Cannot be done in threads, therefore seperate execution in main thread...
     for (int i = 0; i < SegmXSegm; i++) {
         for (int j = 0; j < SegmXSegm; j++) {
             water[i][j]->finishVB();
@@ -166,7 +169,7 @@ void WaterLoaderImpl::createOceanSegments()
     }
 
     std::cout << "buffers initialized..." << std::endl;
-
+    //Adding all finished segments to render queue
     for (int i = 0; i < SegmXSegm; i++) {
         for (int j = 0; j < SegmXSegm; j++) {
             Models.push_back(water[i][j]);
@@ -174,30 +177,27 @@ void WaterLoaderImpl::createOceanSegments()
     }
 
     std::cout << "Ocean finished" << std::endl;
-    // std::cout << water[79][78]->getTransform().m03 << " " << water[79][78]->getTransform().m13 << " " << water[79][78]->getTransform().m23 << std::endl;
-     //Models.push_back(water[79][78]);
 }
 
-void WaterLoaderImpl::OceanLoaderThread(int num) { // bad alloc
+void WaterLoaderImpl::OceanLoaderThread(int num) {
     std::string s = "Thread ";
     s += std::to_string(num);
     s += " begin";
-    //print("OceanSegmentThread", s);
 
+    //low quality threads load 10 segments
     if (!(num >= 30 && num < 50)) {
 
         for (int i = num; i < num + 10; i++) {
             for (int j = 0; j < 80; j++) {
-                //std::cout <<"TM:"<<num<<"  " << i << " " << j << std::endl;
                 water[i][j]->load();
             }
         }
 
     }
+    //high quality threads load 5 segments as they take longer to load, so more threads with less loads are used
     else {
         for (int i = num; i < num + 5; i++) {
             for (int j = 0; j < 80; j++) {
-                //std::cout <<"TM:"<<num<<"  " << i << " " << j << std::endl;
                 water[i][j]->load();
             }
         }
@@ -206,7 +206,6 @@ void WaterLoaderImpl::OceanLoaderThread(int num) { // bad alloc
     std::string sEnd = "Thread ";
     sEnd += std::to_string(num);
     s += " end";
-    //print("OceanSegmentThread", sEnd);
 }
 
 void WaterLoaderImpl::updateOcean(Camera* Cam, double deltaTime) 
@@ -214,8 +213,11 @@ void WaterLoaderImpl::updateOcean(Camera* Cam, double deltaTime)
     heightMaps->time += 18.0f * deltaTime;
     if (heightMaps->time >= 100)heightMaps->time = 0;
 
+    /**
+    * this part moves the ocean segments dynamically, so the ocean center (with the highest quality) is always under the camera
+    * Segments can only be moved in 20-Steps, so they dont seem to be moving at all
+    */
     int SegmXSegm = 80;
-    //std::cout << "updateOcean"<<std::endl; 
     if (Cam->position().X > OceanCenter->getTransform().m03 + 20.0f * SegmXSegm / 2) {
         for (int i = 0; i < SegmXSegm; i++) {
             for (int j = 0; j < SegmXSegm; j++) {

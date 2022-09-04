@@ -1,6 +1,6 @@
 /*
- * Gegnerisches Flugzeug
- * - im Mehrspielermodus = Spieler 2
+ * EnemyPlane
+ * - Player 2 for multiplayer
  */
 
 #ifndef EnemyPlane_h
@@ -41,6 +41,7 @@ public:
 
 	bool isShooting = false;
 
+	//Draw all related particles
 	void drawParticles(const BaseCamera& Cam) {
 		this->Gun_Left->draw(Cam);
 		this->Gun_Right->draw(Cam);
