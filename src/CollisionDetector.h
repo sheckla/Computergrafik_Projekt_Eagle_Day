@@ -11,15 +11,25 @@
 class CollisionDetector
 {
 public:
-    
+    static CollisionDetector* pCollisionDetector;
+    static CollisionDetector& instance()
+    {
+        if (!pCollisionDetector) pCollisionDetector = new CollisionDetector();
+        return *pCollisionDetector;
+    }
+
     static bool CollisionDetector::BulletCollision(Vector v) 
     {
-        if (CollisionDetector::enemyPlane != nullptr)
-        {
-            if (ModelLoader::pAIPlane) enemyPlane = ModelLoader::pAIPlane;
+            AABB aabb;
 
-            AABB aabb = CollisionDetector::enemyPlane->boundingBox();
-
+            if (ModelLoader::pEnemyPlane) {
+                aabb.Max = ModelLoader::pEnemyPlane->aabb().Max;
+                aabb.Min = ModelLoader::pEnemyPlane->aabb().Min;
+            }
+            if (ModelLoader::pAIPlane) {
+                aabb.Max = ModelLoader::pAIPlane->aabb().Max;
+                aabb.Min = ModelLoader::pAIPlane->aabb().Min;
+            }
             if ((v.X > aabb.Min.X &&
                  v.Y > aabb.Min.Y &&
                  v.Z > aabb.Min.Z)
@@ -28,22 +38,22 @@ public:
                  v.Y < aabb.Max.Y &&
                  v.Z < aabb.Max.Z))   
             {
-                CollisionDetector::enemyPlane->hit();
+                if (ModelLoader::pEnemyPlane) ModelLoader::pEnemyPlane->hit();
+                if (ModelLoader::pAIPlane) ModelLoader::pAIPlane->hit();
                 return true;
             }
-        }
         return false;
     }
 
     static void CollisionDetector::setCollisionTarget(EnemyPlane* enemy)
     {
-        CollisionDetector::enemyPlane = enemy;
+        instance().enemyPlane = enemy;
     }
 
     static bool CollisionDetector::CheckPlaneCollision(AABB aabb) 
     {
         //Hitbox loop
-        for (std::list<const AABB*>::iterator it = CollisionDetector::Hitboxes.begin(); it != CollisionDetector::Hitboxes.end(); ++it) 
+        for (std::list<const AABB*>::iterator it = instance().Hitboxes.begin(); it != instance().Hitboxes.end(); ++it) 
         {
             if (
                 aabb.Min.X <= (*it)->Max.X &&
@@ -68,7 +78,7 @@ public:
 
     static void CollisionDetector::AddHitbox(const AABB* hitbox)
     {
-        CollisionDetector::Hitboxes.push_back(hitbox);
+        instance().Hitboxes.push_back(hitbox);
     }
 
 protected:

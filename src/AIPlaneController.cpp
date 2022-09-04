@@ -47,10 +47,10 @@ void AIPlaneController::update(float delta)
 
 	Matrix yaw = Matrix().rotationY((rotDiffW.Z + rotDiffW.X) * delta / 66);
 	Matrix pitch = Matrix().rotationX(-(rotDiffW.Y) * delta / 66);
-	Matrix fall = Matrix().translation(0,0,0);
+	Matrix fall = Matrix().translation(0, -10 * delta,0);
 
-	if (aiPlane->hp <= 0) fall = Matrix().translation(0, -1000 * delta, 0);
-	aiPlane->model->transform(aiPlane->model->transform() * yaw * pitch * fall);
+	aiPlane->transform(aiPlane->transform() * yaw * pitch);
+	if (aiPlane->hp <= 0) aiPlane->transform(aiPlane->transform() * fall);
 
 
 	aiPlane->update(delta);

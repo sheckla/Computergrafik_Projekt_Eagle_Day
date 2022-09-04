@@ -25,7 +25,7 @@ public:
 	bool Enemy_Tranformation_Validation = false;
 	float Enemy_Speed=0;
 
-	const AABB& EnemyPlane::boundingBox() const;
+	const AABB& EnemyPlane::aabb() const;
 
 	EnemyPlane();
 	EnemyPlane::EnemyPlane(const char* srv_Adr,int port);
@@ -37,7 +37,6 @@ public:
 
 	void EnemyPlane::hit() { 
 		this->hp = this->hp - 2.2f;
-		print("hp", hp);
 	}
 
 	bool isShooting = false;

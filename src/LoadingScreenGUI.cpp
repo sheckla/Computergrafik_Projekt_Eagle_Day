@@ -140,6 +140,7 @@ void LoadingScreenGUI::update(float delta)
 		printLoadStartText("PLANE_PARTS");
 
 		loadingProgressText->text(stringifyTask("Loading Plane Models").c_str());
+		CollisionDetector::instance();
 		if (ApplicationSettings::ONLINE_MODE)
 		{
 			print("Online Components", "loading");

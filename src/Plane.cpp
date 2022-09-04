@@ -277,11 +277,11 @@ void Plane::update(double delta)
 	// Particle System
 	(this->hp < 30.0f) ? Smoke_System->StartGenerating() : Smoke_System->StopGenerating();
 	Smoke_System->update(delta, this->parts[1]->transform());
-	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-4)); 
-	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
+	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-1.5)); 
+	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -1.5));
 
-	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4.5f));
-	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4.5f));
+	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -1.5f));
+	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -1.5f));
 
 	// Sound System
 	if (SoundEngine && HighPitchSoundEngine)

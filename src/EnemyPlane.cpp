@@ -39,13 +39,12 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 	Muzzleflash_Left->setOffset(-2.5f);
 }
 
-const AABB& EnemyPlane::boundingBox() const
+const AABB& EnemyPlane::aabb() const
 {
 	Vector pos = model->transform().translation();
-	
 	AABB aabb;
-	aabb.Min = Vector(-4 + pos.X, -4 + pos.Y, -4 + pos.Z);
-	aabb.Max = Vector(4 + pos.X, 4 + pos.Y, 4 + pos.Z);
+	aabb.Min = Vector(-6 + pos.X, -4 + pos.Y, -6 + pos.Z);
+	aabb.Max = Vector(6 + pos.X, 4 + pos.Y, 6 + pos.Z);
 	return aabb;
 }
 
