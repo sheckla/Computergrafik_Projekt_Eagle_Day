@@ -13,8 +13,7 @@ All Models & Textures originally created unless stated otherwise!
 
 ## **Game Aspects:** 
 - Fly and steer a realistically modelled plane (Supermarine Spitfire - originally modelled by Jannis Welkener)
-- Dynamic Water-Terrain
-- UI Implementation and logic
-- Realistic reflections via. Cubemapping
+- Enable Online Mode and play against a different Player (Same Network - configuration is set in settings.txt)
+- Gameplay UI displaying current Speed, Altitude, HP and GunHP
+- PostProcessingFilter and Mousesteering can be enabled in Options
 <br>
- ![ScreenShot](https://i.imgur.com/rgmS3gx.png)
