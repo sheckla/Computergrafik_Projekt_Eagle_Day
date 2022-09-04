@@ -47,23 +47,8 @@ void GameplayGUI::update(float delta)
 	else { enemyPos = ModelLoader::pEnemyPlane->transform().translation(); }
 	Vector playerPos = ModelLoader::pPlayerPlane->getParts()[0]->transform().translation();
 
-	Matrix m = Matrix().rotationY(ModelLoader::pPlayerPlane->totalRudderRotation);
-	Matrix d = ModelLoader::pPlayerPlane->getParts()[0]->transform() * m;
-	playerPos = d.translation();
-
 	float dist = (enemyPos - playerPos).length() * 30;
 
-	float planeCos = ModelLoader::pPlayerPlane->totalRudderRotation;
-	float xzDot = playerPos.X * enemyPos.X + playerPos.Z * enemyPos.Z;
-	float xzDet = playerPos.X * enemyPos.Z + playerPos.Z * enemyPos.X;
-	float signedXYAngle = atan2(xzDet, xzDot);
-	float xzCos = planeCos - signedXYAngle;
-
-
-	while (planeCos > PI) planeCos -= PI;
-	while (planeCos < PI) planeCos += PI;
-	while (xzCos > PI*2) xzCos -= PI*2;
-	while (xzCos < PI*2) xzCos += PI*2;
 
 	Vector xzPlayer = Vector(playerPos.X, playerPos.Z, 0).normalize();
 	Vector xzEnemy = Vector(enemyPos.X, playerPos.Z,0).normalize();
@@ -112,10 +97,13 @@ void GameplayGUI::update(float delta)
 	compassText->startPixel(Vector(startX - 15, compass->startPixel().Y + 55, 0));
 	compassText->text(xzCrossText.c_str());
 	compass->startPixel(Vector(startX , compass->startPixel().Y, 0));
+
+	gunMeter->percentage(ModelLoader::pPlayerPlane->gunHP / 100);
 }
 
 void GameplayGUI::init()
 {
+
 	// Maus-Kreis
 	GUITexture* mouseCircle = new GUITexture(0, 0, new Texture(ASSETS "img/circle.png"), false, false);
 	mouseCircle->scale(Vector(1, 1, 0));
@@ -155,6 +143,16 @@ void GameplayGUI::init()
 	Components.push_back(lifeMeter);
 	lifeMeter->percentage(1);
 	lifeMeter->enableSliding(false);
+
+	GUIConstantQuad* gunQuad = new GUIConstantQuad(ApplicationSettings::WIDTH - 355, ApplicationSettings::HEIGHT - 175, 400, 75);
+	gunQuad->constantColorMode(true);
+	gunQuad->color(COL_DARK);
+	Components.push_back(gunQuad);
+	GUISlider* gunSlider = new GUISlider(ApplicationSettings::WIDTH - 355, ApplicationSettings::HEIGHT - 175, 250, 75, 10, "GUN");
+	Components.push_back(gunSlider);
+	gunSlider->percentage(1);
+	gunSlider->enableSliding(false);
+	gunMeter = gunSlider;
 
 	compassText = new GUIText(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 75, "                              ");
 	compassText->scale(Vector(0.5, 0.5, 0));

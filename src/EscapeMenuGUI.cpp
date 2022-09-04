@@ -54,6 +54,10 @@ void EscapeMenuGUI::update(float delta)
 	{
 		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 		ModelLoader::pPlayerPlane->initModelTranslation();
+		if (ModelLoader::pAIPlane) {
+			ModelLoader::pAIPlane->initModelTranslation();
+			ModelLoader::pAIPlane->hp = 100;
+		}
 		ModelLoader::pPlayerPlane->startEngine();
 		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 		active(false);
@@ -63,11 +67,13 @@ void EscapeMenuGUI::update(float delta)
 
 void EscapeMenuGUI::init()
 {
+	// Escape Menu Top Logo
 	GUITexture* logo = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 200, new Texture(ASSETS "img/logo.png"), true, false);
 	logo->centred(true);
 	logo->scale(Vector(0.3, 0.3, 0));
 	Components.push_back(logo);
 
+	// Return to StartScreen/Main Menu
 	GUITexture* returnButtonTexture = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 500, new Texture(ASSETS "img/button_simple_gray.png"), true);
 	returnButtonTexture->scale(Vector(0.3, 0.3, 0));
 	returnButtonTexture->startPixel(Vector(returnButtonTexture->startPixel().X - returnButtonTexture->width() / 2, returnButtonTexture->startPixel().Y, 0));
@@ -75,7 +81,7 @@ void EscapeMenuGUI::init()
 	returnStartButton = new GUIButton(Window, returnButtonTexture, "Main Menu");
 	Components.push_back(returnStartButton);
 
-
+	// Restart Game State Button
 	GUITexture* restartButtonTex = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 630, new Texture(ASSETS "img/button_simple_gray.png"), true);
 	restartButtonTex->scale(Vector(0.3, 0.3, 0));
 	restartButtonTex->startPixel(Vector(restartButtonTex->startPixel().X - restartButtonTex->width() / 2, restartButtonTex->startPixel().Y, 0));
@@ -83,11 +89,12 @@ void EscapeMenuGUI::init()
 	restartButton = new GUIButton(Window, restartButtonTex, "Restart", ARIAL_BLACK, true);
 	Components.push_back(restartButton);
 
+	// Close Escape Menu BUtton
 	GUITexture* leaveEscapeMenuTex = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT - 760, new Texture(ASSETS "img/button_simple.png"), true);
 	leaveEscapeMenuTex->scale(Vector(0.3, 0.3, 0));
 	leaveEscapeMenuTex->startPixel(Vector(leaveEscapeMenuTex->startPixel().X - leaveEscapeMenuTex->width() / 2, leaveEscapeMenuTex->startPixel().Y, 0));
 	leaveEscapeMenuTex->mouseoverHighlight(true);
-	leaveEscapeMenuButton = new GUIButton(Window, leaveEscapeMenuTex, "Leave");
+	leaveEscapeMenuButton = new GUIButton(Window, leaveEscapeMenuTex, "Close");
 	Components.push_back(leaveEscapeMenuButton);
 }
 
@@ -107,6 +114,7 @@ void EscapeMenuGUI::listen()
 		{
 			ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(true);
 			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(true);
+			ApplicationGUI::AppGUI->ppBuffer->shake(false);
 			ModelLoader::pPlayerPlane->stopEngine();
 			active(true);
 		}

@@ -1,7 +1,7 @@
 /*
 * Plane
 * - Containerklasse
-* - Generiert mittels laden des eines "plane.obj" ein Flugzeugmodell
+* - Generiert mittels laden eines "plane.obj" ein Flugzeugmodell
 *   mit mehreren Teilen
 * 
 * - Steuerung erfolgt über PlayerPlaneControls.h
@@ -38,6 +38,7 @@ constexpr float RUDDER_ROTATION = 1.0f; // visueller Neigungsfaktor
 constexpr float FLAP_ROTATION = 1.6f; // visueller Neigungsfaktor 
 constexpr float WINGFLAP_OFFSET_ROTATION = 0.35f; // fuer korrekte Rotation der Seiten-flaps
 
+// Indices fuer parts
 struct PartsIndex 
 {
 	static constexpr int model = 0;
@@ -56,7 +57,6 @@ struct TiltStatus
 	float rightFlapsTilt = 0;
 	float rudder = 0;
 };
-
 
 class Plane
 {
@@ -83,9 +83,21 @@ class Plane
 	 * negative Werte = flaps werden nach 'unten' gekippt
 	 */
 	TiltStatus Tilt;// positiv = links, negativ = rechts
-	float speed = 0;
 	Vector dotOffset = Vector(0, 0, 50);
 	Vector horizonOffset = Vector(0, 0, 10);
+	float speed = 0;
+
+	// Engine Sounds
+	irrklang::ISoundEngine* SoundEngine = nullptr;
+	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
+
+	/**
+	* Rauch, kann mit T und G ein- und ausgeschaltet werden (Bis HP existiert)
+	*/
+	ParticleLoader* Gun_Left;
+	ParticleLoader* Gun_Right;
+	ParticleLoader* Muzzleflash_Right;
+	ParticleLoader* Muzzleflash_Left;
 
 	/*
 	* Wert bleibt innerhalb [max_angle,-max_angle] und wird schrittweise
@@ -93,18 +105,22 @@ class Plane
 	*/
 	void aprroachZeroWithBoundaries(float& i, float maxAngle) const;
 
-
-
+	// Wrapper Model-Units werden mit der Haupt-Transformationsmatrix transfomiert
 	void updateModelPos(const size_t index, const Matrix& transform) const;
 	void clampTilt(float& i);
 	bool loadModels(const char* path);
-
 public:
-	TriangleSphereModel* dot;
-	TriangleBoxModel* horizon;
-
-	void initModelTranslation();
+	/*
+	* Sendet infos ueber Internet
+	*/
 	bool isShooting = false;
+	bool Online_Mode = false;
+
+	ParticleLoader* Smoke_System;
+	float hp=100;
+	float gunHP = 100;
+	NetworkSender* Sender;
+	TriangleSphereModel* dot;
 
 	/* Plane wird per spitfire.obj geladen
 	*  -> oeffne .mtl per Editor und Pfade für die Texturen ändern
@@ -114,87 +130,29 @@ public:
 	virtual ~Plane();
 	void update(double delta);
 
-	// Setter
+	// Wrapper Model-Units werden mit zufaelligen Startpositionen transformiert (RESET)
+	void initModelTranslation();
+
+	// Setter (Steering)
 	void accelerate(float i);
 	void tiltLeftWingflaps(float i);
 	void tiltRightWingflaps(float i);
 	void tiltRudder(float i);
 
-	const AABB& boundingBox() const
-	{
-		float posX = this->parts[0]->transform().m03;
-		float posY = this->parts[0]->transform().m13;
-		float posZ = this->parts[0]->transform().m23;
-
-		AABB aabb;
-		aabb.Min = Vector(-5 + posX, -5 + posY, -5 + posZ);
-		aabb.Max = Vector(5 + posX, 5 + posY, 5 + posZ);
-		return aabb;
-	}
-
 	// Getter
 	Model** getParts();
 	float getSpeed() const;
+	const AABB& boundingBox() const;
 	TiltStatus tilt();
-
-	// aktueller Prozentanteil der maximalen Geschwindigkeit [0,1];
-	float speedPercentage() const;
+	float speedPercentage() const; // aktueller Prozentanteil der maximalen Geschwindigkeit [0,1];
 	Vector getPosition() { return Vector(parts[1]->transform().m03, parts[1]->transform().m13, parts[1]->transform().m23); }
 
-	void drawParticles(const BaseCamera& Cam) {
-		this->Smoke_System->draw(Cam);
-		this->Gun_Left->draw(Cam);
-		this->Gun_Right->draw(Cam);
+	// Particles
+	void startShooting();
+	void stopShooting();
+	void drawParticles(const BaseCamera& Cam);
 
-		this->Muzzleflash_Right->draw(Cam);
-		this->Muzzleflash_Left->draw(Cam);
-	}
-
-	void startShooting() {
-		this->Gun_Left->StartGenerating();
-		this->Muzzleflash_Left->StartGenerating();
-
-		this->Gun_Right->StartGenerating();
-		this->Muzzleflash_Right->StartGenerating();
-
-		this->isShooting = true;	
-	}
-
-	void stopShooting() {
-		this->Gun_Left->StopGenerating();
-		this->Muzzleflash_Left->StopGenerating();
-
-		this->Gun_Right->StopGenerating();
-		this->Muzzleflash_Right->StopGenerating();
-
-		this->isShooting = false;
-	}
-
-	/*
-	* Sendet infos ueber Internet
-	*/
-	NetworkSender* Sender;
-	bool Online_Mode = false;
-
-	/**
-	* Rauch, kann mit T und G ein- und ausgeschaltet werden (Bis HP existiert)
-	*/
-	ParticleLoader* Smoke_System;
-	ParticleLoader* Gun_Left;
-	ParticleLoader* Gun_Right;
-
-	ParticleLoader* Muzzleflash_Right;
-	ParticleLoader* Muzzleflash_Left;
-
-	float hp=100;
-	irrklang::ISoundEngine* SoundEngine = nullptr;
-	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
 	void startEngine();
-
-	float totalRudderRotation = 0;
-	float totalLeftWingflapRotation = 0;
-	float totalRightWingflapRotation = 0;
-
 	void stopEngine();
 };
 

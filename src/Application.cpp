@@ -136,8 +136,8 @@ void Application::draw()
 
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
-        if(ModelLoader::pEnemyPlane != nullptr)
-        ModelLoader::pEnemyPlane->drawParticles(*Cam);
+        if(ModelLoader::pEnemyPlane != nullptr) ModelLoader::pEnemyPlane->drawParticles(*Cam);
+        if (ModelLoader::pAIPlane) ModelLoader::pAIPlane->drawParticles(*Cam);
 
         for (auto cloud : Cloud_Box)
         {
@@ -174,17 +174,11 @@ void Application::draw()
 }
 void Application::end()
 {
-    /*for (std::list<BaseModel*>::iterator it = Models.begin(); it != Models.end(); ++it)
-       delete (* it);*/
     delete planeControls;
     delete aiControls;
     delete Cam;
     delete enemyPlane;
     delete guiBuffer;
-    //delete AppGUI;
-
-    //delete ModelLoader::pWaterLoader;
-    //Models.clear();
     exit(0);
 }
 

@@ -6,6 +6,7 @@
 #include "matrix.h"
 #include "EnemyPlane.h"
 #include "Aabb.h"
+#include "ModelLoader.h"
 
 class CollisionDetector
 {
@@ -13,8 +14,10 @@ public:
     
     static bool CollisionDetector::BulletCollision(Vector v) 
     {
-        if (CollisionDetector::enemyPlane != nullptr) 
-        { 
+        if (CollisionDetector::enemyPlane != nullptr)
+        {
+            if (ModelLoader::pAIPlane) enemyPlane = ModelLoader::pAIPlane;
+
             AABB aabb = CollisionDetector::enemyPlane->boundingBox();
 
             if ((v.X > aabb.Min.X &&
@@ -40,7 +43,7 @@ public:
     static bool CollisionDetector::CheckPlaneCollision(AABB aabb) 
     {
         //Hitbox loop
-        for (std::list<AABB*>::iterator it = CollisionDetector::Hitboxes.begin(); it != CollisionDetector::Hitboxes.end(); ++it) 
+        for (std::list<const AABB*>::iterator it = CollisionDetector::Hitboxes.begin(); it != CollisionDetector::Hitboxes.end(); ++it) 
         {
             if (
                 aabb.Min.X <= (*it)->Max.X &&
@@ -63,14 +66,14 @@ public:
         return false;
     }
 
-    static void CollisionDetector::AddHitbox(AABB* hitbox)
+    static void CollisionDetector::AddHitbox(const AABB* hitbox)
     {
         CollisionDetector::Hitboxes.push_back(hitbox);
     }
 
 protected:
     static EnemyPlane* CollisionDetector::enemyPlane;
-    static std::list<AABB*> Hitboxes;
+    static std::list<const AABB*> Hitboxes;
 };
 
 

@@ -13,8 +13,8 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 
 void PlayerPlaneControls::update(float delta) 
 {
-    float yOffset = (plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * plane->speedPercentage();
-    float xOffset = (-plane->tilt().rudder) * plane->speedPercentage();
+    float yOffset = (plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * plane->speedPercentage() * 2;
+    float xOffset = (-plane->tilt().rudder) * plane->speedPercentage() * 2;
     Vector offset = CAMERA_OFFSET + Vector(xOffset, yOffset, 0);
     this->cameraPos = Matrix().translation(Vector(0,2.2,0)) * plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
     this->cameraPos =  plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
@@ -72,24 +72,7 @@ void PlayerPlaneControls::update(float delta)
         plane->tiltRudder(delta);
     }
 
-
-
-    ///////////////////////////////////////////////////////////////////////////////TEST//////////
-    
-    if (glfwGetKey(this->window, GLFW_KEY_T))
-    {
-        plane->Smoke_System->StartGenerating();
-        std::cout << "[PlayerPlaneControls] Start Particles" << std::endl;
-    }
-
-    if (glfwGetKey(this->window, GLFW_KEY_G))
-    {
-        plane->Smoke_System->StopGenerating();
-        std::cout << "[PlayerPlaneControls] Stop Particles" << std::endl;
-    }
-    
-    ///////////////////////////////////////////////////////////////////////////////TEST//////////
-
+    // Plane Shooting
     if (glfwGetKey(this->window, GLFW_KEY_SPACE))
     {
         plane->startShooting();
@@ -100,6 +83,12 @@ void PlayerPlaneControls::update(float delta)
 
         // Audio effects
         SoundEngine->setSoundVolume(ApplicationSettings::AUDIO_VALUE);
+        plane->gunHP--;
+        if (plane->gunHP <= 0)
+        {
+            plane->hp -= MathUtil::remapBounds(plane->gunHP, 100, 0, 0, 0.2);
+            plane->gunHP = 0;
+        }
         if (i++ % 7 == 0 || i == 0)
         {
 
@@ -132,6 +121,8 @@ void PlayerPlaneControls::update(float delta)
         ApplicationGUI::AppGUI->ppBuffer->shake(false);
         ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
         plane->stopShooting();
+        plane->gunHP++;
+        if (plane->gunHP > 100) plane->gunHP = 100;
         i = 0;
     }
     
@@ -156,8 +147,8 @@ void PlayerPlaneControls::update(float delta)
             rightTilt = abs(normY) * normX; // +
         }
 
-            plane->tiltLeftWingflaps(delta *(up + leftTilt) / 2);
-            plane->tiltRightWingflaps(delta *(up + rightTilt) / 2);
+        plane->tiltLeftWingflaps(delta *(up + leftTilt) / 2);
+        plane->tiltRightWingflaps(delta *(up + rightTilt) / 2);
         // Mouse Controls
         plane->tiltRudder(delta * normX);
     }

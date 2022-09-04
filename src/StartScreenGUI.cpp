@@ -19,6 +19,9 @@ ApplicationGUIPrototype(window)
 
 StartScreenGUI::~StartScreenGUI()
 {
+	for (auto cloud : clouds) delete cloud;
+	delete startButton;
+	delete exitButton;
 }
 
 void StartScreenGUI::draw()

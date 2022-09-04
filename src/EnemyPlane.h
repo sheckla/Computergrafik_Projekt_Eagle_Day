@@ -33,8 +33,11 @@ public:
 	void update(double delta);
 	void EnemyPlane::loadModels(const char* path);
 
+	void initModelTranslation();
+
 	void EnemyPlane::hit() { 
 		this->hp = this->hp - 2.2f;
+		print("hp", hp);
 	}
 
 	bool isShooting = false;

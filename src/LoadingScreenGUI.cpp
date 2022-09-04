@@ -154,7 +154,10 @@ void LoadingScreenGUI::update(float delta)
 			print("Offline Components", "loading");
 			ModelLoader::planeParts();
 			ModelLoader::aiPlaneParts();
+			ModelLoader::pAIPlane->initModelTranslation();
 			CollisionDetector::setCollisionTarget(ModelLoader::pAIPlane);
+			CollisionDetector::AddHitbox(&ModelLoader::pAIPlane->boundingBox());
+			CollisionDetector::AddHitbox(&ModelLoader::pPlayerPlane->boundingBox());
 		}
 		ModelLoader::planePartsShadowArea();
 
@@ -186,7 +189,7 @@ void LoadingScreenGUI::update(float delta)
 	case MODELS_WATER:
 		printLoadStartText("OCEAN");
 
-		//ModelLoader::ocean();
+		ModelLoader::ocean();
 
 		printLoadFinishText("OCEAN");
 		break;

@@ -14,6 +14,7 @@ escapeMenuPressListener(window, GLFW_KEY_ESCAPE, KEYBOARD)
 
 ApplicationGUI::~ApplicationGUI()
 {
+	print("ApplicationGUI", "Deleting");
 	delete startScreenGUI;
 	delete gameplayGUI;
 	delete escapeMenuGUI;
@@ -57,6 +58,7 @@ void ApplicationGUI::updateInputs(float delta)
 	if (ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp <= 0) {
 		gameplayGUI->active(false);
 		gameOverGUI->active(true);
+		ModelLoader::pPlayerPlane->stopEngine();
 	}
 
 	// Only update LoadingScreen if active

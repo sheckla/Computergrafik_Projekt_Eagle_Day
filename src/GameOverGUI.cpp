@@ -33,11 +33,6 @@ void GameOverGUI::init()
 
 void GameOverGUI::update(float delta)
 {
-	if (ModelLoader::pPlayerPlane && ModelLoader::pPlayerPlane->hp <= 0) active(true);
-	if (!Active) return;
-	ApplicationGUI::AppGUI->gameplayGUI->active(false);
-	ModelLoader::pPlayerPlane->stopEngine();
-
 	if (returnButton->mouseInside() && returnButton->listen() == RELEASE)
 	{
 		ModelLoader::pPlayerPlane->hp = 100;
@@ -48,6 +43,7 @@ void GameOverGUI::update(float delta)
 		ApplicationGUI::AppGUI->optionsGUI->active(false);
 		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 		ModelLoader::pPlayerPlane->startEngine();
+		if (ModelLoader::pAIPlane) ModelLoader::pAIPlane->initModelTranslation();
 	}
 	for (auto component : Components) component->update(delta);
 }

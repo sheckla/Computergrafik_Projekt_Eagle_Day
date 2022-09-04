@@ -4,12 +4,13 @@
 
 #include "Aabb.h"
 #include "MathUtil.h"
+#include "ModelLoader.h"
 
 EnemyPlane::EnemyPlane(const char* srv_Adr,int port) 
 {
 	std::cout << "[Enemy] Enemy Plane Spawned..." << std::endl;
 
-	Vector Enemy_Position = Vector(0, 10, 65);
+	Vector Enemy_Position = Vector(0, 40, 0);
 	
 	Matrix m, r, s;
 
@@ -21,6 +22,7 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 
 	Enemy_Tranformation.identity();
 	if (ApplicationSettings::ONLINE_MODE) NetworkConnector* nwc = new NetworkConnector(*this,srv_Adr,port);
+	if (!ApplicationSettings::ONLINE_MODE) initModelTranslation();
 
 	Gun_Left = new ParticleLoader(.01, 2, ParticleType::BulletDummy);
 	Gun_Left->setOffset(-2.5f);
@@ -39,9 +41,6 @@ EnemyPlane::EnemyPlane(const char* srv_Adr,int port)
 
 const AABB& EnemyPlane::boundingBox() const
 {
-	float posX = this->model->transform().m03;
-	float posY = this->model->transform().m13;
-	float posZ = this->model->transform().m23;
 	Vector pos = model->transform().translation();
 	
 	AABB aabb;
@@ -65,26 +64,36 @@ void EnemyPlane::update(double delta)
 
 	rotor_offset.translation(Vector(0, 0.245185f, 1.82053f - .15f));
 
+	if (ApplicationSettings::ONLINE_MODE)
+	{
+		if(Enemy_Tranformation_Validation==true) //Last update is current
+		{
+			Matrix forward;
+			forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
-	if(Enemy_Tranformation_Validation==true) //Last update is current
+			this->model->transform(Enemy_Tranformation * forward);
+			this->propeller->transform(Enemy_Tranformation * forward * rotor_offset * rotorRotation * previousRotorRotation);
+			this->transform(model->transform());
+		}
+		else
+		{
+			//Motion Estimate!
+			Matrix forward;
+			forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
+
+			this->model->transform(this->model->transform() * forward);
+			this->propeller->transform(this->model->transform() * forward * rotor_offset * rotorRotation * previousRotorRotation);
+			this->transform(model->transform());
+			//std::cout << "[Enemy] Last update one frame behind: <Motion Estimate>" << std::endl;
+		}
+	} else if (ModelLoader::pAIPlane)
 	{
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
 
-		this->model->transform(Enemy_Tranformation * forward);
-		this->propeller->transform(Enemy_Tranformation * forward * rotor_offset * rotorRotation * previousRotorRotation);
+		this->model->transform(transform() * forward);
+		this->propeller->transform(transform() * forward * rotor_offset * rotorRotation * previousRotorRotation);
 		this->transform(model->transform());
-	}
-	else
-	{
-		//Motion Estimate!
-		Matrix forward;
-		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
-
-		this->model->transform(this->model->transform() * forward);
-		this->propeller->transform(this->model->transform() * forward * rotor_offset * rotorRotation * previousRotorRotation);
-		this->transform(model->transform());
-		//std::cout << "[Enemy] Last update one frame behind: <Motion Estimate>" << std::endl;
 	}
 	
 	Enemy_Tranformation_Validation = false;
@@ -109,9 +118,7 @@ void EnemyPlane::update(double delta)
 	this->Gun_Left->update(delta, this->model->transform());
 	this->Gun_Right->update(delta, this->model->transform());
 
-	if (this->hp < 50.0f)Smoke_System->StartGenerating();
-	else Smoke_System->StopGenerating();
-	Smoke_System->StartGenerating();
+	(this->hp < 50.0f) ? Smoke_System->StartGenerating() : Smoke_System->StopGenerating();
 	Smoke_System->update(delta, this->propeller->transform());
 
 	Muzzleflash_Right->update(delta, this->model->transform());
@@ -139,6 +146,15 @@ void EnemyPlane::loadModels(const char* path)
 	models[1] = this->propeller;
 	models[1]->transform(models[1]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 	
+}
+
+void EnemyPlane::initModelTranslation()
+{
+	// Offsets anwenden
+	if (!ModelLoader::pPlayerPlane) return;
+	Vector offset = Vector(ModelLoader::pPlayerPlane->getParts()[0]->transform().translation()) + Vector(0,0, 1);
+	this->transform(Matrix().translation(offset) * Matrix().scale(0.3, 0.3, 0.3));
+	hp = 100;
 }
 
 

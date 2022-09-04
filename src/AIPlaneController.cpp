@@ -13,7 +13,7 @@ void AIPlaneController::update(float delta)
 	if (ModelLoader::pPlayerPlane) playerPlane = ModelLoader::pPlayerPlane;
 	if (!aiPlane || !playerPlane)  return;
 
-	aiPlane->Enemy_Speed = 311;
+	aiPlane->Enemy_Speed = 455;
 	// Common vectors
 	Vector playerPos, aiPos, playerPosNorm, aiPosNorm;
 	playerPos = playerPlane->getParts()[0]->transform().translation().normalize();
@@ -45,20 +45,13 @@ void AIPlaneController::update(float delta)
 	if (rotDiffW.X != rotDiffW.X) rotDiffW.X = 0;
 	if (rotDiffW.Z != rotDiffW.Z) rotDiffW.Z = 0;
 
-	Matrix yaw = Matrix().rotationY((rotDiffW.Z + rotDiffW.X) * delta / 100);
-	Matrix pitch = Matrix().rotationX(-(rotDiffW.Y) * delta / 100);
-	aiPlane->model->transform(aiPlane->model->transform() * yaw * pitch);
+	Matrix yaw = Matrix().rotationY((rotDiffW.Z + rotDiffW.X) * delta / 66);
+	Matrix pitch = Matrix().rotationX(-(rotDiffW.Y) * delta / 66);
+	Matrix fall = Matrix().translation(0,0,0);
 
-	// Speed
-	/*float AISpeedVal = 0;
-	if (aiPlane->getSpeed() < playerPlane->getSpeed())
-		AISpeedVal = MathUtil::remapBounds(abs(aiPlane->getSpeed() - playerPlane->getSpeed()), 0, 600, 0, 1);
+	if (aiPlane->hp <= 0) fall = Matrix().translation(0, -1000 * delta, 0);
+	aiPlane->model->transform(aiPlane->model->transform() * yaw * pitch * fall);
 
-	aiPlane->accelerate(AISpeedVal);
-	aiPlane->tiltRightWingflaps(rotDiffW.Y * delta);
-	aiPlane->tiltLeftWingflaps(rotDiffW.Y * delta);
-	aiPlane->tiltRudder(-(rotDiffW.Z + rotDiffW.X) * delta * 10);
-	print("dif", rotDiffW.Z + rotDiffW.X);
-	print("rot", rotDiffW);*/
+
 	aiPlane->update(delta);
 }

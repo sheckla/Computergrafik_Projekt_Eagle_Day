@@ -24,7 +24,6 @@ public:
 
 	virtual ~ApplicationGUIPrototype()
 	{
-		for (auto component : Components) delete component;
 	};
 
 	virtual void draw()

@@ -19,10 +19,12 @@
 class GameplayGUI : public ApplicationGUIPrototype
 {
 	GUISlider* lifeMeter;
+	GUISlider* gunMeter;
 	GUIText* speedMeterText;
 	GUIText* altitudeMeterText;
 	GUITexture* mouseCircle;
 
+	GUIConstantQuad* quad;
 
 	GUIConstantQuad* compass;
 	GUIText* compassText;

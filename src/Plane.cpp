@@ -16,6 +16,38 @@ float Plane::speedPercentage() const
 	return (0 + (this->speed / (float)MAX_SPEED));
 }
 
+void Plane::drawParticles(const BaseCamera& Cam)
+{
+	this->Smoke_System->draw(Cam);
+	this->Gun_Left->draw(Cam);
+	this->Gun_Right->draw(Cam);
+	
+	this->Muzzleflash_Right->draw(Cam);
+	this->Muzzleflash_Left->draw(Cam);
+}
+
+void Plane::startShooting()
+{
+	this->Gun_Left->StartGenerating();
+	this->Muzzleflash_Left->StartGenerating();
+
+	this->Gun_Right->StartGenerating();
+	this->Muzzleflash_Right->StartGenerating();
+
+	this->isShooting = true;
+}
+
+void Plane::stopShooting()
+{
+	this->Gun_Left->StopGenerating();
+	this->Muzzleflash_Left->StopGenerating();
+
+	this->Gun_Right->StopGenerating();
+	this->Muzzleflash_Right->StopGenerating();
+
+	this->isShooting = false;
+}
+
 void Plane::startEngine()
 {
 	if (SoundEngine && HighPitchSoundEngine) return;
@@ -30,8 +62,10 @@ void Plane::startEngine()
 
 void Plane::stopEngine()
 {
-	if (SoundEngine) SoundEngine->setSoundVolume(0);
-	if (HighPitchSoundEngine) SoundEngine->setSoundVolume(0);
+	if (SoundEngine) delete SoundEngine;
+	if (HighPitchSoundEngine) delete HighPitchSoundEngine;
+	SoundEngine = nullptr;
+	HighPitchSoundEngine = nullptr;
 }
 
 void Plane::updateModelPos(const size_t index, const Matrix& transform) const
@@ -82,7 +116,7 @@ Plane::Plane(const char* path)
 		throw "err";
 	}
 
-	Smoke_System = new ParticleLoader(.0002, .14, ParticleType::Smoke);
+	Smoke_System = new ParticleLoader(.0002, 2.14, ParticleType::Smoke);
 	//Smoke_System->setScale(1.32);
 
 	Gun_Left = new ParticleLoader(.01, 4, ParticleType::Bullet);
@@ -143,22 +177,16 @@ bool Plane::loadModels(const char* path)
 	parts[PartsIndex::wingRight]->shader(shader, true);
 
 	parts[PartsIndex::rotorBlur] = new Model(&(planePath + "/rotor_blur.obj")[0], fitToSize);
-	TextureShader* t = new TextureShader();
-	t->diffuseTexture(new Texture(ASSETS "models/spitfire/rotor_blur.png"));
 	parts[PartsIndex::rotorBlur]->shader(shader, true);
 	parts[PartsIndex::rotorBlur]->shadowCaster(false);
 
 	initModelTranslation();
 
+	// Target Dot
 	dot = new TriangleSphereModel(0.1, 20, 20);
 	dot->shader(new ConstantShader());
 	dot->shadowCaster(false);
 	dot->transform(Matrix().translation(dotOffset));
-
-	horizon = new TriangleBoxModel(20, 1, 1);
-	horizon->shader(new ConstantShader());
-	horizon->shadowCaster(false);
-	//horizon->transform(Matrix().translation(horizonOffset));
 
 	speed = 100;
 	return true;
@@ -167,12 +195,13 @@ bool Plane::loadModels(const char* path)
 void Plane::initModelTranslation()
 {
 	// Offsets anwenden
-	Vector offset = Vector(MathUtil::randPercentage() * 100, MathUtil::randPercentage() * 100 + 40, MathUtil::randPercentage() * 100);
+	Vector offset = Vector(MathUtil::randPercentage() * 100, MathUtil::randPercentage() * 20 + 40, MathUtil::randPercentage() * 100);
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
 		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(offset));
 	}
 	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
+	speed = 100;
 }
 
 /* 
@@ -182,31 +211,20 @@ void Plane::initModelTranslation()
 */
 void Plane::update(double delta)
 {
-	// Translations/Rotations Transformationen bezueglich Flugzeug- & Kameraposition
-	Matrix forward, yaw, rollLeft, rollRight, pitch;
 	const float speedMultiplier = speedPercentage();
-	Matrix gravitational_pull;
-	Matrix gravAntiPitch;
-	gravitational_pull.translation(Vector(0, -1, 0) * 9.81f * delta * (1/100));
+	// Translations/Rotations Transformationen bezueglich Flugzeug- & Kameraposition
+	Matrix forward, yaw, rollLeft, rollRight, pitch, gravitationalPull, gravAntiPitch;
+	gravitationalPull.translation(Vector(0, -1, 0) * 9.81f * delta * (1/100));
 	gravAntiPitch.rotationX(delta / 20);
-
 	forward.translation(Vector(0, 0, ACCELERATION_GAIN * speed));
 	yaw.rotationY(ROTATION_SPEED * -Tilt.rudder * speedMultiplier);
 	pitch.rotationX(ROTATION_SPEED * -(Tilt.leftFlapsTilt + Tilt.rightFlapsTilt) * speedMultiplier);
 	rollLeft.rotationZ(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier);
 	rollRight.rotationZ(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier);
-	totalRightWingflapRotation += ROTATION_SPEED * -Tilt.rightFlapsTilt * speedMultiplier;
-	totalLeftWingflapRotation += ROTATION_SPEED * Tilt.leftFlapsTilt * speedMultiplier;
-	totalRudderRotation += ROTATION_SPEED * -Tilt.rudder * speedMultiplier;
 
 	// main-model
-	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight * gravitational_pull * gravAntiPitch);
+	parts[0]->transform(parts[0]->transform() * forward * yaw * pitch * rollLeft * rollRight * gravitationalPull * gravAntiPitch);
 	dot->transform(parts[0]->transform() * Matrix().translation(dotOffset));
-
-	Matrix rollLeftInvert, rollRightInvert;
-	rollLeftInvert.rotationZ(-(ROTATION_SPEED * -Tilt.leftFlapsTilt * speedMultiplier));
-	rollRightInvert.rotationZ(-(ROTATION_SPEED * Tilt.rightFlapsTilt * speedMultiplier));
-	horizon->transform(parts[0]->transform() * rollLeftInvert * Matrix().translation(horizonOffset));
 
 	// Visuelle Transformationen
 	// rotor
@@ -217,6 +235,7 @@ void Plane::update(double delta)
 	previousRotorRotation = rotorRotation * previousRotorRotation;
 	parts[7]->transform(parts[7]->transform() * Matrix().scale(3, 3, 3));
 
+	// Rotor ab bestimmter Geschwindikeit mit 'Dreh'-Rotor austauschen
 	if (speedPercentage() > 0.2)
 	{
 		parts[PartsIndex::rotor]->active(false);
@@ -240,32 +259,23 @@ void Plane::update(double delta)
 	updateModelPos(PartsIndex::backWingRight, rightBackwingRotation);
 
 	// visuelle rotation
+	// left and right wingflaps
+	// - wingflaps brauchen spezielle rotation damit sie korrekt aussehen
 	Matrix leftWingRotation, rightWingRotation;
 	leftWingRotation.rotationZ(Tilt.leftFlapsTilt * WINGFLAP_OFFSET_ROTATION);
 	rightWingRotation.rotationZ(Tilt.rightFlapsTilt * -WINGFLAP_OFFSET_ROTATION);
 	updateModelPos(PartsIndex::wingRight, rightWingRotation * rightBackwingRotation);
 	updateModelPos(PartsIndex::wingLeft, leftWingRotation * leftBackwingRotation);
 
-	// left and right wingflaps
-	// - wingflaps brauchen spezielle rotation damit sie korrekt aussehen
-
 	// Fall-off fuer rudder & flaps gegen 0
 	aprroachZeroWithBoundaries(Tilt.rudder, MAX_TILT);
 	aprroachZeroWithBoundaries(Tilt.leftFlapsTilt, MAX_TILT);
 	aprroachZeroWithBoundaries(Tilt.rightFlapsTilt, MAX_TILT);
 
-	// Geschwindigkeitsabfall TODO
 	this->speed = speed - (5*delta * speedPercentage());
-	/*print("flap right", this->rightFlapsTilt);
-	print("flap left", this->leftFlapsTilt);
-	print("speed", speedPercentage());
-	print("speedval", this->speed);*/
 
-
+	// Particle System
 	(this->hp < 30.0f) ? Smoke_System->StartGenerating() : Smoke_System->StopGenerating();
-
-
-
 	Smoke_System->update(delta, this->parts[1]->transform());
 	Gun_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0,0,-4)); 
 	Gun_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4));
@@ -273,8 +283,7 @@ void Plane::update(double delta)
 	Muzzleflash_Right->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4.5f));
 	Muzzleflash_Left->update(delta, this->parts[0]->transform() * Matrix().translation(0, 0, -4.5f));
 
-
-
+	// Sound System
 	if (SoundEngine && HighPitchSoundEngine)
 	{
 		float steady = 1 - speedPercentage();
@@ -292,15 +301,20 @@ void Plane::update(double delta)
 		}
 	}
 
-
-
 	if (Online_Mode)Sender->SendData(this);
 	
 	//Hard Collisions
 	if (CollisionDetector::CheckPlaneCollision(this->boundingBox()))
 	{
 		this->hp = 0;
-	} 
+	}
+
+	if (parts[0]->transform().translation().Y > 300)
+	{
+		float diff = parts[0]->transform().translation().Y - 300;
+		diff = MathUtil::remapBounds(diff, 0, 100, 0, 2);
+		hp -= diff;
+	}
 }
 
 // Spitfire max km/h = 594
@@ -334,6 +348,18 @@ void Plane::tiltRudder(float i)
 {
 	Tilt.rudder += i * DELTA_TIME_MULTIPLICATOR;
 	clampTilt(Tilt.rudder);
+}
+
+const AABB& Plane::boundingBox() const
+{
+	float posX = this->parts[0]->transform().m03;
+	float posY = this->parts[0]->transform().m13;
+	float posZ = this->parts[0]->transform().m23;
+
+	AABB aabb;
+	aabb.Min = Vector(-5 + posX, -5 + posY, -5 + posZ);
+	aabb.Max = Vector(5 + posX, 5 + posY, 5 + posZ);
+	return aabb;
 }
 
 Model** Plane::getParts()
