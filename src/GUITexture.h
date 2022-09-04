@@ -21,7 +21,6 @@ protected:
 	bool KeepImageSize = false;
 	bool FillScreen = false;
 	bool Active = true;
-	// bei KeepImageSize=false
 	void updateBounds() override;
 	void deactivateTex();
 public:

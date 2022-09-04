@@ -21,6 +21,11 @@ class PressListener
 public:
 	PressListener(GLFWwindow* window, int GLFW_KEY, PRESS_TYPE pressType) : Window(window), GLFW_KEY_ID(GLFW_KEY), PressType(pressType) {}
 
+	/*
+	 * PRESS : initialer Knopfdruck
+	 * RELEASE : Knopfdruck beendet
+	 * HOLD : Knopf wird aktuell runtergehalten
+	 */
 	PRESS_STATE listen()
 	{
 		switch (PressType)

@@ -1,3 +1,8 @@
+/*
+ * AIPlaneControls
+ * - Steuereinheit fuer den gegnerischen KI Spieler
+ * - AIPlane versucht seine Position an den des Spielers anzunaehern
+ */
 #ifndef AIPlaneController_h
 #define AIPlaneController_h
 #include "EnemyPlane.h"
@@ -5,18 +10,11 @@
 
 class AIPlaneController
 {
+	int deadCounter = 0;
 public:
 	EnemyPlane* aiPlane;
 	Plane* playerPlane;
-
-	bool stop = false;
-	float prevXZCross = 0;
-
-	float min = 0;
-	float max = 0;
-
 	AIPlaneController();
-
 	void update(float delta);
 };
 

@@ -13,12 +13,12 @@ PlayerPlaneControls::PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camer
 
 void PlayerPlaneControls::update(float delta) 
 {
+    // Camera offset according to plane rotation angle
     float yOffset = (plane->tilt().leftFlapsTilt + plane->tilt().rightFlapsTilt) * plane->speedPercentage() * 2;
     float xOffset = (-plane->tilt().rudder) * plane->speedPercentage() * 2;
     Vector offset = CAMERA_OFFSET + Vector(xOffset, yOffset, 0);
     this->cameraPos = Matrix().translation(Vector(0,2.2,0)) * plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
     this->cameraPos =  plane->getParts()[0]->transform() * Matrix().translation(offset);// * Matrix().translation(CAMERA_OFFSET);
-
 
     // Beschleunigung
     if (glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT))
@@ -77,55 +77,65 @@ void PlayerPlaneControls::update(float delta)
     {
         plane->startShooting();
 
+        // PostProcessing Shake Effect
         ApplicationGUI::AppGUI->ppBuffer->shake(true);
         ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(true);
         ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(false);
 
         // Audio effects
-        SoundEngine->setSoundVolume(ApplicationSettings::AUDIO_VALUE);
-        plane->gunHP--;
+        ShootSoundEngine->setSoundVolume(ApplicationSettings::AUDIO_VALUE);
+        plane->gunHP--; // Lower Gun Health
+
+        // Gun Health < 0 ? -> decrease Plane HP
         if (plane->gunHP <= 0)
         {
             plane->hp -= MathUtil::remapBounds(plane->gunHP, 100, 0, 0, 0.2);
             plane->gunHP = 0;
+            if (plane->hp < 0) plane->hp = 0;
         }
-        if (i++ % 7 == 0 || i == 0)
+
+        // Only play sound every 7th shot to avoid overlap
+        if (shotCounter++ % 7 == 0 || shotCounter == 0)
         {
 
-            if (i == 0)
+            if (shotCounter == 0)
             {
-                SoundEngine->play2D(ASSETS "audio/shoot.wav", false);
+                ShootSoundEngine->play2D(ASSETS "audio/shoot.wav", false);
                 return;
             }
 
             if (MathUtil::randBool())
             {
-            SoundEngine->play2D(ASSETS "audio/shoot_high.wav", false);
+            ShootSoundEngine->play2D(ASSETS "audio/shoot_high.wav", false);
 	            
             } else
             {
 
                 if (MathUtil::randBool())
                 {
-					SoundEngine->play2D(ASSETS "audio/shoot_low.wav", false);
+					ShootSoundEngine->play2D(ASSETS "audio/shoot_low.wav", false);
                 } else
                 {
-					SoundEngine->play2D(ASSETS "audio/shoot.wav", false);
+					ShootSoundEngine->play2D(ASSETS "audio/shoot.wav", false);
                 }
 	            
             }
         }
     }
+    // no shooting
     else
     {
+        // disable PostProcessing Shake effect
         ApplicationGUI::AppGUI->ppBuffer->shake(false);
         ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
         plane->stopShooting();
-        plane->gunHP++;
+
+        plane->gunHP++; // increase gun hp
         if (plane->gunHP > 100) plane->gunHP = 100;
-        i = 0;
+        shotCounter = 0;
     }
-    
+
+    // Mousesteering
     if (ApplicationSettings::MOUSE_CONTROLS)
     {
         MouseLogger logger = MouseLogger::instance();
@@ -138,13 +148,13 @@ void PlayerPlaneControls::update(float delta)
 
         // Rolle Rechts
         if (normX > 0) { // right quad
-            leftTilt = -abs(normY) * normX; // 
+            leftTilt = -abs(normY) * normX; 
             rightTilt = abs(normY) * normX;
         }
         // Rolle links
         if (normX < 0) { // left quad
-            leftTilt = -abs(normY) * normX; // -
-            rightTilt = abs(normY) * normX; // +
+            leftTilt = -abs(normY) * normX; 
+            rightTilt = abs(normY) * normX; 
         }
 
         plane->tiltLeftWingflaps(delta *(up + leftTilt) / 2);
@@ -153,13 +163,13 @@ void PlayerPlaneControls::update(float delta)
         plane->tiltRudder(delta * normX);
     }
 
-    plane->update(delta);
 
+    plane->update(delta);
 
     // camera follows plane
     cam->setTarget(plane->getParts()[0]->transform().translation());
     cam->setPosition(cameraPos.translation());
-    cam->zoom(-plane->getSpeed() / 500);
+    cam->zoom(-plane->getSpeed() / 500); // FOV to speed adjust
 
     ApplicationGUI::AppGUI->ppBuffer->hp(plane->hp);
 }

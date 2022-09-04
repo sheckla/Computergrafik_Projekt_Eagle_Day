@@ -224,12 +224,22 @@ void LoadingScreenGUI::init()
 	loadingMeter = new GUILoadingMeter(20, 20, ApplicationSettings::WIDTH - 40, 55, 10);
 	Components.push_back(loadingMeter);
 
+	// Lade-Infotext
 	GUIText* pLoadingProgressText = new GUIText(20, 85, "Preparing to Load Application...       ");
 	this->loadingProgressText = pLoadingProgressText;
 	Components.push_back(pLoadingProgressText);
 
-	GUIText* topLeftTextInfo = new GUIText(20, ApplicationSettings::HEIGHT -70, "[EAGLE DAY - UNRELEASED ]");
+	// Top Left Eagle Day, Version & Producers text info
+	GUIText* topLeftTextInfo = new GUIText(20, ApplicationSettings::HEIGHT -70, "EAGLE DAY");
+	GUIText* topLeftTextInfoVersion = new GUIText(20, ApplicationSettings::HEIGHT -100, "- Version: CG_RELEASE 0.9");
+	topLeftTextInfoVersion->charSpace(0.6);
+	topLeftTextInfoVersion->scale(Vector(0.7, 0.7, 0.5));
+	GUIText* topLeftTextInfoProducers = new GUIText(20, ApplicationSettings::HEIGHT -130, "- Made by: Daniel Graf & Jannis Welkener");
+	topLeftTextInfoProducers->charSpace(0.6);
+	topLeftTextInfoProducers->scale(Vector(0.7, 0.7, 0.5));
 	Components.push_back(topLeftTextInfo);
+	Components.push_back(topLeftTextInfoVersion);
+	Components.push_back(topLeftTextInfoProducers);
 
 	active(true); // GUI wird gezeichnet
 }

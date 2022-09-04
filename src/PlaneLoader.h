@@ -4,9 +4,7 @@
  */
 
 #pragma once
-
 #include "Plane.h"
-#include "EnemyPlane.h"
 
 class PlaneLoader {
 public:

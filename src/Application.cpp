@@ -1,5 +1,4 @@
 #include "Application.h"
-
 #include "ApplicationSettings.h"
 #include "CloudShader.h"
 #include "GUILoader.h"
@@ -136,7 +135,7 @@ void Application::draw()
 
 
         ModelLoader::pPlayerPlane->drawParticles(*Cam);
-        if(ModelLoader::pEnemyPlane != nullptr) ModelLoader::pEnemyPlane->drawParticles(*Cam);
+        if(ModelLoader::pEnemyPlane) ModelLoader::pEnemyPlane->drawParticles(*Cam);
         if (ModelLoader::pAIPlane) ModelLoader::pAIPlane->drawParticles(*Cam);
 
         for (auto cloud : Cloud_Box)
@@ -179,7 +178,7 @@ void Application::end()
     delete Cam;
     delete enemyPlane;
     delete guiBuffer;
-    exit(0);
+    //exit(0);
 }
 
 void Application::glErrorHandler(GLenum err)

@@ -1,13 +1,13 @@
 /*
  * PostProcessingShader
  * - Shadereinheit fuer komplette Bildmanipulationen
- * - Gausscher Weichzeichner
- * - Farbfilter- & Anpassung
+ *      [Effekte]:
+ *      - Gausscher Weichzeichner
+ *      - Farbfilter- & Anpassung
+ *      - ScreenShake
  */
-
 #ifndef ProcessingShader_h
 #define ProcessingShader_h
-
 #include "camera.h"
 #include "baseshader.h"
 #include "texture.h"

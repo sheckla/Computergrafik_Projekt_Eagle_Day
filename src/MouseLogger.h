@@ -16,8 +16,12 @@ class MouseLogger
 public:
 	static MouseLogger& instance();
 	static void update(double x, double y);
+
+	// Bildschirmkoordinaten in PX
 	static double x();
 	static double y();
+
+	// Bildschirmkoordinaten normalisiert [-1,-1] bis [1,1]
 	static double normY();
 	static double normX();
 };

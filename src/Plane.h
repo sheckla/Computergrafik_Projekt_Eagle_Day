@@ -15,10 +15,7 @@
 #include "BaseModel.h"
 #include "Model.h"
 #include "Camera.h"
-#include "PhongShader.h"
-#include <stdlib.h>
 #include "NetworkSender.h"
-#include "TriangleBoxModel.h"
 #include "ParticleLoader.h"
 #include "irrKlang.h"
 #include "TriangleSphereModel.h"
@@ -26,14 +23,14 @@
 constexpr float EPSILON = 1e-7f; 
 constexpr int PLANE_PARTS = 8;
 
-// Konkrete Rotationswerte
+// Translations Rotationswerte
 constexpr float DELTA_TIME_MULTIPLICATOR = 1.0f; // Multiplikator für Drehgeschwindkeit, Beschleunigung etc.
 constexpr float ACCELERATION_GAIN = 0.004f;
 constexpr float ROTATION_SPEED = 0.0455f;
 constexpr float MAX_TILT = 1.0f; // Tilt=[MAX_TILT, -MAX_TILT], Eingabe vom Nutzer
 constexpr int MAX_SPEED = 600;
 
-// Visuelle Rotationswerte
+// Visuelle Rotationswerte zur Modelanpassung
 constexpr float RUDDER_ROTATION = 1.0f; // visueller Neigungsfaktor
 constexpr float FLAP_ROTATION = 1.6f; // visueller Neigungsfaktor 
 constexpr float WINGFLAP_OFFSET_ROTATION = 0.35f; // fuer korrekte Rotation der Seiten-flaps
@@ -91,9 +88,7 @@ class Plane
 	irrklang::ISoundEngine* SoundEngine = nullptr;
 	irrklang::ISoundEngine* HighPitchSoundEngine = nullptr;
 
-	/**
-	* Rauch, kann mit T und G ein- und ausgeschaltet werden (Bis HP existiert)
-	*/
+	// Plane Bullet & Muzzle Particle Generators
 	ParticleLoader* Gun_Left;
 	ParticleLoader* Gun_Right;
 	ParticleLoader* Muzzleflash_Right;
@@ -105,7 +100,7 @@ class Plane
 	*/
 	void aprroachZeroWithBoundaries(float& i, float maxAngle) const;
 
-	// Wrapper Model-Units werden mit der Haupt-Transformationsmatrix transfomiert
+	// parts[i] wird mit der Haupt-Transformationsmatrix transfomiert
 	void updateModelPos(const size_t index, const Matrix& transform) const;
 	void clampTilt(float& i);
 	bool loadModels(const char* path);
@@ -117,10 +112,10 @@ public:
 	bool Online_Mode = false;
 
 	ParticleLoader* Smoke_System;
+	NetworkSender* Sender;
+	TriangleSphereModel* dot; // Zielkreis
 	float hp=100;
 	float gunHP = 100;
-	NetworkSender* Sender;
-	TriangleSphereModel* dot;
 
 	/* Plane wird per spitfire.obj geladen
 	*  -> oeffne .mtl per Editor und Pfade für die Texturen ändern
@@ -130,7 +125,7 @@ public:
 	virtual ~Plane();
 	void update(double delta);
 
-	// Wrapper Model-Units werden mit zufaelligen Startpositionen transformiert (RESET)
+	// parts werden mit zufaelligen Startpositionen transformiert (RESET)
 	void initModelTranslation();
 
 	// Setter (Steering)
@@ -152,6 +147,7 @@ public:
 	void stopShooting();
 	void drawParticles(const BaseCamera& Cam);
 
+	// (Sound)Engine enable/disable
 	void startEngine();
 	void stopEngine();
 };

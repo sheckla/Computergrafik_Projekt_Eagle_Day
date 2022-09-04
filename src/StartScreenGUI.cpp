@@ -1,18 +1,17 @@
 #include "StartScreenGUI.h"
-
 #include "GUIButton.h"
 #include "GUITexture.h"
 #include <sstream>
 #include "ApplicationGUI.h"
 #include "ApplicationSettings.h"
 #include "GUISlider.h"
-
 #include "MathUtil.h"
 #include "ModelLoader.h"
+#include "MouseLogger.h"
 
 StartScreenGUI::StartScreenGUI(GLFWwindow* window) : startButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE),
-exitButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE),
-ApplicationGUIPrototype(window)
+                                                     exitButtonListener(window, GLFW_MOUSE_BUTTON_LEFT, MOUSE),
+                                                     ApplicationGUIPrototype(window)
 {
 
 }
@@ -26,6 +25,7 @@ StartScreenGUI::~StartScreenGUI()
 
 void StartScreenGUI::draw()
 {
+	// Draw clouds before everything else
 	int layer = 0;
 	for (auto component : Components) {
 		component->draw();
@@ -38,6 +38,7 @@ void StartScreenGUI::draw()
 
 void StartScreenGUI::update(float delta)
 {
+	// Cloud x&y Position offset
 	for (int i = 0; i < clouds.size(); i++)
 	{
 		GUITexture* cloud = clouds.at(i);
@@ -48,9 +49,10 @@ void StartScreenGUI::update(float delta)
 		cloud->startPixel(Vector((float)cloud->startPixel().X + xOffset, cloud->startPixel().Y + yOffset, 0));
 
 		// Cloud wieder von links anfangen lassen
-		if (cloud->startPixel().X > ApplicationSettings::WIDTH) cloud->startPixel(Vector(-cloud->width() - 20, cloud->startPixel().Y, 0));
+		if (cloud->startPixel().X > ApplicationSettings::WIDTH) cloud->startPixel(Vector(- 630, cloud->startPixel().Y, 0));
 	}
 
+	// Game Start Button Listen
 	if (startButton->mouseInside())
 	{
 		PRESS_STATE state = startButton->listen();
@@ -65,6 +67,7 @@ void StartScreenGUI::update(float delta)
 		}
 	}
 
+	// Game exit Button Listen
 	if (exitButton->mouseInside() && exitButton->listen() == RELEASE)
 	{
 		ApplicationSettings::writeSettings();
@@ -72,8 +75,7 @@ void StartScreenGUI::update(float delta)
 		//exit(0);
 	}
 
-
-
+	// Update everything else
 	for (auto component : Components)
 	{
 		component->update(delta);
@@ -86,16 +88,19 @@ void StartScreenGUI::init()
 	int buttonHeight = 70;
 	int gap = 10;
 
-
+	// Background (color)
 	GUITexture* skyBG = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_color.png"), true, true);
 	Components.push_back(skyBG);
 
+	// Background (clouds)
 	GUITexture* cloudsBG = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_clouds.png"), true, true);
 	Components.push_back(cloudsBG);
 
+	// Background (Logo)
 	GUITexture* logoBG = new GUITexture(ApplicationSettings::WIDTH / 2, ApplicationSettings::HEIGHT / 2, new Texture(ASSETS "img/bg_logo.png"), true, true);
 	Components.push_back(logoBG);
 
+	// Start Game Button
 	int offsetHeight = gap + buttonHeight;
 	GUITexture* gTex = new GUITexture(ApplicationSettings::WIDTH / 2, 150, new Texture(ASSETS "img/button_simple.png"), true);
 	gTex->scale(Vector(0.3, 0.3, 0));
@@ -104,6 +109,7 @@ void StartScreenGUI::init()
 	startButton = new GUIButton(Window, gTex, "Start", ARIAL_BLACK, true);
 	Components.push_back(startButton);
 
+	// Exit Game Button
 	offsetHeight += gap + buttonHeight;
 	GUITexture* exitButtonTex = new GUITexture(ApplicationSettings::WIDTH / 2, 20, new Texture(ASSETS "img/button_simple_gray.png"), true);
 	exitButtonTex->scale(Vector(0.3, 0.3, 0));
@@ -112,9 +118,7 @@ void StartScreenGUI::init()
 	exitButton = new GUIButton(Window, exitButtonTex, "Exit", ARIAL_BLACK, true);
 	Components.push_back(exitButton);
 
-
-
-
+	// Load Clouds with random offsets
 	for (int i = 0; i <= 10; i++)
 	{
 		std::stringstream ss;

@@ -2,11 +2,8 @@
  * PlaneLoaderImplementation:
  * - Zustaendig fuer das korrekte Laden der Flugzeuge
  */
-
 #ifndef PlaneLoaderImpl_h
 #define PlaneLoaderImpl_h
-
-#include "EnemyPlane.h"
 #include "Plane.h"
 #include "PlaneLoader.h"
 #include "Model.h"

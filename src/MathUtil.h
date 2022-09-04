@@ -2,17 +2,16 @@
  * MathUtil
  * - nuetzliche mathematische Funktionen
  * - zufaellige Zahlenberechnung
- *
  */
-
-constexpr double PI = 3.14159265359;
-
 #ifndef MathUtil_h
 #define MathUitl_h
+constexpr double PI = 3.14159265359;
 
 class MathUtil
 {
 public:
+
+	// float i~[fromMin,fromMax] -> i~[toMin, toMax]
 	static float remapBounds(float i, float fromMin, float fromMax, float toMin, float toMax)
 	{
 		return (i - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
@@ -45,7 +44,6 @@ public:
 		if (x < min) x = min;
 		return x;
 	}
-
 };
 
 #endif

@@ -17,8 +17,11 @@ OptionsGUI::~OptionsGUI()
 void OptionsGUI::draw()
 {
 	cogwheelTexture->draw();
+
 	if (Active) {
 		ApplicationGUIPrototype::draw();
+
+		// Only display info in ONLINE_MODE
 		if (ApplicationSettings::ONLINE_MODE)
 		{
 			localIP->draw();
@@ -56,17 +59,16 @@ void OptionsGUI::update(float delta)
 	(cogwheelPressListener->pressed()) ? cogwheelTexture->mousePress(true) : cogwheelTexture->mousePress(false);
 	cogwheelTexture->update(delta);
 
-
+	// Escape Button Pressed -> close Options
 	if (escapeButtonPressListener->listen() == RELEASE) {
 		Application::guiBuffer->postProcessingActive(false);
 		active(false);
 	}
 	if (!Active) return;
 
-
-
 	for (auto component : Components) component->update(delta);
 
+	// Only display/update in ONLINE_MODE
 	if (ApplicationSettings::ONLINE_MODE)
 	{
 		localIP->update(delta);
@@ -76,9 +78,11 @@ void OptionsGUI::update(float delta)
 	}
 	audioSlider->update(delta);
 
+	// RestartRequired Condition check
 	((initial_FULL_SCREEN != ApplicationSettings::FULL_SCREEN) || (initial_ONLINE_MODE != ApplicationSettings::ONLINE_MODE)) ? restartChangeRequired = true :
 		restartChangeRequired = false;
 
+	// Save to ApplicationSettings
 	ApplicationSettings::AUDIO_VALUE = audioSlider->percentage();
 	ApplicationSettings::MOUSE_CONTROLS = mouseControlSwitch->on();
 	ApplicationSettings::FULL_SCREEN = fullscreenControlSwitch->on();

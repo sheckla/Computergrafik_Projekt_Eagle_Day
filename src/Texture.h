@@ -1,13 +1,15 @@
-//
-//  Texture.h
-//  RealtimeRending
-//
-//  Created by Philipp Lensing on 24.10.14.
-//  Copyright (c) 2014 Philipp Lensing. All rights reserved.
-//
-
-#ifndef __RealtimeRending__Texture__
-#define __RealtimeRending__Texture__
+/*
+ * Texture
+ * - Laden von Textureinheiten
+ * - erlaubt nun default SkyBox zerstueckelung (Skybox wird in einzelne Quadranten gesplitted)
+ * - erlaubt nun default FontMaps
+ *
+ * Auf Basis von:
+ * Created by Philipp Lensing on 24.10.14.
+ * Copyright (c) 2014 Philipp Lensing. All rights reserved.
+ */
+#ifndef Texture_h
+#define Texture_h
 
 #include <iostream>
 #include <map>
@@ -28,7 +30,6 @@
 #include "rgbimage.h"
 #include "filesystem"
 
-// Inverted Texture coordinates for loading in opengl!
 class Texture
 {
 public:
@@ -109,4 +110,4 @@ protected:
 
 };
 
-#endif /* defined(__RealtimeRending__Texture__) */
+#endif 

@@ -80,7 +80,11 @@ static void printDivider(int size = 45)
 
 
 #else
-// Kompatibilitaet fuer andere Betriebssysteme ueberpruefen
+/*
+ * Kompatibilitaet fuer andere Betriebssysteme (Linux & MacOS) ueberpruefen
+ *      Problematisch ist:  - network Socket Connection (aktuel nur ueber winsock)
+ *                          - StringUtils readDirEntries nur fuer Windows ausgelegt
+ */
 #define GLFW_INCLUDE_GLCOREARB
 #define GLFW_INCLUDE_GLEXT
 #include <glfw/glfw3.h>

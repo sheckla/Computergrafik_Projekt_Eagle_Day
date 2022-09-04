@@ -43,8 +43,8 @@ const AABB& EnemyPlane::aabb() const
 {
 	Vector pos = model->transform().translation();
 	AABB aabb;
-	aabb.Min = Vector(-6 + pos.X, -4 + pos.Y, -6 + pos.Z);
-	aabb.Max = Vector(6 + pos.X, 4 + pos.Y, 6 + pos.Z);
+	aabb.Min = Vector(-2 + pos.X, -2 + pos.Y, -2 + pos.Z);
+	aabb.Max = Vector(2 + pos.X, 2 + pos.Y, 2 + pos.Z);
 	return aabb;
 }
 

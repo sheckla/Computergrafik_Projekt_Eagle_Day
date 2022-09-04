@@ -1,6 +1,7 @@
 /*
  * Flugzeugkontrolle
  * - Tastatureingaben fuer die verschiedenen Steuerwinkel des Flugzeuges
+ * - Mauskontrolle per Cursor falls eingestellt
  * - 'plane' muss im nachhinein an diese Steuereinheit angebunden werden
  */
 
@@ -23,14 +24,13 @@ class PlayerPlaneControls
 	GLFWwindow* window;
 	Plane* plane;
 	Camera* cam;
+	int shotCounter = 0;
 	bool follow = false;
 	Matrix cameraPos;
-
-	int i = 0;
 public:
 	PlayerPlaneControls(GLFWwindow* window, Plane* plane, Camera* cam, bool camFollowsPlane);
 	void update(float delta);
-	irrklang::ISoundEngine* SoundEngine = irrklang::createIrrKlangDevice();;
+	irrklang::ISoundEngine* ShootSoundEngine = irrklang::createIrrKlangDevice();;
 };
 
 #endif

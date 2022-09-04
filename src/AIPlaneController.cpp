@@ -1,10 +1,9 @@
 #include "AIPlaneController.h"
-
-#include "MathUtil.h"
 #include "ModelLoader.h"
 
 AIPlaneController::AIPlaneController()
 {
+	
 }
 
 void AIPlaneController::update(float delta)
@@ -14,7 +13,9 @@ void AIPlaneController::update(float delta)
 	if (!aiPlane || !playerPlane)  return;
 
 	aiPlane->Enemy_Speed = 455;
+
 	// Common vectors
+	// Calculate angle between Player & AI
 	Vector playerPos, aiPos, playerPosNorm, aiPosNorm;
 	playerPos = playerPlane->getParts()[0]->transform().translation().normalize();
 	aiPos = aiPlane->transform().translation().normalize();
@@ -45,13 +46,20 @@ void AIPlaneController::update(float delta)
 	if (rotDiffW.X != rotDiffW.X) rotDiffW.X = 0;
 	if (rotDiffW.Z != rotDiffW.Z) rotDiffW.Z = 0;
 
+	// Prepare transformations according to angleDiff
 	Matrix yaw = Matrix().rotationY((rotDiffW.Z + rotDiffW.X) * delta / 66);
 	Matrix pitch = Matrix().rotationX(-(rotDiffW.Y) * delta / 66);
-	Matrix fall = Matrix().translation(0, -10 * delta,0);
-
 	aiPlane->transform(aiPlane->transform() * yaw * pitch);
-	if (aiPlane->hp <= 0) aiPlane->transform(aiPlane->transform() * fall);
 
+	// AIPlane dead -> drop it down
+	if (aiPlane->hp <= 0) {
+		Matrix fall = Matrix().translation(0, -10 * delta * deadCounter / 100,0);
+		deadCounter++;
+		aiPlane->transform(aiPlane->transform() * fall);
+	} else
+	{
+		deadCounter = 0;
+	}
 
 	aiPlane->update(delta);
 }

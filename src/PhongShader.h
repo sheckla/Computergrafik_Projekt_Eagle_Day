@@ -2,6 +2,7 @@
  * PhongShader
  * - Hauptshadereinheit mit der groessten Effektvielfalt
  * - Notwendig fuer Schattendarstellung
+ * - erlaubt nun CubeMapping
  *
  *
  * Weiterentwickelt auf Basis vom Praktikum:

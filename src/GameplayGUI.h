@@ -3,8 +3,9 @@
  * - Zeigt waehrend des Spieles Informationen fuer den Spieler an
  * - Geschwindigkeitsmeter
  * - Hoehenmeter
- * - TODO Kompass 
- * - TODO Andere Gegner 
+ * - Kompass fuer x-Rotation
+ * - Lebensanzeige
+ * - GunHP-Anzeige
  */
 
 #ifndef GameplayGUI_h
@@ -23,9 +24,7 @@ class GameplayGUI : public ApplicationGUIPrototype
 	GUIText* speedMeterText;
 	GUIText* altitudeMeterText;
 	GUITexture* mouseCircle;
-
 	GUIConstantQuad* quad;
-
 	GUIConstantQuad* compass;
 	GUIText* compassText;
 public:

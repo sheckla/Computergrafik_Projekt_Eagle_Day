@@ -4,10 +4,8 @@
  * - Der ganze Bildschirm wird mit diesem Quad gefuellt
  * - der hier vorhandene Shader ist fuer die PostProcessing Bildberarbeitung zustaendig
  */
-
 #ifndef ScreenQuadModel_h
 #define ScreenQuadModel_h
-
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
 #include "PostProcessingShader.h"

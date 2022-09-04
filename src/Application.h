@@ -7,20 +7,15 @@
 
 #ifndef Application_hpp
 #define Application_hpp
-
 #include <list>
-
 #include "AIPlaneController.h"
 #include "Camera.h"
-#include "PhongShader.h"
 #include "BaseModel.h"
 #include "ShadowMapGenerator.h"
 #include "PlayerPlaneControls.h"
 #include "ApplicationGUI.h"
-#include "GUIBaseComponent.h"
 #include "EnemyPlane.h"
 #include "WaterLoader.h"
-#include "vector.h"
 constexpr auto APPLICATION_ONLINE_MODE = false;
 
 class Application

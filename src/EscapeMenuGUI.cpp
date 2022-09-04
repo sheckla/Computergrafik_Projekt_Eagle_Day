@@ -1,5 +1,4 @@
 #include "EscapeMenuGUI.h"
-
 #include "ApplicationGUI.h"
 #include "ApplicationSettings.h"
 #include "GUIButton.h"
@@ -34,6 +33,7 @@ bool EscapeMenuGUI::postProcessingInit()
 
 void EscapeMenuGUI::update(float delta)
 {
+	// Main Menu Button
 	if (returnStartButton->listen() == RELEASE)
 	{
 		active(false);
@@ -42,6 +42,7 @@ void EscapeMenuGUI::update(float delta)
 		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 	}
 
+	// Close Button
 	if (leaveEscapeMenuButton->listen() == RELEASE)
 	{
 		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
@@ -50,6 +51,7 @@ void EscapeMenuGUI::update(float delta)
 		active(false);
 	}
 
+	// Restart Button
 	if (restartButton->listen() == RELEASE)
 	{
 		ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
@@ -62,6 +64,8 @@ void EscapeMenuGUI::update(float delta)
 		ApplicationGUI::AppGUI->gameplayGUI->active(true);
 		active(false);
 	}
+
+	// Update everything else
 	for (auto component : Components) component->update(delta);
 }
 
@@ -102,15 +106,15 @@ void EscapeMenuGUI::listen()
 {
 	if (escapeButtonPressListener->listen() == PRESS)
 	{
+		// turn off
 		if (Active)
-			// turn off
 		{
 			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(false);
 			ModelLoader::pPlayerPlane->startEngine();
 			active(false);
 		}
+		// turn on
 		else
-			// turn on
 		{
 			ApplicationGUI::AppGUI->ppBuffer->gaussianBlur(true);
 			ApplicationGUI::AppGUI->ppBuffer->postProcessingActive(true);

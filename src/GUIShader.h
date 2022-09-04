@@ -7,7 +7,6 @@
 #define GUIShader_h
 
 #include "color.h"
-#include "camera.h"
 #include "baseshader.h"
 #include "texture.h"
 

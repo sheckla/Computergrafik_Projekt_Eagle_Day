@@ -3,14 +3,11 @@
  * - wird nach dem erfolgreichen Laden der Anwendung angezeigt:
  *			- Titelbild & Hintergrund
  *			- bewegende Wolken
- * - TODO erfmoeglicht Menuefuehrung bezueglich der Spieleinstellungen
+ * - erfmoeglicht Menuefuehrung bezueglich der Spieleinstellungen
  */
-
-
 #ifndef StartScreenGUI_h
 #define StartScreenGUI_h
 
-#include "Globals.h"
 #include "ApplicationGUIPrototype.h"
 #include "GUIButton.h"
 #include "GUISlider.h"

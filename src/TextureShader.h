@@ -1,8 +1,6 @@
 /*
  * TextureShader
- * - simpler TexturShader
- * 
- * TODO notwendig?? evtl in ConstantShader einbauen
+ * - simpler Shader der zusaetzlich Texturen erlaubt
  */
 #ifndef TextureShader_h
 #define TextureShader_h

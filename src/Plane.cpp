@@ -189,6 +189,7 @@ bool Plane::loadModels(const char* path)
 	dot->transform(Matrix().translation(dotOffset));
 
 	speed = 100;
+	hp = 100;
 	return true;
 }
 
@@ -202,6 +203,7 @@ void Plane::initModelTranslation()
 	}
 	parts[0]->transform(parts[0]->transform() * Matrix().scale(0.3, 0.3, 0.3));
 	speed = 100;
+	hp = 100;
 }
 
 /* 
@@ -314,6 +316,7 @@ void Plane::update(double delta)
 		float diff = parts[0]->transform().translation().Y - 300;
 		diff = MathUtil::remapBounds(diff, 0, 100, 0, 2);
 		hp -= diff;
+		if (hp < 0) hp = 0;
 	}
 }
 

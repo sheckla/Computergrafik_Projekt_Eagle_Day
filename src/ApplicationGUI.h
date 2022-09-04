@@ -1,9 +1,9 @@
 /*
  * ApplicationGUI
  * - Hauptsteuerungsklasse fuer alle GUI-technische Aspekte der Anwendung
- * - beinhaltet als Instanze alle Instanzen der anderen GUI-Typen
+ * - beinhaltet als Instanz alle Instanzen der anderen GUI-Typen
  * - Schaltet die Freigabe von den Anderen GUIS
- * - Legt fest, wann welche GUI's gezeichnet werden sollen
+ * - Legt fest, wann welche GUI's wann gezeichnet werden sollen
  */
 
 #ifndef ApplicationGUI_h

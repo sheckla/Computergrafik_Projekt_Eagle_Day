@@ -4,6 +4,7 @@
 
 PostProcessingBuffer::PostProcessingBuffer(int width = ApplicationSettings::WIDTH, int height = ApplicationSettings::HEIGHT)
 {
+
     this->screenTex.create(width, height,
         GL_RGB, GL_RGB, GL_FLOAT, GL_LINEAR, GL_LINEAR,
         GL_CLAMP_TO_EDGE, false);

@@ -1,6 +1,7 @@
 /*
  * StringUtils
  * - statische Instanz mit Funktionene bezueglich der String-behandlung
+ * - liefert Dateieintraege in einem Folder
  */
 #pragma once
 #include <string>

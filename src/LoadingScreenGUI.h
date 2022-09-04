@@ -8,15 +8,12 @@
 #ifndef LoadingScreenGUI_h
 #define LoadingScreenGUI_h
 
-#include "Globals.h"
 #include "ApplicationGUIPrototype.h"
 #include "GUIChar.h"
 #include "GUILoadingMeter.h"
 #include "GUIText.h"
-#include "GUITexture.h"
 
 constexpr int tasks = 14;
-
 const enum LOADING_TASKS
 {
 	GUI_LOADING,

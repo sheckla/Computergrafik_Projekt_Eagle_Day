@@ -1,8 +1,10 @@
 /*
  * EscapeMenuGUI
  * - wird im Spielbetrieb der Anwendung angezeigt und bietet Menuefuehrung
+ *		- Main Menu: Zurueck zum Startscreen
+ *		- Restart: Spielstand wird zurueckgesetzt
+ *		- Close: EscapeMenuGUI wird geschlossen
  */
-
 #ifndef EscapeMenu_h
 #define EscapeMenu_h
 

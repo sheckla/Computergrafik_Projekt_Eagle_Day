@@ -1,3 +1,10 @@
+/*
+ * GUISlider
+ * - UI Komponente mit Text und Slider-Balken
+ * - Slider kann mit der Maus verschoben werden
+ * - Prozentualler Anteil wird innerhalb des Sliders angezeigt
+ */
+
 #ifndef GUISlider_h
 #define GUISlider_h
 #include "GUIBaseComponent.h"
