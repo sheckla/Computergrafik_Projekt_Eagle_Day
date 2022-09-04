@@ -1,10 +1,10 @@
 # Eagle Day - Battle of Britain
+- Entry for Computer Graphics course 2022 at HS-Osnabrueck. <br>
+- All Models & Textures originally created unless stated otherwise! <br>
+- **Project Participants:** Daniel Graf & Jannis Welkener <br>
+- **Concept:**  Dogfighter in open sea, Shoot other planes while flying through the clouds. <br>
+<img src="https://user-images.githubusercontent.com/72514907/188330650-d4d0b5f2-7c3f-4bfa-b16e-dc8e92a1b1e4.jpg">
 
-Entry for Computer Graphics course 2022 at HS-Osnabrueck. <br>
-All Models & Textures originally created unless stated otherwise!
-
-**Project Participants:** Daniel Graf & Jannis Welkener <br>
-**Concept:**  Dogfighter in open sea, Shoot other planes while flying through the clouds. <br>
 ## **Graphical Aspects:** 
 - Volumetric Clouds
 - Dynamic Water-Terrain
@@ -17,4 +17,4 @@ All Models & Textures originally created unless stated otherwise!
 - Gameplay UI displaying current Speed, Altitude, HP and GunHP
 - PostProcessingFilter and Mousesteering can be enabled in Options
 <br>
-![button_return](https://user-images.githubusercontent.com/72514907/188330473-277a1072-04d9-4bc9-84f2-c032aa87b56b.png)
+<img src="https://user-images.githubusercontent.com/72514907/188330599-8a3c33bb-aa1f-46cf-a3d0-becce0053058.jpg">
