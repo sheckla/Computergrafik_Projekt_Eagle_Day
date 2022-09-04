@@ -8,6 +8,7 @@ in vec3 Position;
 in vec3 Normal;
 in vec2 Texcoord;
 
+// Phong Values
 uniform vec3 EyePos;
 uniform vec3 DiffuseColor;
 uniform vec3 SpecularColor;
@@ -18,9 +19,13 @@ uniform sampler2D DiffuseTexture;
 uniform samplerCube CubeMapTexture;
 uniform sampler2D ShadowMapTexture[MAX_LIGHTS];
 uniform mat4 ShadowMapMat[MAX_LIGHTS];
-uniform int ShadowOnly;
+uniform float PhongDiff; // Phong Component Divisor
+
+uniform int IgnoreLight;
+
+// Booleans
+uniform int ShadowOnly; 
 uniform int Cubemapping;
-uniform float PhongDiff;
 
 out vec4 FragColor;
 
@@ -46,30 +51,31 @@ float sat( in float a)
     return clamp(a, 0.0, 1.0);
 }
 
-// schatten normalen vergleichen
-
+// sources: https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
+//          http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
 float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
 
 	float shadow = 0.0f;  							
-    float bias = 0.05*tan(acos(cosTheta));
-	vec4 PosSM = ShadowMapMat[LightIndex] * vec4(Position, 1);		// PosSM = Position des Punktes im Shadowmap-System
-	PosSM.xyz /= PosSM.w; 											// perspektivische Teilung vollziehen 
-	PosSM.xy = PosSM.xy*0.5 + 0.5; 									// Koordinaten von norm. Bildraum [-1,1] in Texturkoordinaten [0,1]
+	vec4 ShadowMapPos = ShadowMapMat[LightIndex] * vec4(Position, 1);		// Position in ShadowMapMat
+	ShadowMapPos.xyz /= ShadowMapPos.w;                                     // perspective division
+	ShadowMapPos.xy = ShadowMapPos.xy*0.5 + 0.5; 							// NormScreenCords[-1,1] to TexCoords [0,1]
     
-    if (PosSM.z > 1.0) {
+    // Discard if no shadow possible
+    if (ShadowMapPos.z > 1.0) {
         shadow = 0;
         return shadow;
     }
 												
 	// reducing blockiness of shadows by interpolating edges using PCF (percentage closer filtering)
 	// source: https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
+    float bias = 0.05*tan(acos(cosTheta)); 
 	int smoothingDiameter = 5, i = LightIndex;						// defines the size of the area around the pixel to be interpolated
 	vec2 texelSize = 1.0 / textureSize(ShadowMapTexture[i], 0);		// calculate the size of a single texel
 	for(int x = -smoothingDiameter; x <= smoothingDiameter; x++){	// iterate over texels in area vertically and horizontally
 		for(int y = -smoothingDiameter; y <= smoothingDiameter; y++) {	
-			vec2 PosSMpcf = PosSM.xy + vec2(x, y) * texelSize;		// calculate offset position of the texel in shadow map
-			vec4 DepthSM = texture(ShadowMapTexture[i], PosSMpcf);	// get shadow map color at this position
-			if(DepthSM.r + bias < PosSM.z) shadow += 1.0;       	// Vergleiche ob DepthSM < PosSM.z ist -> Wenn ja, Fragment im Schatten, sonst nicht.
+			vec2 shadowMapFragXY = ShadowMapPos.xy + vec2(x, y) * texelSize;		// calculate offset position of the texel in shadow map
+			vec4 shadowMapFragXYDepth = texture(ShadowMapTexture[i], shadowMapFragXY);	// get shadow map color at this position
+			if(shadowMapFragXYDepth.r + bias < ShadowMapPos.z) shadow += 1.0;       	// Vergleiche ob DepthSM < PosSM.z ist -> Wenn ja, Fragment im Schatten, sonst nicht.
 		}    
 	} 
 	shadow /= (smoothingDiameter * smoothingDiameter);				// normalize the shadow value
@@ -96,6 +102,7 @@ void main()
     vec3 Reflection = vec3(0,0,0);
     float visibility = 0.0f;
     for (int i = 0; i < LightCount; i++) {
+        if (i != IgnoreLight) {
         float Attenuation = 1.0f;            // light intensity drop-off
         vec3 Pos_To_LightPos = lights[i].Position - Position;       // basically just L for current light
         float Pos_To_LightPos_distance = length(Pos_To_LightPos);   // length of L
@@ -142,9 +149,10 @@ void main()
         ReflectComponent += LightColor * texture(CubeMapTexture, p).xyz;
         DiffuseComponent += LightColor * DiffuseColor * sat(dot(N,L)) / PhongDiff; 
         SpecularComponent += LightColor * SpecularColor * pow(sat(dot(H,N)), SpecularExp) / PhongDiff; 
+        }
     }
 
-    //visibility = sat(visibility);
+    // Phong Components after calculating Shadows for each light
     vec3 diff = DiffuseComponent * visibility;
     vec3 spec = SpecularComponent * visibility;
     vec3 ambient = AmbientColor * DiffTex.rgb;

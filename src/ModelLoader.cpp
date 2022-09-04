@@ -53,7 +53,7 @@ bool ModelLoader::dirLight()
     dl2->direction(Vector(0, -1, 1));
     dl2->color(Color(0.9, 0.9, 0.9));
     dl2->castShadows(true);
-    //ShaderLightMapper::instance().addLight(dl2);
+    ShaderLightMapper::instance().addLight(dl2);
     return true;
 }
 
@@ -112,7 +112,6 @@ bool ModelLoader::planePartsShadowArea()
     lpm->shadowCaster(true);
     lpm->shader(pShader);
     instance().PlayerPlaneShadowArea = lpm;
-    lpm->transform(Matrix().translation(0, 0, -30));
     return true;
 }
 

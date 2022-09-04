@@ -92,7 +92,7 @@ void Application::update(float dtime)
     // ShadowPlaneArea adjust
     if (ModelLoader::instance().PlayerPlaneShadowArea)
     {
-        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(ModelLoader::pPlayerPlane->getPosition()) * Matrix().translation(0, -10, 0));
+        ModelLoader::PlayerPlaneShadowArea->transform(Matrix().translation(ModelLoader::pPlayerPlane->getPosition()) * Matrix().translation(0, -1, -5));
     }
 
     // Scale > 6 gibt clipping Probleme, evtl Kamera anpassen ( oder andere sizes von anderen Objekten)
@@ -112,7 +112,6 @@ void Application::draw()
         std::list<BaseModel*> shadows;
 
         // ShadowPlane Offset
-        Vector prec = ModelLoader::PlayerPlaneShadowArea->transform().translation();
         shadows.push_back(ModelLoader::instance().PlayerPlaneShadowArea);
         for (int i = 0; i < PLANE_PARTS; i++) shadows.push_back(ModelLoader::pPlayerPlane->getParts()[i]);
         ShadowGenerator.generate(shadows);

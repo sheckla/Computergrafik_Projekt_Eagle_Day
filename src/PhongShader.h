@@ -42,6 +42,7 @@ public:
     void shadowOnly(bool b);
     void cubemapping(bool b);
     void phongDiff(float f);
+    void ignoreLight(int i);
     //getter
     const Color& diffuseColor() const { return DiffuseColor; }
     const Color& ambientColor() const { return AmbientColor; }
@@ -70,7 +71,9 @@ private:
     Matrix ShadowMapMat[MaxLightCount];
     bool ShadowOnly;
     float PhongDiff = 1;
+    int IgnoreLight = 1;
 
+    GLint IgnoreLightLoc;
     GLint DiffuseColorLoc;
     GLint SpecularColorLoc;
     GLint AmbientColorLoc;

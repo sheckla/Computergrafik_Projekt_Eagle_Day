@@ -196,7 +196,7 @@ bool Plane::loadModels(const char* path)
 void Plane::initModelTranslation()
 {
 	// Offsets anwenden
-	Vector offset = Vector(MathUtil::randPercentage(-50, 50), MathUtil::randPercentage(0, 20) + 40, MathUtil::randPercentage(-50, 50));
+	Vector offset = Vector(MathUtil::randPercentage(-50, 50), MathUtil::randPercentage(0, 20) + 40, MathUtil::randPercentage(-190, -90));
 	for (size_t i = 0; i < PLANE_PARTS; i++)
 	{
 		parts[i]->transform(Matrix().translation(OFFSETS[i]) * Matrix().translation(offset));

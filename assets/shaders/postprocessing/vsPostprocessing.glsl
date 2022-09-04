@@ -9,6 +9,7 @@ out vec2 Texcoord;
 
 void main()
 {
+    // Position in VertexPos because to be rendered Quad is in normalized Screencoordinates
     Position = vec4(VertexPos.x, VertexPos.y, 0.0, 1.0);
     Texcoord = vec2(VertexPos.x, VertexPos.y);
     gl_Position = Position;

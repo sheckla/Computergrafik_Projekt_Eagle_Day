@@ -28,6 +28,7 @@ public:
     static EnemyPlane* pEnemyPlane;
     static BaseModel* pSkyBox;
     static BaseModel* PlayerPlaneShadowArea;
+    static BaseModel* PlayerPlaneSpotArea;
     static WaterLoader* pWaterLoader;
 
     static ModelLoader& instance();
