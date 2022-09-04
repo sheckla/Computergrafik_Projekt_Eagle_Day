@@ -47,8 +47,8 @@ void AIPlaneController::update(float delta)
 	if (rotDiffW.Z != rotDiffW.Z) rotDiffW.Z = 0;
 
 	// Prepare transformations according to angleDiff
-	Matrix yaw = Matrix().rotationY((rotDiffW.Z + rotDiffW.X) * delta / 66);
-	Matrix pitch = Matrix().rotationX(-(rotDiffW.Y) * delta / 66);
+	Matrix yaw = Matrix().rotationY(-(rotDiffW.X) * delta / 3);
+	Matrix pitch = Matrix().rotationX(-(rotDiffW.Y) * delta / 3);
 	aiPlane->transform(aiPlane->transform() * yaw * pitch);
 
 	// AIPlane dead -> drop it down

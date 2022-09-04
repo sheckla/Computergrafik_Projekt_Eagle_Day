@@ -159,7 +159,7 @@ void EnemyPlane::initModelTranslation()
 {
 	// Offsets anwenden
 	if (!ModelLoader::pPlayerPlane) return;
-	Vector offset = Vector(ModelLoader::pPlayerPlane->getParts()[0]->transform().translation()) + Vector(0,0, 1);
+	Vector offset = Vector(ModelLoader::pPlayerPlane->getParts()[0]->transform().translation()) + Vector(0,0, 10);
 	this->transform(Matrix().translation(offset) * Matrix().scale(0.3, 0.3, 0.3));
 	hp = 100;
 }

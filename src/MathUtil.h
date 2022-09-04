@@ -25,6 +25,7 @@ public:
 		return remapBounds(random, 0, 1, min, max);
 	}
 
+
 	static bool randBool()
 	{
 		if (randPercentage() > 0.5) return true;
