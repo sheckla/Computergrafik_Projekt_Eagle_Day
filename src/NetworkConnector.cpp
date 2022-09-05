@@ -23,7 +23,7 @@ NetworkConnector::NetworkConnector(EnemyPlane& enemy, const char* srv_Adr, int p
 
 	//Unknown translation error -> Not enought time so hardcoded...
 	PORT = 19413;
-	Server_Address = "127.0.0.1";
+	Server_Address = "192.168.2.134";
 
 	this->WinSockSettings();
 

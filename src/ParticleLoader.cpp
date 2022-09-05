@@ -39,12 +39,12 @@ void ParticleLoader::update(double deltaTime, Matrix origin)
 				ParticleInstanceSmoke* instance = new ParticleInstanceSmoke(Particle_TTL, new ParticleSprite(), Particle_Shader, Vector(origin.m03, origin.m13, origin.m23));
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
-			if (pType == ParticleType::Bullet || pType == ParticleType::MuzzleFlash) {
+			if (pType == ParticleType::Bullet) {
 				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin,true);
 				instance->scale(Scale);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}
-			if (pType == ParticleType::BulletDummy) {
+			if (pType == ParticleType::BulletDummy || pType == ParticleType::MuzzleFlash) {
 				ParticleInstanceBullet* instance = new ParticleInstanceBullet(Particle_TTL, new ParticleSprite(), Particle_Shader, origin.left() * this->Offset_Value, origin, false);
 				ParticleList.push_back((ParticleInstance*)instance);
 			}

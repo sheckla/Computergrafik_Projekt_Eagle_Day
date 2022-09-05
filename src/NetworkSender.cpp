@@ -31,7 +31,7 @@ NetworkSender::NetworkSender(const char* srv_Adr, int port)
 
 	//Unknown translation error -> Not enought time so hardcoded...
 	this->PORT = 19411;
-	this->Server_Address = "127.0.0.1";
+	this->Server_Address = "192.168.2.173";
 
 	this->WinSockSettings();
 
@@ -107,7 +107,7 @@ void NetworkSender::SendData(Plane* plane)
 		incompleteMessage += std::to_string(enemyHP);
 		incompleteMessage += ",";
 
-		//std::cout << "[Network-Sender] <inc_mess> " << incompleteMessage << std::endl;
+		std::cout << "[Network-Sender] "<<enemyHP  << std::endl;
 
 		const char* message = incompleteMessage.c_str();
 

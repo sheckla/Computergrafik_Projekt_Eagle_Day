@@ -32,6 +32,7 @@ CloudShader::CloudShader() : PhongShader()
     NoiseLoc = glGetUniformLocation(ShaderProgram, "noise");
     AspectHeightLoc = glGetUniformLocation(ShaderProgram, "AspectHeight");
     AspectWidthLoc = glGetUniformLocation(ShaderProgram, "AspectWidth");
+    MaxTextureLoc = glGetUniformLocation(ShaderProgram, "MaxTexture");
 
     //Time translation for cloud movement
     TimeTranslationLoc = glGetUniformLocation(ShaderProgram, "TimeTranslation");
@@ -66,6 +67,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
     for (int i = 0; i < WORLEY_AMOUNT; i++) {
         if (i < max_layers-1) activateTex(DetailTex[i], DetailTexLoc[i], slot++);
     }
+    setUniformParameter(MaxTextureLoc, max_layers);
 
     // Noise
     activateTex(this->Noise, this->NoiseLoc, slot++);
@@ -88,7 +90,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
 void CloudShader::deactivate() const
 {
     PhongShader::deactivate();
-    for (int i = WORLEY_AMOUNT - 1; i >= 0; i--) {
+    for (int i = 16 - 1; i >= 0; i--) {
         if (DetailTex[i] && DetailTexLoc[i] >= 0) DetailTex[i]->deactivate();
 
     }
