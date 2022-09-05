@@ -65,7 +65,7 @@ void Camera::mouseInput(int x, int y, int Button, int State)
         }
         else if (Button == GLFW_MOUSE_BUTTON_RIGHT)
         {
-            pan((float)(m_LastMouseX - x) * 0.01f, (float)(m_LastMouseY - y) * 0.01f);
+            //pan((float)(m_LastMouseX - x) * 0.01f, (float)(m_LastMouseY - y) * 0.01f);
         }
         else if (Button == GLFW_MOUSE_BUTTON_MIDDLE)
         {

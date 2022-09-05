@@ -17,6 +17,9 @@
 			- Altitude < 0   -> Spieler ist im Wasser und stirbt.
 			- Altitude > 300 -> verliert Leben da er die kritische Hoehe erreicht hat.
 
+# Getestet unter:	- Windows 10
+			- RTX 3070 Ti: GeForce Game Ready-Driver 512.15
+
 *#####################################################################################################################################################################*
 # UI Hilfe:		
 
@@ -46,6 +49,12 @@
 			- Flugzeuggewehre:	SPACE - schießen (Gewehrzustand beachten! Regeneriert sich sobald nicht geschossen wird)
 
 *#####################################################################################################################################################################*
+
+# Online Modus:		- Festlegen der Lokalen IP/Port sowie die IP/Port des Gegners in der 'master/assets/settings.txt'.
+			- Java-Server starten ('master/server/Server_Runtime.java')
+			- Online Modus im Spielbetrieb anstellen (Optionen -> "Online Mode") -> falls nicht schon an, neustarten
+
+*#####################################################################################################################################################################*
 ## Feinheiten im Code:	
 
 Die Einteilung der Projekt-Codestruktur erfolgte in einer sinngemäßen Einteilung: (application, controls, graphics, gui, network, particles, sound, util)
@@ -63,21 +72,12 @@ Die Einteilung der Projekt-Codestruktur erfolgte in einer sinngemäßen Einteilu
   Dazu werden die einzelnen Faces von der Skybox gesplitted und einzeln gespeichert.
   Klassen wie der PhongShader nutzen diese CubeMap um Modelle von dieser CubeMap reflektieren zu lassen.
 
-- weiterClass.cpp: blablabla
-
 *---------------------------------------------------------------------------------------------------------------------------------------------------------------------*
 
-- Volumetric Clouds: CloudsText	
-CloudsText
-CloudsText
-CloudsText
-
-- Ocean: OceanText
-OceanText
-OceanText
-OceanText
-
-- weiterClass.cpp: blablabla
+- Volumetric Clouds: siehe 'master/assets/shader/cloud/vsCloud.glsl' & 'master/assets/shader/cloud/fsCloud.glsl'
+		     Inspiriert anhand von https://www.guerrilla-games.com/media/News/Files/The-Real-time-Volumetric-Cloudscapes-of-Horizon-Zero-Dawn.pdf
+- Ocean: siehe 'master/assets/shader/ocean/vsOcean.glsl' & 'master/assets/shader/ocean/fsOcean.glsl'
+	 Ocean wurde auf Basis des Terrains im Praktikum erstellt.
 			
 *---------------------------------------------------------------------------------------------------------------------------------------------------------------------*
 
@@ -117,6 +117,6 @@ Audio Sound Engine: IrrKlang Library
 WW2 Font : https://www.dafont.com/stencil-ww-ii.font
 Typewriter Font: https://www.dafont.com/jmh-typewriter.font
 
-Alles andere wurde vom initialen Praktikumsprojekt übernommen oder wurde von selber erstellt.
+Alles andere Bilder, Modelle & Sounddateien wurde vom initialen Praktikumsprojekt übernommen oder wurde von selber erstellt.
 
 *#####################################################################################################################################################################*
