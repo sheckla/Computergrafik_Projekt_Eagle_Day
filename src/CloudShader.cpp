@@ -37,7 +37,7 @@ CloudShader::CloudShader() : PhongShader()
     TimeTranslationLoc = glGetUniformLocation(ShaderProgram, "TimeTranslation");
 
     //Loading of noise-textures
-    for (int i = 0; i < WORLEY_AMOUNT; i++) {
+    for (int i = 0; i < 16; i++) {
         DetailTex[i] = NULL;
         std::string s;
         s += "DetailTex[" + std::to_string(i) + "]";
@@ -59,7 +59,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
 
     // Worley
     int slot = 0;
-    for (int i = 0; i < WORLEY_AMOUNT; i++) {
+    for (int i = 0; i < 16; i++) {
         activateTex(DetailTex[i], DetailTexLoc[i], slot++);
     }
 
@@ -84,7 +84,7 @@ void CloudShader::activate(const BaseCamera& Cam) const
 void CloudShader::deactivate() const
 {
     PhongShader::deactivate();
-    for (int i = WORLEY_AMOUNT - 1; i >= 0; i--) {
+    for (int i = 16 - 1; i >= 0; i--) {
         if (DetailTex[i] && DetailTexLoc[i] >= 0) DetailTex[i]->deactivate();
 
     }
