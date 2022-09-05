@@ -109,7 +109,7 @@ void NetworkSender::SendData(Plane* plane)
 		incompleteMessage += std::to_string(enemyHP);
 		incompleteMessage += ",";
 
-		std::cout << "[Network-Sender] "<<enemyHP  << std::endl;
+		//std::cout << "[Network-Sender] "<<enemyHP  << std::endl;
 
 		const char* message = incompleteMessage.c_str();
 
