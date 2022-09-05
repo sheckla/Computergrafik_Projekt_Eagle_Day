@@ -38,12 +38,14 @@ CloudShader::CloudShader() : PhongShader()
 
     //Loading of noise-textures
     for (int i = 0; i < WORLEY_AMOUNT; i++) {
-        DetailTex[i] = NULL;
-        std::string s;
-        s += "DetailTex[" + std::to_string(i) + "]";
-        //std::cout << s << std::endl;
-        //DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
-        DetailTexLoc[i] = initUniformParameter(s.c_str());
+        if (i < max_layers-1) {
+            DetailTex[i] = NULL;
+            std::string s;
+            s += "DetailTex[" + std::to_string(i) + "]";
+            std::cout << s << std::endl;
+            //DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
+            DetailTexLoc[i] = initUniformParameter(s.c_str());
+        }
     }
    
     std::cout << "[Clouds] Loading done..." << std::endl;
@@ -58,9 +60,11 @@ void CloudShader::activate(const BaseCamera& Cam) const
     PhongShader::activate(Cam);
 
     // Worley
+    GLint max_layers;
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &max_layers);
     int slot = 0;
     for (int i = 0; i < WORLEY_AMOUNT; i++) {
-        activateTex(DetailTex[i], DetailTexLoc[i], slot++);
+        if (i < max_layers-1) activateTex(DetailTex[i], DetailTexLoc[i], slot++);
     }
 
     // Noise

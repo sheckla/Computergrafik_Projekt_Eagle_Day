@@ -25,9 +25,6 @@
 #define ASSETS "../../assets/"
 #define SHADERS "../../assets/shaders/"
 
-// Shader
-#define WORLEY_AMOUNT 30
-
 // Eagle Day Color Scheme
 #define COL_DARK Color(0.38, 0.18, 0.12)
 #define COL_LIGHT Color(0.6,0.5,0.3)

@@ -15,6 +15,9 @@
 #include "PhongShader.h"
 #include "Matrix.h"
 #include "Aabb.h"
+#include "ApplicationSettings.h"
+
+#define WORLEY_AMOUNT 30
 
 class CloudShader : public PhongShader
 {
