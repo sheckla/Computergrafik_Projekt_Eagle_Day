@@ -66,19 +66,18 @@ float shadowAmount(int LightIndex, vec3 LightDir, float cosTheta) {
         return shadow;
     }
 												
-	// reducing blockiness of shadows by interpolating edges using PCF (percentage closer filtering)
-	// source: https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
+	// PCF (percentage closer filtering)
     float bias = 0.05*tan(acos(cosTheta)); 
-	int smoothingDiameter = 5, i = LightIndex;						// defines the size of the area around the pixel to be interpolated
-	vec2 texelSize = 1.0 / textureSize(ShadowMapTexture[i], 0);		// calculate the size of a single texel
-	for(int x = -smoothingDiameter; x <= smoothingDiameter; x++){	// iterate over texels in area vertically and horizontally
-		for(int y = -smoothingDiameter; y <= smoothingDiameter; y++) {	
-			vec2 shadowMapFragXY = ShadowMapPos.xy + vec2(x, y) * texelSize;		// calculate offset position of the texel in shadow map
-			vec4 shadowMapFragXYDepth = texture(ShadowMapTexture[i], shadowMapFragXY);	// get shadow map color at this position
-			if(shadowMapFragXYDepth.r + bias < ShadowMapPos.z) shadow += 1.0;       	// Vergleiche ob DepthSM < PosSM.z ist -> Wenn ja, Fragment im Schatten, sonst nicht.
+	int smoothRange = 5, i = LightIndex;						
+	vec2 texelSize = 1.0 / textureSize(ShadowMapTexture[i], 0);		
+	for(int x = -smoothRange; x <= smoothRange; x++){	
+		for(int y = -smoothRange; y <= smoothRange; y++) {	
+			vec2 shadowMapFragXY = ShadowMapPos.xy + vec2(x, y) * texelSize;		
+			vec4 shadowMapFragXYDepth = texture(ShadowMapTexture[i], shadowMapFragXY);	
+			if(shadowMapFragXYDepth.r + bias < ShadowMapPos.z) shadow += 1.0;       	
 		}    
 	} 
-	shadow /= (smoothingDiameter * smoothingDiameter);				// normalize the shadow value
+	shadow /= (smoothRange * smoothRange);				// normalize the shadow value
 	return shadow;
 }
 
