@@ -27,7 +27,6 @@
 
 // Shader
 #define WORLEY_AMOUNT 30
-#define MAX_TEXTURE_ARR_SIZE 50
 
 // Eagle Day Color Scheme
 #define COL_DARK Color(0.38, 0.18, 0.12)

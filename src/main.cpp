@@ -102,5 +102,10 @@ void PrintOpenGLVersion()
 {
     print("Graphics Render Unit:", glGetString(GL_RENDERER));
     print("Supported OpenGL version:", glGetString(GL_VERSION));
+    int maxCombinedTex, maxTex;
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxCombinedTex);
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTex);
+    print("Maximal combined Texture Image Units: ", maxCombinedTex);
+    print("Maximal Texture Image Unit [8,32]: ", maxTex);
     printDivider();
 }

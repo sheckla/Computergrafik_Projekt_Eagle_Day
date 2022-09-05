@@ -42,7 +42,7 @@ CloudShader::CloudShader() : PhongShader()
         std::string s;
         s += "DetailTex[" + std::to_string(i) + "]";
         //std::cout << s << std::endl;
-        DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
+        //DetailTexLoc[i] = glGetUniformLocation(ShaderProgram, s.c_str());
         DetailTexLoc[i] = initUniformParameter(s.c_str());
     }
    

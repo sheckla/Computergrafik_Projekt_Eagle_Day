@@ -629,8 +629,9 @@ unsigned char* Texture::LoadDataPtr(const char* filename)
 void Texture::activate(int slot) const
 {
     int maxTex;
-    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTex);
-    if (m_TextureID == 0 || slot < 0 || slot > maxTex)
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTex);
+    //if (slot > 7) print("exceed", "");
+    if (m_TextureID == 0 || slot < 0 || slot > 7)
         return;
     CurrentTextureUnit = slot;
 
@@ -640,9 +641,8 @@ void Texture::activate(int slot) const
 
 void Texture::activateCubeMap(int slot) const
 {
-    int maxTex;
-    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTex);
-    if (m_TextureID == 0 || slot < 0 || slot > maxTex)
+
+    if (m_TextureID == 0 || slot < 0 || slot > 7)
         return;
 
     CurrentTextureUnit = slot;
