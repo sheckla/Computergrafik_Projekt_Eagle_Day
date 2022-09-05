@@ -631,7 +631,7 @@ void Texture::activate(int slot) const
     int maxTex;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTex);
     //if (slot > 7) print("exceed", "");
-    if (m_TextureID == 0 || slot < 0 || slot > 7)
+    if (m_TextureID == 0 || slot < 0 || slot > maxTex)
         return;
     CurrentTextureUnit = slot;
 

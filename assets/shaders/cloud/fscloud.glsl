@@ -10,7 +10,7 @@ uniform sampler2D DiffuseTexture; // Worley
 uniform sampler2D NormalTexture; // noise
 
 // stopped working?? Wtf
-uniform sampler2D DetailTex[16]; 
+uniform sampler2D DetailTex[128]; 
 uniform sampler2D noise;
 
 uniform mat4 InverseViewMatrix;
@@ -23,6 +23,8 @@ uniform float TimeTranslation;
 
 uniform float AspectWidth;
 uniform float AspectHeight;
+
+uniform int MaxTexture;
 
 float BOTTOM = 80;
 float TOP = 120;
@@ -85,9 +87,9 @@ void main()
 
     float AlfaIntensity=0;
     //Ray marching through cloudbox adding the noise of each step, adding static noise for fuzzyness, than normalizing (This is for when the camera is under or over the cloudbox)
-    for(int i=0;i<16;i++){
+    for(int i=0;i<MaxTexture;i++){
 
-        vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/16)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/16)*i);
+        vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/MaxTexture)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/MaxTexture)*i);
 
         float texVal=texture(DetailTex[i], coor).r;
         texVal*=static_noise;
@@ -95,13 +97,13 @@ void main()
         if(texVal<0)texVal=0;
         AlfaIntensity += texVal;
     }
-    AlfaIntensity/=16;// <- Transparency
+    AlfaIntensity/=MaxTexture;// <- Transparency
     
     FragColor = vec4(1,1,1,AlfaIntensity);
 
 
     //INSIDE This part is for when the camera is inside the cloudbox
-    int level = int(((CameraPosition.y-BOTTOM) / (TOP-BOTTOM)) * 16);
+    int level = int(((CameraPosition.y-BOTTOM) / (TOP-BOTTOM)) * MaxTexture);
     float AlfaIntensityInside=0;
     float e = 2.718f;
 
@@ -112,8 +114,8 @@ void main()
             vec3 CamToTop = CameraPosition - WorldSpaceTop;
             float lengthToTop = sqrt(CamToTop.x * CamToTop.x + CamToTop.y * CamToTop.y + CamToTop.z * CamToTop.z);
 
-             for(int i=level;i<16;i++){
-                 vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/16)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/16)*i);
+             for(int i=level;i<MaxTexture;i++){
+                 vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/MaxTexture)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/MaxTexture)*i);
                  float texVal=texture(DetailTex[i], coor).r;
                  texVal*=static_noise;
                  if(texVal>1)texVal=1;
@@ -121,7 +123,7 @@ void main()
                  AlfaIntensityInside += texVal  * (1 + 2.0f * (1 - (pow(e,(-0.003f*lengthToTop))))); //Calculate density with distance through cloud-ray
             }
 
-            AlfaIntensityInside/=(16);
+            AlfaIntensityInside/=(MaxTexture);
             if(AlfaIntensityInside<0)AlfaIntensityInside=0;
             if(AlfaIntensityInside>0.8)AlfaIntensityInside=0.8; //Too bright, clamp to 0.8
 
@@ -135,7 +137,7 @@ void main()
             float lengthToBottom = sqrt(CamToBottom.x * CamToBottom.x + CamToBottom.y * CamToBottom.y + CamToBottom.z * CamToBottom.z);
 
             for(int i=0;i<level;i++){ 
-                 vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/16)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/16)*i);
+                 vec2 coor = vec2(WorldSpaceBottom.x/div+((WorldSpaceTop.x/div - WorldSpaceBottom.x/div)/MaxTexture)*i -TimeTranslation*.1f,WorldSpaceBottom.z/div+((WorldSpaceTop.z/div - WorldSpaceBottom.z/div)/MaxTexture)*i);
                  float texVal=texture(DetailTex[i], coor).r;
                  texVal*=static_noise;
                  if(texVal>1)texVal=1;
@@ -143,7 +145,7 @@ void main()
                  AlfaIntensityInside += texVal *(1+ 2.0f * (1 - (pow(e,(-0.003f*(lengthToBottom)))))); //Calculate density with distance through cloud-ray
             }
 
-            AlfaIntensityInside/=(16);
+            AlfaIntensityInside/=(MaxTexture);
             if(AlfaIntensityInside<0)AlfaIntensityInside=0;
             if(AlfaIntensityInside>0.8)AlfaIntensityInside=0.8; //Too bright, clamp to 0.8
 

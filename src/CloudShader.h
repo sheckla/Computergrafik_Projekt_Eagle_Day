@@ -47,6 +47,7 @@ private:
 
 	GLint boundsMinLoc;
 	GLint boundsMaxLoc;
+	GLint MaxTextureLoc;
 
 	GLint TimeTranslationLoc;
 
