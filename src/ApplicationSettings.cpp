@@ -94,17 +94,17 @@ void ApplicationSettings::readSettings()
 	print("AUDIOVALUE", AUDIO_VALUE);
 	print("SEPIAPOSTPROCESSING", SEPIA_POST_PROCESSING);
 	print("ONLINEMODE", ONLINE_MODE);
-	print("LOCALIP", LOCAL_IP+"|");
-	print("LOCALPORT", LOCAL_PORT + "|");
-	print("ENEMYIP", ENEMY_IP + "|");
-	print("ENEMYPORT", ENEMY_PORT + "|");
+	print("LOCALIP", LOCAL_IP);
+	print("LOCALPORT", LOCAL_PORT);
+	print("ENEMYIP", ENEMY_IP);
+	print("ENEMYPORT", ENEMY_PORT);
 
 	file.close();
 
-	if (LOCAL_IP.size() < 1) LOCAL_IP = "127.0.0.1";
-	if (LOCAL_PORT.size() < 1) LOCAL_PORT = "14911";
-	if (ENEMY_IP.size() < 1) ENEMY_IP = "127.0.0.1";
-	if (ENEMY_PORT.size() < 1) ENEMY_PORT = "19413";
+	if (LOCAL_IP.empty()) LOCAL_IP = "127.0.0.1";
+	if (LOCAL_PORT.empty()) LOCAL_PORT = "19411";
+	if (ENEMY_IP.empty()) ENEMY_IP = "127.0.0.1";
+	if (ENEMY_PORT.empty()) ENEMY_PORT = "19413";
 }
 
 void ApplicationSettings::writeSettings()

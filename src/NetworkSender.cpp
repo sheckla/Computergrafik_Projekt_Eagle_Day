@@ -3,6 +3,8 @@
 #include <thread>
 #include "Matrix.h"
 #include <string>
+
+#include "ApplicationSettings.h"
 #include "Plane.h"
 #include "ModelLoader.h"
 
@@ -30,8 +32,8 @@ NetworkSender::NetworkSender(const char* srv_Adr, int port)
 	this->Server_Address = srv_Adr;
 
 	//Unknown translation error -> Not enought time so hardcoded...
-	this->PORT = 19411;
-	this->Server_Address = "192.168.2.173";
+	this->PORT = std::atoi(ApplicationSettings::LOCAL_PORT.c_str());
+	this->Server_Address = ApplicationSettings::LOCAL_IP.c_str();
 
 	this->WinSockSettings();
 

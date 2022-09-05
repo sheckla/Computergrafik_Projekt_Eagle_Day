@@ -143,11 +143,15 @@ void LoadingScreenGUI::update(float delta)
 		CollisionDetector::instance();
 		if (ApplicationSettings::ONLINE_MODE)
 		{
+			int localPort = std::atoi(ApplicationSettings::LOCAL_PORT.c_str());
+			int enemyPort = std::atoi(ApplicationSettings::ENEMY_PORT.c_str());
+
 			print("Online Components", "loading");
 			ModelLoader::planePartsOnline(ApplicationSettings::LOCAL_IP, 
-				std::atoi(ApplicationSettings::LOCAL_PORT.c_str()));
+				localPort);
 			Application::enemyPlane = ModelLoader::enemyPlane(ApplicationSettings::ENEMY_IP, 
-				std::atoi(ApplicationSettings::ENEMY_PORT.c_str()));
+				enemyPort);
+
 
 			CollisionDetector::setCollisionTarget(Application::enemyPlane); // Set as collision-target
 		} else

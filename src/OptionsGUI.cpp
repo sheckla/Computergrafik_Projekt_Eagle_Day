@@ -130,10 +130,10 @@ void OptionsGUI::init()
 	std::string locPort{ "Local Port:" + ApplicationSettings::LOCAL_PORT };
 	std::string enemIP{ "Enemy IP:" + ApplicationSettings::ENEMY_IP };
 	std::string enemPort{ "Enemy Port:" + ApplicationSettings::ENEMY_PORT};
-	localIP = new GUIText(ApplicationSettings::WIDTH - 450, ApplicationSettings::HEIGHT - 50, locIP.c_str());
-	localPort = new GUIText(ApplicationSettings::WIDTH - 450, ApplicationSettings::HEIGHT - 80, locPort.c_str());
-	enemyIP = new GUIText(ApplicationSettings::WIDTH - 450, ApplicationSettings::HEIGHT - 110, enemIP.c_str());
-	enemyPort = new GUIText(ApplicationSettings::WIDTH - 450, ApplicationSettings::HEIGHT - 140, enemPort.c_str());
+	localIP = new GUIText(ApplicationSettings::WIDTH - 590, ApplicationSettings::HEIGHT - 50, locIP.c_str());
+	localPort = new GUIText(ApplicationSettings::WIDTH - 590, ApplicationSettings::HEIGHT - 80, locPort.c_str());
+	enemyIP = new GUIText(ApplicationSettings::WIDTH - 590, ApplicationSettings::HEIGHT - 110, enemIP.c_str());
+	enemyPort = new GUIText(ApplicationSettings::WIDTH - 590, ApplicationSettings::HEIGHT - 140, enemPort.c_str());
 
 	// Online Mode Switch
 	onlineModeControlSwitch = new GUIButtonSwitch(ApplicationSettings::WIDTH - 450, 500, applyTexture->width(), 75, "Online Mode");

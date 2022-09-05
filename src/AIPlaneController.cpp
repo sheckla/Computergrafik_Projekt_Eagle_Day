@@ -11,7 +11,6 @@ void AIPlaneController::update(float delta)
 	if (ModelLoader::pAIPlane) aiPlane = ModelLoader::pAIPlane;
 	if (ModelLoader::pPlayerPlane) playerPlane = ModelLoader::pPlayerPlane;
 	if (!aiPlane || !playerPlane)  return;
-
 	aiPlane->Enemy_Speed = 455;
 
 	// Common vectors

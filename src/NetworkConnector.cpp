@@ -23,7 +23,12 @@ NetworkConnector::NetworkConnector(EnemyPlane& enemy, const char* srv_Adr, int p
 
 	//Unknown translation error -> Not enought time so hardcoded...
 	PORT = 19413;
-	Server_Address = "192.168.2.134";
+	Server_Address = "192.168.112.184";
+	PORT = std::atoi(ApplicationSettings::ENEMY_PORT.c_str());
+	Server_Address = ApplicationSettings::ENEMY_IP.c_str();
+
+	print("port", PORT);
+	print("Server", Server_Address);
 
 	this->WinSockSettings();
 

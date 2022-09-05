@@ -92,7 +92,7 @@ void EnemyPlane::update(double delta)
 			this->transform(model->transform());
 			//std::cout << "[Enemy] Last update one frame behind: <Motion Estimate>" << std::endl;
 		}
-	} else if (ModelLoader::pAIPlane)
+	} else if (ModelLoader::pAIPlane && !ApplicationSettings::ONLINE_MODE)
 	{
 		Matrix forward;
 		forward.translation(Vector(0, 0, Enemy_Speed * 0.002f));
