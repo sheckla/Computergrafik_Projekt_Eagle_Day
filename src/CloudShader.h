@@ -17,7 +17,7 @@
 #include "Aabb.h"
 #include "ApplicationSettings.h"
 
-#define WORLEY_AMOUNT 30
+#define WORLEY_AMOUNT 40
 
 class CloudShader : public PhongShader
 {

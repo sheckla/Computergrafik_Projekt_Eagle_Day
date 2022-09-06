@@ -20,6 +20,8 @@
 # Getestet unter:	- Windows 10
 			- RTX 3070 Ti: GeForce Game Ready-Driver 512.15
 
+# Repo:			- https://github.com/sheckla/Computergrafik_Projekt_Eagle_Day
+
 *#####################################################################################################################################################################*
 # UI Hilfe:		
 
